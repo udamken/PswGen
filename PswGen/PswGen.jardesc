@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<jardesc>
+    <jar path="PswGen/product/PswGen.jar"/>
+    <options buildIfNeeded="true" compress="true" descriptionLocation="/PswGen/PswGen.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="true" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+    <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
+    <selectedProjects/>
+    <manifest generateManifest="false" mainClassHandleIdentifier="=PswGen/src&lt;net.sf.pswgen.main{PswGen.java[PswGen" manifestLocation="/PswGen/manifest.mf" manifestVersion="1.0" reuseManifest="false" saveManifest="true" usesManifest="true">
+        <sealing sealJar="true">
+            <packagesToSeal/>
+            <packagesToUnSeal/>
+        </sealing>
+    </manifest>
+    <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
+        <javaElement handleIdentifier="=PswGen/etc"/>
+        <javaElement handleIdentifier="=PswGen/src"/>
+        <javaElement handleIdentifier="=BaseClasses"/>
+    </selectedElements>
+</jardesc>

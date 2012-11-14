@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="Deploy PswGen to target directory" default="deploy" basedir=".">
+
+	<property name="targetdir" value="C:/Programme/PswGen" />
+
+	<target name="deploy">
+		<copy todir="${targetdir}" verbose="true" overwrite="true">
+			<fileset dir="D:/Software/prj/eclipse/BaseClasses/lib">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="D:/Software/prj/eclipse/PswGen/lib">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="D:/Software/prj/eclipse/PswGen/product">
+				<include name="*.exe" />
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+	</target>
+
+</project>
