@@ -89,10 +89,11 @@ public class WidgetFactory {
 	}
 
 	/**
-	 * Liefert den GUI-Text eines Widgets.
+	 * Liefert einen GUI-Text.
 	 */
-	public String getWidgetText(String name) {
-		return getWidgetInfo(name).getText();
+	public String getGuiText(String name) {
+		WidgetInfo wi = getWidgetInfo(name);
+		return (wi == null) ? name : wi.getText();
 	}
 
 	/**

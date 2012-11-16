@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import javax.swing.table.AbstractTableModel;
 
-import net.sf.pswgen.base.gui.WidgetFactory;
+import net.sf.pswgen.base.util.Services;
 import net.sf.pswgen.model.ServiceInfo;
 
 /**
@@ -25,9 +25,9 @@ public class StoredServicesTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = -8594091408631595480L;
 
-	String[] columnNames = { WidgetFactory.getInstance().getWidgetText("LabelServiceAbbreviation"),
-			WidgetFactory.getInstance().getWidgetText("LabelAdditionalInfo"),
-			WidgetFactory.getInstance().getWidgetText("LabelLoginUrl") };
+	String[] columnNames = { Services.getInstance().getGuiText("LabelServiceAbbreviation"),
+			Services.getInstance().getGuiText("LabelAdditionalInfo"),
+			Services.getInstance().getGuiText("LabelLoginUrl") };
 
 	ServiceInfo[] services;
 

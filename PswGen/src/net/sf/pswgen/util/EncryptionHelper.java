@@ -8,7 +8,6 @@ import javax.crypto.spec.PBEParameterSpec;
 
 import net.sf.pswgen.base.util.DomainException;
 
-
 /**
  * <p>
  * Verschlüsselt und entschlüsselt Strings auf Basis einer Passphrase.
@@ -67,8 +66,7 @@ public class EncryptionHelper {
 			final String psw = new String(pswByteArray);
 			return psw;
 		} catch (Exception e) {
-			throw new DomainException("Die Passphrase ist vermutlich falsch,\n"
-					+ "das Entschlüsseln schlägt fehl.");
+			throw new DomainException("DecryptionFailedMsg");
 		}
 	}
 

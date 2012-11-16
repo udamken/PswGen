@@ -9,7 +9,6 @@ import net.sf.pswgen.base.util.ConstantsProvider;
 import net.sf.pswgen.base.util.DomainException;
 import net.sf.pswgen.base.util.Services;
 
-
 /**
  * <p>
  * Generische Basisklasse für die Controller meiner Anwendungen.
@@ -45,7 +44,8 @@ public class BaseCtl {
 		t.printStackTrace();
 		ConstantsProvider constants = Services.getInstance().getConstants();
 		if (t instanceof DomainException) {
-			JOptionPane.showMessageDialog(null, t.getMessage(), constants.getApplicationName(),
+			String msg = Services.getInstance().getGuiText(t.getMessage());
+			JOptionPane.showMessageDialog(null, msg, constants.getApplicationName(),
 					JOptionPane.WARNING_MESSAGE);
 
 		} else {

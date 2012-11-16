@@ -25,7 +25,6 @@ import net.sf.pswgen.util.Constants;
 import net.sf.pswgen.util.EncryptionHelper;
 import net.sf.pswgen.util.PasswordFactory;
 
-
 /**
  * <p>
  * Der Controller der Anwendung. Hier werden sämtliche Dialoge gesteuert und die Anwendungsfälle
@@ -53,10 +52,10 @@ public class PswGenCtl extends BaseCtl {
 		final String passphrase = mfView.getPassphrase();
 		final String passphraseRepeated = mfView.getPassphraseRepeated();
 		if (!passphrase.equals(passphraseRepeated)) { // Mismatch?
-			throw new DomainException("Die Passphrase weicht von der wiederholten Passphrase ab.");
+			throw new DomainException("PassphraseMismatchMsg");
 		}
 		if (passphrase.length() == 0) {
-			throw new DomainException("Die Passphrase ist leer.");
+			throw new DomainException("PassphraseEmptyMsg");
 		}
 	}
 
@@ -89,7 +88,7 @@ public class PswGenCtl extends BaseCtl {
 			password = generatePassword(mfView);
 		} else {
 			if (!password.equals(passwordRepeated)) { // Mismatch?
-				throw new DomainException("Das Passwort weicht vom wiederholten Passwort ab.");
+				throw new DomainException("PasswordMismatchMsg");
 			}
 		}
 		return password;
@@ -100,7 +99,7 @@ public class PswGenCtl extends BaseCtl {
 	 */
 	private void validateServiceAbbreviation(final String serviceAbbreviation) {
 		if (serviceAbbreviation.length() == 0) {
-			throw new DomainException("Das Dienstekürzel ist leer.");
+			throw new DomainException("ServiceAbbreviationEmptyMsg");
 		}
 	}
 
@@ -162,7 +161,7 @@ public class PswGenCtl extends BaseCtl {
 		validateServiceAbbreviation(serviceAbbreviation);
 		ServiceInfo si = services.getServiceInfo(serviceAbbreviation);
 		if (si == null) {
-			throw new DomainException("Der Dienst '" + serviceAbbreviation + "' wurde bisher nicht vermerkt.");
+			throw new DomainException("ServiceAbbreviationMissingMsg");
 		} else {
 			mfView.setAdditionalInfo(si.getAdditionalInfo());
 			mfView.setLoginUrl(si.getLoginUrl());
@@ -231,8 +230,7 @@ public class PswGenCtl extends BaseCtl {
 			if (chosenOption != JOptionPane.NO_OPTION) { // Dienst nicht
 				ServiceInfo si = services.removeServiceInfo(serviceAbbreviation);
 				if (si == null) { // Dienst gar nicht vorhanden?
-					throw new DomainException("Der Dienst '" + serviceAbbreviation
-							+ "' wurde bisher nicht vermerkt.");
+					throw new DomainException("ServiceAbbreviationMissingMsg");
 				} else {
 					saveServiceInfoList();
 					mfView.updateStoredService();

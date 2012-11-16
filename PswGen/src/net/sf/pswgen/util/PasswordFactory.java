@@ -4,7 +4,6 @@ import java.util.Random;
 
 import net.sf.pswgen.base.util.DomainException;
 
-
 /**
  * <p>
  * Eine Instanz dieser Klasse generiert ein Passwort. Zum Holen eines neuen Passworts sollte daher eine neue
@@ -62,13 +61,11 @@ public class PasswordFactory {
 	public void distributeCharacters(final int count, final String characters, final int leftmost,
 			final int rightmost) {
 		if (rightmost > password.getLength() - 1) {
-			throw new DomainException("Die Anzahl der zu verteilenden Zeichen bei einer\n"
-					+ "Bis-Angabe überschreitet Gesamtlänge.");
+			throw new DomainException("TotalCharacterCountExceededMsg");
 		}
 		int possiblePositions = rightmost - leftmost + 1;
 		if (password.charactersSet(leftmost, rightmost) + count > possiblePositions) {
-			throw new DomainException("Die Anzahl der zu verteilenden Zeichen überschreitet\n"
-					+ "eine Von-/Bis-Angabe oder die Gesamtlänge,");
+			throw new DomainException("InvalidCharacterCountMsg");
 		}
 		for (int distributed = 0; distributed < count; distributed++) {
 			int positionInRange;
@@ -83,7 +80,7 @@ public class PasswordFactory {
 	 */
 	public String getPassword(final String characters) {
 		if (characters.length() == 0 || password.getLength() == 0) {
-			throw new DomainException("Bitte geben Sie Zeichen zur Generierung und eine Gesamtlänge an.");
+			throw new DomainException("CharacterOrTotalCharacterCountMissingMsg");
 		} else {
 			for (int i = 0; i < password.getLength(); i++) {
 				setRandomCharacter(characters, i);

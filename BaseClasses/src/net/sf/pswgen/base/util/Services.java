@@ -2,6 +2,8 @@ package net.sf.pswgen.base.util;
 
 import java.util.logging.Logger;
 
+import net.sf.pswgen.base.gui.WidgetFactory;
+
 /**
  * <p>
  * Gestattet den anwendungsglobalen Zugriff auf alle querschnittlichen Dienste.
@@ -74,4 +76,12 @@ public class Services {
 	public ConstantsProvider getConstants() {
 		return constants;
 	}
+
+	/**
+	 * Liefert ein GUI-Text zu einem Widget oder einer GUI-Meldung.
+	 */
+	public String getGuiText(String name) {
+		return WidgetFactory.getInstance().getGuiText(name);
+	}
+
 }
