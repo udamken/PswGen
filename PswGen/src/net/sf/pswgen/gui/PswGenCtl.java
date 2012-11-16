@@ -224,9 +224,9 @@ public class PswGenCtl extends BaseCtl {
 			mfView.setWaitCursor();
 			String serviceAbbreviation = mfView.getServiceAbbreviation();
 			validateServiceAbbreviation(serviceAbbreviation);
-			int chosenOption = JOptionPane.showConfirmDialog(mfView, "Dienst '" + serviceAbbreviation
-					+ "' entfernen?", Services.getInstance().getConstants().getApplicationName(),
-					JOptionPane.YES_NO_OPTION);
+			int chosenOption = JOptionPane.showConfirmDialog(mfView,
+					Services.getInstance().getGuiText("RemoveServiceMsg"), Services.getInstance()
+							.getConstants().getApplicationName(), JOptionPane.YES_NO_OPTION);
 			if (chosenOption != JOptionPane.NO_OPTION) { // Dienst nicht
 				ServiceInfo si = services.removeServiceInfo(serviceAbbreviation);
 				if (si == null) { // Dienst gar nicht vorhanden?
@@ -294,7 +294,7 @@ public class PswGenCtl extends BaseCtl {
 			ServiceInfo si = services.getServiceInfo(serviceAbbreviation);
 			if (si != null) { // Ist der Dienst bereits vermerkt?
 				int chosenOption = JOptionPane.showConfirmDialog(mfView,
-						"Der Dienst wurde bereits vermerkt. Überschreiben?", Services.getInstance()
+						Services.getInstance().getGuiText("OverwriteServiceMsg"), Services.getInstance()
 								.getConstants().getApplicationName(), JOptionPane.YES_NO_OPTION);
 				if (chosenOption == JOptionPane.NO_OPTION) { // Dienst nicht
 					// überschreiben?
