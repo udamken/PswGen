@@ -26,7 +26,6 @@ import net.sf.pswgen.base.util.ConstantsProvider;
 import net.sf.pswgen.base.util.ConverterHelper;
 import net.sf.pswgen.base.util.Services;
 
-
 /**
  * <p>
  * Erzeugt Widgets, also GUI-Elemente, auf vereinfachte und für von mir geschriebene Anwendungen
@@ -87,6 +86,13 @@ public class WidgetFactory {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Liefert den GUI-Text eines Widgets.
+	 */
+	public String getWidgetText(String name) {
+		return getWidgetInfo(name).getText();
 	}
 
 	/**
