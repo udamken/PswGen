@@ -6,9 +6,6 @@
 
 	<target name="deploy">
 		<copy todir="${targetdir}" verbose="true" overwrite="true">
-			<fileset dir="D:/Software/Git/pswgen-code/BaseClasses/lib">
-				<include name="*.jar" />
-			</fileset>
 			<fileset dir="D:/Software/Git/pswgen-code/PswGen/lib">
 				<include name="*.jar" />
 			</fileset>

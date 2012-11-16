@@ -19,7 +19,7 @@ public class Constants implements ConstantsProvider {
 	public static final String APPLICATION_NAME = "PswGen";
 
 	/** Die Version dieser Anwendung */
-	public static final String APPLICATION_VERSION = "1.5.1";
+	public static final String APPLICATION_VERSION = "1.5.2";
 
 	/** Resource Name des Icons der Anwendung */
 	public static final String APPLICATION_ICON_RESOURCE_NAME = "net/sf/pswgen/PswGen.png";
