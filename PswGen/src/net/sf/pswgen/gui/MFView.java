@@ -115,6 +115,7 @@ public class MFView extends BaseView {
 	 */
 	public MFView(BaseCtl ctl) {
 		super(ctl);
+		this.setResizable(false);
 	}
 
 	/**
