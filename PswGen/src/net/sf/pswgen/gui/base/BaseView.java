@@ -1,4 +1,4 @@
-package net.sf.pswgen.base.gui;
+package net.sf.pswgen.gui.base;
 
 import java.awt.Cursor;
 import java.awt.event.WindowAdapter;
@@ -7,10 +7,8 @@ import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import net.sf.pswgen.base.util.ConstantsProvider;
-import net.sf.pswgen.base.util.ImageHelper;
-import net.sf.pswgen.base.util.Services;
-
+import net.sf.pswgen.util.Constants;
+import net.sf.pswgen.util.ImageHelper;
 
 /**
  * <p>
@@ -56,9 +54,8 @@ public abstract class BaseView extends JFrame {
 		});
 		setResizable(true);
 		setComponentOrientation(java.awt.ComponentOrientation.LEFT_TO_RIGHT);
-		ConstantsProvider constants = Services.getInstance().getConstants();
-		setIconImage(ImageHelper.getInstance().getIconImage(constants.getApplicationIconResourceName()));
-		setTitle(constants.getApplicationName());
+		setIconImage(ImageHelper.getInstance().getIconImage(Constants.APPLICATION_ICON_RESOURCE_NAME));
+		setTitle(Constants.APPLICATION_NAME);
 		setContentPane(createContentPane());
 	}
 

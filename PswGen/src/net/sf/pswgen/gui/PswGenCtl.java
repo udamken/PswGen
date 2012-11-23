@@ -9,19 +9,19 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.net.URI;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JOptionPane;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
-import net.sf.pswgen.base.gui.BaseCtl;
-import net.sf.pswgen.base.util.DomainException;
-import net.sf.pswgen.base.util.EmptyHelper;
-import net.sf.pswgen.base.util.Services;
+import net.sf.pswgen.gui.base.BaseCtl;
 import net.sf.pswgen.model.ServiceInfo;
 import net.sf.pswgen.model.ServiceInfoList;
 import net.sf.pswgen.util.Constants;
+import net.sf.pswgen.util.DomainException;
+import net.sf.pswgen.util.EmptyHelper;
 import net.sf.pswgen.util.EncryptionHelper;
 import net.sf.pswgen.util.PasswordFactory;
 
@@ -37,8 +37,10 @@ import net.sf.pswgen.util.PasswordFactory;
  */
 public class PswGenCtl extends BaseCtl {
 
-	/** Das Hauptfenster dieser Anwendung */
-	// private MFView mfView = null;
+	/** Der Logger für diese Klasse */
+	private static final Logger LOGGER = Logger.getLogger(Constants.APPLICATION_PACKAGE_NAME + ".Logger",
+			Constants.APPLICATION_PACKAGE_NAME + ".Messages");
+
 	/** Alle Informationen zu Dienstekürzeln */
 	private ServiceInfoList services = new ServiceInfoList();
 
@@ -115,7 +117,7 @@ public class PswGenCtl extends BaseCtl {
 			services.reinforceLoad(); // Laden nachbereiten (Collection in Map stellen)
 			in.close();
 		} catch (Exception e) {
-			Services.getInstance().getLogger().log(Level.WARNING, Constants.MSG_EXCP_SERVICES, e);
+			LOGGER.log(Level.WARNING, Constants.MSG_EXCP_SERVICES, e);
 		}
 	}
 
@@ -224,9 +226,8 @@ public class PswGenCtl extends BaseCtl {
 			mfView.setWaitCursor();
 			String serviceAbbreviation = mfView.getServiceAbbreviation();
 			validateServiceAbbreviation(serviceAbbreviation);
-			int chosenOption = JOptionPane.showConfirmDialog(mfView,
-					Services.getInstance().getGuiText("RemoveServiceMsg"), Services.getInstance()
-							.getConstants().getApplicationName(), JOptionPane.YES_NO_OPTION);
+			int chosenOption = JOptionPane.showConfirmDialog(mfView, getGuiText("RemoveServiceMsg"),
+					Constants.APPLICATION_NAME, JOptionPane.YES_NO_OPTION);
 			if (chosenOption != JOptionPane.NO_OPTION) { // Dienst nicht
 				ServiceInfo si = services.removeServiceInfo(serviceAbbreviation);
 				if (si == null) { // Dienst gar nicht vorhanden?
@@ -293,9 +294,8 @@ public class PswGenCtl extends BaseCtl {
 			validateServiceAbbreviation(serviceAbbreviation);
 			ServiceInfo si = services.getServiceInfo(serviceAbbreviation);
 			if (si != null) { // Ist der Dienst bereits vermerkt?
-				int chosenOption = JOptionPane.showConfirmDialog(mfView,
-						Services.getInstance().getGuiText("OverwriteServiceMsg"), Services.getInstance()
-								.getConstants().getApplicationName(), JOptionPane.YES_NO_OPTION);
+				int chosenOption = JOptionPane.showConfirmDialog(mfView, getGuiText("OverwriteServiceMsg"),
+						Constants.APPLICATION_NAME, JOptionPane.YES_NO_OPTION);
 				if (chosenOption == JOptionPane.NO_OPTION) { // Dienst nicht
 					// überschreiben?
 					return; // nein ... dann ist nichts mehr zu tun
@@ -414,8 +414,8 @@ public class PswGenCtl extends BaseCtl {
 		try {
 			mfView.setWaitCursor();
 			final String psw = validatedOrGeneratePassword(mfView);
-			JOptionPane.showMessageDialog(mfView, "Das generierte Passwort ist \"" + psw + "\"", Services
-					.getInstance().getConstants().getApplicationName(), JOptionPane.PLAIN_MESSAGE);
+			JOptionPane.showMessageDialog(mfView, "Das generierte Passwort ist \"" + psw + "\"",
+					Constants.APPLICATION_NAME, JOptionPane.PLAIN_MESSAGE);
 		} catch (Throwable t) {
 			handleThrowable(t);
 		} finally {

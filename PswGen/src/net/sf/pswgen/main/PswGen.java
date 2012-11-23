@@ -1,10 +1,10 @@
 package net.sf.pswgen.main;
 
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.UIManager;
 
-import net.sf.pswgen.base.util.Services;
 import net.sf.pswgen.gui.PswGenCtl;
 import net.sf.pswgen.util.Constants;
 
@@ -15,7 +15,6 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
-
 
 /**
  * <p>
@@ -50,8 +49,15 @@ import org.apache.commons.cli.Options;
  * <p>
  * Mobile Version bereitsstellen, eventuell ohne Pflege mit nur einmaliger Passphrase-Eingabe.
  * </p>
+ * <p>
+ * Auto-Update
+ * </p>
  */
 public class PswGen {
+
+	/** Der Logger für diese Klasse */
+	private static final Logger LOGGER = Logger.getLogger(Constants.APPLICATION_PACKAGE_NAME + ".Logger",
+			Constants.APPLICATION_PACKAGE_NAME + ".Messages");
 
 	/** Die eine und einzige Instanz dieser Anwendung */
 	private static PswGen instance = null;
@@ -71,7 +77,6 @@ public class PswGen {
 	 * Initialisiert die eine und einzige Instanz.
 	 */
 	private void initialize(final String servicesFilename) {
-		Services.getInstance(Constants.getInstance());
 		setupLookAndFeel();
 		new PswGenCtl(servicesFilename);
 	}
@@ -83,7 +88,7 @@ public class PswGen {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
-			Services.getInstance().getLogger().log(Level.WARNING, Constants.MSG_EXCP_LOOK_AND_FEEL, e);
+			LOGGER.log(Level.WARNING, Constants.MSG_EXCP_LOOK_AND_FEEL, e);
 		}
 	}
 

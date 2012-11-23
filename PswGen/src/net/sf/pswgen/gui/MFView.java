@@ -25,11 +25,11 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableRowSorter;
 
-import net.sf.pswgen.base.gui.BaseCtl;
-import net.sf.pswgen.base.gui.BaseView;
-import net.sf.pswgen.base.gui.DbcIntegerField;
-import net.sf.pswgen.base.gui.GridBagConstraintsFactory;
-import net.sf.pswgen.base.gui.WidgetFactory;
+import net.sf.pswgen.gui.base.BaseCtl;
+import net.sf.pswgen.gui.base.BaseView;
+import net.sf.pswgen.gui.base.DbcIntegerField;
+import net.sf.pswgen.gui.base.GridBagConstraintsFactory;
+import net.sf.pswgen.gui.base.WidgetFactory;
 import net.sf.pswgen.model.ServiceInfo;
 
 /**
@@ -216,7 +216,10 @@ public class MFView extends BaseView {
 			}
 
 		});
-		tableModelStoredServices = new StoredServicesTableModel(((PswGenCtl) ctl).getServices().getServices());
+		tableModelStoredServices = new StoredServicesTableModel(
+				((PswGenCtl) ctl).getServices().getServices(), new String[] {
+						ctl.getGuiText("LabelServiceAbbreviation"), ctl.getGuiText("LabelAdditionalInfo"),
+						ctl.getGuiText("LabelLoginUrl") });
 		mTableStoredServices = wf.getTable("TableStoredServices", tableModelStoredServices);
 		mTableStoredServices.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		mTableRowSorter = new TableRowSorter<StoredServicesTableModel>(tableModelStoredServices);

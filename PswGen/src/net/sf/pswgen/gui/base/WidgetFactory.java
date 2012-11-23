@@ -1,4 +1,4 @@
-package net.sf.pswgen.base.gui;
+package net.sf.pswgen.gui.base;
 
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.Hashtable;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,9 +23,8 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.AbstractTableModel;
 
-import net.sf.pswgen.base.util.ConstantsProvider;
-import net.sf.pswgen.base.util.ConverterHelper;
-import net.sf.pswgen.base.util.Services;
+import net.sf.pswgen.util.Constants;
+import net.sf.pswgen.util.ConverterHelper;
 
 /**
  * <p>
@@ -36,6 +36,10 @@ import net.sf.pswgen.base.util.Services;
  * </p>
  */
 public class WidgetFactory {
+
+	/** Der Logger für diese Klasse */
+	private static final Logger LOGGER = Logger.getLogger(Constants.APPLICATION_PACKAGE_NAME + ".Logger",
+			Constants.APPLICATION_PACKAGE_NAME + ".Messages");
 
 	/** Die eine und einzige Instanz dieser Klasse */
 	private static WidgetFactory instance = null;
@@ -63,16 +67,12 @@ public class WidgetFactory {
 	 * Initialisiert die eine und einzige Instanz.
 	 */
 	private void initialize() {
-		String pkg = Services.getInstance().getConstants().getApplicationPackageName();
-		ResourceBundle bundle = ResourceBundle.getBundle(pkg + ".Widgets");
+		ResourceBundle bundle = ResourceBundle.getBundle(Constants.APPLICATION_PACKAGE_NAME + ".Widgets");
 		for (String key : Collections.list(bundle.getKeys())) {
 			String value = bundle.getString(key);
 			Matcher matcher = Pattern.compile("\\s*([^,]*)(\\s*,\\s*(\\d+),\\s*(\\d+))?\\s*").matcher(value);
 			if (!matcher.matches()) {
-				Services.getInstance()
-						.getLogger()
-						.log(Level.WARNING, ConstantsProvider.MSG_INVALID_WIDGET_INFO,
-								new Object[] { key, value });
+				LOGGER.log(Level.WARNING, Constants.MSG_INVALID_WIDGET_INFO, new Object[] { key, value });
 			} else {
 				String text = matcher.group(1);
 				String preferredWidth = matcher.group(3);
@@ -104,7 +104,7 @@ public class WidgetFactory {
 		WidgetInfo wi = widgetInfos.get(name);
 		if (wi == null) {
 			wi = new WidgetInfo("<" + name + ">");
-			Services.getInstance().getLogger().log(Level.WARNING, ConstantsProvider.MSG_NO_WIDGET_INFO, name);
+			LOGGER.log(Level.WARNING, Constants.MSG_NO_WIDGET_INFO, name);
 		}
 		return wi;
 	}

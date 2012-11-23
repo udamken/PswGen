@@ -1,4 +1,4 @@
-package net.sf.pswgen.base.gui;
+package net.sf.pswgen.gui.base;
 
 import java.awt.GridBagConstraints;
 

@@ -1,6 +1,6 @@
 package net.sf.pswgen;
 
-import net.sf.pswgen.base.util.DomainException;
+import net.sf.pswgen.util.DomainException;
 import net.sf.pswgen.util.PasswordFactory;
 import junit.framework.Assert;
 import junit.framework.TestCase;

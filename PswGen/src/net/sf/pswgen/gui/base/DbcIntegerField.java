@@ -1,4 +1,4 @@
-package net.sf.pswgen.base.gui;
+package net.sf.pswgen.gui.base;
 
 import javax.swing.JTextField;
 import javax.swing.text.AttributeSet;
@@ -6,7 +6,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.PlainDocument;
 
-import net.sf.pswgen.base.util.ConverterHelper;
+import net.sf.pswgen.util.ConverterHelper;
 
 
 /**

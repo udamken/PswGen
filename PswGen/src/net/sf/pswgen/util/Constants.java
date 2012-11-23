@@ -1,7 +1,6 @@
 package net.sf.pswgen.util;
 
 import net.sf.pswgen.ApplicationPackageNameMarker;
-import net.sf.pswgen.base.util.ConstantsProvider;
 
 /**
  * <p>
@@ -13,18 +12,26 @@ import net.sf.pswgen.base.util.ConstantsProvider;
  * (c) 2005-2012, by Uwe Damken
  * </p>
  */
-public class Constants implements ConstantsProvider {
+public class Constants {
 
 	/** Der angezeigte Name dieser Anwendung */
 	public static final String APPLICATION_NAME = "PswGen";
 
 	/** Die Version dieser Anwendung */
-	public static final String APPLICATION_VERSION = "1.5.2";
+	public static final String APPLICATION_VERSION = "1.5.3";
+
+	/** Das Package dieser Anwendung */
+	public static final String APPLICATION_PACKAGE_NAME = ApplicationPackageNameMarker.class.getPackage()
+			.getName();
 
 	/** Resource Name des Icons der Anwendung */
 	public static final String APPLICATION_ICON_RESOURCE_NAME = "net/sf/pswgen/PswGen.png";
 
 	/** Nummern der anwendungsspezifischen Meldungen, Texte dazu in Messages.properties */
+
+	public static final String MSG_INVALID_WIDGET_INFO = "000";
+
+	public static final String MSG_NO_WIDGET_INFO = "001";
 
 	public static final String MSG_EXCP_SERVICES = "100";
 
@@ -45,60 +52,5 @@ public class Constants implements ConstantsProvider {
 	public static final String SPECIAL_CHARS = ",.;:!$&()=?+-*/#";
 
 	public static final String CHARACTERS = ALPHANUMERICS + SPECIAL_CHARS;
-
-	/** Die eine und einzige Instanz dieser Klasse */
-	private static Constants instance = new Constants();
-
-	/**
-	 * Konstruktor ist nicht öffentlich zugreifbar => getInstance() nutzen
-	 */
-	private Constants() {
-		super();
-	}
-
-	/**
-	 * Liefert die eine und einzige Instanz dieser Klasse.
-	 */
-	public static Constants getInstance() {
-		return instance;
-	}
-
-	/**
-	 * Liefert den Namen des Packages dieser Anwendung.
-	 */
-	@Override
-	public String getApplicationPackageName() {
-		return ApplicationPackageNameMarker.class.getPackage().getName();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.sf.pswgen.base.util.ConstantsProvider#getApplicationIconFilename()
-	 */
-	@Override
-	public String getApplicationIconResourceName() {
-		return APPLICATION_ICON_RESOURCE_NAME;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.sf.pswgen.base.util.ConstantsProvider#getApplicationName()
-	 */
-	@Override
-	public String getApplicationName() {
-		return APPLICATION_NAME;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see net.sf.pswgen.base.util.ConstantsProvider#getApplicationVersion()
-	 */
-	@Override
-	public String getApplicationVersion() {
-		return APPLICATION_VERSION;
-	}
 
 }

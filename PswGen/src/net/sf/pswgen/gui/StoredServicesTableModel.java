@@ -4,7 +4,6 @@ import java.util.Collection;
 
 import javax.swing.table.AbstractTableModel;
 
-import net.sf.pswgen.base.util.Services;
 import net.sf.pswgen.model.ServiceInfo;
 
 /**
@@ -17,22 +16,21 @@ import net.sf.pswgen.model.ServiceInfo;
  */
 public class StoredServicesTableModel extends AbstractTableModel {
 
+	private static final long serialVersionUID = -8594091408631595480L;
+
 	public static final int COL_SERVICE_ABBREVIATION = 0;
 
 	public static final int COL_ADDITIONAL_INFO = 1;
 
 	public static final int COL_LOGIN_URL = 2;
 
-	private static final long serialVersionUID = -8594091408631595480L;
-
-	String[] columnNames = { Services.getInstance().getGuiText("LabelServiceAbbreviation"),
-			Services.getInstance().getGuiText("LabelAdditionalInfo"),
-			Services.getInstance().getGuiText("LabelLoginUrl") };
+	private String[] columnNames;
 
 	ServiceInfo[] services;
 
-	public StoredServicesTableModel(Collection<ServiceInfo> services) {
+	public StoredServicesTableModel(Collection<ServiceInfo> services, String[] columnNames) {
 		super();
+		this.columnNames = columnNames;
 		setData(services);
 	}
 

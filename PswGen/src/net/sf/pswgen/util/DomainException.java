@@ -1,4 +1,4 @@
-package net.sf.pswgen.base.util;
+package net.sf.pswgen.util;
 
 /**
  * <p>

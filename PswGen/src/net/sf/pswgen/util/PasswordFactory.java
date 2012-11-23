@@ -2,7 +2,6 @@ package net.sf.pswgen.util;
 
 import java.util.Random;
 
-import net.sf.pswgen.base.util.DomainException;
 
 /**
  * <p>

@@ -6,7 +6,6 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
 
-import net.sf.pswgen.base.util.DomainException;
 
 /**
  * <p>

@@ -1,4 +1,4 @@
-package net.sf.pswgen.base.util;
+package net.sf.pswgen.util;
 
 import java.awt.Image;
 import java.net.URL;
