@@ -13,6 +13,9 @@
 				<include name="*.exe" />
 				<include name="*.jar" />
 			</fileset>
+			<fileset dir="D:/Software/Git/pswgen-code/PswGen">
+				<include name="LICENSE.txt" />
+			</fileset>
 		</copy>
 	</target>
 
