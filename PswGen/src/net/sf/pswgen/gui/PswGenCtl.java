@@ -304,6 +304,20 @@ public class PswGenCtl extends BaseCtl {
 	}
 
 	/**
+	 * Öffnet die Hilfe-URL im Browser.
+	 */
+	public void actionPerformedOpenHelpInBrowser(final MFView mfView) {
+		try {
+			mfView.setWaitCursor();
+			Desktop.getDesktop().browse(new URI(Constants.HELP_URL));
+		} catch (Throwable t) {
+			handleThrowable(t);
+		} finally {
+			mfView.setDefaultCursor();
+		}
+	}
+
+	/**
 	 * Vermerkt die Einstellungen für ein Dienstekürzel und speichert die Einstellungen für alle Dienstekürzel
 	 * auf der Platte.
 	 */

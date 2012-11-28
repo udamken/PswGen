@@ -20,6 +20,7 @@ package net.sf.pswgen.gui;
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *****************************************************************************/
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -41,6 +42,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
+import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableRowSorter;
@@ -64,6 +66,9 @@ public class MFView extends BaseView {
 
 	/** Version für die Serialisierung */
 	private static final long serialVersionUID = -3013326579046715523L;
+
+	/** Farbe für Label-Elemente, deren Felder das generierte Passwort beeinflussen */
+	private static final Color COLOR_INFLUENCE = Color.BLUE;
 
 	private StoredServicesTableModel tableModelStoredServices;
 
@@ -172,6 +177,7 @@ public class MFView extends BaseView {
 		// Widgets erzeugen
 		JPanel panel = wf.getPanel("PanelPassphrase");
 		JLabel labelPassphrase = wf.getLabel("LabelPassphrase");
+		labelPassphrase.setForeground(COLOR_INFLUENCE);
 		passphrase = wf.getPasswordField("FieldPassphrase");
 		JLabel labelPassphraseRepeated = wf.getLabel("LabelPassphraseRepeated");
 		passphraseRepeated = wf.getPasswordField("FieldPassphraseRepeated");
@@ -298,6 +304,7 @@ public class MFView extends BaseView {
 		// Widgets erzeugen
 		JPanel panel = wf.getPanel("PanelEditService");
 		JLabel labelServiceAbbreviation = wf.getLabel("LabelServiceAbbreviation");
+		labelServiceAbbreviation.setForeground(COLOR_INFLUENCE);
 		serviceAbbreviation = wf.getTextField("FieldServiceAbbreviation");
 		JButton buttonLoadService = wf.getButton("ButtonLoadService");
 		buttonLoadService.addActionListener(new ActionListener() {
@@ -307,6 +314,7 @@ public class MFView extends BaseView {
 			}
 		});
 		JLabel labelAdditionalInfo = wf.getLabel("LabelAdditionalInfo");
+		labelAdditionalInfo.setForeground(COLOR_INFLUENCE);
 		additionalInfo = wf.getTextField("FieldAdditionalInfo");
 		JButton buttonRemoveService = wf.getButton("ButtonRemoveService");
 		buttonRemoveService.addActionListener(new ActionListener() {
@@ -333,30 +341,49 @@ public class MFView extends BaseView {
 				((PswGenCtl) ctl).actionPerformedCopyLoginInfo(me);
 			}
 		});
+		JButton buttonOpenHelp = wf.getButton("ButtonOpenHelp");
+		buttonOpenHelp.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				((PswGenCtl) ctl).actionPerformedOpenHelpInBrowser(me);
+			}
+		});
 		JLabel labelAdditionalLoginInfo = wf.getLabel("LabelAdditionalLoginInfo");
 		additionalLoginInfo = wf.getTextField("FieldAdditionalLoginInfo");
 		JLabel labelCount = wf.getLabel("LabelCount");
+		labelCount.setHorizontalAlignment(SwingConstants.CENTER);
+		labelCount.setForeground(COLOR_INFLUENCE);
 		JLabel labelStartIndex = wf.getLabel("LabelStartIndex");
+		labelStartIndex.setHorizontalAlignment(SwingConstants.CENTER);
+		labelStartIndex.setForeground(COLOR_INFLUENCE);
 		JLabel labelEndIndex = wf.getLabel("LabelEndIndex");
+		labelEndIndex.setHorizontalAlignment(SwingConstants.CENTER);
+		labelEndIndex.setForeground(COLOR_INFLUENCE);
 		useSmallLetters = wf.getCheckBox("CheckBoxSmallLetters");
+		useSmallLetters.setForeground(COLOR_INFLUENCE);
 		smallLettersCount = wf.getIntegerField("FieldSmallLettersCount");
 		smallLettersStartIndex = wf.getIntegerField("FieldSmallLettersStartIndex");
 		mSmallLettersEndIndex = wf.getIntegerField("FieldSmallLettersEndIndex");
 		useCapitalLetters = wf.getCheckBox("CheckBoxCapitalLetters");
+		useCapitalLetters.setForeground(COLOR_INFLUENCE);
 		capitalLettersCount = wf.getIntegerField("FieldCapitalLettersCount");
 		capitalLettersStartIndex = wf.getIntegerField("FieldCapitalLettersStartIndex");
 		capitalLettersEndIndex = wf.getIntegerField("FieldCapitalLettersEndIndex");
 		useDigits = wf.getCheckBox("CheckBoxDigits");
+		useDigits.setForeground(COLOR_INFLUENCE);
 		digitsCount = wf.getIntegerField("FieldDigitsCount");
 		digitsStartIndex = wf.getIntegerField("FieldDigitsStartIndex");
 		digitsEndIndex = wf.getIntegerField("FieldDigitsEndIndex");
 		useSpecialCharacters = wf.getCheckBox("CheckBoxSpecialCharacters");
+		useSpecialCharacters.setForeground(COLOR_INFLUENCE);
 		specialCharactersCount = wf.getIntegerField("FieldSpecialCharactersCount");
 		specialCharactersStartIndex = wf.getIntegerField("FieldSpecialCharactersStartIndex");
 		specialCharactersEndIndex = wf.getIntegerField("FieldSpecialCharactersEndIndex");
 		JLabel labelTotalCharacterCount = wf.getLabel("LabelTotalCharacterCount");
+		labelTotalCharacterCount.setForeground(COLOR_INFLUENCE);
 		totalCharacterCount = wf.getIntegerField("FieldTotalCharacterCount");
 		JButton buttonCopyPassword = wf.getButton("ButtonCopyPassword");
+		buttonCopyPassword.setForeground(COLOR_INFLUENCE);
 		buttonCopyPassword.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -366,6 +393,7 @@ public class MFView extends BaseView {
 		JLabel labelPassword = wf.getLabel("LabelPassword");
 		password = wf.getPasswordField("FieldPassword");
 		JButton buttonDisplayPassword = wf.getButton("ButtonDisplayPassword");
+		buttonDisplayPassword.setForeground(COLOR_INFLUENCE);
 		buttonDisplayPassword.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -405,6 +433,7 @@ public class MFView extends BaseView {
 		row++;
 		panel.add(labelAdditionalLoginInfo, gbcf.getConstraints(0, row));
 		panel.add(additionalLoginInfo, gbcf.getConstraints(GridBagConstraints.RELATIVE, row, 4, 1));
+		panel.add(buttonOpenHelp, gbcf.getConstraints(5, row));
 		// Widgets zufügen, nächste Zeile
 		row++;
 		panel.add(labelCount, gbcf.getConstraints(1, row));
