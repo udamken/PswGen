@@ -318,6 +318,23 @@ public class PswGenCtl extends BaseCtl {
 	}
 
 	/**
+	 * Öffnet den About-Dialog.
+	 */
+	public void actionPerformedOpenAbout(@SuppressWarnings("unused")
+	final MFView mfView) {
+		try {
+			AboutView aboutView = new AboutView(this);
+			addView(aboutView);
+			aboutView.pack();
+			aboutView.setVisible(true);
+		} catch (Throwable t) {
+			handleThrowable(t);
+		} finally {
+			// mfView.setDefaultCursor();
+		}
+	}
+
+	/**
 	 * Vermerkt die Einstellungen für ein Dienstekürzel und speichert die Einstellungen für alle Dienstekürzel
 	 * auf der Platte.
 	 */
@@ -487,7 +504,7 @@ public class PswGenCtl extends BaseCtl {
 		MFView mfView = new MFView(this);
 		mfView.setTitle(servicesFile.getAbsolutePath() + " - " + Constants.APPLICATION_NAME + " "
 				+ Constants.APPLICATION_VERSION);
-		addView(mfView); // dem Controller mitteilen
+		addView(mfView);
 		mfView.pack();
 		mfView.setVisible(true);
 	}

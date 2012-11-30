@@ -38,7 +38,7 @@ public class Constants {
 	public static final String APPLICATION_NAME = "PswGen";
 
 	/** Die Version dieser Anwendung */
-	public static final String APPLICATION_VERSION = "1.5.5";
+	public static final String APPLICATION_VERSION = "1.5.6";
 
 	/** Die URL zur Hilfe */
 	public static final String HELP_URL = "http://sourceforge.net/p/pswgen/wiki/Home/";
@@ -48,7 +48,10 @@ public class Constants {
 			.getName();
 
 	/** Resource Name des Icons der Anwendung */
-	public static final String APPLICATION_ICON_RESOURCE_NAME = "net/sf/pswgen/PswGen.png";
+	public static final String APPLICATION_IMAGE_RESOURCE_NAME = "net/sf/pswgen/PswGen.png";
+
+	/** Resource Name des Images für den About-Dialog */
+	public static final String ABOUT_IMAGE_RESOURCE_NAME = "net/sf/pswgen/PswGenSplash.png";
 
 	/** Nummern der anwendungsspezifischen Meldungen, Texte dazu in Messages.properties */
 

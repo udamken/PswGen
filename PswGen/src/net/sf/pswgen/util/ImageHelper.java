@@ -58,15 +58,22 @@ public class ImageHelper {
 	}
 
 	/**
+	 * Liefert ein Icon, welches ggf. zuvor geladen wird.
+	 */
+	public ImageIcon getImageIcon(String imageResourceName) {
+		URL imageUrl = getClass().getClassLoader().getResource(imageResourceName);
+		if (imageUrl == null) {
+			throw new MissingResourceException("Image '" + imageResourceName + "' not found",
+					ImageIcon.class.getName(), imageResourceName);
+		}
+		return new ImageIcon(imageUrl);
+	}
+
+	/**
 	 * Liefert ein Icon als Image, welches ggf. zuvor geladen wird.
 	 */
-	public Image getIconImage(String iconImageResourceName) {
-		URL imageUrl = getClass().getClassLoader().getResource(iconImageResourceName);
-		if (imageUrl == null) {
-			throw new MissingResourceException("IconImage '" + iconImageResourceName + "' not found",
-					ImageIcon.class.getName(), iconImageResourceName);
-		}
-		return (new ImageIcon(imageUrl)).getImage();
+	public Image getImage(String imageResourceName) {
+		return getImageIcon(imageResourceName).getImage();
 	}
 
 }

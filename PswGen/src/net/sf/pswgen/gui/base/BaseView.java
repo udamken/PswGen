@@ -74,8 +74,8 @@ public abstract class BaseView extends JFrame {
 		});
 		setResizable(true);
 		setComponentOrientation(java.awt.ComponentOrientation.LEFT_TO_RIGHT);
-		setIconImage(ImageHelper.getInstance().getIconImage(Constants.APPLICATION_ICON_RESOURCE_NAME));
-		setTitle(Constants.APPLICATION_NAME);
+		setIconImage(ImageHelper.getInstance().getImage(Constants.APPLICATION_IMAGE_RESOURCE_NAME));
+		setTitle(Constants.APPLICATION_NAME + " " + Constants.APPLICATION_VERSION);
 		setContentPane(createContentPane());
 	}
 

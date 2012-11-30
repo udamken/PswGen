@@ -341,6 +341,8 @@ public class MFView extends BaseView {
 				((PswGenCtl) ctl).actionPerformedCopyLoginInfo(me);
 			}
 		});
+		JLabel labelAdditionalLoginInfo = wf.getLabel("LabelAdditionalLoginInfo");
+		additionalLoginInfo = wf.getTextField("FieldAdditionalLoginInfo");
 		JButton buttonOpenHelp = wf.getButton("ButtonOpenHelp");
 		buttonOpenHelp.addActionListener(new ActionListener() {
 			@Override
@@ -348,8 +350,13 @@ public class MFView extends BaseView {
 				((PswGenCtl) ctl).actionPerformedOpenHelpInBrowser(me);
 			}
 		});
-		JLabel labelAdditionalLoginInfo = wf.getLabel("LabelAdditionalLoginInfo");
-		additionalLoginInfo = wf.getTextField("FieldAdditionalLoginInfo");
+		JButton buttonOpenAbout = wf.getButton("ButtonOpenAbout");
+		buttonOpenAbout.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				((PswGenCtl) ctl).actionPerformedOpenAbout(me);
+			}
+		});
 		JLabel labelCount = wf.getLabel("LabelCount");
 		labelCount.setHorizontalAlignment(SwingConstants.CENTER);
 		labelCount.setForeground(COLOR_INFLUENCE);
@@ -453,6 +460,7 @@ public class MFView extends BaseView {
 		panel.add(capitalLettersCount, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 1, 1));
 		panel.add(capitalLettersStartIndex, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 1, 1));
 		panel.add(capitalLettersEndIndex, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 1, 1));
+		panel.add(buttonOpenAbout, gbcf.getLabelConstraints(5, row));
 		// Widgets zufügen, nächste Zeile
 		row++;
 		panel.add(useDigits, gbcf.getLabelConstraints(0, row));
