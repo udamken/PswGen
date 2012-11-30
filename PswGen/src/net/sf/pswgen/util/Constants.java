@@ -38,7 +38,7 @@ public class Constants {
 	public static final String APPLICATION_NAME = "PswGen";
 
 	/** Die Version dieser Anwendung */
-	public static final String APPLICATION_VERSION = "1.5.4";
+	public static final String APPLICATION_VERSION = "1.5.5";
 
 	/** Die URL zur Hilfe */
 	public static final String HELP_URL = "http://sourceforge.net/p/pswgen/wiki/Home/";
