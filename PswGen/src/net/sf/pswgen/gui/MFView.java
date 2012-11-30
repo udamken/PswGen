@@ -140,7 +140,6 @@ public class MFView extends BaseView {
 	 */
 	public MFView(BaseCtl ctl) {
 		super(ctl);
-		this.setResizable(false);
 	}
 
 	/**
@@ -161,9 +160,9 @@ public class MFView extends BaseView {
 		WidgetFactory wf = WidgetFactory.getInstance();
 		// Widgets erzeugen
 		JPanel panel = wf.getContentPane("MainFrame");
-		panel.add(createPanelPassphrase(), gbcf.getConstraints(0, 0));
-		panel.add(createPanelStoredServices(), gbcf.getConstraints(0, 1));
-		panel.add(createPanelEditService(), gbcf.getConstraints(0, 2));
+		panel.add(createPanelPassphrase(), gbcf.getLabelConstraints(0, 0));
+		panel.add(createPanelStoredServices(), gbcf.getTableConstraints(0, 1, 1, 1));
+		panel.add(createPanelEditService(), gbcf.getLabelConstraints(0, 2));
 		return panel;
 	}
 
@@ -195,11 +194,11 @@ public class MFView extends BaseView {
 			}
 		});
 		// Widgets zufügen, Zeile 0
-		panel.add(labelPassphrase, gbcf.getConstraints(0, 0));
-		panel.add(passphrase, gbcf.getConstraints(GridBagConstraints.RELATIVE, 0));
+		panel.add(labelPassphrase, gbcf.getLabelConstraints(0, 0));
+		panel.add(passphrase, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, 0, 1, 1));
 		// Widgets zufügen, Zeile 1
-		panel.add(labelPassphraseRepeated, gbcf.getConstraints(0, 1));
-		panel.add(passphraseRepeated, gbcf.getConstraints(GridBagConstraints.RELATIVE, 1));
+		panel.add(labelPassphraseRepeated, gbcf.getLabelConstraints(0, 1));
+		panel.add(passphraseRepeated, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, 1, 1, 1));
 		// Panel zurückgeben
 		return panel;
 	}
@@ -286,10 +285,11 @@ public class MFView extends BaseView {
 		// tableStoredServices.setFillsViewportHeight(true);
 		// Widgets zufügen, erste Zeile
 		int row = 0;
-		panel.add(mServiceAbbreviationFilter, gbcf.getConstraints(GridBagConstraints.RELATIVE, row, 4, 1));
+		panel.add(mServiceAbbreviationFilter,
+				gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 4, 1));
 		// Widgets zufügen, nächste Zeile
 		row++;
-		panel.add(scrollableTableStoredServices, gbcf.getConstraints(0, row));
+		panel.add(scrollableTableStoredServices, gbcf.getTableConstraints(0, row, 1, 1));
 		// Panel zurückgeben
 		return panel;
 	}
@@ -411,75 +411,76 @@ public class MFView extends BaseView {
 		});
 		// Widgets zufügen, erste Zeile
 		int row = 0;
-		panel.add(labelServiceAbbreviation, gbcf.getConstraints(0, row));
-		panel.add(serviceAbbreviation, gbcf.getConstraints(GridBagConstraints.RELATIVE, row, 4, 1));
-		panel.add(buttonLoadService, gbcf.getConstraints(5, row));
+		panel.add(labelServiceAbbreviation, gbcf.getLabelConstraints(0, row));
+		panel.add(serviceAbbreviation, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 4, 1));
+		panel.add(buttonLoadService, gbcf.getLabelConstraints(5, row));
 		// Widgets zufügen, nächste Zeile
 		row++;
-		panel.add(labelAdditionalInfo, gbcf.getConstraints(0, row));
-		panel.add(additionalInfo, gbcf.getConstraints(GridBagConstraints.RELATIVE, row, 4, 1));
-		panel.add(buttonRemoveService, gbcf.getConstraints(5, row));
+		panel.add(labelAdditionalInfo, gbcf.getLabelConstraints(0, row));
+		panel.add(additionalInfo, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 4, 1));
+		panel.add(buttonRemoveService, gbcf.getLabelConstraints(5, row));
 		// Widgets zufügen, nächste Zeile
 		row++;
-		panel.add(labelLoginUrl, gbcf.getConstraints(0, row));
-		panel.add(loginUrl, gbcf.getConstraints(GridBagConstraints.RELATIVE, row, 4, 1));
-		panel.add(buttonOpenUrl, gbcf.getConstraints(5, row));
+		panel.add(labelLoginUrl, gbcf.getLabelConstraints(0, row));
+		panel.add(loginUrl, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 4, 1));
+		panel.add(buttonOpenUrl, gbcf.getLabelConstraints(5, row));
 		// Widgets zufügen, nächste Zeile
 		row++;
-		panel.add(labelLoginInfo, gbcf.getConstraints(0, row));
-		panel.add(loginInfo, gbcf.getConstraints(GridBagConstraints.RELATIVE, row, 4, 1));
-		panel.add(buttonCopyLoginInfo, gbcf.getConstraints(5, row));
+		panel.add(labelLoginInfo, gbcf.getLabelConstraints(0, row));
+		panel.add(loginInfo, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 4, 1));
+		panel.add(buttonCopyLoginInfo, gbcf.getLabelConstraints(5, row));
 		// Widgets zufügen, nächste Zeile
 		row++;
-		panel.add(labelAdditionalLoginInfo, gbcf.getConstraints(0, row));
-		panel.add(additionalLoginInfo, gbcf.getConstraints(GridBagConstraints.RELATIVE, row, 4, 1));
-		panel.add(buttonOpenHelp, gbcf.getConstraints(5, row));
+		panel.add(labelAdditionalLoginInfo, gbcf.getLabelConstraints(0, row));
+		panel.add(additionalLoginInfo, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 4, 1));
+		panel.add(buttonOpenHelp, gbcf.getLabelConstraints(5, row));
 		// Widgets zufügen, nächste Zeile
 		row++;
-		panel.add(labelCount, gbcf.getConstraints(1, row));
-		panel.add(labelStartIndex, gbcf.getConstraints(GridBagConstraints.RELATIVE, row));
-		panel.add(labelEndIndex, gbcf.getConstraints(GridBagConstraints.RELATIVE, row));
+		panel.add(labelCount, gbcf.getLabelConstraints(1, row));
+		panel.add(labelStartIndex, gbcf.getLabelConstraints(GridBagConstraints.RELATIVE, row));
+		panel.add(labelEndIndex, gbcf.getLabelConstraints(GridBagConstraints.RELATIVE, row));
 		// Leerzeile zufügen, nächste Zeile
 		row++;
 		// Widgets zufügen, nächste Zeile
 		row++;
-		panel.add(useSmallLetters, gbcf.getConstraints(0, row));
-		panel.add(smallLettersCount, gbcf.getConstraints(GridBagConstraints.RELATIVE, row));
-		panel.add(smallLettersStartIndex, gbcf.getConstraints(GridBagConstraints.RELATIVE, row));
-		panel.add(mSmallLettersEndIndex, gbcf.getConstraints(GridBagConstraints.RELATIVE, row));
+		panel.add(useSmallLetters, gbcf.getLabelConstraints(0, row));
+		panel.add(smallLettersCount, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 1, 1));
+		panel.add(smallLettersStartIndex, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 1, 1));
+		panel.add(mSmallLettersEndIndex, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 1, 1));
 		// Widgets zufügen, nächste Zeile
 		row++;
-		panel.add(useCapitalLetters, gbcf.getConstraints(0, row));
-		panel.add(capitalLettersCount, gbcf.getConstraints(GridBagConstraints.RELATIVE, row));
-		panel.add(capitalLettersStartIndex, gbcf.getConstraints(GridBagConstraints.RELATIVE, row));
-		panel.add(capitalLettersEndIndex, gbcf.getConstraints(GridBagConstraints.RELATIVE, row));
+		panel.add(useCapitalLetters, gbcf.getLabelConstraints(0, row));
+		panel.add(capitalLettersCount, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 1, 1));
+		panel.add(capitalLettersStartIndex, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 1, 1));
+		panel.add(capitalLettersEndIndex, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 1, 1));
 		// Widgets zufügen, nächste Zeile
 		row++;
-		panel.add(useDigits, gbcf.getConstraints(0, row));
-		panel.add(digitsCount, gbcf.getConstraints(GridBagConstraints.RELATIVE, row));
-		panel.add(digitsStartIndex, gbcf.getConstraints(GridBagConstraints.RELATIVE, row));
-		panel.add(digitsEndIndex, gbcf.getConstraints(GridBagConstraints.RELATIVE, row));
+		panel.add(useDigits, gbcf.getLabelConstraints(0, row));
+		panel.add(digitsCount, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 1, 1));
+		panel.add(digitsStartIndex, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 1, 1));
+		panel.add(digitsEndIndex, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 1, 1));
 		// Widgets zufügen, nächste Zeile
 		row++;
-		panel.add(useSpecialCharacters, gbcf.getConstraints(0, row));
-		panel.add(specialCharactersCount, gbcf.getConstraints(GridBagConstraints.RELATIVE, row));
-		panel.add(specialCharactersStartIndex, gbcf.getConstraints(GridBagConstraints.RELATIVE, row));
-		panel.add(specialCharactersEndIndex, gbcf.getConstraints(GridBagConstraints.RELATIVE, row));
+		panel.add(useSpecialCharacters, gbcf.getLabelConstraints(0, row));
+		panel.add(specialCharactersCount, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 1, 1));
+		panel.add(specialCharactersStartIndex,
+				gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 1, 1));
+		panel.add(specialCharactersEndIndex, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 1, 1));
 		// Widgets zufügen, nächste Zeile
 		row++;
-		panel.add(labelTotalCharacterCount, gbcf.getConstraints(0, row));
-		panel.add(totalCharacterCount, gbcf.getConstraints(GridBagConstraints.RELATIVE, row));
-		panel.add(buttonCopyPassword, gbcf.getConstraints(5, row));
+		panel.add(labelTotalCharacterCount, gbcf.getLabelConstraints(0, row));
+		panel.add(totalCharacterCount, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 1, 1));
+		panel.add(buttonCopyPassword, gbcf.getLabelConstraints(5, row));
 		// Widgets zufügen, nächste Zeile
 		row++;
-		panel.add(labelPassword, gbcf.getConstraints(0, row));
-		panel.add(password, gbcf.getConstraints(GridBagConstraints.RELATIVE, row, 4, 1));
-		panel.add(buttonDisplayPassword, gbcf.getConstraints(5, row));
+		panel.add(labelPassword, gbcf.getLabelConstraints(0, row));
+		panel.add(password, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 4, 1));
+		panel.add(buttonDisplayPassword, gbcf.getLabelConstraints(5, row));
 		// Widgets zufügen, nächste Zeile
 		row++;
-		panel.add(labelPasswordRepeated, gbcf.getConstraints(0, row));
-		panel.add(passwordRepeated, gbcf.getConstraints(GridBagConstraints.RELATIVE, row, 4, 1));
-		panel.add(buttonStoreService, gbcf.getConstraints(5, row));
+		panel.add(labelPasswordRepeated, gbcf.getLabelConstraints(0, row));
+		panel.add(passwordRepeated, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 4, 1));
+		panel.add(buttonStoreService, gbcf.getLabelConstraints(5, row));
 		// Panel zurückgeben
 		return panel;
 	}

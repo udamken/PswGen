@@ -50,7 +50,7 @@ public class GridBagConstraintsFactory {
 	/**
 	 * Liefert ein GridBagConstraint mit den Defaults für meine Anwendungen.
 	 */
-	public GridBagConstraints getConstraints() {
+	private GridBagConstraints getConstraints() {
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.anchor = GridBagConstraints.LINE_START;
 		gbc.fill = GridBagConstraints.BOTH;
@@ -58,23 +58,46 @@ public class GridBagConstraintsFactory {
 	}
 
 	/**
-	 * Liefert ein GridBagConstraint mit gridx und gridy.
+	 * Liefert ein GridBagConstraint mit gridx und gridy mit einer geringen x- und y-Gewichtung. Dies wird
+	 * typischerweise für Labels und Buttons verwendet, die sich weniger ausdehnen sollen als Felder und
+	 * Tabellen.
 	 */
-	public GridBagConstraints getConstraints(final int gridx, final int gridy) {
+	public GridBagConstraints getLabelConstraints(final int gridx, final int gridy) {
 		GridBagConstraints gbc = getConstraints();
 		gbc.gridx = gridx;
 		gbc.gridy = gridy;
+		gbc.weightx = 0.1;
+		gbc.weighty = 0.0;
 		return gbc;
 	}
 
 	/**
-	 * Liefert ein GridBagConstraint mit gridx, gridy, gridwidth und gridheight.
+	 * Liefert ein GridBagConstraint mit gridx, gridy, gridwidth und gridheight mit einer mittleren x- und
+	 * y-Gewichtung. Dies wird typischerweise für Felder verwendet, die sich in der Breite mehr als Labels und
+	 * in der Höhe weniger als Tabellen ausdehnen sollen.
 	 */
-	public GridBagConstraints getConstraints(final int gridx, final int gridy, final int gridwidth,
+	public GridBagConstraints getFieldConstraints(final int gridx, final int gridy, final int gridwidth,
 			final int gridheight) {
-		GridBagConstraints gbc = getConstraints(gridx, gridy);
+		GridBagConstraints gbc = getLabelConstraints(gridx, gridy);
 		gbc.gridwidth = gridwidth;
 		gbc.gridheight = gridheight;
+		gbc.weightx = 0.5;
+		gbc.weighty = 0.0;
+		return gbc;
+	}
+
+	/**
+	 * Liefert ein GridBagConstraint mit gridx, gridy, gridwidth und gridheight mit einer mittleren x- und
+	 * hohen y-Gewichtung. Dies wird typischerweise für Tabellen verwendet, die sich in der Breite wie Felder
+	 * und in der Höhe am meisten von allen Komponenten ausdehnen sollen.
+	 */
+	public GridBagConstraints getTableConstraints(final int gridx, final int gridy, final int gridwidth,
+			final int gridheight) {
+		GridBagConstraints gbc = getLabelConstraints(gridx, gridy);
+		gbc.gridwidth = gridwidth;
+		gbc.gridheight = gridheight;
+		gbc.weightx = 0.5;
+		gbc.weighty = 1.0;
 		return gbc;
 	}
 
