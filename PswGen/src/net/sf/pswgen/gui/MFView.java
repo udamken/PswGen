@@ -26,6 +26,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Comparator;
@@ -75,6 +77,8 @@ public class MFView extends BaseView {
 	private JPasswordField passphrase;
 
 	private JPasswordField passphraseRepeated;
+
+	private JCheckBox makePassphraseVisible;
 
 	private JTextField mServiceAbbreviationFilter;
 
@@ -129,6 +133,8 @@ public class MFView extends BaseView {
 	private JPasswordField password;
 
 	private JPasswordField passwordRepeated;
+
+	private JCheckBox makePasswordVisible;
 
 	/** Hey, it's me ... für die Listener */
 	private MFView me = this;
@@ -193,12 +199,32 @@ public class MFView extends BaseView {
 			public void focusGained(FocusEvent arg0) {
 			}
 		});
-		// Widgets zufügen, Zeile 0
-		panel.add(labelPassphrase, gbcf.getLabelConstraints(0, 0));
-		panel.add(passphrase, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, 0, 1, 1));
-		// Widgets zufügen, Zeile 1
-		panel.add(labelPassphraseRepeated, gbcf.getLabelConstraints(0, 1));
-		panel.add(passphraseRepeated, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, 1, 1, 1));
+		makePassphraseVisible = wf.getCheckBox("CheckBoxMakePassphraseVisible");
+		makePassphraseVisible.addItemListener(new ItemListener() {
+
+			@Override
+			public void itemStateChanged(ItemEvent arg0) {
+				if (makePassphraseVisible.isSelected()) {
+					passphrase.setEchoChar((char) 0);
+					passphraseRepeated.setEchoChar((char) 0);
+				} else {
+					passphrase.setEchoChar('*');
+					passphraseRepeated.setEchoChar('*');
+				}
+			}
+
+		});
+		// Widgets zufügen, erste Zeile
+		int row = 0;
+		panel.add(labelPassphrase, gbcf.getLabelConstraints(0, row));
+		panel.add(passphrase, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 1, 1));
+		// Widgets zufügen, nächste Zeile
+		row++;
+		panel.add(labelPassphraseRepeated, gbcf.getLabelConstraints(0, row));
+		panel.add(passphraseRepeated, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 1, 1));
+		// Widgets zufügen, nächste Zeile
+		row++;
+		panel.add(makePassphraseVisible, gbcf.getLabelConstraints(1, row));
 		// Panel zurückgeben
 		return panel;
 	}
@@ -409,6 +435,21 @@ public class MFView extends BaseView {
 		});
 		JLabel labelPasswordRepeated = wf.getLabel("LabelPasswordRepeated");
 		passwordRepeated = wf.getPasswordField("FieldPasswordRepeated");
+		makePasswordVisible = wf.getCheckBox("CheckBoxMakePasswordVisible");
+		makePasswordVisible.addItemListener(new ItemListener() {
+
+			@Override
+			public void itemStateChanged(ItemEvent arg0) {
+				if (makePasswordVisible.isSelected()) {
+					password.setEchoChar((char) 0);
+					passwordRepeated.setEchoChar((char) 0);
+				} else {
+					password.setEchoChar('*');
+					passwordRepeated.setEchoChar('*');
+				}
+			}
+
+		});
 		JButton buttonStoreService = wf.getButton("ButtonStoreService");
 		buttonStoreService.addActionListener(new ActionListener() {
 			@Override
@@ -489,6 +530,9 @@ public class MFView extends BaseView {
 		panel.add(labelPasswordRepeated, gbcf.getLabelConstraints(0, row));
 		panel.add(passwordRepeated, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 4, 1));
 		panel.add(buttonStoreService, gbcf.getLabelConstraints(5, row));
+		// Widgets zufügen, nächste Zeile
+		row++;
+		panel.add(makePasswordVisible, gbcf.getLabelConstraints(1, row));
 		// Panel zurückgeben
 		return panel;
 	}
