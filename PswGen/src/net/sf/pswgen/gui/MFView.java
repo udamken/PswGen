@@ -224,7 +224,7 @@ public class MFView extends BaseView {
 		panel.add(passphraseRepeated, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 1, 1));
 		// Widgets zufügen, nächste Zeile
 		row++;
-		panel.add(makePassphraseVisible, gbcf.getLabelConstraints(1, row));
+		panel.add(makePassphraseVisible, gbcf.getFieldConstraints(1, row, 1, 1));
 		// Panel zurückgeben
 		return panel;
 	}
@@ -532,7 +532,7 @@ public class MFView extends BaseView {
 		panel.add(buttonStoreService, gbcf.getLabelConstraints(5, row));
 		// Widgets zufügen, nächste Zeile
 		row++;
-		panel.add(makePasswordVisible, gbcf.getLabelConstraints(1, row));
+		panel.add(makePasswordVisible, gbcf.getFieldConstraints(1, row, 4, 1));
 		// Panel zurückgeben
 		return panel;
 	}
