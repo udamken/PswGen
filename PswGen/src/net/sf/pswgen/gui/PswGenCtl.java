@@ -465,7 +465,7 @@ public class PswGenCtl extends BaseCtl {
 		try {
 			mfView.setWaitCursor();
 			final String psw = validatedOrGeneratePassword(mfView);
-			JOptionPane.showMessageDialog(mfView, "Das generierte Passwort ist \"" + psw + "\"",
+			JOptionPane.showMessageDialog(mfView, getGuiText("DisplayPasswordMsg") + " \"" + psw + "\"",
 					Constants.APPLICATION_NAME, JOptionPane.PLAIN_MESSAGE);
 		} catch (Throwable t) {
 			handleThrowable(t);
