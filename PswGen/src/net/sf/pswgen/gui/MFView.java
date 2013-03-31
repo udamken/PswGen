@@ -78,8 +78,6 @@ public class MFView extends BaseView {
 
 	private JPasswordField passphraseRepeated;
 
-	private JCheckBox makePassphraseVisible;
-
 	private JTextField mServiceAbbreviationFilter;
 
 	private JTable mTableStoredServices;
@@ -199,21 +197,6 @@ public class MFView extends BaseView {
 			public void focusGained(FocusEvent arg0) {
 			}
 		});
-		makePassphraseVisible = wf.getCheckBox("CheckBoxMakePassphraseVisible");
-		makePassphraseVisible.addItemListener(new ItemListener() {
-
-			@Override
-			public void itemStateChanged(ItemEvent arg0) {
-				if (makePassphraseVisible.isSelected()) {
-					passphrase.setEchoChar((char) 0);
-					passphraseRepeated.setEchoChar((char) 0);
-				} else {
-					passphrase.setEchoChar('*');
-					passphraseRepeated.setEchoChar('*');
-				}
-			}
-
-		});
 		// Widgets zufügen, erste Zeile
 		int row = 0;
 		panel.add(labelPassphrase, gbcf.getLabelConstraints(0, row));
@@ -222,9 +205,6 @@ public class MFView extends BaseView {
 		row++;
 		panel.add(labelPassphraseRepeated, gbcf.getLabelConstraints(0, row));
 		panel.add(passphraseRepeated, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 1, 1));
-		// Widgets zufügen, nächste Zeile
-		row++;
-		panel.add(makePassphraseVisible, gbcf.getFieldConstraints(1, row, 1, 1));
 		// Panel zurückgeben
 		return panel;
 	}
