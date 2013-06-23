@@ -70,7 +70,7 @@ public class PswGenCtl extends BaseCtl {
 	/**
 	 * Eingabewerte der Passphrase prüfen.
 	 */
-	private void validatePassphrase(final MFView mfView) {
+	private void validatePassphrase(final MainView mfView) {
 		final String passphrase = mfView.getPassphrase();
 		final String passphraseRepeated = mfView.getPassphraseRepeated();
 		if (!passphrase.equals(passphraseRepeated)) { // Mismatch?
@@ -85,7 +85,7 @@ public class PswGenCtl extends BaseCtl {
 	 * Überprüft die Passphrase beim Verlassen des Kontrolleingabefeldes und liefert bei korrekter Eingabe
 	 * true.
 	 */
-	public boolean focusLostValidatePassphrase(final MFView mfView) {
+	public boolean focusLostValidatePassphrase(final MainView mfView) {
 		try {
 			mfView.setWaitCursor();
 			validatePassphrase(mfView);
@@ -103,7 +103,7 @@ public class PswGenCtl extends BaseCtl {
 	 * wiederholte Passwort eingegeben wurden, müssen sie übereinstimmen, sonst wird eine Exception geworfen,
 	 * die zu einer Fehlermeldung führt. Eine Eingabe hat also in jedem Fall Vorrang vor der Generierung.
 	 */
-	private String validatedOrGeneratePassword(final MFView mfView) {
+	private String validatedOrGeneratePassword(final MainView mfView) {
 		String password = mfView.getPassword();
 		final String passwordRepeated = mfView.getPasswordRepeated();
 		if (password.length() == 0 && passwordRepeated.length() == 0) { // Beide leer? => generieren
@@ -163,7 +163,7 @@ public class PswGenCtl extends BaseCtl {
 	/**
 	 * Lädt die Einstellungen für ein Dienstekürzel.
 	 */
-	public void actionPerformedLoadService(final MFView mfView) {
+	public void actionPerformedLoadService(final MainView mfView) {
 		try {
 			mfView.setWaitCursor();
 			loadService(mfView);
@@ -177,7 +177,7 @@ public class PswGenCtl extends BaseCtl {
 	/**
 	 * Lädt die Einstellungen für ein Dienstekürzel.
 	 */
-	private void loadService(final MFView mfView) {
+	private void loadService(final MainView mfView) {
 		validatePassphrase(mfView); // benötigt zum Entschlüssen von LoginInfo
 		String serviceAbbreviation = mfView.getServiceAbbreviation();
 		validateServiceAbbreviation(serviceAbbreviation);
@@ -225,7 +225,7 @@ public class PswGenCtl extends BaseCtl {
 	/**
 	 * Aus der Liste neu ausgewählten Dienst laden.
 	 */
-	public void valueChangedLoadServiceFromList(final MFView mfView, final String serviceAbbreviation) {
+	public void valueChangedLoadServiceFromList(final MainView mfView, final String serviceAbbreviation) {
 		try {
 			mfView.setWaitCursor();
 			mfView.setServiceAbbreviation(serviceAbbreviation);
@@ -241,7 +241,7 @@ public class PswGenCtl extends BaseCtl {
 	 * Löscht die Einstellungen für ein Dienstekürzel und speichert die Einstellungen für alle Dienstekürzel
 	 * auf der Platte.
 	 */
-	public void actionPerformedRemoveService(final MFView mfView) {
+	public void actionPerformedRemoveService(final MainView mfView) {
 		try {
 			mfView.setWaitCursor();
 			String serviceAbbreviation = mfView.getServiceAbbreviation();
@@ -267,7 +267,7 @@ public class PswGenCtl extends BaseCtl {
 	/**
 	 * Öffnet die Login-URL im Browser und kopiert die Login-Informationen in die Zwischenablage.
 	 */
-	public void actionPerformedOpenUrlInBrowser(final MFView mfView) {
+	public void actionPerformedOpenUrlInBrowser(final MainView mfView) {
 		try {
 			mfView.setWaitCursor();
 			final String loginUrl = mfView.getLoginUrl();
@@ -283,7 +283,7 @@ public class PswGenCtl extends BaseCtl {
 	/**
 	 * Kopiert die Login-Informationen in die Zwischenablage.
 	 */
-	public void actionPerformedCopyLoginInfo(final MFView mfView) {
+	public void actionPerformedCopyLoginInfo(final MainView mfView) {
 		try {
 			mfView.setWaitCursor();
 			copyLoginInfo(mfView);
@@ -297,7 +297,7 @@ public class PswGenCtl extends BaseCtl {
 	/**
 	 * Kopiert die Login-Informationen in die Zwischenablage.
 	 */
-	private void copyLoginInfo(final MFView mfView) {
+	private void copyLoginInfo(final MainView mfView) {
 		final String loginInfo = mfView.getLoginInfo();
 		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 		clipboard.setContents(new StringSelection(loginInfo), null);
@@ -306,7 +306,7 @@ public class PswGenCtl extends BaseCtl {
 	/**
 	 * Öffnet die Hilfe-URL im Browser.
 	 */
-	public void actionPerformedOpenHelpInBrowser(final MFView mfView) {
+	public void actionPerformedOpenHelpInBrowser(final MainView mfView) {
 		try {
 			mfView.setWaitCursor();
 			Desktop.getDesktop().browse(new URI(Constants.HELP_URL));
@@ -321,7 +321,7 @@ public class PswGenCtl extends BaseCtl {
 	 * Öffnet den About-Dialog.
 	 */
 	public void actionPerformedOpenAbout(@SuppressWarnings("unused")
-	final MFView mfView) {
+	final MainView mfView) {
 		try {
 			AboutView aboutView = new AboutView(this);
 			addView(aboutView);
@@ -338,7 +338,7 @@ public class PswGenCtl extends BaseCtl {
 	 * Vermerkt die Einstellungen für ein Dienstekürzel und speichert die Einstellungen für alle Dienstekürzel
 	 * auf der Platte.
 	 */
-	public void actionPerformedStoreService(final MFView mfView) {
+	public void actionPerformedStoreService(final MainView mfView) {
 		try {
 			mfView.setWaitCursor();
 			String serviceAbbreviation = mfView.getServiceAbbreviation();
@@ -400,7 +400,7 @@ public class PswGenCtl extends BaseCtl {
 	/**
 	 * Generiert ein Passwort und gibt es zurück.
 	 */
-	private String generatePassword(final MFView mfView) {
+	private String generatePassword(final MainView mfView) {
 		mfView.setWaitCursor();
 		String characters = ""; // Zeichen für den Rest des Passworts
 		validatePassphrase(mfView);
@@ -461,7 +461,7 @@ public class PswGenCtl extends BaseCtl {
 	/**
 	 * Generieren das Passwort und zeigt es an.
 	 */
-	public void actionPerformedDisplayPassword(final MFView mfView) {
+	public void actionPerformedDisplayPassword(final MainView mfView) {
 		try {
 			mfView.setWaitCursor();
 			final String psw = validatedOrGeneratePassword(mfView);
@@ -477,7 +477,7 @@ public class PswGenCtl extends BaseCtl {
 	/**
 	 * Generiert das Passwort und kopiert es in die Zwischenablage.
 	 */
-	public void actionPerformedCopyPassword(final MFView mfView) {
+	public void actionPerformedCopyPassword(final MainView mfView) {
 		try {
 			mfView.setWaitCursor();
 			final String psw = validatedOrGeneratePassword(mfView);
@@ -501,7 +501,7 @@ public class PswGenCtl extends BaseCtl {
 		super();
 		servicesFile = new File(givenServicesFilename);
 		loadServiceInfoList();
-		MFView mfView = new MFView(this);
+		MainView mfView = new MainView(this);
 		mfView.setTitle(servicesFile.getAbsolutePath() + " - " + Constants.APPLICATION_NAME + " "
 				+ Constants.APPLICATION_VERSION);
 		addView(mfView);

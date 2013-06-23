@@ -64,7 +64,7 @@ import net.sf.pswgen.model.ServiceInfo;
  * (c) 2005-2012, by Uwe Damken
  * </p>
  */
-public class MFView extends BaseView {
+public class MainView extends BaseView {
 
 	/** Version für die Serialisierung */
 	private static final long serialVersionUID = -3013326579046715523L;
@@ -135,14 +135,14 @@ public class MFView extends BaseView {
 	private JCheckBox makePasswordVisible;
 
 	/** Hey, it's me ... für die Listener */
-	private MFView me = this;
+	private MainView me = this;
 
 	private JScrollPane scrollableTableStoredServices;
 
 	/**
 	 * Konstruiert diese View mit einer Referenz auf den zugehörigen Controller.
 	 */
-	public MFView(BaseCtl ctl) {
+	public MainView(BaseCtl ctl) {
 		super(ctl);
 	}
 
