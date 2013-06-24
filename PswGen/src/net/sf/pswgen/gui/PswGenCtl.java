@@ -28,6 +28,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.net.URI;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -277,7 +278,11 @@ public class PswGenCtl extends BaseCtl {
 	public void actionPerformedOpenHelpInBrowser(final MainView mainView) {
 		try {
 			mainView.setWaitCursor();
-			Desktop.getDesktop().browse(new URI(Constants.HELP_URL));
+			String url = Constants.HELP_URL_EN;
+			if (Locale.getDefault().getLanguage().equalsIgnoreCase("de")) {
+				url = Constants.HELP_URL_DE;
+			}
+			Desktop.getDesktop().browse(new URI(url));
 		} catch (Throwable t) {
 			handleThrowable(t);
 		} finally {

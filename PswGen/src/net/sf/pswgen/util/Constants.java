@@ -46,8 +46,11 @@ public class Constants {
 	/** Die Version dieser Anwendung */
 	public static final String APPLICATION_VERIFIER = "PswGen - Manages your websites and repeatably generates passwords for them, Copyright (C) Uwe Damken";
 
-	/** Die URL zur Hilfe */
-	public static final String HELP_URL = "http://mind-and-useful.de/index.php/pswgen";
+	/** Die URL zur deutschsprachigen Hilfe */
+	public static final String HELP_URL_DE = "http://mind-and-useful.de/de/software/pswgen.html";
+
+	/** Die URL zur englischsprachigen Hilfe */
+	public static final String HELP_URL_EN = "http://mind-and-useful.de/en/software/pswgen.html";
 
 	/** Das Package dieser Anwendung */
 	public static final String APPLICATION_PACKAGE_NAME = ApplicationPackageNameMarker.class.getPackage()
