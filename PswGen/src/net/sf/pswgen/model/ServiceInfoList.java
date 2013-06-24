@@ -20,6 +20,7 @@ package net.sf.pswgen.model;
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *****************************************************************************/
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.TreeMap;
 
@@ -28,6 +29,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import net.sf.pswgen.util.Constants;
+import net.sf.pswgen.util.EncryptionHelper;
 
 /**
  * <p>
@@ -58,8 +60,39 @@ public class ServiceInfoList {
 	/**
 	 * Ein Dienstekürzel und die zugehörigen Informationen zufügen.
 	 */
-	public ServiceInfo putServiceInfo(final ServiceInfo serviceInfo) {
-		return services.put(serviceInfo.getServiceAbbreviation(), serviceInfo);
+	public ServiceInfo putServiceInfo(final ServiceInfo si) {
+		return services.put(si.getServiceAbbreviation(), si);
+	}
+
+	/**
+	 * Liefert eine Kopie der übergebenen Dienstbeschreibung mit verschlüsselten Strings zurück.
+	 */
+	private ServiceInfo encrypt(final String passphrase, final ServiceInfo d) {
+		ServiceInfo e = new ServiceInfo(); // d(ecrypt) --encrypt--> e(ncrypt)
+		e.setServiceAbbreviation(EncryptionHelper.encrypt(passphrase, d.getServiceAbbreviation()));
+		e.setLoginUrl(EncryptionHelper.encrypt(passphrase, d.getLoginUrl()));
+		e.setLoginInfo(EncryptionHelper.encrypt(passphrase, d.getLoginInfo()));
+		e.setAdditionalLoginInfo(EncryptionHelper.encrypt(passphrase, d.getAdditionalLoginInfo()));
+		e.setUseSmallLetters(d.isUseSmallLetters());
+		e.setUseCapitalLetters(d.isUseCapitalLetters());
+		e.setUseDigits(d.isUseDigits());
+		e.setUseSpecialCharacters(d.isUseSpecialCharacters());
+		e.setSmallLettersCount(d.getSmallLettersCount());
+		e.setSmallLettersStartIndex(d.getSmallLettersStartIndex());
+		e.setSmallLettersEndIndex(d.getSmallLettersEndIndex());
+		e.setCapitalLettersCount(d.getCapitalLettersCount());
+		e.setCapitalLettersStartIndex(d.getCapitalLettersStartIndex());
+		e.setCapitalLettersEndIndex(d.getCapitalLettersEndIndex());
+		e.setDigitsCount(d.getDigitsCount());
+		e.setSpecialCharactersCount(d.getSpecialCharactersCount());
+		e.setDigitsStartIndex(d.getDigitsStartIndex());
+		e.setDigitsEndIndex(d.getDigitsEndIndex());
+		e.setSpecialCharactersStartIndex(d.getSpecialCharactersStartIndex());
+		e.setSpecialCharactersEndIndex(d.getSpecialCharactersEndIndex());
+		e.setTotalCharacterCount(d.getTotalCharacterCount());
+		e.setPassword(EncryptionHelper.encrypt(passphrase, d.getPassword()));
+		e.setPasswordRepeated(EncryptionHelper.encrypt(passphrase, d.getPasswordRepeated()));
+		return e;
 	}
 
 	/**
@@ -67,6 +100,44 @@ public class ServiceInfoList {
 	 */
 	public ServiceInfo getServiceInfo(final String serviceAbbreviation) {
 		return services.get(serviceAbbreviation);
+	}
+
+	/**
+	 * Liefert eine Kopie der übergebenen Dienstbeschreibung mit entschlüsselten Strings zurück.
+	 */
+	private ServiceInfo decrypt(final String passphrase, final ServiceInfo e) {
+		ServiceInfo d = new ServiceInfo(); // e(ncrypt) --decrypt--> d(ecrypt)
+		if (isAdvancedFormat()) {
+			d.setServiceAbbreviation(EncryptionHelper.decrypt(passphrase, e.getServiceAbbreviation()));
+			d.setAdditionalInfo(EncryptionHelper.decrypt(passphrase, e.getAdditionalInfo()));
+			d.setLoginUrl(EncryptionHelper.decrypt(passphrase, e.getLoginUrl()));
+		} else {
+			d.setServiceAbbreviation(e.getServiceAbbreviation());
+			d.setAdditionalInfo(e.getAdditionalInfo());
+			d.setLoginUrl(e.getLoginUrl());
+		}
+		d.setLoginInfo(EncryptionHelper.decrypt(passphrase, e.getLoginInfo()));
+		d.setAdditionalLoginInfo(EncryptionHelper.decrypt(passphrase, e.getAdditionalLoginInfo()));
+		d.setUseSmallLetters(e.isUseSmallLetters());
+		d.setUseCapitalLetters(e.isUseCapitalLetters());
+		d.setUseDigits(e.isUseDigits());
+		d.setUseSpecialCharacters(e.isUseSpecialCharacters());
+		d.setSmallLettersCount(e.getSmallLettersCount());
+		d.setSmallLettersStartIndex(e.getSmallLettersStartIndex());
+		d.setSmallLettersEndIndex(e.getSmallLettersEndIndex());
+		d.setCapitalLettersCount(e.getCapitalLettersCount());
+		d.setCapitalLettersStartIndex(e.getCapitalLettersStartIndex());
+		d.setCapitalLettersEndIndex(e.getCapitalLettersEndIndex());
+		d.setDigitsCount(e.getDigitsCount());
+		d.setSpecialCharactersCount(e.getSpecialCharactersCount());
+		d.setDigitsStartIndex(e.getDigitsStartIndex());
+		d.setDigitsEndIndex(e.getDigitsEndIndex());
+		d.setSpecialCharactersStartIndex(e.getSpecialCharactersStartIndex());
+		d.setSpecialCharactersEndIndex(e.getSpecialCharactersEndIndex());
+		d.setTotalCharacterCount(e.getTotalCharacterCount());
+		d.setPassword(EncryptionHelper.decrypt(passphrase, e.getPassword()));
+		d.setPasswordRepeated(EncryptionHelper.decrypt(passphrase, e.getPasswordRepeated()));
+		return d;
 	}
 
 	/**
@@ -86,21 +157,28 @@ public class ServiceInfoList {
 	/**
 	 * Bereitet das Speichern dieser ServiceInfoList in eine XML-Datei vor, indem die Werte aus der Map in
 	 * eine Collection gestellt werden. Der Grund dafür ist, dass JAXB nicht mit Maps, sondern "nur" mit
-	 * Collections umgehen kann.
+	 * Collections umgehen kann. Allerdings wird der Umweg hier ausgenutzt: Die Collection nur verschlüsselte
+	 * Daten enthält und die Map nur enstschlüsselte Daten, die Umwandlung geschieht beim Befüllen der
+	 * Collection aus der Map beim Speichern und beim Befüllen der Map aus der Collection beim Lesen.
 	 */
-	public void prepareSave() {
-		servicesAsCollection = services.values();
+	public void encrypt(final String passphrase) {
+		servicesAsCollection = new ArrayList<ServiceInfo>();
+		for (ServiceInfo si : services.values()) {
+			servicesAsCollection.add(encrypt(passphrase, si));
+		}
 	}
 
 	/**
 	 * Bereitet das Laden dieser ServiceInfoList aus einer XML-Datei nach, indem die Werte aus der Collection
 	 * wieder in die Map gestellt werden. Der Umweg ist nötig, weil JAXB nur mit Collections, nicht aber mit
-	 * Maps umgehen kann.
+	 * Maps umgehen kann. Allerdings wird der Umweg hier ausgenutzt: Die Collection nur verschlüsselte Daten
+	 * enthält und die Map nur enstschlüsselte Daten, die Umwandlung geschieht beim Befüllen der Collection
+	 * aus der Map beim Speichern und beim Befüllen der Map aus der Collection beim Lesen.
 	 */
-	public void reinforceLoad() {
+	public void decrypt(final String passphrase) {
 		services = new TreeMap<String, ServiceInfo>();
 		for (ServiceInfo serviceInfo : servicesAsCollection) {
-			putServiceInfo(serviceInfo);
+			putServiceInfo(decrypt(passphrase, serviceInfo));
 		}
 	}
 

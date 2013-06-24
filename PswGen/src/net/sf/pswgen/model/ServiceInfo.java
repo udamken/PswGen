@@ -88,6 +88,11 @@ public class ServiceInfo {
 		super();
 	}
 
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		return super.clone();
+	}
+
 	/**
 	 * Ab hier nur noch generierte Getter und Setter.
 	 */

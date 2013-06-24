@@ -106,7 +106,6 @@ public class PswGenCtl extends BaseCtl {
 			Unmarshaller um = context.createUnmarshaller();
 			FileInputStream in = new FileInputStream(servicesFile);
 			services = (ServiceInfoList) um.unmarshal(in);
-			services.reinforceLoad(); // Laden nachbereiten (Collection in Map stellen)
 			in.close();
 		} catch (Exception e) {
 			LOGGER.log(Level.WARNING, Constants.MSG_EXCP_SERVICES, e);
@@ -132,7 +131,7 @@ public class PswGenCtl extends BaseCtl {
 			Marshaller m = context.createMarshaller();
 			m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 			FileOutputStream out = new FileOutputStream(servicesFile);
-			services.prepareSave(); // Speichern vorbereiten, Map in Collection stellen
+			services.encrypt(validatedPassphrase); // Infos aus Map verschlüsselt in Collection stellen
 			m.marshal(services, out);
 			out.close();
 		} catch (Exception e) {
@@ -167,14 +166,8 @@ public class PswGenCtl extends BaseCtl {
 		} else {
 			mainView.setAdditionalInfo(si.getAdditionalInfo());
 			mainView.setLoginUrl(si.getLoginUrl());
-			final String loginInfoEncrypted = si.getLoginInfo();
-			final String loginInfoDecrypted = EncryptionHelper.decrypt(validatedPassphrase,
-					loginInfoEncrypted);
-			mainView.setLoginInfo(loginInfoDecrypted);
-			final String loginAdditionalInfoEncrypted = si.getAdditionalLoginInfo();
-			final String loginAdditionalInfoDecrypted = EncryptionHelper.decrypt(validatedPassphrase,
-					loginAdditionalInfoEncrypted);
-			mainView.setAdditionalLoginInfo(loginAdditionalInfoDecrypted);
+			mainView.setLoginInfo(si.getLoginInfo());
+			mainView.setAdditionalLoginInfo(si.getAdditionalLoginInfo());
 			mainView.setUseSmallLetters(si.isUseSmallLetters());
 			mainView.setUseCapitalLetters(si.isUseCapitalLetters());
 			mainView.setUseDigits(si.isUseDigits());
@@ -192,13 +185,8 @@ public class PswGenCtl extends BaseCtl {
 			mainView.setSpecialCharactersStartIndex(si.getSpecialCharactersStartIndex());
 			mainView.setSpecialCharactersEndIndex(si.getSpecialCharactersEndIndex());
 			mainView.setTotalCharacterCount(si.getTotalCharacterCount());
-			final String passwordEncrypted = si.getPassword();
-			final String passwordDecrypted = EncryptionHelper.decrypt(validatedPassphrase, passwordEncrypted);
-			mainView.setPassword(passwordDecrypted);
-			final String passwordRepeatedEncrypted = si.getPasswordRepeated();
-			final String passwordRepeatedDecrypted = EncryptionHelper.decrypt(validatedPassphrase,
-					passwordRepeatedEncrypted);
-			mainView.setPasswordRepeated(passwordRepeatedDecrypted);
+			mainView.setPassword(si.getPassword());
+			mainView.setPasswordRepeated(si.getPasswordRepeated());
 		}
 	}
 
@@ -335,14 +323,8 @@ public class PswGenCtl extends BaseCtl {
 			si = new ServiceInfo(serviceAbbreviation);
 			si.setAdditionalInfo(mainView.getAdditionalInfo());
 			si.setLoginUrl(mainView.getLoginUrl());
-			final String loginInfoDecrypted = mainView.getLoginInfo();
-			final String loginInfoEncrypted = EncryptionHelper.encrypt(validatedPassphrase,
-					loginInfoDecrypted);
-			si.setLoginInfo(loginInfoEncrypted);
-			final String loginAdditionalInfoDecrypted = mainView.getAdditionalLoginInfo();
-			final String loginAdditionalInfoEncrypted = EncryptionHelper.encrypt(validatedPassphrase,
-					loginAdditionalInfoDecrypted);
-			si.setAdditionalLoginInfo(loginAdditionalInfoEncrypted);
+			si.setLoginInfo(mainView.getLoginInfo());
+			si.setAdditionalLoginInfo(mainView.getAdditionalLoginInfo());
 			si.setUseSmallLetters(mainView.getUseSmallLetters());
 			si.setUseCapitalLetters(mainView.getUseCapitalLetters());
 			si.setUseDigits(mainView.getUseDigits());
@@ -360,13 +342,8 @@ public class PswGenCtl extends BaseCtl {
 			si.setSpecialCharactersStartIndex(mainView.getSpecialCharactersStartIndex());
 			si.setSpecialCharactersEndIndex(mainView.getSpecialCharactersEndIndex());
 			si.setTotalCharacterCount(mainView.getTotalCharacterCount());
-			final String passwordDecrypted = mainView.getPassword();
-			final String passwordEncrypted = EncryptionHelper.encrypt(validatedPassphrase, passwordDecrypted);
-			si.setPassword(passwordEncrypted);
-			final String passwordRepeatedDecrypted = mainView.getPasswordRepeated();
-			final String passwordRepeatedEncrypted = EncryptionHelper.encrypt(validatedPassphrase,
-					passwordRepeatedDecrypted);
-			si.setPasswordRepeated(passwordRepeatedEncrypted);
+			si.setPassword(mainView.getPassword());
+			si.setPasswordRepeated(mainView.getPasswordRepeated());
 			services.putServiceInfo(si);
 			saveServiceInfoList();
 			mainView.updateStoredService();
@@ -499,6 +476,7 @@ public class PswGenCtl extends BaseCtl {
 	public void actionPerformedOpenServices(final StartupView startupView) {
 		try {
 			validatedPassphrase = validatePassphrase(startupView);
+			services.decrypt(validatedPassphrase); // Infos Collection entschlüsselt in Map stellen
 			startupView.dispose();
 			MainView mainView = new MainView(this);
 			mainView.setTitle(servicesFile.getAbsolutePath() + " - " + Constants.APPLICATION_NAME + " "

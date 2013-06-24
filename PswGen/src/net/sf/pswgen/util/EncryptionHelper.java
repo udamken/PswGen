@@ -84,7 +84,7 @@ public class EncryptionHelper {
 			final String psw = new String(pswByteArray);
 			return psw;
 		} catch (Exception e) {
-			throw new DomainException("DecryptionFailedMsg");
+			throw new DomainException("PassphraseInvalid");
 		}
 	}
 
