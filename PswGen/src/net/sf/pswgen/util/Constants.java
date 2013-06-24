@@ -38,7 +38,13 @@ public class Constants {
 	public static final String APPLICATION_NAME = "PswGen";
 
 	/** Die Version dieser Anwendung */
-	public static final String APPLICATION_VERSION = "1.5.8";
+	public static final String APPLICATION_VERSION = "1.6.0";
+
+	/** Die Version dieser Anwendung */
+	public static final String ADVANCED_FILE_FORMAT_VERSION = "1.6.0";
+
+	/** Die Version dieser Anwendung */
+	public static final String APPLICATION_VERIFIER = "PswGen - Manages your websites and repeatably generates passwords for them, Copyright (C) Uwe Damken";
 
 	/** Die URL zur Hilfe */
 	public static final String HELP_URL = "http://mind-and-useful.de/index.php/pswgen";

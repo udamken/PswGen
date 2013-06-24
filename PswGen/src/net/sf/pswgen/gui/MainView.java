@@ -24,8 +24,6 @@ import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
@@ -73,10 +71,6 @@ public class MainView extends BaseView {
 	private static final Color COLOR_INFLUENCE = Color.BLUE;
 
 	private StoredServicesTableModel tableModelStoredServices;
-
-	private JPasswordField passphrase;
-
-	private JPasswordField passphraseRepeated;
 
 	private JTextField mServiceAbbreviationFilter;
 
@@ -164,48 +158,8 @@ public class MainView extends BaseView {
 		WidgetFactory wf = WidgetFactory.getInstance();
 		// Widgets erzeugen
 		JPanel panel = wf.getContentPane("MainFrame");
-		panel.add(createPanelPassphrase(), gbcf.getLabelConstraints(0, 0));
 		panel.add(createPanelStoredServices(), gbcf.getTableConstraints(0, 1, 1, 1));
 		panel.add(createPanelEditService(), gbcf.getLabelConstraints(0, 2));
-		return panel;
-	}
-
-	/**
-	 * Panel zum "Passphrase" anlegen
-	 */
-	private JPanel createPanelPassphrase() {
-		// Fabriken holen
-		GridBagConstraintsFactory gbcf = GridBagConstraintsFactory.getInstance();
-		WidgetFactory wf = WidgetFactory.getInstance();
-		// Widgets erzeugen
-		JPanel panel = wf.getPanel("PanelPassphrase");
-		JLabel labelPassphrase = wf.getLabel("LabelPassphrase");
-		labelPassphrase.setForeground(COLOR_INFLUENCE);
-		passphrase = wf.getPasswordField("FieldPassphrase");
-		JLabel labelPassphraseRepeated = wf.getLabel("LabelPassphraseRepeated");
-		passphraseRepeated = wf.getPasswordField("FieldPassphraseRepeated");
-		passphraseRepeated.addFocusListener(new FocusListener() {
-
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				if (!((PswGenCtl) ctl).focusLostValidatePassphrase(me)) {
-					passphrase.requestFocus();
-				}
-			}
-
-			@Override
-			public void focusGained(FocusEvent arg0) {
-			}
-		});
-		// Widgets zufügen, erste Zeile
-		int row = 0;
-		panel.add(labelPassphrase, gbcf.getLabelConstraints(0, row));
-		panel.add(passphrase, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 1, 1));
-		// Widgets zufügen, nächste Zeile
-		row++;
-		panel.add(labelPassphraseRepeated, gbcf.getLabelConstraints(0, row));
-		panel.add(passphraseRepeated, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 1, 1));
-		// Panel zurückgeben
 		return panel;
 	}
 
@@ -595,20 +549,6 @@ public class MainView extends BaseView {
 	}
 
 	/**
-	 * @return Returns the passphrase.
-	 */
-	public String getPassphrase() {
-		return new String(passphrase.getPassword());
-	}
-
-	/**
-	 * @return Returns the passphraseRepeated.
-	 */
-	public String getPassphraseRepeated() {
-		return new String(passphraseRepeated.getPassword());
-	}
-
-	/**
 	 * @return Returns the password.
 	 */
 	public String getPassword() {
@@ -738,22 +678,6 @@ public class MainView extends BaseView {
 	 */
 	public void setDigitsStartIndex(final int digitsStartIndex) {
 		this.digitsStartIndex.setIntValue(digitsStartIndex);
-	}
-
-	/**
-	 * @param passphrase
-	 *            The passphrase to set.
-	 */
-	public void setPassphrase(final String passphrase) {
-		this.passphrase.setText(passphrase);
-	}
-
-	/**
-	 * @param passphraseRepeated
-	 *            The passphraseRepeated to set.
-	 */
-	public void setPassphraseRepeated(final String passphraseRepeated) {
-		this.passphraseRepeated.setText(passphraseRepeated);
 	}
 
 	/**

@@ -67,47 +67,19 @@ public class PswGenCtl extends BaseCtl {
 	/** Der Dateiname zum Laden und Speichern der Diensteliste */
 	private File servicesFile;
 
-	/**
-	 * Eingabewerte der Passphrase prüfen.
-	 */
-	private void validatePassphrase(final MainView mfView) {
-		final String passphrase = mfView.getPassphrase();
-		final String passphraseRepeated = mfView.getPassphraseRepeated();
-		if (!passphrase.equals(passphraseRepeated)) { // Mismatch?
-			throw new DomainException("PassphraseMismatchMsg");
-		}
-		if (passphrase.length() == 0) {
-			throw new DomainException("PassphraseEmptyMsg");
-		}
-	}
-
-	/**
-	 * Überprüft die Passphrase beim Verlassen des Kontrolleingabefeldes und liefert bei korrekter Eingabe
-	 * true.
-	 */
-	public boolean focusLostValidatePassphrase(final MainView mfView) {
-		try {
-			mfView.setWaitCursor();
-			validatePassphrase(mfView);
-			return true;
-		} catch (Throwable t) {
-			handleThrowable(t);
-			return false;
-		} finally {
-			mfView.setDefaultCursor();
-		}
-	}
+	/** Die in der StartupView eingegebene Passphrase */
+	private String validatedPassphrase;
 
 	/**
 	 * Liefert das eingegebene oder ein generiertes Passwort. Sobald entweder das Passwort oder das
 	 * wiederholte Passwort eingegeben wurden, müssen sie übereinstimmen, sonst wird eine Exception geworfen,
 	 * die zu einer Fehlermeldung führt. Eine Eingabe hat also in jedem Fall Vorrang vor der Generierung.
 	 */
-	private String validatedOrGeneratePassword(final MainView mfView) {
-		String password = mfView.getPassword();
-		final String passwordRepeated = mfView.getPasswordRepeated();
+	private String validatedOrGeneratePassword(final MainView mainView) {
+		String password = mainView.getPassword();
+		final String passwordRepeated = mainView.getPasswordRepeated();
 		if (password.length() == 0 && passwordRepeated.length() == 0) { // Beide leer? => generieren
-			password = generatePassword(mfView);
+			password = generatePassword(mainView);
 		} else {
 			if (!password.equals(passwordRepeated)) { // Mismatch?
 				throw new DomainException("PasswordMismatchMsg");
@@ -146,6 +118,15 @@ public class PswGenCtl extends BaseCtl {
 	 */
 	private void saveServiceInfoList() {
 		try {
+			if (!services.isAdvancedFormat()) { // Noch im alten Format? => Konvertieren
+				final String verifierEncrypted = EncryptionHelper.encrypt(validatedPassphrase,
+						Constants.APPLICATION_VERIFIER);
+				services.setVerifier(verifierEncrypted);
+				services.setVersion(Constants.APPLICATION_VERSION);
+				for (ServiceInfo si : services.getServices()) {
+					// FIXME Alle Felder umverschlüsseln ...
+				}
+			}
 			// create JAXB context and instantiate marshaller
 			JAXBContext context = JAXBContext.newInstance(ServiceInfoList.class);
 			Marshaller m = context.createMarshaller();
@@ -163,77 +144,76 @@ public class PswGenCtl extends BaseCtl {
 	/**
 	 * Lädt die Einstellungen für ein Dienstekürzel.
 	 */
-	public void actionPerformedLoadService(final MainView mfView) {
+	public void actionPerformedLoadService(final MainView mainView) {
 		try {
-			mfView.setWaitCursor();
-			loadService(mfView);
+			mainView.setWaitCursor();
+			loadService(mainView);
 		} catch (Throwable t) {
 			handleThrowable(t);
 		} finally {
-			mfView.setDefaultCursor();
+			mainView.setDefaultCursor();
 		}
 	}
 
 	/**
 	 * Lädt die Einstellungen für ein Dienstekürzel.
 	 */
-	private void loadService(final MainView mfView) {
-		validatePassphrase(mfView); // benötigt zum Entschlüssen von LoginInfo
-		String serviceAbbreviation = mfView.getServiceAbbreviation();
+	private void loadService(final MainView mainView) {
+		String serviceAbbreviation = mainView.getServiceAbbreviation();
 		validateServiceAbbreviation(serviceAbbreviation);
 		ServiceInfo si = services.getServiceInfo(serviceAbbreviation);
 		if (si == null) {
 			throw new DomainException("ServiceAbbreviationMissingMsg");
 		} else {
-			mfView.setAdditionalInfo(si.getAdditionalInfo());
-			mfView.setLoginUrl(si.getLoginUrl());
-			final String passphrase = mfView.getPassphrase();
+			mainView.setAdditionalInfo(si.getAdditionalInfo());
+			mainView.setLoginUrl(si.getLoginUrl());
 			final String loginInfoEncrypted = si.getLoginInfo();
-			final String loginInfoDecrypted = EncryptionHelper.decrypt(passphrase, loginInfoEncrypted);
-			mfView.setLoginInfo(loginInfoDecrypted);
+			final String loginInfoDecrypted = EncryptionHelper.decrypt(validatedPassphrase,
+					loginInfoEncrypted);
+			mainView.setLoginInfo(loginInfoDecrypted);
 			final String loginAdditionalInfoEncrypted = si.getAdditionalLoginInfo();
-			final String loginAdditionalInfoDecrypted = EncryptionHelper.decrypt(passphrase,
+			final String loginAdditionalInfoDecrypted = EncryptionHelper.decrypt(validatedPassphrase,
 					loginAdditionalInfoEncrypted);
-			mfView.setAdditionalLoginInfo(loginAdditionalInfoDecrypted);
-			mfView.setUseSmallLetters(si.isUseSmallLetters());
-			mfView.setUseCapitalLetters(si.isUseCapitalLetters());
-			mfView.setUseDigits(si.isUseDigits());
-			mfView.setUseSpecialCharacters(si.isUseSpecialCharacters());
-			mfView.setSmallLettersCount(si.getSmallLettersCount());
-			mfView.setSmallLettersStartIndex(si.getSmallLettersStartIndex());
-			mfView.setSmallLettersEndIndex(si.getSmallLettersEndIndex());
-			mfView.setCapitalLettersCount(si.getCapitalLettersCount());
-			mfView.setCapitalLettersStartIndex(si.getCapitalLettersStartIndex());
-			mfView.setCapitalLettersEndIndex(si.getCapitalLettersEndIndex());
-			mfView.setDigitsCount(si.getDigitsCount());
-			mfView.setSpecialCharactersCount(si.getSpecialCharactersCount());
-			mfView.setDigitsStartIndex(si.getDigitsStartIndex());
-			mfView.setDigitsEndIndex(si.getDigitsEndIndex());
-			mfView.setSpecialCharactersStartIndex(si.getSpecialCharactersStartIndex());
-			mfView.setSpecialCharactersEndIndex(si.getSpecialCharactersEndIndex());
-			mfView.setTotalCharacterCount(si.getTotalCharacterCount());
+			mainView.setAdditionalLoginInfo(loginAdditionalInfoDecrypted);
+			mainView.setUseSmallLetters(si.isUseSmallLetters());
+			mainView.setUseCapitalLetters(si.isUseCapitalLetters());
+			mainView.setUseDigits(si.isUseDigits());
+			mainView.setUseSpecialCharacters(si.isUseSpecialCharacters());
+			mainView.setSmallLettersCount(si.getSmallLettersCount());
+			mainView.setSmallLettersStartIndex(si.getSmallLettersStartIndex());
+			mainView.setSmallLettersEndIndex(si.getSmallLettersEndIndex());
+			mainView.setCapitalLettersCount(si.getCapitalLettersCount());
+			mainView.setCapitalLettersStartIndex(si.getCapitalLettersStartIndex());
+			mainView.setCapitalLettersEndIndex(si.getCapitalLettersEndIndex());
+			mainView.setDigitsCount(si.getDigitsCount());
+			mainView.setSpecialCharactersCount(si.getSpecialCharactersCount());
+			mainView.setDigitsStartIndex(si.getDigitsStartIndex());
+			mainView.setDigitsEndIndex(si.getDigitsEndIndex());
+			mainView.setSpecialCharactersStartIndex(si.getSpecialCharactersStartIndex());
+			mainView.setSpecialCharactersEndIndex(si.getSpecialCharactersEndIndex());
+			mainView.setTotalCharacterCount(si.getTotalCharacterCount());
 			final String passwordEncrypted = si.getPassword();
-			final String passwordDecrypted = EncryptionHelper.decrypt(passphrase, passwordEncrypted);
-			mfView.setPassword(passwordDecrypted);
+			final String passwordDecrypted = EncryptionHelper.decrypt(validatedPassphrase, passwordEncrypted);
+			mainView.setPassword(passwordDecrypted);
 			final String passwordRepeatedEncrypted = si.getPasswordRepeated();
-			final String passwordRepeatedDecrypted = EncryptionHelper.decrypt(passphrase,
+			final String passwordRepeatedDecrypted = EncryptionHelper.decrypt(validatedPassphrase,
 					passwordRepeatedEncrypted);
-			mfView.setPasswordRepeated(passwordRepeatedDecrypted);
+			mainView.setPasswordRepeated(passwordRepeatedDecrypted);
 		}
 	}
 
 	/**
 	 * Aus der Liste neu ausgewählten Dienst laden.
 	 */
-	public void valueChangedLoadServiceFromList(final MainView mfView, final String serviceAbbreviation) {
+	public void valueChangedLoadServiceFromList(final MainView mainView, final String serviceAbbreviation) {
 		try {
-			mfView.setWaitCursor();
-			mfView.setServiceAbbreviation(serviceAbbreviation);
-			loadService(mfView);
+			mainView.setWaitCursor();
+			mainView.setServiceAbbreviation(serviceAbbreviation);
+			loadService(mainView);
 		} catch (Throwable t) {
 			handleThrowable(t);
 		} finally {
-			mfView.setDefaultCursor();
+			mainView.setDefaultCursor();
 		}
 	}
 
@@ -241,12 +221,12 @@ public class PswGenCtl extends BaseCtl {
 	 * Löscht die Einstellungen für ein Dienstekürzel und speichert die Einstellungen für alle Dienstekürzel
 	 * auf der Platte.
 	 */
-	public void actionPerformedRemoveService(final MainView mfView) {
+	public void actionPerformedRemoveService(final MainView mainView) {
 		try {
-			mfView.setWaitCursor();
-			String serviceAbbreviation = mfView.getServiceAbbreviation();
+			mainView.setWaitCursor();
+			String serviceAbbreviation = mainView.getServiceAbbreviation();
 			validateServiceAbbreviation(serviceAbbreviation);
-			int chosenOption = JOptionPane.showConfirmDialog(mfView, getGuiText("RemoveServiceMsg"),
+			int chosenOption = JOptionPane.showConfirmDialog(mainView, getGuiText("RemoveServiceMsg"),
 					Constants.APPLICATION_NAME, JOptionPane.YES_NO_OPTION);
 			if (chosenOption != JOptionPane.NO_OPTION) { // Dienst nicht
 				ServiceInfo si = services.removeServiceInfo(serviceAbbreviation);
@@ -254,51 +234,51 @@ public class PswGenCtl extends BaseCtl {
 					throw new DomainException("ServiceAbbreviationMissingMsg");
 				} else {
 					saveServiceInfoList();
-					mfView.updateStoredService();
+					mainView.updateStoredService();
 				}
 			}
 		} catch (Throwable t) {
 			handleThrowable(t);
 		} finally {
-			mfView.setDefaultCursor();
+			mainView.setDefaultCursor();
 		}
 	}
 
 	/**
 	 * Öffnet die Login-URL im Browser und kopiert die Login-Informationen in die Zwischenablage.
 	 */
-	public void actionPerformedOpenUrlInBrowser(final MainView mfView) {
+	public void actionPerformedOpenUrlInBrowser(final MainView mainView) {
 		try {
-			mfView.setWaitCursor();
-			final String loginUrl = mfView.getLoginUrl();
+			mainView.setWaitCursor();
+			final String loginUrl = mainView.getLoginUrl();
 			Desktop.getDesktop().browse(new URI(loginUrl));
-			copyLoginInfo(mfView);
+			copyLoginInfo(mainView);
 		} catch (Throwable t) {
 			handleThrowable(t);
 		} finally {
-			mfView.setDefaultCursor();
+			mainView.setDefaultCursor();
 		}
 	}
 
 	/**
 	 * Kopiert die Login-Informationen in die Zwischenablage.
 	 */
-	public void actionPerformedCopyLoginInfo(final MainView mfView) {
+	public void actionPerformedCopyLoginInfo(final MainView mainView) {
 		try {
-			mfView.setWaitCursor();
-			copyLoginInfo(mfView);
+			mainView.setWaitCursor();
+			copyLoginInfo(mainView);
 		} catch (Throwable t) {
 			handleThrowable(t);
 		} finally {
-			mfView.setDefaultCursor();
+			mainView.setDefaultCursor();
 		}
 	}
 
 	/**
 	 * Kopiert die Login-Informationen in die Zwischenablage.
 	 */
-	private void copyLoginInfo(final MainView mfView) {
-		final String loginInfo = mfView.getLoginInfo();
+	private void copyLoginInfo(final MainView mainView) {
+		final String loginInfo = mainView.getLoginInfo();
 		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 		clipboard.setContents(new StringSelection(loginInfo), null);
 	}
@@ -306,14 +286,14 @@ public class PswGenCtl extends BaseCtl {
 	/**
 	 * Öffnet die Hilfe-URL im Browser.
 	 */
-	public void actionPerformedOpenHelpInBrowser(final MainView mfView) {
+	public void actionPerformedOpenHelpInBrowser(final MainView mainView) {
 		try {
-			mfView.setWaitCursor();
+			mainView.setWaitCursor();
 			Desktop.getDesktop().browse(new URI(Constants.HELP_URL));
 		} catch (Throwable t) {
 			handleThrowable(t);
 		} finally {
-			mfView.setDefaultCursor();
+			mainView.setDefaultCursor();
 		}
 	}
 
@@ -321,7 +301,7 @@ public class PswGenCtl extends BaseCtl {
 	 * Öffnet den About-Dialog.
 	 */
 	public void actionPerformedOpenAbout(@SuppressWarnings("unused")
-	final MainView mfView) {
+	final MainView mainView) {
 		try {
 			AboutView aboutView = new AboutView(this);
 			addView(aboutView);
@@ -330,7 +310,7 @@ public class PswGenCtl extends BaseCtl {
 		} catch (Throwable t) {
 			handleThrowable(t);
 		} finally {
-			// mfView.setDefaultCursor();
+			// mainView.setDefaultCursor();
 		}
 	}
 
@@ -338,14 +318,14 @@ public class PswGenCtl extends BaseCtl {
 	 * Vermerkt die Einstellungen für ein Dienstekürzel und speichert die Einstellungen für alle Dienstekürzel
 	 * auf der Platte.
 	 */
-	public void actionPerformedStoreService(final MainView mfView) {
+	public void actionPerformedStoreService(final MainView mainView) {
 		try {
-			mfView.setWaitCursor();
-			String serviceAbbreviation = mfView.getServiceAbbreviation();
+			mainView.setWaitCursor();
+			String serviceAbbreviation = mainView.getServiceAbbreviation();
 			validateServiceAbbreviation(serviceAbbreviation);
 			ServiceInfo si = services.getServiceInfo(serviceAbbreviation);
 			if (si != null) { // Ist der Dienst bereits vermerkt?
-				int chosenOption = JOptionPane.showConfirmDialog(mfView, getGuiText("OverwriteServiceMsg"),
+				int chosenOption = JOptionPane.showConfirmDialog(mainView, getGuiText("OverwriteServiceMsg"),
 						Constants.APPLICATION_NAME, JOptionPane.YES_NO_OPTION);
 				if (chosenOption == JOptionPane.NO_OPTION) { // Dienst nicht
 					// überschreiben?
@@ -353,102 +333,100 @@ public class PswGenCtl extends BaseCtl {
 				}
 			}
 			si = new ServiceInfo(serviceAbbreviation);
-			si.setAdditionalInfo(mfView.getAdditionalInfo());
-			si.setLoginUrl(mfView.getLoginUrl());
-			final String passphrase = mfView.getPassphrase();
-			final String loginInfoDecrypted = mfView.getLoginInfo();
-			final String loginInfoEncrypted = EncryptionHelper.encrypt(passphrase, loginInfoDecrypted);
+			si.setAdditionalInfo(mainView.getAdditionalInfo());
+			si.setLoginUrl(mainView.getLoginUrl());
+			final String loginInfoDecrypted = mainView.getLoginInfo();
+			final String loginInfoEncrypted = EncryptionHelper.encrypt(validatedPassphrase,
+					loginInfoDecrypted);
 			si.setLoginInfo(loginInfoEncrypted);
-			final String loginAdditionalInfoDecrypted = mfView.getAdditionalLoginInfo();
-			final String loginAdditionalInfoEncrypted = EncryptionHelper.encrypt(passphrase,
+			final String loginAdditionalInfoDecrypted = mainView.getAdditionalLoginInfo();
+			final String loginAdditionalInfoEncrypted = EncryptionHelper.encrypt(validatedPassphrase,
 					loginAdditionalInfoDecrypted);
 			si.setAdditionalLoginInfo(loginAdditionalInfoEncrypted);
-			si.setUseSmallLetters(mfView.getUseSmallLetters());
-			si.setUseCapitalLetters(mfView.getUseCapitalLetters());
-			si.setUseDigits(mfView.getUseDigits());
-			si.setUseSpecialCharacters(mfView.getUseSpecialCharacters());
-			si.setSmallLettersCount(mfView.getSmallLettersCount());
-			si.setSmallLettersStartIndex(mfView.getSmallLettersStartIndex());
-			si.setSmallLettersEndIndex(mfView.getSmallLettersEndIndex());
-			si.setCapitalLettersCount(mfView.getCapitalLettersCount());
-			si.setCapitalLettersStartIndex(mfView.getCapitalLettersStartIndex());
-			si.setCapitalLettersEndIndex(mfView.getCapitalLettersEndIndex());
-			si.setDigitsCount(mfView.getDigitsCount());
-			si.setSpecialCharactersCount(mfView.getSpecialCharactersCount());
-			si.setDigitsStartIndex(mfView.getDigitsStartIndex());
-			si.setDigitsEndIndex(mfView.getDigitsEndIndex());
-			si.setSpecialCharactersStartIndex(mfView.getSpecialCharactersStartIndex());
-			si.setSpecialCharactersEndIndex(mfView.getSpecialCharactersEndIndex());
-			si.setTotalCharacterCount(mfView.getTotalCharacterCount());
-			final String passwordDecrypted = mfView.getPassword();
-			final String passwordEncrypted = EncryptionHelper.encrypt(passphrase, passwordDecrypted);
+			si.setUseSmallLetters(mainView.getUseSmallLetters());
+			si.setUseCapitalLetters(mainView.getUseCapitalLetters());
+			si.setUseDigits(mainView.getUseDigits());
+			si.setUseSpecialCharacters(mainView.getUseSpecialCharacters());
+			si.setSmallLettersCount(mainView.getSmallLettersCount());
+			si.setSmallLettersStartIndex(mainView.getSmallLettersStartIndex());
+			si.setSmallLettersEndIndex(mainView.getSmallLettersEndIndex());
+			si.setCapitalLettersCount(mainView.getCapitalLettersCount());
+			si.setCapitalLettersStartIndex(mainView.getCapitalLettersStartIndex());
+			si.setCapitalLettersEndIndex(mainView.getCapitalLettersEndIndex());
+			si.setDigitsCount(mainView.getDigitsCount());
+			si.setSpecialCharactersCount(mainView.getSpecialCharactersCount());
+			si.setDigitsStartIndex(mainView.getDigitsStartIndex());
+			si.setDigitsEndIndex(mainView.getDigitsEndIndex());
+			si.setSpecialCharactersStartIndex(mainView.getSpecialCharactersStartIndex());
+			si.setSpecialCharactersEndIndex(mainView.getSpecialCharactersEndIndex());
+			si.setTotalCharacterCount(mainView.getTotalCharacterCount());
+			final String passwordDecrypted = mainView.getPassword();
+			final String passwordEncrypted = EncryptionHelper.encrypt(validatedPassphrase, passwordDecrypted);
 			si.setPassword(passwordEncrypted);
-			final String passwordRepeatedDecrypted = mfView.getPasswordRepeated();
-			final String passwordRepeatedEncrypted = EncryptionHelper.encrypt(passphrase,
+			final String passwordRepeatedDecrypted = mainView.getPasswordRepeated();
+			final String passwordRepeatedEncrypted = EncryptionHelper.encrypt(validatedPassphrase,
 					passwordRepeatedDecrypted);
 			si.setPasswordRepeated(passwordRepeatedEncrypted);
 			services.putServiceInfo(si);
 			saveServiceInfoList();
-			mfView.updateStoredService();
+			mainView.updateStoredService();
 		} catch (Throwable t) {
 			handleThrowable(t);
 		} finally {
-			mfView.setDefaultCursor();
+			mainView.setDefaultCursor();
 		}
 	}
 
 	/**
 	 * Generiert ein Passwort und gibt es zurück.
 	 */
-	private String generatePassword(final MainView mfView) {
-		mfView.setWaitCursor();
+	private String generatePassword(final MainView mainView) {
+		mainView.setWaitCursor();
 		String characters = ""; // Zeichen für den Rest des Passworts
-		validatePassphrase(mfView);
-		final String passphrase = mfView.getPassphrase();
-		final String serviceAbbreviation = mfView.getServiceAbbreviation();
+		final String serviceAbbreviation = mainView.getServiceAbbreviation();
 		validateServiceAbbreviation(serviceAbbreviation);
-		long seed = passphrase.hashCode() + serviceAbbreviation.hashCode();
-		final String additionalInfo = mfView.getAdditionalInfo();
+		long seed = validatedPassphrase.hashCode() + serviceAbbreviation.hashCode();
+		final String additionalInfo = mainView.getAdditionalInfo();
 		if (additionalInfo.length() != 0) { // Zusatzinfos vorhanden?
 			seed += additionalInfo.hashCode(); // => Zur Saat dazunehmen
 		}
-		final int pswLength = EmptyHelper.getValue(mfView.getTotalCharacterCount(), 0);
+		final int pswLength = EmptyHelper.getValue(mainView.getTotalCharacterCount(), 0);
 		PasswordFactory pg = new PasswordFactory(pswLength);
 		pg.setSeedForRandomToEnforceReproducableResults(seed);
-		if (mfView.getUseSmallLetters()) {
-			int count = EmptyHelper.getValue(mfView.getSmallLettersCount(), 0);
-			int start = EmptyHelper.getValue(mfView.getSmallLettersStartIndex(), 0);
-			int end = EmptyHelper.getValue(mfView.getSmallLettersEndIndex(), pswLength - 1);
+		if (mainView.getUseSmallLetters()) {
+			int count = EmptyHelper.getValue(mainView.getSmallLettersCount(), 0);
+			int start = EmptyHelper.getValue(mainView.getSmallLettersStartIndex(), 0);
+			int end = EmptyHelper.getValue(mainView.getSmallLettersEndIndex(), pswLength - 1);
 			if (count != 0) {
 				pg.distributeCharacters(count, Constants.LOWERCASE_LETTERS, start, end);
 			} else {
 				characters += Constants.LOWERCASE_LETTERS;
 			}
 		}
-		if (mfView.getUseCapitalLetters()) {
-			int count = EmptyHelper.getValue(mfView.getCapitalLettersCount(), 0);
-			int start = EmptyHelper.getValue(mfView.getCapitalLettersStartIndex(), 0);
-			int end = EmptyHelper.getValue(mfView.getCapitalLettersEndIndex(), pswLength - 1);
+		if (mainView.getUseCapitalLetters()) {
+			int count = EmptyHelper.getValue(mainView.getCapitalLettersCount(), 0);
+			int start = EmptyHelper.getValue(mainView.getCapitalLettersStartIndex(), 0);
+			int end = EmptyHelper.getValue(mainView.getCapitalLettersEndIndex(), pswLength - 1);
 			if (count != 0) {
 				pg.distributeCharacters(count, Constants.UPPERCASE_LETTERS, start, end);
 			} else {
 				characters += Constants.UPPERCASE_LETTERS;
 			}
 		}
-		if (mfView.getUseDigits()) {
-			int count = EmptyHelper.getValue(mfView.getDigitsCount(), 0);
-			int start = EmptyHelper.getValue(mfView.getDigitsStartIndex(), 0);
-			int end = EmptyHelper.getValue(mfView.getDigitsEndIndex(), pswLength - 1);
+		if (mainView.getUseDigits()) {
+			int count = EmptyHelper.getValue(mainView.getDigitsCount(), 0);
+			int start = EmptyHelper.getValue(mainView.getDigitsStartIndex(), 0);
+			int end = EmptyHelper.getValue(mainView.getDigitsEndIndex(), pswLength - 1);
 			if (count != 0) {
 				pg.distributeCharacters(count, Constants.DIGITS, start, end);
 			} else {
 				characters += Constants.DIGITS;
 			}
 		}
-		if (mfView.getUseSpecialCharacters()) {
-			int count = EmptyHelper.getValue(mfView.getSpecialCharactersCount(), 1);
-			int start = EmptyHelper.getValue(mfView.getSpecialCharactersStartIndex(), 0);
-			int end = EmptyHelper.getValue(mfView.getSpecialCharactersEndIndex(), pswLength - 1);
+		if (mainView.getUseSpecialCharacters()) {
+			int count = EmptyHelper.getValue(mainView.getSpecialCharactersCount(), 1);
+			int start = EmptyHelper.getValue(mainView.getSpecialCharactersStartIndex(), 0);
+			int end = EmptyHelper.getValue(mainView.getSpecialCharactersEndIndex(), pswLength - 1);
 			if (count != 0) {
 				pg.distributeCharacters(count, Constants.SPECIAL_CHARS, start, end);
 			} else {
@@ -461,32 +439,77 @@ public class PswGenCtl extends BaseCtl {
 	/**
 	 * Generieren das Passwort und zeigt es an.
 	 */
-	public void actionPerformedDisplayPassword(final MainView mfView) {
+	public void actionPerformedDisplayPassword(final MainView mainView) {
 		try {
-			mfView.setWaitCursor();
-			final String psw = validatedOrGeneratePassword(mfView);
-			JOptionPane.showMessageDialog(mfView, getGuiText("DisplayPasswordMsg") + " \"" + psw + "\"",
+			mainView.setWaitCursor();
+			final String psw = validatedOrGeneratePassword(mainView);
+			JOptionPane.showMessageDialog(mainView, getGuiText("DisplayPasswordMsg") + " \"" + psw + "\"",
 					Constants.APPLICATION_NAME, JOptionPane.PLAIN_MESSAGE);
 		} catch (Throwable t) {
 			handleThrowable(t);
 		} finally {
-			mfView.setDefaultCursor();
+			mainView.setDefaultCursor();
 		}
 	}
 
 	/**
 	 * Generiert das Passwort und kopiert es in die Zwischenablage.
 	 */
-	public void actionPerformedCopyPassword(final MainView mfView) {
+	public void actionPerformedCopyPassword(final MainView mainView) {
 		try {
-			mfView.setWaitCursor();
-			final String psw = validatedOrGeneratePassword(mfView);
+			mainView.setWaitCursor();
+			final String psw = validatedOrGeneratePassword(mainView);
 			Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 			clipboard.setContents(new StringSelection(psw), null);
 		} catch (Throwable t) {
 			handleThrowable(t);
 		} finally {
-			mfView.setDefaultCursor();
+			mainView.setDefaultCursor();
+		}
+	}
+
+	/**
+	 * Prüft die Eingabewerte der Passphrase und gibt die Passphrase zurück oder wirft eine Exception.
+	 */
+	private String validatePassphrase(final StartupView startupView) {
+		final String passphrase = startupView.getPassphrase();
+		final String passphraseRepeated = startupView.getPassphraseRepeated();
+		if (passphrase.length() == 0) {
+			throw new DomainException("PassphraseEmptyMsg");
+		}
+		if (services.isAdvancedFormat()) {
+			// Beim neuen Format wird geprüft, ob die Passphrase den Prüfstring entschlüsseln kann
+			final String verifierEncrypted = services.getVerifier();
+			final String verifierDecrypted = EncryptionHelper.decrypt(passphrase, verifierEncrypted);
+			if (!verifierDecrypted.equals(Constants.APPLICATION_VERIFIER)) {
+				throw new DomainException("PassphraseInvalid");
+			}
+		} else {
+			// Beim alten Format wird geprüft, ob die Passphrase zweimal gleich eingegeben wurde
+			if (!passphrase.equals(passphraseRepeated)) { // Mismatch?
+				throw new DomainException("PassphraseMismatchMsg");
+			}
+		}
+		return passphrase;
+	}
+
+	/**
+	 * Prüft die Passphrase und öffnet ggf. das Hauptfenster.
+	 */
+	public void actionPerformedOpenServices(final StartupView startupView) {
+		try {
+			validatedPassphrase = validatePassphrase(startupView);
+			startupView.dispose();
+			MainView mainView = new MainView(this);
+			mainView.setTitle(servicesFile.getAbsolutePath() + " - " + Constants.APPLICATION_NAME + " "
+					+ Constants.APPLICATION_VERSION);
+			addView(mainView);
+			mainView.pack();
+			mainView.setVisible(true);
+		} catch (Throwable t) {
+			handleThrowable(t);
+		} finally {
+			// mainView.setDefaultCursor();
 		}
 	}
 
@@ -501,12 +524,14 @@ public class PswGenCtl extends BaseCtl {
 		super();
 		servicesFile = new File(givenServicesFilename);
 		loadServiceInfoList();
-		MainView mfView = new MainView(this);
-		mfView.setTitle(servicesFile.getAbsolutePath() + " - " + Constants.APPLICATION_NAME + " "
-				+ Constants.APPLICATION_VERSION);
-		addView(mfView);
-		mfView.pack();
-		mfView.setVisible(true);
+		StartupView startupView = new StartupView(this);
+		startupView.setTitle(Constants.APPLICATION_NAME + " " + Constants.APPLICATION_VERSION);
+		if (services.isAdvancedFormat()) { // Fortgeschrittenes Format?
+			startupView.disablePassphraseRepeated(); // Passphrase nur 1x eingeben!
+		}
+		addView(startupView);
+		startupView.pack();
+		startupView.setVisible(true);
 	}
 
 }

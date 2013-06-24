@@ -27,6 +27,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import net.sf.pswgen.util.Constants;
+
 /**
  * <p>
  * Hält eine Zuordnung von Dienstekürzeln zu zugehörigen Informationen, die zum Generieren eines Passworts
@@ -38,6 +40,12 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement(name = "ServiceList")
 public class ServiceInfoList {
+
+	/** Version von PswGen, mit der die XML-Datei erstellt wurde */
+	private String version;
+
+	/** String zur Verifizierung der eingegebenen Passphrase */
+	private String verifier;
 
 	/** Die Werte aus der zu Grunde liegenden Map als Collection, JAXB kann "nur" Collections */
 	@XmlElementWrapper(name = "Services")
@@ -94,6 +102,45 @@ public class ServiceInfoList {
 		for (ServiceInfo serviceInfo : servicesAsCollection) {
 			putServiceInfo(serviceInfo);
 		}
+	}
+
+	/**
+	 * Liefert true, wenn die Version gesetzt und >= 1.6.0 ist und außerdem der Prüfstring auf einen nicht
+	 * leeren Wert gesetzt ist.
+	 */
+	public boolean isAdvancedFormat() {
+		return version != null && version.compareTo(Constants.APPLICATION_VERSION) >= 0 && verifier != null
+				&& verifier.length() > 0;
+	}
+
+	/**
+	 * @return the version
+	 */
+	public String getVersion() {
+		return version;
+	}
+
+	/**
+	 * @param version
+	 *            the version to set
+	 */
+	public void setVersion(String version) {
+		this.version = version;
+	}
+
+	/**
+	 * @return the verifier
+	 */
+	public String getVerifier() {
+		return verifier;
+	}
+
+	/**
+	 * @param verifier
+	 *            the verifier to set
+	 */
+	public void setVerifier(String verifier) {
+		this.verifier = verifier;
 	}
 
 }
