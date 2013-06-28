@@ -3,15 +3,15 @@
 <project name="Create PswGen.zip in product subdirectory" default="package" basedir=".">
 
 	<target name="package">
-		<zip destfile="D:/Software/Git/pswgen-code/PswGen/product/PswGen.zip">
-			<fileset dir="D:/Software/Git/pswgen-code/PswGen/lib">
+		<zip destfile="product/PswGen.zip">
+			<fileset dir="lib">
 				<include name="*.jar" />
 			</fileset>
-			<fileset dir="D:/Software/Git/pswgen-code/PswGen/product">
+			<fileset dir="product">
 				<include name="*.exe" />
 				<include name="*.jar" />
 			</fileset>
-			<fileset dir="D:/Software/Git/pswgen-code/PswGen">
+			<fileset dir=".">
 				<include name="LICENSE.txt" />
 			</fileset>
 		</zip>
