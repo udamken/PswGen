@@ -128,6 +128,7 @@ public class StartupView extends BaseView {
 				((PswGenCtl) ctl).actionPerformedOpenServices(me);
 			}
 		});
+		getRootPane().setDefaultButton(buttonOpenServices);
 		// Widgets zufügen, erste Zeile
 		int row = 0;
 		panel.add(labelPassphrase, gbcf.getLabelConstraints(0, row));
