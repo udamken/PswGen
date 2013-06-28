@@ -3,7 +3,7 @@ package net.sf.pswgen.model;
 /******************************************************************************
  PswGen - Manages your websites and repeatably generates passwords for them
 
- Copyright (C) 2005-2012  Uwe Damken
+ Copyright (C) 2005-2013  Uwe Damken
 
  This program is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -70,6 +70,7 @@ public class ServiceInfoList {
 	private ServiceInfo encrypt(final String passphrase, final ServiceInfo d) {
 		ServiceInfo e = new ServiceInfo(); // d(ecrypt) --encrypt--> e(ncrypt)
 		e.setServiceAbbreviation(EncryptionHelper.encrypt(passphrase, d.getServiceAbbreviation()));
+		e.setAdditionalInfo(EncryptionHelper.encrypt(passphrase, d.getAdditionalInfo()));
 		e.setLoginUrl(EncryptionHelper.encrypt(passphrase, d.getLoginUrl()));
 		e.setLoginInfo(EncryptionHelper.encrypt(passphrase, d.getLoginInfo()));
 		e.setAdditionalLoginInfo(EncryptionHelper.encrypt(passphrase, d.getAdditionalLoginInfo()));

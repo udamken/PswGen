@@ -3,7 +3,7 @@ package net.sf.pswgen.gui.base;
 /******************************************************************************
  PswGen - Manages your websites and repeatably generates passwords for them
 
- Copyright (C) 2005-2012  Uwe Damken
+ Copyright (C) 2005-2013  Uwe Damken
 
  This program is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
