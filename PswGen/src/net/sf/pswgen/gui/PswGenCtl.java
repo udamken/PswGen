@@ -432,7 +432,7 @@ public class PswGenCtl extends BaseCtl {
 	}
 
 	/**
-	 * Generieren das Passwort und zeigt es an.
+	 * Generiert das Passwort und zeigt es an.
 	 */
 	public void actionPerformedDisplayPassword(final MainView mainView) {
 		try {
