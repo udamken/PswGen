@@ -108,6 +108,14 @@ public class PswGenCtl extends BaseCtl {
 			FileInputStream in = new FileInputStream(servicesFile);
 			services = (ServiceInfoList) um.unmarshal(in);
 			in.close();
+			if (!services.isAdvancedFormat()) { // Noch im alten Format? => Konvertieren
+				for (ServiceInfo si : services.getEncryptedServices()) { // Sind noch verschlüsselt ...
+					if (si.isUseSpecialCharacters() && EmptyHelper.isEmpty(si.getSpecialCharactersCount())) {
+						si.setSpecialCharactersCount(1); // für Sonderzeichen war 1 der Default
+					}
+				}
+				// Siehe saveServiceInfoList() für Konvertierungen, die die Passphrase benötigen
+			}
 		} catch (Exception e) {
 			LOGGER.log(Level.WARNING, Constants.MSG_EXCP_SERVICES, e);
 		}
@@ -123,9 +131,6 @@ public class PswGenCtl extends BaseCtl {
 						Constants.APPLICATION_VERIFIER);
 				services.setVerifier(verifierEncrypted);
 				services.setVersion(Constants.APPLICATION_VERSION);
-				for (ServiceInfo si : services.getServices()) {
-					// FIXME Alle Felder umverschlüsseln ...
-				}
 			}
 			// create JAXB context and instantiate marshaller
 			JAXBContext context = JAXBContext.newInstance(ServiceInfoList.class);
@@ -410,7 +415,7 @@ public class PswGenCtl extends BaseCtl {
 			}
 		}
 		if (mainView.getUseSpecialCharacters()) {
-			int count = EmptyHelper.getValue(mainView.getSpecialCharactersCount(), 1);
+			int count = EmptyHelper.getValue(mainView.getSpecialCharactersCount(), 0);
 			int start = EmptyHelper.getValue(mainView.getSpecialCharactersStartIndex(), 0);
 			int end = EmptyHelper.getValue(mainView.getSpecialCharactersEndIndex(), pswLength - 1);
 			if (count != 0) {

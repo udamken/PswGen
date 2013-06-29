@@ -52,7 +52,7 @@ public class ServiceInfoList {
 	/** Die Werte aus der zu Grunde liegenden Map als Collection, JAXB kann "nur" Collections */
 	@XmlElementWrapper(name = "Services")
 	@XmlElement(name = "Service")
-	private Collection<ServiceInfo> servicesAsCollection;
+	private Collection<ServiceInfo> encryptedServices;
 
 	/** Die hinter dieser ServiceInfoList liegende HashMap */
 	private TreeMap<String, ServiceInfo> services = new TreeMap<String, ServiceInfo>();
@@ -165,9 +165,9 @@ public class ServiceInfoList {
 	 * Collection aus der Map beim Speichern und beim Befüllen der Map aus der Collection beim Lesen.
 	 */
 	public void encrypt(final String passphrase) {
-		servicesAsCollection = new ArrayList<ServiceInfo>();
+		encryptedServices = new ArrayList<ServiceInfo>();
 		for (ServiceInfo si : services.values()) {
-			servicesAsCollection.add(encrypt(passphrase, si));
+			encryptedServices.add(encrypt(passphrase, si));
 		}
 	}
 
@@ -180,7 +180,7 @@ public class ServiceInfoList {
 	 */
 	public void decrypt(final String passphrase) {
 		services = new TreeMap<String, ServiceInfo>();
-		for (ServiceInfo serviceInfo : servicesAsCollection) {
+		for (ServiceInfo serviceInfo : encryptedServices) {
 			putServiceInfo(decrypt(passphrase, serviceInfo));
 		}
 	}
@@ -190,8 +190,8 @@ public class ServiceInfoList {
 	 * leeren Wert gesetzt ist.
 	 */
 	public boolean isAdvancedFormat() {
-		return version != null && version.compareTo(Constants.APPLICATION_VERSION) >= 0 && verifier != null
-				&& verifier.length() > 0;
+		return version != null && version.compareTo(Constants.ADVANCED_FILE_FORMAT_VERSION) >= 0
+				&& verifier != null && verifier.length() > 0;
 	}
 
 	/**
@@ -222,6 +222,13 @@ public class ServiceInfoList {
 	 */
 	public void setVerifier(String verifier) {
 		this.verifier = verifier;
+	}
+
+	/**
+	 * @return the encryptedServices
+	 */
+	public Collection<ServiceInfo> getEncryptedServices() {
+		return encryptedServices;
 	}
 
 }

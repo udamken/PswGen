@@ -99,15 +99,15 @@
             <smallLettersCount>-2147483648</smallLettersCount>
             <smallLettersEndIndex>-2147483648</smallLettersEndIndex>
             <smallLettersStartIndex>-2147483648</smallLettersStartIndex>
-            <specialCharacters>355A1D175F456ABA</specialCharacters>
-            <specialCharactersCount>0</specialCharactersCount>
+            <specialCharacters></specialCharacters>
+            <specialCharactersCount>-2147483648</specialCharactersCount>
             <specialCharactersEndIndex>-2147483648</specialCharactersEndIndex>
             <specialCharactersStartIndex>-2147483648</specialCharactersStartIndex>
-            <totalCharacterCount>10</totalCharacterCount>
+            <totalCharacterCount>-2147483648</totalCharacterCount>
             <useCapitalLetters>false</useCapitalLetters>
             <useDigits>false</useDigits>
-            <useSmallLetters>true</useSmallLetters>
-            <useSpecialCharacters>true</useSpecialCharacters>
+            <useSmallLetters>false</useSmallLetters>
+            <useSpecialCharacters>false</useSpecialCharacters>
         </Service>
         <Service>
             <additionalInfo>4C7668A972FB091F</additionalInfo>
@@ -230,19 +230,19 @@
             <loginUrl></loginUrl>
             <password></password>
             <passwordRepeated></passwordRepeated>
-            <serviceAbbreviation>DE9BD75A1EB3AD52</serviceAbbreviation>
+            <serviceAbbreviation>2B55285A04B1357F</serviceAbbreviation>
             <smallLettersCount>-2147483648</smallLettersCount>
             <smallLettersEndIndex>-2147483648</smallLettersEndIndex>
             <smallLettersStartIndex>-2147483648</smallLettersStartIndex>
-            <specialCharacters></specialCharacters>
-            <specialCharactersCount>-2147483648</specialCharactersCount>
+            <specialCharacters>82EF6E9558DE4CC79D25444E42C0D63DEC78B31B6CD7053A</specialCharacters>
+            <specialCharactersCount>1</specialCharactersCount>
             <specialCharactersEndIndex>-2147483648</specialCharactersEndIndex>
             <specialCharactersStartIndex>-2147483648</specialCharactersStartIndex>
-            <totalCharacterCount>-2147483648</totalCharacterCount>
+            <totalCharacterCount>5</totalCharacterCount>
             <useCapitalLetters>false</useCapitalLetters>
             <useDigits>false</useDigits>
             <useSmallLetters>false</useSmallLetters>
-            <useSpecialCharacters>false</useSpecialCharacters>
+            <useSpecialCharacters>true</useSpecialCharacters>
         </Service>
     </Services>
     <verifier>65DC7542938128C98E369CBECD25EB6EE76A5B800827D6549FC8BA8A3FE9057307EBF105667C5894E9C86BB444B4FD4E9DCD1598BF04F7C4C4472AC248942A1FA3C052ACFBFDC6C6B9C4D1D1833129D67D6883D88189E35073E36ADFC5E7AB16EF14287590D3F218</verifier>
