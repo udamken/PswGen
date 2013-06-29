@@ -55,7 +55,7 @@ public class ServiceInfoList {
 	private Collection<ServiceInfo> encryptedServices;
 
 	/** Die hinter dieser ServiceInfoList liegende HashMap */
-	private TreeMap<String, ServiceInfo> services = new TreeMap<String, ServiceInfo>();
+	private TreeMap<String, ServiceInfo> services;
 
 	/**
 	 * Ein Dienstekürzel und die zugehörigen Informationen zufügen.
@@ -166,8 +166,10 @@ public class ServiceInfoList {
 	 */
 	public void encrypt(final String passphrase) {
 		encryptedServices = new ArrayList<ServiceInfo>();
-		for (ServiceInfo si : services.values()) {
-			encryptedServices.add(encrypt(passphrase, si));
+		if (services != null) {
+			for (ServiceInfo si : services.values()) {
+				encryptedServices.add(encrypt(passphrase, si));
+			}
 		}
 	}
 
@@ -180,8 +182,10 @@ public class ServiceInfoList {
 	 */
 	public void decrypt(final String passphrase) {
 		services = new TreeMap<String, ServiceInfo>();
-		for (ServiceInfo serviceInfo : encryptedServices) {
-			putServiceInfo(decrypt(passphrase, serviceInfo));
+		if (encryptedServices != null) {
+			for (ServiceInfo serviceInfo : encryptedServices) {
+				putServiceInfo(decrypt(passphrase, serviceInfo));
+			}
 		}
 	}
 

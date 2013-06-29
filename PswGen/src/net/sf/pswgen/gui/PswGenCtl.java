@@ -105,16 +105,21 @@ public class PswGenCtl extends BaseCtl {
 		try {
 			JAXBContext context = JAXBContext.newInstance(ServiceInfoList.class);
 			Unmarshaller um = context.createUnmarshaller();
-			FileInputStream in = new FileInputStream(servicesFile);
-			services = (ServiceInfoList) um.unmarshal(in);
-			in.close();
-			if (!services.isAdvancedFormat()) { // Noch im alten Format? => Konvertieren
-				for (ServiceInfo si : services.getEncryptedServices()) { // Sind noch verschlüsselt ...
-					if (si.isUseSpecialCharacters() && EmptyHelper.isEmpty(si.getSpecialCharactersCount())) {
-						si.setSpecialCharactersCount(1); // für Sonderzeichen war 1 der Default
+			if (!servicesFile.exists()) { // Datei gibt's nicht? => Leere Liste erzeugen
+				services = new ServiceInfoList();
+			} else {
+				FileInputStream in = new FileInputStream(servicesFile);
+				services = (ServiceInfoList) um.unmarshal(in);
+				in.close();
+				if (!services.isAdvancedFormat()) { // Noch im alten Format? => Konvertieren
+					for (ServiceInfo si : services.getEncryptedServices()) { // Sind noch verschlüsselt ...
+						if (si.isUseSpecialCharacters()
+								&& EmptyHelper.isEmpty(si.getSpecialCharactersCount())) {
+							si.setSpecialCharactersCount(1); // für Sonderzeichen war 1 der Default
+						}
 					}
+					// Siehe saveServiceInfoList() für Konvertierungen, die die Passphrase benötigen
 				}
-				// Siehe saveServiceInfoList() für Konvertierungen, die die Passphrase benötigen
 			}
 		} catch (Exception e) {
 			LOGGER.log(Level.WARNING, Constants.MSG_EXCP_SERVICES, e);
@@ -506,6 +511,7 @@ public class PswGenCtl extends BaseCtl {
 					+ Constants.APPLICATION_VERSION);
 			addView(mainView);
 			mainView.pack();
+			ensureAtLeastDefaultSpecialCharacters(mainView);
 			mainView.setVisible(true);
 		} catch (Throwable t) {
 			handleThrowable(t);
