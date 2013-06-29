@@ -346,6 +346,7 @@ public class MainView extends BaseView {
 		useSpecialCharacters = wf.getCheckBox("CheckBoxSpecialCharacters");
 		useSpecialCharacters.setForeground(COLOR_INFLUENCE);
 		specialCharacters = wf.getTextField("FieldSpecialCharacters");
+		specialCharacters.setForeground(COLOR_INFLUENCE);
 		specialCharactersCount = wf.getIntegerField("FieldSpecialCharactersCount");
 		specialCharactersStartIndex = wf.getIntegerField("FieldSpecialCharactersStartIndex");
 		specialCharactersEndIndex = wf.getIntegerField("FieldSpecialCharactersEndIndex");
