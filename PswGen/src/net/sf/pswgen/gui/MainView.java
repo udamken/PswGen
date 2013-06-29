@@ -96,6 +96,8 @@ public class MainView extends BaseView {
 
 	private JCheckBox useSpecialCharacters;
 
+	private JTextField specialCharacters;
+
 	private DbcIntegerField smallLettersCount;
 
 	private DbcIntegerField smallLettersStartIndex;
@@ -343,6 +345,7 @@ public class MainView extends BaseView {
 		digitsEndIndex = wf.getIntegerField("FieldDigitsEndIndex");
 		useSpecialCharacters = wf.getCheckBox("CheckBoxSpecialCharacters");
 		useSpecialCharacters.setForeground(COLOR_INFLUENCE);
+		specialCharacters = wf.getTextField("FieldSpecialCharacters");
 		specialCharactersCount = wf.getIntegerField("FieldSpecialCharactersCount");
 		specialCharactersStartIndex = wf.getIntegerField("FieldSpecialCharactersStartIndex");
 		specialCharactersEndIndex = wf.getIntegerField("FieldSpecialCharactersEndIndex");
@@ -393,80 +396,81 @@ public class MainView extends BaseView {
 		});
 		// Widgets zufügen, erste Zeile
 		int row = 0;
-		panel.add(labelServiceAbbreviation, gbcf.getLabelConstraints(0, row));
+		panel.add(labelServiceAbbreviation, gbcf.getLabelConstraints(0, row, 2, 1));
 		panel.add(serviceAbbreviation, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 4, 1));
-		panel.add(buttonLoadService, gbcf.getLabelConstraints(5, row));
+		panel.add(buttonLoadService, gbcf.getLabelConstraints(6, row));
 		// Widgets zufügen, nächste Zeile
 		row++;
-		panel.add(labelAdditionalInfo, gbcf.getLabelConstraints(0, row));
+		panel.add(labelAdditionalInfo, gbcf.getLabelConstraints(0, row, 2, 1));
 		panel.add(additionalInfo, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 4, 1));
-		panel.add(buttonRemoveService, gbcf.getLabelConstraints(5, row));
+		panel.add(buttonRemoveService, gbcf.getLabelConstraints(6, row));
 		// Widgets zufügen, nächste Zeile
 		row++;
-		panel.add(labelLoginUrl, gbcf.getLabelConstraints(0, row));
+		panel.add(labelLoginUrl, gbcf.getLabelConstraints(0, row, 2, 1));
 		panel.add(loginUrl, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 4, 1));
-		panel.add(buttonOpenUrl, gbcf.getLabelConstraints(5, row));
+		panel.add(buttonOpenUrl, gbcf.getLabelConstraints(6, row));
 		// Widgets zufügen, nächste Zeile
 		row++;
-		panel.add(labelLoginInfo, gbcf.getLabelConstraints(0, row));
+		panel.add(labelLoginInfo, gbcf.getLabelConstraints(0, row, 2, 1));
 		panel.add(loginInfo, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 4, 1));
-		panel.add(buttonCopyLoginInfo, gbcf.getLabelConstraints(5, row));
+		panel.add(buttonCopyLoginInfo, gbcf.getLabelConstraints(6, row));
 		// Widgets zufügen, nächste Zeile
 		row++;
-		panel.add(labelAdditionalLoginInfo, gbcf.getLabelConstraints(0, row));
+		panel.add(labelAdditionalLoginInfo, gbcf.getLabelConstraints(0, row, 2, 1));
 		panel.add(additionalLoginInfo, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 4, 1));
-		panel.add(buttonOpenHelp, gbcf.getLabelConstraints(5, row));
+		panel.add(buttonOpenHelp, gbcf.getLabelConstraints(6, row));
 		// Widgets zufügen, nächste Zeile
 		row++;
-		panel.add(labelCount, gbcf.getLabelConstraints(1, row));
+		panel.add(labelCount, gbcf.getLabelConstraints(2, row));
 		panel.add(labelStartIndex, gbcf.getLabelConstraints(GridBagConstraints.RELATIVE, row));
 		panel.add(labelEndIndex, gbcf.getLabelConstraints(GridBagConstraints.RELATIVE, row));
 		// Leerzeile zufügen, nächste Zeile
 		row++;
 		// Widgets zufügen, nächste Zeile
 		row++;
-		panel.add(useSmallLetters, gbcf.getLabelConstraints(0, row));
+		panel.add(useSmallLetters, gbcf.getLabelConstraints(0, row, 2, 1));
 		panel.add(smallLettersCount, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 1, 1));
 		panel.add(smallLettersStartIndex, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 1, 1));
 		panel.add(mSmallLettersEndIndex, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 1, 1));
 		// Widgets zufügen, nächste Zeile
 		row++;
-		panel.add(useCapitalLetters, gbcf.getLabelConstraints(0, row));
+		panel.add(useCapitalLetters, gbcf.getLabelConstraints(0, row, 2, 1));
 		panel.add(capitalLettersCount, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 1, 1));
 		panel.add(capitalLettersStartIndex, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 1, 1));
 		panel.add(capitalLettersEndIndex, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 1, 1));
-		panel.add(buttonOpenAbout, gbcf.getLabelConstraints(5, row));
+		panel.add(buttonOpenAbout, gbcf.getLabelConstraints(6, row));
 		// Widgets zufügen, nächste Zeile
 		row++;
-		panel.add(useDigits, gbcf.getLabelConstraints(0, row));
+		panel.add(useDigits, gbcf.getLabelConstraints(0, row, 2, 1));
 		panel.add(digitsCount, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 1, 1));
 		panel.add(digitsStartIndex, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 1, 1));
 		panel.add(digitsEndIndex, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 1, 1));
 		// Widgets zufügen, nächste Zeile
 		row++;
-		panel.add(useSpecialCharacters, gbcf.getLabelConstraints(0, row));
+		panel.add(useSpecialCharacters, gbcf.getLabelConstraints(0, row, 1, 1));
+		panel.add(specialCharacters, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 1, 1));
 		panel.add(specialCharactersCount, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 1, 1));
 		panel.add(specialCharactersStartIndex,
 				gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 1, 1));
 		panel.add(specialCharactersEndIndex, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 1, 1));
 		// Widgets zufügen, nächste Zeile
 		row++;
-		panel.add(labelTotalCharacterCount, gbcf.getLabelConstraints(0, row));
+		panel.add(labelTotalCharacterCount, gbcf.getLabelConstraints(0, row, 2, 1));
 		panel.add(totalCharacterCount, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 1, 1));
-		panel.add(buttonCopyPassword, gbcf.getLabelConstraints(5, row));
+		panel.add(buttonCopyPassword, gbcf.getLabelConstraints(6, row));
 		// Widgets zufügen, nächste Zeile
 		row++;
-		panel.add(labelPassword, gbcf.getLabelConstraints(0, row));
+		panel.add(labelPassword, gbcf.getLabelConstraints(0, row, 2, 1));
 		panel.add(password, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 4, 1));
-		panel.add(buttonDisplayPassword, gbcf.getLabelConstraints(5, row));
+		panel.add(buttonDisplayPassword, gbcf.getLabelConstraints(6, row));
 		// Widgets zufügen, nächste Zeile
 		row++;
-		panel.add(labelPasswordRepeated, gbcf.getLabelConstraints(0, row));
+		panel.add(labelPasswordRepeated, gbcf.getLabelConstraints(0, row, 2, 1));
 		panel.add(passwordRepeated, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 4, 1));
-		panel.add(buttonStoreService, gbcf.getLabelConstraints(5, row));
+		panel.add(buttonStoreService, gbcf.getLabelConstraints(6, row));
 		// Widgets zufügen, nächste Zeile
 		row++;
-		panel.add(makePasswordVisible, gbcf.getFieldConstraints(1, row, 4, 1));
+		panel.add(makePasswordVisible, gbcf.getFieldConstraints(2, row, 4, 1));
 		// Panel zurückgeben
 		return panel;
 	}
@@ -806,6 +810,14 @@ public class MainView extends BaseView {
 
 	public void setAdditionalLoginInfo(String additionalLoginInfo) {
 		this.additionalLoginInfo.setText(additionalLoginInfo);
+	}
+
+	public String getSpecialCharacters() {
+		return specialCharacters.getText();
+	}
+
+	public void setSpecialCharacters(String specialCharacters) {
+		this.specialCharacters.setText(specialCharacters);
 	}
 
 }

@@ -78,6 +78,7 @@ public class ServiceInfoList {
 		e.setUseCapitalLetters(d.isUseCapitalLetters());
 		e.setUseDigits(d.isUseDigits());
 		e.setUseSpecialCharacters(d.isUseSpecialCharacters());
+		e.setSpecialCharacters(EncryptionHelper.encrypt(passphrase, d.getSpecialCharacters()));
 		e.setSmallLettersCount(d.getSmallLettersCount());
 		e.setSmallLettersStartIndex(d.getSmallLettersStartIndex());
 		e.setSmallLettersEndIndex(d.getSmallLettersEndIndex());
@@ -123,6 +124,7 @@ public class ServiceInfoList {
 		d.setUseCapitalLetters(e.isUseCapitalLetters());
 		d.setUseDigits(e.isUseDigits());
 		d.setUseSpecialCharacters(e.isUseSpecialCharacters());
+		d.setSpecialCharacters(EncryptionHelper.decrypt(passphrase, e.getSpecialCharacters()));
 		d.setSmallLettersCount(e.getSmallLettersCount());
 		d.setSmallLettersStartIndex(e.getSmallLettersStartIndex());
 		d.setSmallLettersEndIndex(e.getSmallLettersEndIndex());

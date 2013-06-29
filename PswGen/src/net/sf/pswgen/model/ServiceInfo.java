@@ -51,6 +51,8 @@ public class ServiceInfo {
 
 	private boolean useSpecialCharacters;
 
+	private String specialCharacters;
+
 	private int smallLettersCount;
 
 	private int smallLettersStartIndex;
@@ -295,6 +297,20 @@ public class ServiceInfo {
 	public ServiceInfo(String serviceAbbreviation) {
 		this();
 		this.serviceAbbreviation = serviceAbbreviation;
+	}
+
+	/**
+	 * @return the specialCharacters
+	 */
+	public String getSpecialCharacters() {
+		return specialCharacters;
+	}
+
+	/**
+	 * @param specialCharacters the specialCharacters to set
+	 */
+	public void setSpecialCharacters(String specialCharacters) {
+		this.specialCharacters = specialCharacters;
 	}
 
 }

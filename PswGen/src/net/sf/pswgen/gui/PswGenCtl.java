@@ -173,6 +173,8 @@ public class PswGenCtl extends BaseCtl {
 			mainView.setUseCapitalLetters(si.isUseCapitalLetters());
 			mainView.setUseDigits(si.isUseDigits());
 			mainView.setUseSpecialCharacters(si.isUseSpecialCharacters());
+			mainView.setSpecialCharacters(si.getSpecialCharacters());
+			ensureAtLeastDefaultSpecialCharacters(mainView);
 			mainView.setSmallLettersCount(si.getSmallLettersCount());
 			mainView.setSmallLettersStartIndex(si.getSmallLettersStartIndex());
 			mainView.setSmallLettersEndIndex(si.getSmallLettersEndIndex());
@@ -334,6 +336,7 @@ public class PswGenCtl extends BaseCtl {
 			si.setUseCapitalLetters(mainView.getUseCapitalLetters());
 			si.setUseDigits(mainView.getUseDigits());
 			si.setUseSpecialCharacters(mainView.getUseSpecialCharacters());
+			si.setSpecialCharacters(mainView.getSpecialCharacters());
 			si.setSmallLettersCount(mainView.getSmallLettersCount());
 			si.setSmallLettersStartIndex(mainView.getSmallLettersStartIndex());
 			si.setSmallLettersEndIndex(mainView.getSmallLettersEndIndex());
@@ -364,6 +367,7 @@ public class PswGenCtl extends BaseCtl {
 	 */
 	private String generatePassword(final MainView mainView) {
 		mainView.setWaitCursor();
+		ensureAtLeastDefaultSpecialCharacters(mainView);
 		String characters = ""; // Zeichen für den Rest des Passworts
 		final String serviceAbbreviation = mainView.getServiceAbbreviation();
 		validateServiceAbbreviation(serviceAbbreviation);
@@ -410,12 +414,21 @@ public class PswGenCtl extends BaseCtl {
 			int start = EmptyHelper.getValue(mainView.getSpecialCharactersStartIndex(), 0);
 			int end = EmptyHelper.getValue(mainView.getSpecialCharactersEndIndex(), pswLength - 1);
 			if (count != 0) {
-				pg.distributeCharacters(count, Constants.SPECIAL_CHARS, start, end);
+				pg.distributeCharacters(count, mainView.getSpecialCharacters(), start, end);
 			} else {
-				characters += Constants.SPECIAL_CHARS;
+				characters += mainView.getSpecialCharacters();
 			}
 		}
 		return pg.getPassword(characters); // Rest auffüllen
+	}
+
+	/**
+	 * Sonderzeichen müssen gesetzt sein, und wenn es nur eine Default-Auswahl ist.
+	 */
+	private void ensureAtLeastDefaultSpecialCharacters(final MainView mainView) {
+		if (mainView.getSpecialCharacters() == null || mainView.getSpecialCharacters().length() == 0) {
+			mainView.setSpecialCharacters(Constants.SPECIAL_CHARS);
+		}
 	}
 
 	/**

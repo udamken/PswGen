@@ -72,6 +72,19 @@ public class GridBagConstraintsFactory {
 	}
 
 	/**
+	 * Liefert ein GridBagConstraint mit gridx und gridy mit einer geringen x- und y-Gewichtung. Dies wird
+	 * typischerweise für Labels und Buttons verwendet, die sich weniger ausdehnen sollen als Felder und
+	 * Tabellen.
+	 */
+	public GridBagConstraints getLabelConstraints(final int gridx, final int gridy, final int gridwidth,
+			final int gridheight) {
+		GridBagConstraints gbc = getLabelConstraints(gridx, gridy);
+		gbc.gridwidth = gridwidth;
+		gbc.gridheight = gridheight;
+		return gbc;
+	}
+
+	/**
 	 * Liefert ein GridBagConstraint mit gridx, gridy, gridwidth und gridheight mit einer mittleren x- und
 	 * y-Gewichtung. Dies wird typischerweise für Felder verwendet, die sich in der Breite mehr als Labels und
 	 * in der Höhe weniger als Tabellen ausdehnen sollen.

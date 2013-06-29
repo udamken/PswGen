@@ -86,6 +86,4 @@ public class Constants {
 
 	public static final String SPECIAL_CHARS = ",.;:!$&()=?+-*/#";
 
-	public static final String CHARACTERS = ALPHANUMERICS + SPECIAL_CHARS;
-
 }
