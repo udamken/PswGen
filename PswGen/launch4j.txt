@@ -1,0 +1,5 @@
+ACHTUNG:
+
+PswGenSplash.bmp muss von GIMP aus PswGenSplash.xcf mit Kompatibilitätsoption
+"Farbraum nicht schreiben" und 24-Bit exportiert werden, sonst startet das
+von launch4j erzeugte exe-File nicht.

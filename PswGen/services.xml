@@ -14,10 +14,11 @@
             <loginUrl></loginUrl>
             <password></password>
             <passwordRepeated></passwordRepeated>
-            <serviceAbbreviation>A3</serviceAbbreviation>
+            <serviceAbbreviation>BB352A5A34BFD4C0</serviceAbbreviation>
             <smallLettersCount>-2147483648</smallLettersCount>
             <smallLettersEndIndex>-2147483648</smallLettersEndIndex>
             <smallLettersStartIndex>-2147483648</smallLettersStartIndex>
+            <specialCharacters></specialCharacters>
             <specialCharactersCount>-2147483648</specialCharactersCount>
             <specialCharactersEndIndex>-2147483648</specialCharactersEndIndex>
             <specialCharactersStartIndex>-2147483648</specialCharactersStartIndex>
@@ -28,7 +29,7 @@
             <useSpecialCharacters>false</useSpecialCharacters>
         </Service>
         <Service>
-            <additionalInfo>a</additionalInfo>
+            <additionalInfo>896BE247543ED2AA</additionalInfo>
             <additionalLoginInfo></additionalLoginInfo>
             <capitalLettersCount>-2147483648</capitalLettersCount>
             <capitalLettersEndIndex>-2147483648</capitalLettersEndIndex>
@@ -37,13 +38,14 @@
             <digitsEndIndex>-2147483648</digitsEndIndex>
             <digitsStartIndex>-2147483648</digitsStartIndex>
             <loginInfo></loginInfo>
-            <loginUrl>a</loginUrl>
+            <loginUrl>896BE247543ED2AA</loginUrl>
             <password></password>
             <passwordRepeated></passwordRepeated>
-            <serviceAbbreviation>B2</serviceAbbreviation>
+            <serviceAbbreviation>258AFEDD2FC55052</serviceAbbreviation>
             <smallLettersCount>-2147483648</smallLettersCount>
             <smallLettersEndIndex>-2147483648</smallLettersEndIndex>
             <smallLettersStartIndex>-2147483648</smallLettersStartIndex>
+            <specialCharacters></specialCharacters>
             <specialCharactersCount>-2147483648</specialCharactersCount>
             <specialCharactersEndIndex>-2147483648</specialCharactersEndIndex>
             <specialCharactersStartIndex>-2147483648</specialCharactersStartIndex>
@@ -54,7 +56,7 @@
             <useSpecialCharacters>false</useSpecialCharacters>
         </Service>
         <Service>
-            <additionalInfo>a</additionalInfo>
+            <additionalInfo>896BE247543ED2AA</additionalInfo>
             <additionalLoginInfo></additionalLoginInfo>
             <capitalLettersCount>-2147483648</capitalLettersCount>
             <capitalLettersEndIndex>-2147483648</capitalLettersEndIndex>
@@ -63,13 +65,14 @@
             <digitsEndIndex>-2147483648</digitsEndIndex>
             <digitsStartIndex>-2147483648</digitsStartIndex>
             <loginInfo></loginInfo>
-            <loginUrl>a</loginUrl>
+            <loginUrl>896BE247543ED2AA</loginUrl>
             <password></password>
             <passwordRepeated></passwordRepeated>
-            <serviceAbbreviation>Ca</serviceAbbreviation>
+            <serviceAbbreviation>641DF808CE59D6DF</serviceAbbreviation>
             <smallLettersCount>-2147483648</smallLettersCount>
             <smallLettersEndIndex>-2147483648</smallLettersEndIndex>
             <smallLettersStartIndex>-2147483648</smallLettersStartIndex>
+            <specialCharacters></specialCharacters>
             <specialCharactersCount>-2147483648</specialCharactersCount>
             <specialCharactersEndIndex>-2147483648</specialCharactersEndIndex>
             <specialCharactersStartIndex>-2147483648</specialCharactersStartIndex>
@@ -80,7 +83,7 @@
             <useSpecialCharacters>false</useSpecialCharacters>
         </Service>
         <Service>
-            <additionalInfo>Zusatzinfos</additionalInfo>
+            <additionalInfo>F7358CFF4D82D28B9610CFE41BB9FAA2</additionalInfo>
             <additionalLoginInfo>C13E9C1A63E3AD089155303B1BEB1429</additionalLoginInfo>
             <capitalLettersCount>-2147483648</capitalLettersCount>
             <capitalLettersEndIndex>-2147483648</capitalLettersEndIndex>
@@ -89,24 +92,25 @@
             <digitsEndIndex>-2147483648</digitsEndIndex>
             <digitsStartIndex>-2147483648</digitsStartIndex>
             <loginInfo>632B70B4F635E7E496EC650FE8F23BD1</loginInfo>
-            <loginUrl>Internetseite</loginUrl>
+            <loginUrl>BFB35F00CC0BD19AD9EAA7C5F1263275</loginUrl>
             <password></password>
             <passwordRepeated></passwordRepeated>
-            <serviceAbbreviation>Dienstekürzel</serviceAbbreviation>
+            <serviceAbbreviation>B861CAB29E5125F53869672DFB2234A2</serviceAbbreviation>
             <smallLettersCount>-2147483648</smallLettersCount>
             <smallLettersEndIndex>-2147483648</smallLettersEndIndex>
             <smallLettersStartIndex>-2147483648</smallLettersStartIndex>
-            <specialCharactersCount>-2147483648</specialCharactersCount>
+            <specialCharacters>355A1D175F456ABA</specialCharacters>
+            <specialCharactersCount>0</specialCharactersCount>
             <specialCharactersEndIndex>-2147483648</specialCharactersEndIndex>
             <specialCharactersStartIndex>-2147483648</specialCharactersStartIndex>
-            <totalCharacterCount>-2147483648</totalCharacterCount>
+            <totalCharacterCount>10</totalCharacterCount>
             <useCapitalLetters>false</useCapitalLetters>
             <useDigits>false</useDigits>
-            <useSmallLetters>false</useSmallLetters>
-            <useSpecialCharacters>false</useSpecialCharacters>
+            <useSmallLetters>true</useSmallLetters>
+            <useSpecialCharacters>true</useSpecialCharacters>
         </Service>
         <Service>
-            <additionalInfo>jetzt</additionalInfo>
+            <additionalInfo>4C7668A972FB091F</additionalInfo>
             <additionalLoginInfo>C13E9C1A63E3AD089155303B1BEB1429</additionalLoginInfo>
             <capitalLettersCount>-2147483648</capitalLettersCount>
             <capitalLettersEndIndex>-2147483648</capitalLettersEndIndex>
@@ -115,13 +119,14 @@
             <digitsEndIndex>-2147483648</digitsEndIndex>
             <digitsStartIndex>-2147483648</digitsStartIndex>
             <loginInfo>632B70B4F635E7E496EC650FE8F23BD1</loginInfo>
-            <loginUrl>www</loginUrl>
+            <loginUrl>362B9E0C9039A928</loginUrl>
             <password></password>
             <passwordRepeated></passwordRepeated>
-            <serviceAbbreviation>a</serviceAbbreviation>
+            <serviceAbbreviation>896BE247543ED2AA</serviceAbbreviation>
             <smallLettersCount>-2147483648</smallLettersCount>
             <smallLettersEndIndex>-2147483648</smallLettersEndIndex>
             <smallLettersStartIndex>-2147483648</smallLettersStartIndex>
+            <specialCharacters></specialCharacters>
             <specialCharactersCount>-2147483648</specialCharactersCount>
             <specialCharactersEndIndex>-2147483648</specialCharactersEndIndex>
             <specialCharactersStartIndex>-2147483648</specialCharactersStartIndex>
@@ -132,7 +137,7 @@
             <useSpecialCharacters>false</useSpecialCharacters>
         </Service>
         <Service>
-            <additionalInfo>20.02.2010</additionalInfo>
+            <additionalInfo>2B7035321EF023430EA8E9A876234311</additionalInfo>
             <additionalLoginInfo></additionalLoginInfo>
             <capitalLettersCount>-2147483648</capitalLettersCount>
             <capitalLettersEndIndex>-2147483648</capitalLettersEndIndex>
@@ -144,10 +149,11 @@
             <loginUrl></loginUrl>
             <password></password>
             <passwordRepeated></passwordRepeated>
-            <serviceAbbreviation>a2</serviceAbbreviation>
+            <serviceAbbreviation>F4F35A9A57A350C0</serviceAbbreviation>
             <smallLettersCount>-2147483648</smallLettersCount>
             <smallLettersEndIndex>-2147483648</smallLettersEndIndex>
             <smallLettersStartIndex>-2147483648</smallLettersStartIndex>
+            <specialCharacters></specialCharacters>
             <specialCharactersCount>-2147483648</specialCharactersCount>
             <specialCharactersEndIndex>-2147483648</specialCharactersEndIndex>
             <specialCharactersStartIndex>-2147483648</specialCharactersStartIndex>
@@ -158,7 +164,7 @@
             <useSpecialCharacters>false</useSpecialCharacters>
         </Service>
         <Service>
-            <additionalInfo>01.01.2010</additionalInfo>
+            <additionalInfo>68DD6CC98EDAF1438BA42544DA5DB64A</additionalInfo>
             <additionalLoginInfo></additionalLoginInfo>
             <capitalLettersCount>-2147483648</capitalLettersCount>
             <capitalLettersEndIndex>-2147483648</capitalLettersEndIndex>
@@ -170,10 +176,11 @@
             <loginUrl></loginUrl>
             <password></password>
             <passwordRepeated></passwordRepeated>
-            <serviceAbbreviation>b</serviceAbbreviation>
+            <serviceAbbreviation>5C9BE8F90C80C643</serviceAbbreviation>
             <smallLettersCount>-2147483648</smallLettersCount>
             <smallLettersEndIndex>-2147483648</smallLettersEndIndex>
             <smallLettersStartIndex>-2147483648</smallLettersStartIndex>
+            <specialCharacters></specialCharacters>
             <specialCharactersCount>-2147483648</specialCharactersCount>
             <specialCharactersEndIndex>-2147483648</specialCharactersEndIndex>
             <specialCharactersStartIndex>-2147483648</specialCharactersStartIndex>
@@ -184,7 +191,7 @@
             <useSpecialCharacters>false</useSpecialCharacters>
         </Service>
         <Service>
-            <additionalInfo>01.02.2009</additionalInfo>
+            <additionalInfo>7973D08584A4639FC9FC74AF29EA9D9C</additionalInfo>
             <additionalLoginInfo></additionalLoginInfo>
             <capitalLettersCount>-2147483648</capitalLettersCount>
             <capitalLettersEndIndex>-2147483648</capitalLettersEndIndex>
@@ -196,10 +203,11 @@
             <loginUrl></loginUrl>
             <password></password>
             <passwordRepeated></passwordRepeated>
-            <serviceAbbreviation>b2</serviceAbbreviation>
+            <serviceAbbreviation>3392925E2FCF3A1D</serviceAbbreviation>
             <smallLettersCount>-2147483648</smallLettersCount>
             <smallLettersEndIndex>-2147483648</smallLettersEndIndex>
             <smallLettersStartIndex>-2147483648</smallLettersStartIndex>
+            <specialCharacters></specialCharacters>
             <specialCharactersCount>-2147483648</specialCharactersCount>
             <specialCharactersEndIndex>-2147483648</specialCharactersEndIndex>
             <specialCharactersStartIndex>-2147483648</specialCharactersStartIndex>
@@ -210,7 +218,7 @@
             <useSpecialCharacters>false</useSpecialCharacters>
         </Service>
         <Service>
-            <additionalInfo>20.02.2009</additionalInfo>
+            <additionalInfo>2B7035321EF02343C6F1B7A19CC535EB</additionalInfo>
             <additionalLoginInfo></additionalLoginInfo>
             <capitalLettersCount>-2147483648</capitalLettersCount>
             <capitalLettersEndIndex>-2147483648</capitalLettersEndIndex>
@@ -222,10 +230,11 @@
             <loginUrl></loginUrl>
             <password></password>
             <passwordRepeated></passwordRepeated>
-            <serviceAbbreviation>c</serviceAbbreviation>
+            <serviceAbbreviation>DE9BD75A1EB3AD52</serviceAbbreviation>
             <smallLettersCount>-2147483648</smallLettersCount>
             <smallLettersEndIndex>-2147483648</smallLettersEndIndex>
             <smallLettersStartIndex>-2147483648</smallLettersStartIndex>
+            <specialCharacters></specialCharacters>
             <specialCharactersCount>-2147483648</specialCharactersCount>
             <specialCharactersEndIndex>-2147483648</specialCharactersEndIndex>
             <specialCharactersStartIndex>-2147483648</specialCharactersStartIndex>
@@ -236,4 +245,6 @@
             <useSpecialCharacters>false</useSpecialCharacters>
         </Service>
     </Services>
+    <verifier>65DC7542938128C98E369CBECD25EB6EE76A5B800827D6549FC8BA8A3FE9057307EBF105667C5894E9C86BB444B4FD4E9DCD1598BF04F7C4C4472AC248942A1FA3C052ACFBFDC6C6B9C4D1D1833129D67D6883D88189E35073E36ADFC5E7AB16EF14287590D3F218</verifier>
+    <version>1.6.0</version>
 </ServiceList>

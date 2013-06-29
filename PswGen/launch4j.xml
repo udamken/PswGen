@@ -15,7 +15,6 @@
   <icon>etc\net\sf\pswgen\PswGen.ico</icon>
   <classPath>
     <mainClass>net.sf.pswgen.main.PswGen</mainClass>
-    <cp>PswGen.jar</cp>
     <cp>commons-cli-1.2.jar</cp>
   </classPath>
   <jre>
@@ -25,7 +24,7 @@
     <jdkPreference>preferJre</jdkPreference>
   </jre>
   <splash>
-    <file>D:\Software\Git\pswgen-code\PswGen\etc\net\sf\pswgen\PswGenSplash.bmp</file>
+    <file>etc\net\sf\pswgen\PswGenSplash.bmp</file>
     <waitForWindow>true</waitForWindow>
     <timeout>60</timeout>
     <timeoutErr>true</timeoutErr>

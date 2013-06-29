@@ -3,7 +3,7 @@ package net.sf.pswgen.gui;
 /******************************************************************************
  PswGen - Manages your websites and repeatably generates passwords for them
 
- Copyright (C) 2005-2013  Uwe Damken
+ Copyright (C) 2005-2013 Uwe Damken
 
  This program is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -43,7 +43,7 @@ import net.sf.pswgen.gui.base.WidgetFactory;
  * Dies ist die View des Startfensters von PswGen.
  * </p>
  * <p>
- * (c) 2005-2013, by Uwe Damken
+ * Copyright (C) 2005-2013 Uwe Damken
  * </p>
  */
 public class StartupView extends BaseView {

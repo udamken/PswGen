@@ -3,7 +3,7 @@ package net.sf.pswgen.model;
 /******************************************************************************
  PswGen - Manages your websites and repeatably generates passwords for them
 
- Copyright (C) 2005-2013  Uwe Damken
+ Copyright (C) 2005-2013 Uwe Damken
 
  This program is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * Hält die Informationen für ein Dienstekürzel, die zum Generieren eines Passworts notwendig sind.
  * </p>
  * <p>
- * (c) 2005-2012, by Uwe Damken
+ * Copyright (C) 2005-2013 Uwe Damken
  * </p>
  */
 @XmlRootElement(name = "ServiceInfo")

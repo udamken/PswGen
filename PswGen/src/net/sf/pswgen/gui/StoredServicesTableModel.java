@@ -3,7 +3,7 @@ package net.sf.pswgen.gui;
 /******************************************************************************
  PswGen - Manages your websites and repeatably generates passwords for them
 
- Copyright (C) 2005-2013  Uwe Damken
+ Copyright (C) 2005-2013 Uwe Damken
 
  This program is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@ import net.sf.pswgen.model.ServiceInfo;
  * Table Model für die Tabelle der gespeicherten Dienste
  * </p>
  * <p>
- * (c) 2007-2012, by Uwe Damken
+ * Copyright (C) 2005-2013 Uwe Damken
  * </p>
  */
 public class StoredServicesTableModel extends AbstractTableModel {
