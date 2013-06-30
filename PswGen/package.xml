@@ -2,14 +2,25 @@
 
 <project name="Create PswGen.zip in product subdirectory" default="package" basedir=".">
 
+	<property name="pswgen.version" value="1.6.0" />
 	<property name="launch4j.dir" location="C:/Program Files/launch4j" />
 
 	<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${launch4j.dir}/launch4j.jar:${launch4j.dir}/lib/xstream.jar" />
 
-	<!--
-		ACHTUNG: Das jar-File muss noch mit Eclipse erzeugt werden
-	-->
-	<target name="package" depends="createExe,createZip">
+	<target name="package" depends="compileNotSupported,createJar,createExe,createZip,cleanup">
+	</target>
+
+	<target name="compileNotSupported">
+		<echo>ACHTUNG: Der Code muss vorher mit Eclipse kompiliert worden sein!</echo>
+	</target>
+
+	<target name="createJar">
+		<jar destfile="product/PswGen.jar" basedir="bin" excludes="**/*Test.class">
+			<manifest>
+				<attribute name="Main-Class" value="net.sf.pswgen.main.PswGen" />
+				<attribute name="Class-Path" value="commons-cli-1.2.jar" />
+			</manifest>
+		</jar>
 	</target>
 
 	<!--
@@ -22,7 +33,7 @@
 	</target>
 
 	<target name="createZip">
-		<zip destfile="product/PswGen.zip">
+		<zip destfile="product/PswGen_${pswgen.version}.zip">
 			<fileset dir="lib">
 				<include name="*.jar" />
 			</fileset>
@@ -34,6 +45,11 @@
 				<include name="LICENSE.txt" />
 			</fileset>
 		</zip>
+	</target>
+	
+	<target name="cleanup">
+		<delete file="product/PswGen.jar"/>
+		<delete file="product/PswGen.exe"/>
 	</target>
 
 </project>

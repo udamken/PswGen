@@ -12,7 +12,7 @@
   <customProcName>false</customProcName>
   <stayAlive>false</stayAlive>
   <manifest></manifest>
-  <icon>etc\net\sf\pswgen\PswGen.ico</icon>
+  <icon>PswGen.ico</icon>
   <classPath>
     <mainClass>net.sf.pswgen.main.PswGen</mainClass>
     <cp>commons-cli-1.2.jar</cp>
