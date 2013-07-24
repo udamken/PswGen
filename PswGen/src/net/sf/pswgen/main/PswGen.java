@@ -47,24 +47,12 @@ import org.apache.commons.cli.Options;
  * TODO Angedachte Änderungen ...
  * </p>
  * <p>
- * Verschlüsselung der Datei mit der Passphrase. So kann man bei Öffnen der XML-Datei schon sehen, ob die
- * Passphrase korrekt ist oder Teststring zum Überprüfen, ob die Datei richtig entschlüsselt wurde. Ablage des
- * verschlüsselten Teststrings und nach dem Entschlüsseln prüfen, ob es der erwartete String ist.
- * </p>
- * <p>
  * Im PswGenCtl gibt es Event-Handling-Methoden, die zum Teil direkt die Fachlogik beinhalten, andere rufen
  * separate Methoden auf. Generell wäre es sinnvoll, die Fachlogik zu separieren, leider ist sie aber sehr
  * GUI-nah.
  * </p>
  * <p>
- * CheckBox oder RadioButtons, welches Feld beim Öffnen in die Zwischenablage kopiert werden soll, die
- * Anmeldeinformationen oder gleich das Passwort, wie zum Beispiel bei der FRITZ!Box.
- * </p>
- * <p>
  * Für Integer die Feldlänge als WidgetInfo aufnehmen.
- * </p>
- * <p>
- * Speichernabfrage beim Wechsel zu einem anderen Dienst einbauen.
  * </p>
  * <p>
  * Mobile Version bereitsstellen, eventuell ohne Pflege mit nur einmaliger Passphrase-Eingabe.
