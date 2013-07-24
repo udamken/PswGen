@@ -38,7 +38,7 @@ public class Constants {
 	public static final String APPLICATION_NAME = "PswGen";
 
 	/** Die Version dieser Anwendung */
-	public static final String APPLICATION_VERSION = "1.6.0";
+	public static final String APPLICATION_VERSION = "1.6.1";
 
 	/** Die Version dieser Anwendung */
 	public static final String ADVANCED_FILE_FORMAT_VERSION = "1.6.0";
