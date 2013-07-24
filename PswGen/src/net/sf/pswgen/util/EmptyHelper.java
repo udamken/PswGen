@@ -31,10 +31,10 @@ package net.sf.pswgen.util;
 public class EmptyHelper {
 
 	/** Der Leerwert für einen Integer */
-	protected static final int EMPTY_INT = Integer.MIN_VALUE;
+	public static final int EMPTY_INT = Integer.MIN_VALUE;
 
 	/** Der Leerwert für einen String */
-	protected static final String EMPTY_STRING = "";
+	public static final String EMPTY_STRING = "";
 
 	/**
 	 * Liefert den defaultValue, wenn der übergebene value der Leerwert ist.

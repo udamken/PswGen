@@ -22,6 +22,8 @@ package net.sf.pswgen.model;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import net.sf.pswgen.util.EmptyHelper;
+
 /**
  * <p>
  * Hält die Informationen für ein Dienstekürzel, die zum Generieren eines Passworts notwendig sind.
@@ -53,31 +55,31 @@ public class ServiceInfo {
 
 	private String specialCharacters;
 
-	private int smallLettersCount;
+	private int smallLettersCount = EmptyHelper.EMPTY_INT;
 
-	private int smallLettersStartIndex;
+	private int smallLettersStartIndex = EmptyHelper.EMPTY_INT;
 
-	private int smallLettersEndIndex;
+	private int smallLettersEndIndex = EmptyHelper.EMPTY_INT;
 
-	private int capitalLettersCount;
+	private int capitalLettersCount = EmptyHelper.EMPTY_INT;
 
-	private int capitalLettersStartIndex;
+	private int capitalLettersStartIndex = EmptyHelper.EMPTY_INT;
 
-	private int capitalLettersEndIndex;
+	private int capitalLettersEndIndex = EmptyHelper.EMPTY_INT;
 
-	private int digitsCount;
+	private int digitsCount = EmptyHelper.EMPTY_INT;
 
-	private int specialCharactersCount;
+	private int specialCharactersCount = EmptyHelper.EMPTY_INT;
 
-	private int digitsStartIndex;
+	private int digitsStartIndex = EmptyHelper.EMPTY_INT;
 
-	private int digitsEndIndex;
+	private int digitsEndIndex = EmptyHelper.EMPTY_INT;
 
-	private int specialCharactersStartIndex;
+	private int specialCharactersStartIndex = EmptyHelper.EMPTY_INT;
 
-	private int specialCharactersEndIndex;
+	private int specialCharactersEndIndex = EmptyHelper.EMPTY_INT;
 
-	private int totalCharacterCount;
+	private int totalCharacterCount = EmptyHelper.EMPTY_INT;
 
 	private String password;
 
@@ -307,7 +309,8 @@ public class ServiceInfo {
 	}
 
 	/**
-	 * @param specialCharacters the specialCharacters to set
+	 * @param specialCharacters
+	 *            the specialCharacters to set
 	 */
 	public void setSpecialCharacters(String specialCharacters) {
 		this.specialCharacters = specialCharacters;

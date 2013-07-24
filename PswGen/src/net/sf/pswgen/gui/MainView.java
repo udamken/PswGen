@@ -43,6 +43,10 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableRowSorter;
@@ -102,7 +106,7 @@ public class MainView extends BaseView {
 
 	private DbcIntegerField smallLettersStartIndex;
 
-	private DbcIntegerField mSmallLettersEndIndex;
+	private DbcIntegerField smallLettersEndIndex;
 
 	private DbcIntegerField capitalLettersCount;
 
@@ -134,6 +138,9 @@ public class MainView extends BaseView {
 	private MainView me = this;
 
 	private JScrollPane scrollableTableStoredServices;
+
+	/** Wurden Werte des aktuellen Dienstes verändert? */
+	private boolean dirty;
 
 	/**
 	 * Konstruiert diese View mit einer Referenz auf den zugehörigen Controller.
@@ -263,21 +270,48 @@ public class MainView extends BaseView {
 		// Fabriken holen
 		GridBagConstraintsFactory gbcf = GridBagConstraintsFactory.getInstance();
 		WidgetFactory wf = WidgetFactory.getInstance();
+		// Dirty-Listener erzeugen
+		DocumentListener documentListener = new DocumentListener() {
+
+			@Override
+			public void changedUpdate(DocumentEvent arg0) {
+				dirty = true;
+			}
+
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				dirty = true;
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				dirty = true;
+			}
+		};
+		ChangeListener changeListener = new ChangeListener() {
+
+			@Override
+			public void stateChanged(ChangeEvent arg0) {
+				dirty = true;
+			}
+		};
 		// Widgets erzeugen
 		JPanel panel = wf.getPanel("PanelEditService");
 		JLabel labelServiceAbbreviation = wf.getLabel("LabelServiceAbbreviation");
 		labelServiceAbbreviation.setForeground(COLOR_INFLUENCE);
 		serviceAbbreviation = wf.getTextField("FieldServiceAbbreviation");
-		JButton buttonLoadService = wf.getButton("ButtonLoadService");
-		buttonLoadService.addActionListener(new ActionListener() {
+		serviceAbbreviation.getDocument().addDocumentListener(documentListener);
+		JButton buttonClearService = wf.getButton("ButtonClearService");
+		buttonClearService.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				((PswGenCtl) ctl).actionPerformedLoadService(me);
+				((PswGenCtl) ctl).actionPerformedClearService(me);
 			}
 		});
 		JLabel labelAdditionalInfo = wf.getLabel("LabelAdditionalInfo");
 		labelAdditionalInfo.setForeground(COLOR_INFLUENCE);
 		additionalInfo = wf.getTextField("FieldAdditionalInfo");
+		additionalInfo.getDocument().addDocumentListener(documentListener);
 		JButton buttonRemoveService = wf.getButton("ButtonRemoveService");
 		buttonRemoveService.addActionListener(new ActionListener() {
 			@Override
@@ -287,6 +321,7 @@ public class MainView extends BaseView {
 		});
 		JLabel labelLoginUrl = wf.getLabel("LabelLoginUrl");
 		loginUrl = wf.getTextField("FieldLoginUrl");
+		loginUrl.getDocument().addDocumentListener(documentListener);
 		JButton buttonOpenUrl = wf.getButton("ButtonOpenUrl");
 		buttonOpenUrl.addActionListener(new ActionListener() {
 			@Override
@@ -296,6 +331,7 @@ public class MainView extends BaseView {
 		});
 		JLabel labelLoginInfo = wf.getLabel("LabelLoginInfo");
 		loginInfo = wf.getTextField("FieldLoginInfo");
+		loginInfo.getDocument().addDocumentListener(documentListener);
 		JButton buttonCopyLoginInfo = wf.getButton("ButtonCopyLoginInfo");
 		buttonCopyLoginInfo.addActionListener(new ActionListener() {
 			@Override
@@ -305,6 +341,7 @@ public class MainView extends BaseView {
 		});
 		JLabel labelAdditionalLoginInfo = wf.getLabel("LabelAdditionalLoginInfo");
 		additionalLoginInfo = wf.getTextField("FieldAdditionalLoginInfo");
+		additionalLoginInfo.getDocument().addDocumentListener(documentListener);
 		JButton buttonOpenHelp = wf.getButton("ButtonOpenHelp");
 		buttonOpenHelp.addActionListener(new ActionListener() {
 			@Override
@@ -329,30 +366,47 @@ public class MainView extends BaseView {
 		labelEndIndex.setHorizontalAlignment(SwingConstants.CENTER);
 		labelEndIndex.setForeground(COLOR_INFLUENCE);
 		useSmallLetters = wf.getCheckBox("CheckBoxSmallLetters");
+		useSmallLetters.addChangeListener(changeListener);
 		useSmallLetters.setForeground(COLOR_INFLUENCE);
 		smallLettersCount = wf.getIntegerField("FieldSmallLettersCount");
+		smallLettersCount.getDocument().addDocumentListener(documentListener);
 		smallLettersStartIndex = wf.getIntegerField("FieldSmallLettersStartIndex");
-		mSmallLettersEndIndex = wf.getIntegerField("FieldSmallLettersEndIndex");
+		smallLettersStartIndex.getDocument().addDocumentListener(documentListener);
+		smallLettersEndIndex = wf.getIntegerField("FieldSmallLettersEndIndex");
+		smallLettersEndIndex.getDocument().addDocumentListener(documentListener);
 		useCapitalLetters = wf.getCheckBox("CheckBoxCapitalLetters");
+		useCapitalLetters.addChangeListener(changeListener);
 		useCapitalLetters.setForeground(COLOR_INFLUENCE);
 		capitalLettersCount = wf.getIntegerField("FieldCapitalLettersCount");
+		capitalLettersCount.getDocument().addDocumentListener(documentListener);
 		capitalLettersStartIndex = wf.getIntegerField("FieldCapitalLettersStartIndex");
+		capitalLettersStartIndex.getDocument().addDocumentListener(documentListener);
 		capitalLettersEndIndex = wf.getIntegerField("FieldCapitalLettersEndIndex");
+		capitalLettersEndIndex.getDocument().addDocumentListener(documentListener);
 		useDigits = wf.getCheckBox("CheckBoxDigits");
+		useDigits.addChangeListener(changeListener);
 		useDigits.setForeground(COLOR_INFLUENCE);
 		digitsCount = wf.getIntegerField("FieldDigitsCount");
+		digitsCount.getDocument().addDocumentListener(documentListener);
 		digitsStartIndex = wf.getIntegerField("FieldDigitsStartIndex");
+		digitsStartIndex.getDocument().addDocumentListener(documentListener);
 		digitsEndIndex = wf.getIntegerField("FieldDigitsEndIndex");
+		digitsEndIndex.getDocument().addDocumentListener(documentListener);
 		useSpecialCharacters = wf.getCheckBox("CheckBoxSpecialCharacters");
+		useSpecialCharacters.addChangeListener(changeListener);
 		useSpecialCharacters.setForeground(COLOR_INFLUENCE);
 		specialCharacters = wf.getTextField("FieldSpecialCharacters");
 		specialCharacters.setForeground(COLOR_INFLUENCE);
 		specialCharactersCount = wf.getIntegerField("FieldSpecialCharactersCount");
+		specialCharactersCount.getDocument().addDocumentListener(documentListener);
 		specialCharactersStartIndex = wf.getIntegerField("FieldSpecialCharactersStartIndex");
+		specialCharactersStartIndex.getDocument().addDocumentListener(documentListener);
 		specialCharactersEndIndex = wf.getIntegerField("FieldSpecialCharactersEndIndex");
+		specialCharactersEndIndex.getDocument().addDocumentListener(documentListener);
 		JLabel labelTotalCharacterCount = wf.getLabel("LabelTotalCharacterCount");
 		labelTotalCharacterCount.setForeground(COLOR_INFLUENCE);
 		totalCharacterCount = wf.getIntegerField("FieldTotalCharacterCount");
+		totalCharacterCount.getDocument().addDocumentListener(documentListener);
 		JButton buttonCopyPassword = wf.getButton("ButtonCopyPassword");
 		buttonCopyPassword.setForeground(COLOR_INFLUENCE);
 		buttonCopyPassword.addActionListener(new ActionListener() {
@@ -363,6 +417,7 @@ public class MainView extends BaseView {
 		});
 		JLabel labelPassword = wf.getLabel("LabelPassword");
 		password = wf.getPasswordField("FieldPassword");
+		password.getDocument().addDocumentListener(documentListener);
 		JButton buttonDisplayPassword = wf.getButton("ButtonDisplayPassword");
 		buttonDisplayPassword.setForeground(COLOR_INFLUENCE);
 		buttonDisplayPassword.addActionListener(new ActionListener() {
@@ -373,6 +428,7 @@ public class MainView extends BaseView {
 		});
 		JLabel labelPasswordRepeated = wf.getLabel("LabelPasswordRepeated");
 		passwordRepeated = wf.getPasswordField("FieldPasswordRepeated");
+		passwordRepeated.getDocument().addDocumentListener(documentListener);
 		makePasswordVisible = wf.getCheckBox("CheckBoxMakePasswordVisible");
 		makePasswordVisible.addItemListener(new ItemListener() {
 
@@ -399,7 +455,7 @@ public class MainView extends BaseView {
 		int row = 0;
 		panel.add(labelServiceAbbreviation, gbcf.getLabelConstraints(0, row, 2, 1));
 		panel.add(serviceAbbreviation, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 4, 1));
-		panel.add(buttonLoadService, gbcf.getLabelConstraints(6, row));
+		panel.add(buttonClearService, gbcf.getLabelConstraints(6, row));
 		// Widgets zufügen, nächste Zeile
 		row++;
 		panel.add(labelAdditionalInfo, gbcf.getLabelConstraints(0, row, 2, 1));
@@ -432,7 +488,7 @@ public class MainView extends BaseView {
 		panel.add(useSmallLetters, gbcf.getLabelConstraints(0, row, 2, 1));
 		panel.add(smallLettersCount, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 1, 1));
 		panel.add(smallLettersStartIndex, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 1, 1));
-		panel.add(mSmallLettersEndIndex, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 1, 1));
+		panel.add(smallLettersEndIndex, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 1, 1));
 		// Widgets zufügen, nächste Zeile
 		row++;
 		panel.add(useCapitalLetters, gbcf.getLabelConstraints(0, row, 2, 1));
@@ -578,7 +634,7 @@ public class MainView extends BaseView {
 	 * @return Returns the smallEndIndex.
 	 */
 	public int getSmallLettersEndIndex() {
-		return mSmallLettersEndIndex.getIntValue();
+		return smallLettersEndIndex.getIntValue();
 	}
 
 	/**
@@ -706,7 +762,7 @@ public class MainView extends BaseView {
 	 *            The smallLettersEndIndex to set.
 	 */
 	public void setSmallLettersEndIndex(final int smallLettersEndIndex) {
-		mSmallLettersEndIndex.setIntValue(smallLettersEndIndex);
+		this.smallLettersEndIndex.setIntValue(smallLettersEndIndex);
 	}
 
 	/**
@@ -819,6 +875,21 @@ public class MainView extends BaseView {
 
 	public void setSpecialCharacters(String specialCharacters) {
 		this.specialCharacters.setText(specialCharacters);
+	}
+
+	/**
+	 * @return the dirty
+	 */
+	public boolean isDirty() {
+		return dirty;
+	}
+
+	/**
+	 * @param dirty
+	 *            the dirty to set
+	 */
+	public void setDirty(boolean dirty) {
+		this.dirty = dirty;
 	}
 
 }

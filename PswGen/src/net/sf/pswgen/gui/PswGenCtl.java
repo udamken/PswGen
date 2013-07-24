@@ -152,70 +152,70 @@ public class PswGenCtl extends BaseCtl {
 	}
 
 	/**
-	 * Lädt die Einstellungen für ein Dienstekürzel.
-	 */
-	public void actionPerformedLoadService(final MainView mainView) {
-		try {
-			mainView.setWaitCursor();
-			loadService(mainView);
-		} catch (Throwable t) {
-			handleThrowable(t);
-		} finally {
-			mainView.setDefaultCursor();
-		}
-	}
-
-	/**
-	 * Lädt die Einstellungen für ein Dienstekürzel.
-	 */
-	private void loadService(final MainView mainView) {
-		String serviceAbbreviation = mainView.getServiceAbbreviation();
-		validateServiceAbbreviation(serviceAbbreviation);
-		ServiceInfo si = services.getServiceInfo(serviceAbbreviation);
-		if (si == null) {
-			throw new DomainException("ServiceAbbreviationMissingMsg");
-		} else {
-			mainView.setAdditionalInfo(si.getAdditionalInfo());
-			mainView.setLoginUrl(si.getLoginUrl());
-			mainView.setLoginInfo(si.getLoginInfo());
-			mainView.setAdditionalLoginInfo(si.getAdditionalLoginInfo());
-			mainView.setUseSmallLetters(si.isUseSmallLetters());
-			mainView.setUseCapitalLetters(si.isUseCapitalLetters());
-			mainView.setUseDigits(si.isUseDigits());
-			mainView.setUseSpecialCharacters(si.isUseSpecialCharacters());
-			mainView.setSpecialCharacters(si.getSpecialCharacters());
-			ensureAtLeastDefaultSpecialCharacters(mainView);
-			mainView.setSmallLettersCount(si.getSmallLettersCount());
-			mainView.setSmallLettersStartIndex(si.getSmallLettersStartIndex());
-			mainView.setSmallLettersEndIndex(si.getSmallLettersEndIndex());
-			mainView.setCapitalLettersCount(si.getCapitalLettersCount());
-			mainView.setCapitalLettersStartIndex(si.getCapitalLettersStartIndex());
-			mainView.setCapitalLettersEndIndex(si.getCapitalLettersEndIndex());
-			mainView.setDigitsCount(si.getDigitsCount());
-			mainView.setSpecialCharactersCount(si.getSpecialCharactersCount());
-			mainView.setDigitsStartIndex(si.getDigitsStartIndex());
-			mainView.setDigitsEndIndex(si.getDigitsEndIndex());
-			mainView.setSpecialCharactersStartIndex(si.getSpecialCharactersStartIndex());
-			mainView.setSpecialCharactersEndIndex(si.getSpecialCharactersEndIndex());
-			mainView.setTotalCharacterCount(si.getTotalCharacterCount());
-			mainView.setPassword(si.getPassword());
-			mainView.setPasswordRepeated(si.getPasswordRepeated());
-		}
-	}
-
-	/**
 	 * Aus der Liste neu ausgewählten Dienst laden.
 	 */
 	public void valueChangedLoadServiceFromList(final MainView mainView, final String serviceAbbreviation) {
 		try {
+			onDirtySaveOrDispose(mainView); // Eventuelle Änderungen speichern oder verwerfen
 			mainView.setWaitCursor();
-			mainView.setServiceAbbreviation(serviceAbbreviation);
-			loadService(mainView);
+			validateServiceAbbreviation(serviceAbbreviation);
+			ServiceInfo si = services.getServiceInfo(serviceAbbreviation);
+			if (si == null) {
+				throw new DomainException("ServiceAbbreviationMissingMsg");
+			} else {
+				putServiceToView(mainView, si);
+			}
 		} catch (Throwable t) {
 			handleThrowable(t);
 		} finally {
 			mainView.setDefaultCursor();
 		}
+	}
+
+	/**
+	 * Eventuelle Änderungen speichern oder verwerfen.
+	 */
+	private void onDirtySaveOrDispose(final MainView mainView) {
+		if (mainView.isDirty()) {
+			int chosenOption = JOptionPane.showConfirmDialog(mainView, mainView.getServiceAbbreviation()
+					+ getGuiText("SaveChangesMsg"), Constants.APPLICATION_NAME, JOptionPane.YES_NO_OPTION);
+			if (chosenOption == JOptionPane.YES_OPTION) { // Geänderte Werte speichern?
+				storeService(mainView);
+			}
+		}
+	}
+
+	/**
+	 * Stellt die Werte eines Dienstes in die View.
+	 */
+	private void putServiceToView(final MainView mainView, ServiceInfo si) {
+		mainView.setServiceAbbreviation(si.getServiceAbbreviation());
+		mainView.setAdditionalInfo(si.getAdditionalInfo());
+		mainView.setLoginUrl(si.getLoginUrl());
+		mainView.setLoginInfo(si.getLoginInfo());
+		mainView.setAdditionalLoginInfo(si.getAdditionalLoginInfo());
+		mainView.setUseSmallLetters(si.isUseSmallLetters());
+		mainView.setUseCapitalLetters(si.isUseCapitalLetters());
+		mainView.setUseDigits(si.isUseDigits());
+		mainView.setUseSpecialCharacters(si.isUseSpecialCharacters());
+		mainView.setSpecialCharacters(si.getSpecialCharacters());
+		ensureAtLeastDefaultSpecialCharacters(mainView);
+		mainView.setSmallLettersCount(si.getSmallLettersCount());
+		mainView.setSmallLettersStartIndex(si.getSmallLettersStartIndex());
+		mainView.setSmallLettersEndIndex(si.getSmallLettersEndIndex());
+		mainView.setCapitalLettersCount(si.getCapitalLettersCount());
+		mainView.setCapitalLettersStartIndex(si.getCapitalLettersStartIndex());
+		mainView.setCapitalLettersEndIndex(si.getCapitalLettersEndIndex());
+		mainView.setDigitsCount(si.getDigitsCount());
+		mainView.setSpecialCharactersCount(si.getSpecialCharactersCount());
+		mainView.setDigitsStartIndex(si.getDigitsStartIndex());
+		mainView.setDigitsEndIndex(si.getDigitsEndIndex());
+		mainView.setSpecialCharactersStartIndex(si.getSpecialCharactersStartIndex());
+		mainView.setSpecialCharactersEndIndex(si.getSpecialCharactersEndIndex());
+		mainView.setTotalCharacterCount(si.getTotalCharacterCount());
+		mainView.setPassword(si.getPassword());
+		mainView.setPasswordRepeated(si.getPasswordRepeated());
+		mainView.setDirty(false);
 	}
 
 	/**
@@ -226,10 +226,10 @@ public class PswGenCtl extends BaseCtl {
 		try {
 			mainView.setWaitCursor();
 			String serviceAbbreviation = mainView.getServiceAbbreviation();
-			validateServiceAbbreviation(serviceAbbreviation);
-			int chosenOption = JOptionPane.showConfirmDialog(mainView, getGuiText("RemoveServiceMsg"),
-					Constants.APPLICATION_NAME, JOptionPane.YES_NO_OPTION);
-			if (chosenOption != JOptionPane.NO_OPTION) { // Dienst nicht
+			int chosenOption = JOptionPane.showConfirmDialog(mainView, serviceAbbreviation
+					+ getGuiText("RemoveServiceMsg"), Constants.APPLICATION_NAME, JOptionPane.YES_NO_OPTION);
+			if (chosenOption == JOptionPane.YES_OPTION) { // Dienst löschen?
+				validateServiceAbbreviation(serviceAbbreviation);
 				ServiceInfo si = services.removeServiceInfo(serviceAbbreviation);
 				if (si == null) { // Dienst gar nicht vorhanden?
 					throw new DomainException("ServiceAbbreviationMissingMsg");
@@ -320,56 +320,69 @@ public class PswGenCtl extends BaseCtl {
 	}
 
 	/**
-	 * Vermerkt die Einstellungen für ein Dienstekürzel und speichert die Einstellungen für alle Dienstekürzel
-	 * auf der Platte.
+	 * Vermerkt die Einstellungen für einen Dienst und speichert alle Dienste.
 	 */
 	public void actionPerformedStoreService(final MainView mainView) {
 		try {
 			mainView.setWaitCursor();
-			String serviceAbbreviation = mainView.getServiceAbbreviation();
-			validateServiceAbbreviation(serviceAbbreviation);
-			ServiceInfo si = services.getServiceInfo(serviceAbbreviation);
-			if (si != null) { // Ist der Dienst bereits vermerkt?
-				int chosenOption = JOptionPane.showConfirmDialog(mainView, getGuiText("OverwriteServiceMsg"),
-						Constants.APPLICATION_NAME, JOptionPane.YES_NO_OPTION);
-				if (chosenOption == JOptionPane.NO_OPTION) { // Dienst nicht
-					// überschreiben?
-					return; // nein ... dann ist nichts mehr zu tun
-				}
-			}
-			si = new ServiceInfo(serviceAbbreviation);
-			si.setAdditionalInfo(mainView.getAdditionalInfo());
-			si.setLoginUrl(mainView.getLoginUrl());
-			si.setLoginInfo(mainView.getLoginInfo());
-			si.setAdditionalLoginInfo(mainView.getAdditionalLoginInfo());
-			si.setUseSmallLetters(mainView.getUseSmallLetters());
-			si.setUseCapitalLetters(mainView.getUseCapitalLetters());
-			si.setUseDigits(mainView.getUseDigits());
-			si.setUseSpecialCharacters(mainView.getUseSpecialCharacters());
-			si.setSpecialCharacters(mainView.getSpecialCharacters());
-			si.setSmallLettersCount(mainView.getSmallLettersCount());
-			si.setSmallLettersStartIndex(mainView.getSmallLettersStartIndex());
-			si.setSmallLettersEndIndex(mainView.getSmallLettersEndIndex());
-			si.setCapitalLettersCount(mainView.getCapitalLettersCount());
-			si.setCapitalLettersStartIndex(mainView.getCapitalLettersStartIndex());
-			si.setCapitalLettersEndIndex(mainView.getCapitalLettersEndIndex());
-			si.setDigitsCount(mainView.getDigitsCount());
-			si.setSpecialCharactersCount(mainView.getSpecialCharactersCount());
-			si.setDigitsStartIndex(mainView.getDigitsStartIndex());
-			si.setDigitsEndIndex(mainView.getDigitsEndIndex());
-			si.setSpecialCharactersStartIndex(mainView.getSpecialCharactersStartIndex());
-			si.setSpecialCharactersEndIndex(mainView.getSpecialCharactersEndIndex());
-			si.setTotalCharacterCount(mainView.getTotalCharacterCount());
-			si.setPassword(mainView.getPassword());
-			si.setPasswordRepeated(mainView.getPasswordRepeated());
-			services.putServiceInfo(si);
-			saveServiceInfoList();
-			mainView.updateStoredService();
+			storeService(mainView);
 		} catch (Throwable t) {
 			handleThrowable(t);
 		} finally {
 			mainView.setDefaultCursor();
 		}
+	}
+
+	/**
+	 * Werte des Dienstes in die Liste übernehmen und die gesamte Liste speichern.
+	 */
+	private void storeService(final MainView mainView) {
+		String serviceAbbreviation = mainView.getServiceAbbreviation();
+		validateServiceAbbreviation(serviceAbbreviation);
+		if (services.getServiceInfo(serviceAbbreviation) != null) { // Ist der Dienst bereits vermerkt?
+			int chosenOption = JOptionPane.showConfirmDialog(mainView, serviceAbbreviation
+					+ getGuiText("OverwriteServiceMsg"), Constants.APPLICATION_NAME,
+					JOptionPane.YES_NO_OPTION);
+			if (chosenOption == JOptionPane.NO_OPTION) { // Dienst nicht überschreiben? => fertig
+				return;
+			}
+		}
+		services.putServiceInfo(getServiceFromView(mainView));
+		saveServiceInfoList();
+		mainView.setDirty(false);
+		mainView.updateStoredService();
+	}
+
+	/**
+	 * Holt die Werte des Dienstes aus der View.
+	 */
+	private ServiceInfo getServiceFromView(final MainView mainView) {
+		ServiceInfo si = new ServiceInfo(mainView.getServiceAbbreviation());
+		si.setAdditionalInfo(mainView.getAdditionalInfo());
+		si.setLoginUrl(mainView.getLoginUrl());
+		si.setLoginInfo(mainView.getLoginInfo());
+		si.setAdditionalLoginInfo(mainView.getAdditionalLoginInfo());
+		si.setUseSmallLetters(mainView.getUseSmallLetters());
+		si.setUseCapitalLetters(mainView.getUseCapitalLetters());
+		si.setUseDigits(mainView.getUseDigits());
+		si.setUseSpecialCharacters(mainView.getUseSpecialCharacters());
+		si.setSpecialCharacters(mainView.getSpecialCharacters());
+		si.setSmallLettersCount(mainView.getSmallLettersCount());
+		si.setSmallLettersStartIndex(mainView.getSmallLettersStartIndex());
+		si.setSmallLettersEndIndex(mainView.getSmallLettersEndIndex());
+		si.setCapitalLettersCount(mainView.getCapitalLettersCount());
+		si.setCapitalLettersStartIndex(mainView.getCapitalLettersStartIndex());
+		si.setCapitalLettersEndIndex(mainView.getCapitalLettersEndIndex());
+		si.setDigitsCount(mainView.getDigitsCount());
+		si.setSpecialCharactersCount(mainView.getSpecialCharactersCount());
+		si.setDigitsStartIndex(mainView.getDigitsStartIndex());
+		si.setDigitsEndIndex(mainView.getDigitsEndIndex());
+		si.setSpecialCharactersStartIndex(mainView.getSpecialCharactersStartIndex());
+		si.setSpecialCharactersEndIndex(mainView.getSpecialCharactersEndIndex());
+		si.setTotalCharacterCount(mainView.getTotalCharacterCount());
+		si.setPassword(mainView.getPassword());
+		si.setPasswordRepeated(mainView.getPasswordRepeated());
+		return si;
 	}
 
 	/**
@@ -450,6 +463,21 @@ public class PswGenCtl extends BaseCtl {
 			final String psw = validatedOrGeneratePassword(mainView);
 			JOptionPane.showMessageDialog(mainView, getGuiText("DisplayPasswordMsg") + " \"" + psw + "\"",
 					Constants.APPLICATION_NAME, JOptionPane.PLAIN_MESSAGE);
+		} catch (Throwable t) {
+			handleThrowable(t);
+		} finally {
+			mainView.setDefaultCursor();
+		}
+	}
+
+	/**
+	 * Leert die Einstellungen für das Dienstekürzel.
+	 */
+	public void actionPerformedClearService(final MainView mainView) {
+		try {
+			onDirtySaveOrDispose(mainView); // Eventuelle Änderungen speichern oder verwerfen
+			mainView.setWaitCursor();
+			putServiceToView(mainView, new ServiceInfo());
 		} catch (Throwable t) {
 			handleThrowable(t);
 		} finally {
