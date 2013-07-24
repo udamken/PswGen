@@ -235,7 +235,8 @@ public class PswGenCtl extends BaseCtl {
 					throw new DomainException("ServiceAbbreviationMissingMsg");
 				} else {
 					saveServiceInfoList();
-					mainView.updateStoredService();
+					mainView.updateStoredServices();
+					putServiceToView(mainView, new ServiceInfo());
 				}
 			}
 		} catch (Throwable t) {
@@ -350,7 +351,7 @@ public class PswGenCtl extends BaseCtl {
 		services.putServiceInfo(getServiceFromView(mainView));
 		saveServiceInfoList();
 		mainView.setDirty(false);
-		mainView.updateStoredService();
+		mainView.updateStoredServices();
 	}
 
 	/**

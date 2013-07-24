@@ -535,7 +535,7 @@ public class MainView extends BaseView {
 	/**
 	 * Aktualisiert die Tabelle mit den gespeicherten Diensten und zeigt sie neu an.
 	 */
-	public void updateStoredService() {
+	public void updateStoredServices() {
 		tableModelStoredServices.setData(((PswGenCtl) ctl).getServices().getServices());
 	}
 
