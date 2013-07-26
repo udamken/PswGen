@@ -28,7 +28,7 @@
             <useSpecialCharacters>false</useSpecialCharacters>
         </Service>
         <Service>
-            <additionalInfo>a</additionalInfo>
+            <additionalInfo>b</additionalInfo>
             <additionalLoginInfo></additionalLoginInfo>
             <capitalLettersCount>-2147483648</capitalLettersCount>
             <capitalLettersEndIndex>-2147483648</capitalLettersEndIndex>
