@@ -38,6 +38,7 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 import net.sf.pswgen.gui.base.BaseCtl;
+import net.sf.pswgen.gui.base.BaseView;
 import net.sf.pswgen.model.ServiceInfo;
 import net.sf.pswgen.model.ServiceInfoList;
 import net.sf.pswgen.util.Constants;
@@ -93,6 +94,26 @@ public class PswGenCtl extends BaseCtl {
 		startupView.setVisible(true);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.sf.pswgen.gui.base.BaseCtl#windowClosing(net.sf.pswgen.gui.base.BaseView)
+	 */
+	@Override
+	public void windowClosing(BaseView view) {
+		try {
+			if (view instanceof MainView) {
+				MainView mainView = (MainView) view;
+				onDirtySaveOrDispose(mainView); // Eventuelle Änderungen speichern oder verwerfen
+			}
+			super.windowClosing(view);
+		} catch (Throwable t) {
+			handleThrowable(t);
+		} finally {
+			// Nichts mehr zu tun
+		}
+	}
+
 	/**
 	 * Prüft die Passphrase und öffnet ggf. das Hauptfenster.
 	 */
@@ -111,7 +132,7 @@ public class PswGenCtl extends BaseCtl {
 		} catch (Throwable t) {
 			handleThrowable(t);
 		} finally {
-			// mainView.setDefaultCursor();
+			// Nichts mehr zu tun
 		}
 	}
 
