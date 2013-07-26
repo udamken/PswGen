@@ -2,12 +2,23 @@
 
 <project name="Create PswGen.zip in product subdirectory" default="package" basedir=".">
 
-	<property name="pswgen.version" value="1.6.0" />
 	<property name="launch4j.dir" location="C:/Program Files/launch4j" />
 
 	<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${launch4j.dir}/launch4j.jar:${launch4j.dir}/lib/xstream.jar" />
 
-	<target name="package" depends="compileNotSupported,createJar,createExe,createZip,cleanup">
+	<target name="package" depends="loadVersion,compileNotSupported,createJar,createExe,createZip,cleanup">
+		<echo message="${pswgen.version} built successfully" />
+	</target>
+
+	<target name="loadVersion">
+		<loadproperties srcfile="src/net/sf/pswgen/util/Constants.java">
+			<filterchain>
+				<tokenfilter>
+					<containsstring contains="APPLICATION_VERSION"/>
+					<replaceregex pattern="[^&quot;]+&quot;([^&quot;]+)&quot;.*" flags="s" replace="pswgen.version=\1" />
+				</tokenfilter>
+			</filterchain>
+		</loadproperties>
 	</target>
 
 	<target name="compileNotSupported">
@@ -46,10 +57,10 @@
 			</fileset>
 		</zip>
 	</target>
-	
+
 	<target name="cleanup">
-		<delete file="product/PswGen.jar"/>
-		<delete file="product/PswGen.exe"/>
+		<delete file="product/PswGen.jar" />
+		<delete file="product/PswGen.exe" />
 	</target>
 
 </project>
