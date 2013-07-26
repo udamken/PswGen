@@ -43,23 +43,6 @@ import org.apache.commons.cli.Options;
  * <p>
  * Copyright (C) 2005-2013 Uwe Damken
  * </p>
- * <p>
- * TODO Angedachte Änderungen ...
- * </p>
- * <p>
- * Im PswGenCtl gibt es Event-Handling-Methoden, die zum Teil direkt die Fachlogik beinhalten, andere rufen
- * separate Methoden auf. Generell wäre es sinnvoll, die Fachlogik zu separieren, leider ist sie aber sehr
- * GUI-nah.
- * </p>
- * <p>
- * Für Integer die Feldlänge als WidgetInfo aufnehmen.
- * </p>
- * <p>
- * Mobile Version bereitsstellen, eventuell ohne Pflege mit nur einmaliger Passphrase-Eingabe.
- * </p>
- * <p>
- * Auto-Update
- * </p>
  */
 public class PswGen {
 

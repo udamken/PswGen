@@ -55,6 +55,11 @@ import net.sf.pswgen.util.PasswordFactory;
  * <p>
  * Copyright (C) 2005-2013 Uwe Damken
  * </p>
+ * <p>
+ * TODO Es gibt einige Event-Handling-Methoden, die zum Teil direkt die Fachlogik beinhalten, andere rufen
+ * separate Methoden auf. Generell wäre es sinnvoll, die Fachlogik zu separieren, leider ist sie aber sehr
+ * GUI-nah.
+ * </p>
  */
 public class PswGenCtl extends BaseCtl {
 
