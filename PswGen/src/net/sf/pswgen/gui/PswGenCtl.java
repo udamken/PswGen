@@ -104,7 +104,9 @@ public class PswGenCtl extends BaseCtl {
 		try {
 			if (view instanceof MainView) {
 				MainView mainView = (MainView) view;
-				onDirtySaveOrDispose(mainView); // Eventuelle Änderungen speichern oder verwerfen
+				if (cancelOnDirty(mainView)) { // Aktion abbrechen?
+					return;
+				}
 			}
 			super.windowClosing(view);
 		} catch (Throwable t) {
@@ -141,7 +143,9 @@ public class PswGenCtl extends BaseCtl {
 	 */
 	public void valueChangedLoadServiceFromList(final MainView mainView, final String serviceAbbreviation) {
 		try {
-			onDirtySaveOrDispose(mainView); // Eventuelle Änderungen speichern oder verwerfen
+			if (cancelOnDirty(mainView)) { // Aktion abbrechen?
+				return;
+			}
 			mainView.setWaitCursor();
 			validateServiceAbbreviation(serviceAbbreviation);
 			ServiceInfo si = services.getServiceInfo(serviceAbbreviation);
@@ -162,7 +166,9 @@ public class PswGenCtl extends BaseCtl {
 	 */
 	public void actionPerformedClearService(final MainView mainView) {
 		try {
-			onDirtySaveOrDispose(mainView); // Eventuelle Änderungen speichern oder verwerfen
+			if (cancelOnDirty(mainView)) { // Aktion abbrechen?
+				return;
+			}
 			mainView.setWaitCursor();
 			putServiceToView(mainView, new ServiceInfo());
 		} catch (Throwable t) {
@@ -473,16 +479,21 @@ public class PswGenCtl extends BaseCtl {
 	}
 
 	/**
-	 * Eventuelle Änderungen speichern oder verwerfen.
+	 * Liefert true, wenn die aktuelle Aktion abgebrochen werden soll, oder false, wenn die Änderungen
+	 * gespeichert oder verworfen werden sollen.
 	 */
-	private void onDirtySaveOrDispose(final MainView mainView) {
+	private boolean cancelOnDirty(final MainView mainView) {
 		if (mainView.isDirty()) {
 			int chosenOption = JOptionPane.showConfirmDialog(mainView, mainView.getServiceAbbreviation()
-					+ getGuiText("SaveChangesMsg"), Constants.APPLICATION_NAME, JOptionPane.YES_NO_OPTION);
+					+ getGuiText("SaveChangesMsg"), Constants.APPLICATION_NAME,
+					JOptionPane.YES_NO_CANCEL_OPTION);
 			if (chosenOption == JOptionPane.YES_OPTION) { // Geänderte Werte speichern?
 				storeService(mainView);
+			} else if (chosenOption == JOptionPane.CANCEL_OPTION || chosenOption == JOptionPane.CLOSED_OPTION) {
+				return true;
 			}
 		}
+		return false;
 	}
 
 	/**
