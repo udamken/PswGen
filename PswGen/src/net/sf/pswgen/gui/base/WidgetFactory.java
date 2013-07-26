@@ -20,6 +20,7 @@ package net.sf.pswgen.gui.base;
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *****************************************************************************/
 
+import java.awt.Component;
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
@@ -37,7 +38,9 @@ import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
@@ -246,6 +249,31 @@ public class WidgetFactory {
 			field.setPreferredSize(wi.getPreferredSize());
 		}
 		return field;
+	}
+
+	/**
+	 * Liefert ein TextArea.
+	 */
+	public JTextArea getTextArea(final String widgetName) {
+		WidgetInfo wi = getWidgetInfo(widgetName);
+		JTextArea field = new JTextArea();
+		field.setFont((new JTextField()).getFont()); // Font von anderen Typen übernehmen
+		if (wi.getPreferredSize() != null) {
+			field.setPreferredSize(wi.getPreferredSize());
+		}
+		return field;
+	}
+
+	/**
+	 * Liefert ein ScrollPane.
+	 */
+	public JScrollPane getScrollPane(final String widgetName, final Component component) {
+		WidgetInfo wi = getWidgetInfo(widgetName);
+		JScrollPane pane = new JScrollPane(component);
+		if (wi.getPreferredSize() != null) {
+			pane.setPreferredSize(wi.getPreferredSize());
+		}
+		return pane;
 	}
 
 	/**

@@ -32,6 +32,7 @@ import java.util.Comparator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
@@ -39,6 +40,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
@@ -68,6 +70,9 @@ import net.sf.pswgen.model.ServiceInfo;
  */
 public class MainView extends BaseView {
 
+	/** Präfix für den Fenstertitel, wenn Werte verändert wurden */
+	private static final String DIRTY_TAG_TITLE_PREFIX = "*";
+
 	/** Version für die Serialisierung */
 	private static final long serialVersionUID = -3013326579046715523L;
 
@@ -90,7 +95,7 @@ public class MainView extends BaseView {
 
 	private JTextField loginInfo;
 
-	private JTextField additionalLoginInfo;
+	private JTextArea additionalLoginInfo;
 
 	private JCheckBox useSmallLetters;
 
@@ -275,24 +280,26 @@ public class MainView extends BaseView {
 
 			@Override
 			public void changedUpdate(DocumentEvent arg0) {
-				dirty = true;
+				setDirty(true);
 			}
 
 			@Override
 			public void insertUpdate(DocumentEvent e) {
-				dirty = true;
+				setDirty(true);
 			}
 
 			@Override
 			public void removeUpdate(DocumentEvent e) {
-				dirty = true;
+				setDirty(true);
 			}
 		};
 		ChangeListener changeListener = new ChangeListener() {
 
 			@Override
-			public void stateChanged(ChangeEvent arg0) {
-				dirty = true;
+			public void stateChanged(ChangeEvent event) {
+				if (((AbstractButton) event.getSource()).getModel().isPressed()) {
+					setDirty(true);
+				}
 			}
 		};
 		// Widgets erzeugen
@@ -340,8 +347,12 @@ public class MainView extends BaseView {
 			}
 		});
 		JLabel labelAdditionalLoginInfo = wf.getLabel("LabelAdditionalLoginInfo");
-		additionalLoginInfo = wf.getTextField("FieldAdditionalLoginInfo");
+		additionalLoginInfo = wf.getTextArea("FieldAdditionalLoginInfo");
 		additionalLoginInfo.getDocument().addDocumentListener(documentListener);
+		JScrollPane additionalLoginInfoScrollPane = wf.getScrollPane("ScrollPaneAdditionalLoginInfo",
+				additionalLoginInfo);
+		// additionalLoginInfoScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		additionalLoginInfoScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		JButton buttonOpenHelp = wf.getButton("ButtonOpenHelp");
 		buttonOpenHelp.addActionListener(new ActionListener() {
 			@Override
@@ -474,8 +485,8 @@ public class MainView extends BaseView {
 		// Widgets zufügen, nächste Zeile
 		row++;
 		panel.add(labelAdditionalLoginInfo, gbcf.getLabelConstraints(0, row, 2, 1));
-		panel.add(additionalLoginInfo, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 4, 1));
-		panel.add(buttonOpenHelp, gbcf.getLabelConstraints(6, row));
+		panel.add(additionalLoginInfoScrollPane,
+				gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 4, 1));
 		// Widgets zufügen, nächste Zeile
 		row++;
 		panel.add(labelCount, gbcf.getLabelConstraints(2, row));
@@ -489,6 +500,7 @@ public class MainView extends BaseView {
 		panel.add(smallLettersCount, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 1, 1));
 		panel.add(smallLettersStartIndex, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 1, 1));
 		panel.add(smallLettersEndIndex, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 1, 1));
+		panel.add(buttonOpenHelp, gbcf.getLabelConstraints(6, row));
 		// Widgets zufügen, nächste Zeile
 		row++;
 		panel.add(useCapitalLetters, gbcf.getLabelConstraints(0, row, 2, 1));
@@ -890,6 +902,11 @@ public class MainView extends BaseView {
 	 */
 	public void setDirty(boolean dirty) {
 		this.dirty = dirty;
+		String title = getTitle();
+		if (title.startsWith(DIRTY_TAG_TITLE_PREFIX)) {
+			title = title.substring(DIRTY_TAG_TITLE_PREFIX.length());
+		}
+		setTitle(((dirty) ? DIRTY_TAG_TITLE_PREFIX : "") + title);
 	}
 
 }
