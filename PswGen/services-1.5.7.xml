@@ -51,7 +51,7 @@
             <useCapitalLetters>false</useCapitalLetters>
             <useDigits>false</useDigits>
             <useSmallLetters>false</useSmallLetters>
-            <useSpecialCharacters>false</useSpecialCharacters>
+            <useSpecialCharacters>true</useSpecialCharacters>
         </Service>
         <Service>
             <additionalInfo>a</additionalInfo>
