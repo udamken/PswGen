@@ -28,9 +28,9 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.text.ParseException;
 import java.util.Comparator;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.Date;
 
 import javax.swing.AbstractButton;
 import javax.swing.JButton;
@@ -59,6 +59,7 @@ import net.sf.pswgen.gui.base.DbcIntegerField;
 import net.sf.pswgen.gui.base.GridBagConstraintsFactory;
 import net.sf.pswgen.gui.base.WidgetFactory;
 import net.sf.pswgen.model.ServiceInfo;
+import net.sf.pswgen.util.Constants;
 
 /**
  * <p>
@@ -225,14 +226,14 @@ public class MainView extends BaseView {
 		mTableRowSorter.setComparator(StoredServicesTableModel.COL_ADDITIONAL_INFO, new Comparator<String>() {
 
 			@Override
-			public int compare(String arg0, String arg1) {
-				return convertDateString(arg0).compareTo(convertDateString(arg1));
-			}
-
-			private String convertDateString(String s) {
-				Pattern p = Pattern.compile("(\\d\\d)\\.(\\d\\d)\\.(\\d\\d\\d\\d)");
-				Matcher m = p.matcher(s);
-				return (m.matches()) ? m.group(3) + "-" + m.group(2) + "-" + m.group(1) : s;
+			public int compare(String leftString, String rightString) {
+				try {
+					Date leftDate = Constants.DATE_FORMAT.parse(leftString);
+					Date rightDate = Constants.DATE_FORMAT.parse(rightString);
+					return leftDate.compareTo(rightDate);
+				} catch (ParseException e) {
+					return leftString.compareTo(rightString);
+				}
 			}
 
 		});

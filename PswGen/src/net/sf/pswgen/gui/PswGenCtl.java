@@ -28,6 +28,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.net.URI;
+import java.util.Date;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -130,6 +131,7 @@ public class PswGenCtl extends BaseCtl {
 			addView(mainView);
 			mainView.pack();
 			ensureAtLeastDefaultSpecialCharacters(mainView);
+			clearService(mainView); // Diensteinstellungen initialisieren (Tagesdatum)
 			mainView.setVisible(true);
 		} catch (Throwable t) {
 			handleThrowable(t);
@@ -162,7 +164,7 @@ public class PswGenCtl extends BaseCtl {
 	}
 
 	/**
-	 * Leert die Einstellungen für das Dienstekürzel.
+	 * Leert die Einstellungen für das Dienstekürzel, in AdditionalInfo kommt das Tagesdatum.
 	 */
 	public void actionPerformedClearService(final MainView mainView) {
 		try {
@@ -170,7 +172,7 @@ public class PswGenCtl extends BaseCtl {
 				return;
 			}
 			mainView.setWaitCursor();
-			putServiceToView(mainView, new ServiceInfo());
+			clearService(mainView);
 		} catch (Throwable t) {
 			handleThrowable(t);
 		} finally {
@@ -368,6 +370,15 @@ public class PswGenCtl extends BaseCtl {
 			e.printStackTrace();
 			throw new RuntimeException("Exception occured: " + e);
 		}
+	}
+
+	/**
+	 * Leert die Einstellungen für das Dienstekürzel, in AdditionalInfo kommt das Tagesdatum.
+	 */
+	private void clearService(final MainView mainView) {
+		ServiceInfo si = new ServiceInfo();
+		si.setAdditionalInfo(Constants.DATE_FORMAT.format(new Date()));
+		putServiceToView(mainView, si);
 	}
 
 	/**

@@ -20,6 +20,10 @@ package net.sf.pswgen.util;
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *****************************************************************************/
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 import net.sf.pswgen.ApplicationPackageNameMarker;
 
 /**
@@ -38,7 +42,7 @@ public class Constants {
 	public static final String APPLICATION_NAME = "PswGen";
 
 	/** Die Version dieser Anwendung */
-	public static final String APPLICATION_VERSION = "1.6.1";
+	public static final String APPLICATION_VERSION = "1.6.2";
 
 	/** Die Version dieser Anwendung */
 	public static final String ADVANCED_FILE_FORMAT_VERSION = "1.6.0";
@@ -85,5 +89,12 @@ public class Constants {
 	public static final String ALPHANUMERICS = LETTERS + DIGITS;
 
 	public static final String SPECIAL_CHARS = ",.;:!$&()=?+-*/#";
+
+	private static final DateFormat DATE_FORMAT_de_DE = new SimpleDateFormat("dd.MM.yyyy");
+
+	private static final DateFormat DATE_FORMAT_NON_GERMAN = DateFormat.getDateInstance(DateFormat.SHORT);
+
+	public static final DateFormat DATE_FORMAT = (Locale.getDefault().getLanguage().equals("de") && Locale
+			.getDefault().getCountry().equals("DE")) ? DATE_FORMAT_de_DE : DATE_FORMAT_NON_GERMAN;
 
 }
