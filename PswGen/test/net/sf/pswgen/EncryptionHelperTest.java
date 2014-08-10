@@ -68,10 +68,9 @@ public class EncryptionHelperTest extends TestCase {
 	}
 
 	public void test04() {
-		Assert.assertEquals(
-				"familie-damken.de",
-				EncryptionHelper.decrypt("passphrase",
-						EncryptionHelper.encrypt("passphrase", "familie-damken.de")));
+		String domainEncrypted = EncryptionHelper.encrypt("passphrase", "familie-damken.de");
+		Assert.assertEquals("9351384B3EAE15B20CBA3CFD0D8D8E804ADFD449CC1E691C", domainEncrypted);
+		Assert.assertEquals("familie-damken.de", EncryptionHelper.decrypt("passphrase", domainEncrypted));
 		Assert.assertEquals(
 				"1234567890 / defghijkl",
 				EncryptionHelper.decrypt("passphrase",
