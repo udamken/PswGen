@@ -174,7 +174,7 @@ public class MainView extends BaseView {
 		// Widgets erzeugen
 		JPanel panel = wf.getContentPane("MainFrame");
 		panel.add(createPanelStoredServices(), gbcf.getTableConstraints(0, 1, 1, 1));
-		panel.add(createPanelEditService(), gbcf.getLabelConstraints(0, 2));
+		panel.add(createPanelEditService(), gbcf.getTableConstraints(0, 2, 1, 1));
 		return panel;
 	}
 
@@ -487,7 +487,7 @@ public class MainView extends BaseView {
 		row++;
 		panel.add(labelAdditionalLoginInfo, gbcf.getLabelConstraints(0, row, 2, 1));
 		panel.add(additionalLoginInfoScrollPane,
-				gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 4, 1));
+				gbcf.getTableConstraints(GridBagConstraints.RELATIVE, row, 4, 1));
 		// Widgets zufügen, nächste Zeile
 		row++;
 		panel.add(labelCount, gbcf.getLabelConstraints(2, row));
