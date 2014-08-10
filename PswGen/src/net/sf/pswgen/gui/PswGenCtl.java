@@ -279,7 +279,7 @@ public class PswGenCtl extends BaseCtl {
 	public void actionPerformedCopyPassword(final MainView mainView) {
 		try {
 			mainView.setWaitCursor();
-			final String psw = validatedOrGeneratePassword(mainView);
+			final String psw = getValidatedOrGeneratedPassword(mainView);
 			Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 			clipboard.setContents(new StringSelection(psw), null);
 		} catch (Throwable t) {
@@ -295,7 +295,7 @@ public class PswGenCtl extends BaseCtl {
 	public void actionPerformedDisplayPassword(final MainView mainView) {
 		try {
 			mainView.setWaitCursor();
-			final String psw = validatedOrGeneratePassword(mainView);
+			final String psw = getValidatedOrGeneratedPassword(mainView);
 			JOptionPane.showMessageDialog(mainView, getGuiText("DisplayPasswordMsg") + " \"" + psw + "\"",
 					Constants.APPLICATION_NAME, JOptionPane.PLAIN_MESSAGE);
 		} catch (Throwable t) {
@@ -517,75 +517,18 @@ public class PswGenCtl extends BaseCtl {
 	}
 
 	/**
-	 * Generiert ein Passwort und gibt es zurück.
-	 */
-	private String generatePassword(final MainView mainView) {
-		mainView.setWaitCursor();
-		ensureAtLeastDefaultSpecialCharacters(mainView);
-		String characters = ""; // Zeichen für den Rest des Passworts
-		final String serviceAbbreviation = mainView.getServiceAbbreviation();
-		validateServiceAbbreviation(serviceAbbreviation);
-		long seed = validatedPassphrase.hashCode() + serviceAbbreviation.hashCode();
-		final String additionalInfo = mainView.getAdditionalInfo();
-		if (additionalInfo.length() != 0) { // Zusatzinfos vorhanden?
-			seed += additionalInfo.hashCode(); // => Zur Saat dazunehmen
-		}
-		final int pswLength = EmptyHelper.getValue(mainView.getTotalCharacterCount(), 0);
-		PasswordFactory pg = new PasswordFactory(pswLength);
-		pg.setSeedForRandomToEnforceReproducableResults(seed);
-		if (mainView.getUseSmallLetters()) {
-			int count = EmptyHelper.getValue(mainView.getSmallLettersCount(), 0);
-			int start = EmptyHelper.getValue(mainView.getSmallLettersStartIndex(), 0);
-			int end = EmptyHelper.getValue(mainView.getSmallLettersEndIndex(), pswLength - 1);
-			if (count != 0) {
-				pg.distributeCharacters(count, Constants.LOWERCASE_LETTERS, start, end);
-			} else {
-				characters += Constants.LOWERCASE_LETTERS;
-			}
-		}
-		if (mainView.getUseCapitalLetters()) {
-			int count = EmptyHelper.getValue(mainView.getCapitalLettersCount(), 0);
-			int start = EmptyHelper.getValue(mainView.getCapitalLettersStartIndex(), 0);
-			int end = EmptyHelper.getValue(mainView.getCapitalLettersEndIndex(), pswLength - 1);
-			if (count != 0) {
-				pg.distributeCharacters(count, Constants.UPPERCASE_LETTERS, start, end);
-			} else {
-				characters += Constants.UPPERCASE_LETTERS;
-			}
-		}
-		if (mainView.getUseDigits()) {
-			int count = EmptyHelper.getValue(mainView.getDigitsCount(), 0);
-			int start = EmptyHelper.getValue(mainView.getDigitsStartIndex(), 0);
-			int end = EmptyHelper.getValue(mainView.getDigitsEndIndex(), pswLength - 1);
-			if (count != 0) {
-				pg.distributeCharacters(count, Constants.DIGITS, start, end);
-			} else {
-				characters += Constants.DIGITS;
-			}
-		}
-		if (mainView.getUseSpecialCharacters()) {
-			int count = EmptyHelper.getValue(mainView.getSpecialCharactersCount(), 0);
-			int start = EmptyHelper.getValue(mainView.getSpecialCharactersStartIndex(), 0);
-			int end = EmptyHelper.getValue(mainView.getSpecialCharactersEndIndex(), pswLength - 1);
-			if (count != 0) {
-				pg.distributeCharacters(count, mainView.getSpecialCharacters(), start, end);
-			} else {
-				characters += mainView.getSpecialCharacters();
-			}
-		}
-		return pg.getPassword(characters); // Rest auffüllen
-	}
-
-	/**
 	 * Liefert das eingegebene oder ein generiertes Passwort. Sobald entweder das Passwort oder das
 	 * wiederholte Passwort eingegeben wurden, müssen sie übereinstimmen, sonst wird eine Exception geworfen,
 	 * die zu einer Fehlermeldung führt. Eine Eingabe hat also in jedem Fall Vorrang vor der Generierung.
 	 */
-	private String validatedOrGeneratePassword(final MainView mainView) {
+	private String getValidatedOrGeneratedPassword(final MainView mainView) {
 		String password = mainView.getPassword();
 		final String passwordRepeated = mainView.getPasswordRepeated();
 		if (password.length() == 0 && passwordRepeated.length() == 0) { // Beide leer? => generieren
-			password = generatePassword(mainView);
+			mainView.setWaitCursor();
+			ensureAtLeastDefaultSpecialCharacters(mainView);
+			validateServiceAbbreviation(mainView.getServiceAbbreviation());
+			password = PasswordFactory.getPassword(getServiceFromView(mainView), validatedPassphrase);
 		} else {
 			if (!password.equals(passwordRepeated)) { // Mismatch?
 				throw new DomainException("PasswordMismatchMsg");

@@ -1,4 +1,4 @@
-package net.sf.pswgen;
+package net.sf.pswgen.util;
 
 /******************************************************************************
  PswGen - Manages your websites and repeatably generates passwords for them
@@ -22,8 +22,7 @@ package net.sf.pswgen;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
-import net.sf.pswgen.util.DomainException;
-import net.sf.pswgen.util.PasswordFactory;
+import net.sf.pswgen.model.ServiceInfo;
 
 /**
  * <p>
@@ -158,6 +157,48 @@ public class PasswordFactoryTest extends TestCase {
 		pf.distributeCharacters(1, ":", 6, 7);
 		String psw = pf.getPassword("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
 		Assert.assertEquals("ZRUHZF:L", psw);
+	}
+
+	public void test16() {
+		ServiceInfo si = new ServiceInfo("test");
+		si.setAdditionalInfo("10.08.2014");
+		si.setUseSmallLetters(true);
+		si.setUseCapitalLetters(true);
+		si.setUseDigits(true);
+		si.setUseSpecialCharacters(true);
+		si.setSpecialCharacters(Constants.SPECIAL_CHARS);
+		si.setTotalCharacterCount(20);
+		String psw = PasswordFactory.getPassword(si, "test4711");
+		Assert.assertEquals("y7zMGUS.Ixm&B#*)vhuB", psw);
+	}
+
+	public void test17() {
+		ServiceInfo si = new ServiceInfo("test");
+		si.setAdditionalInfo("10.08.2014");
+		si.setUseSmallLetters(true);
+		si.setUseCapitalLetters(true);
+		si.setUseDigits(true);
+		si.setUseSpecialCharacters(true);
+		si.setSpecialCharacters("$%");
+		si.setSpecialCharactersCount(1);
+		si.setTotalCharacterCount(20);
+		String psw = PasswordFactory.getPassword(si, "test4711");
+		Assert.assertEquals("jo4AKvkD0E$VJfKZ5ehh", psw);
+	}
+
+	public void test18() {
+		ServiceInfo si = new ServiceInfo("test");
+		si.setAdditionalInfo("10.08.2014");
+		si.setUseSmallLetters(true);
+		si.setUseCapitalLetters(true);
+		si.setUseDigits(true);
+		si.setUseSpecialCharacters(true);
+		si.setSpecialCharacters(Constants.SPECIAL_CHARS);
+		si.setSpecialCharactersCount(1);
+		si.setSpecialCharactersStartIndex(19);
+		si.setTotalCharacterCount(20);
+		String psw = PasswordFactory.getPassword(si, "test4711");
+		Assert.assertEquals("jo4AKvkD0EVJfKZ5ehh!", psw);
 	}
 
 }

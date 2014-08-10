@@ -1,4 +1,4 @@
-package net.sf.pswgen;
+package net.sf.pswgen.util;
 
 /******************************************************************************
  PswGen - Manages your websites and repeatably generates passwords for them

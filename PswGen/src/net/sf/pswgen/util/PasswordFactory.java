@@ -22,13 +22,15 @@ package net.sf.pswgen.util;
 
 import java.util.Random;
 
+import net.sf.pswgen.model.ServiceInfo;
+
 /**
  * <p>
  * Eine Instanz dieser Klasse generiert ein Passwort. Zum Holen eines neuen Passworts sollte daher eine neue
  * Instanz erzeugt werden.
  * </p>
  * <p>
- * Copyright (C) 2005-2013 Uwe Damken
+ * Copyright (C) 2005-2014 Uwe Damken
  * </p>
  */
 public class PasswordFactory {
@@ -40,11 +42,13 @@ public class PasswordFactory {
 	private Password password = null;
 
 	/**
-	 * Konstruktor für eine PasswordFactory, die genau ein Passwort erzeugt. Nach dem Konstruktor sollt null-
+	 * Konstruktor für eine PasswordFactory, die genau ein Passwort erzeugt. Nach dem Konstruktor sollte null-
 	 * bis mehrfach distributeCharacters() unter Verwendung der Konstanten dieser Klasse aufgerufen werden.
 	 * Abschließend kann das Passwort mit getPassword abgeholt werden.
+	 * 
+	 * Diese Methode ist package-private, um im Test, aber nirgendwo sonst zugreifbar zu sein.
 	 */
-	public PasswordFactory(final int length) {
+	PasswordFactory(final int length) {
 		password = new Password(length);
 	}
 
@@ -52,8 +56,10 @@ public class PasswordFactory {
 	 * Führt setSeed auf dem verwendeten Zufallsgenerator aus und damit in der Folge zu wiederholbaren
 	 * Ergebnisse und sollte daher nur für JUnit-Tests verwendet werden, dann aber auch direkt nach dem
 	 * Konstruktor.
+	 * 
+	 * Diese Methode ist package-private, um im Test, aber nirgendwo sonst zugreifbar zu sein.
 	 */
-	public void setSeedForRandomToEnforceReproducableResults(final long seedForRandom) {
+	void setSeedForRandomToEnforceReproducableResults(final long seedForRandom) {
 		random.setSeed(seedForRandom);
 	}
 
@@ -75,8 +81,10 @@ public class PasswordFactory {
 	/**
 	 * Verteilt die angegebene Anzahl von Zeichen aus dem übergebenen Satz von Zeichen auf den gewünschten
 	 * Positionsbereich im übergebenen Passwort.
+	 * 
+	 * Diese Methode ist package-private, um im Test, aber nirgendwo sonst zugreifbar zu sein.
 	 */
-	public void distributeCharacters(final int count, final String characters, final int leftmost,
+	void distributeCharacters(final int count, final String characters, final int leftmost,
 			final int rightmost) {
 		if (rightmost > password.getLength() - 1) {
 			throw new DomainException("TotalCharacterCountExceededMsg");
@@ -95,8 +103,10 @@ public class PasswordFactory {
 
 	/**
 	 * Liefert das Password als Ergebnis des Fabrikationsprozesses, aufgefüllt mit Zeichen aus characters.
+	 * 
+	 * Diese Methode ist package-private, um im Test, aber nirgendwo sonst zugreifbar zu sein.
 	 */
-	public String getPassword(final String characters) {
+	String getPassword(final String characters) {
 		if (characters.length() == 0 || password.getLength() == 0) {
 			throw new DomainException("CharacterOrTotalCharacterCountMissingMsg");
 		} else {
@@ -105,6 +115,63 @@ public class PasswordFactory {
 			}
 			return password.getPassword();
 		}
+	}
+
+	/**
+	 * Generiert mit der übergebenen Passphrase ein Password gemäß den übergebenen Diensteinformationen.
+	 */
+	public static String getPassword(ServiceInfo si, String passphrase) {
+		String characters = ""; // Zeichen für den Rest des Passworts
+		final String serviceAbbreviation = si.getServiceAbbreviation();
+		long seed = passphrase.hashCode() + serviceAbbreviation.hashCode();
+		final String additionalInfo = si.getAdditionalInfo();
+		if (additionalInfo.length() != 0) { // Zusatzinfos vorhanden?
+			seed += additionalInfo.hashCode(); // => Zur Saat dazunehmen
+		}
+		final int pswLength = EmptyHelper.getValue(si.getTotalCharacterCount(), 0);
+		PasswordFactory pg = new PasswordFactory(pswLength);
+		pg.setSeedForRandomToEnforceReproducableResults(seed);
+		if (si.isUseSmallLetters()) {
+			int count = EmptyHelper.getValue(si.getSmallLettersCount(), 0);
+			int start = EmptyHelper.getValue(si.getSmallLettersStartIndex(), 0);
+			int end = EmptyHelper.getValue(si.getSmallLettersEndIndex(), pswLength - 1);
+			if (count != 0) {
+				pg.distributeCharacters(count, Constants.LOWERCASE_LETTERS, start, end);
+			} else {
+				characters += Constants.LOWERCASE_LETTERS;
+			}
+		}
+		if (si.isUseCapitalLetters()) {
+			int count = EmptyHelper.getValue(si.getCapitalLettersCount(), 0);
+			int start = EmptyHelper.getValue(si.getCapitalLettersStartIndex(), 0);
+			int end = EmptyHelper.getValue(si.getCapitalLettersEndIndex(), pswLength - 1);
+			if (count != 0) {
+				pg.distributeCharacters(count, Constants.UPPERCASE_LETTERS, start, end);
+			} else {
+				characters += Constants.UPPERCASE_LETTERS;
+			}
+		}
+		if (si.isUseDigits()) {
+			int count = EmptyHelper.getValue(si.getDigitsCount(), 0);
+			int start = EmptyHelper.getValue(si.getDigitsStartIndex(), 0);
+			int end = EmptyHelper.getValue(si.getDigitsEndIndex(), pswLength - 1);
+			if (count != 0) {
+				pg.distributeCharacters(count, Constants.DIGITS, start, end);
+			} else {
+				characters += Constants.DIGITS;
+			}
+		}
+		if (si.isUseSpecialCharacters()) {
+			int count = EmptyHelper.getValue(si.getSpecialCharactersCount(), 0);
+			int start = EmptyHelper.getValue(si.getSpecialCharactersStartIndex(), 0);
+			int end = EmptyHelper.getValue(si.getSpecialCharactersEndIndex(), pswLength - 1);
+			if (count != 0) {
+				pg.distributeCharacters(count, si.getSpecialCharacters(), start, end);
+			} else {
+				characters += si.getSpecialCharacters();
+			}
+		}
+		return pg.getPassword(characters); // Rest auffüllen
 	}
 
 }
