@@ -33,12 +33,12 @@ import net.sf.pswgen.util.DomainException;
  * Generische Basisklasse für die Controller meiner Anwendungen.
  * </p>
  * <p>
- * Copyright (C) 2005-2013 Uwe Damken
+ * Copyright (C) 2005-2014 Uwe Damken
  * </p>
  */
 public class BaseCtl {
 
-	/** Alle von diesem Controller gesteuerten View */
+	/** Alle von diesem Controller gesteuerten Views */
 	public List<BaseView> views = new ArrayList<BaseView>();
 
 	/**
