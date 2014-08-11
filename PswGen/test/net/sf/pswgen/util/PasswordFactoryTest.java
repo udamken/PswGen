@@ -20,23 +20,23 @@ package net.sf.pswgen.util;
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *****************************************************************************/
 
-import junit.framework.Assert;
 import junit.framework.TestCase;
 import net.sf.pswgen.model.ServiceInfo;
+
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * <p>
  * Testklasse für PasswordFactory.
  * </p>
  * <p>
- * Copyright (C) 2005-2013 Uwe Damken
+ * Copyright (C) 2005-2014 Uwe Damken
  * </p>
  */
 public class PasswordFactoryTest extends TestCase {
 
-	public PasswordFactoryTest() {
-	}
-
+	@Test
 	public void test01() {
 		PasswordFactory pf = new PasswordFactory(8);
 		pf.setSeedForRandomToEnforceReproducableResults(0x19630409L);
@@ -44,6 +44,7 @@ public class PasswordFactoryTest extends TestCase {
 		Assert.assertEquals("KGMOCJXD", psw);
 	}
 
+	@Test
 	public void test02() {
 		PasswordFactory pf = new PasswordFactory(8);
 		pf.setSeedForRandomToEnforceReproducableResults(0x19630409L);
@@ -51,6 +52,7 @@ public class PasswordFactoryTest extends TestCase {
 		Assert.assertEquals("kgmocjxd", psw);
 	}
 
+	@Test
 	public void test03() {
 		PasswordFactory pf = new PasswordFactory(8);
 		pf.setSeedForRandomToEnforceReproducableResults(0x19630409L);
@@ -58,6 +60,7 @@ public class PasswordFactoryTest extends TestCase {
 		Assert.assertEquals("kgmOCjXD", psw);
 	}
 
+	@Test
 	public void test04() {
 		PasswordFactory pf = new PasswordFactory(8);
 		pf.setSeedForRandomToEnforceReproducableResults(0x19630409L);
@@ -65,6 +68,7 @@ public class PasswordFactoryTest extends TestCase {
 		Assert.assertEquals("88408137", psw);
 	}
 
+	@Test
 	public void test05() {
 		PasswordFactory pf = new PasswordFactory(8);
 		pf.setSeedForRandomToEnforceReproducableResults(0x19630409L);
@@ -72,6 +76,7 @@ public class PasswordFactoryTest extends TestCase {
 		Assert.assertEquals("i6UMo7pv", psw);
 	}
 
+	@Test
 	public void test06() {
 		PasswordFactory pf = new PasswordFactory(8);
 		pf.setSeedForRandomToEnforceReproducableResults(0x19630409L);
@@ -79,6 +84,7 @@ public class PasswordFactoryTest extends TestCase {
 		Assert.assertEquals("$=+*&-??", psw);
 	}
 
+	@Test
 	public void test07() {
 		PasswordFactory pf = new PasswordFactory(8);
 		pf.setSeedForRandomToEnforceReproducableResults(0x19630409L);
@@ -87,6 +93,7 @@ public class PasswordFactoryTest extends TestCase {
 		Assert.assertEquals("kGm!CJXd", psw);
 	}
 
+	@Test
 	public void test08() {
 		PasswordFactory pf = new PasswordFactory(8);
 		pf.setSeedForRandomToEnforceReproducableResults(0x19630409L);
@@ -98,6 +105,7 @@ public class PasswordFactoryTest extends TestCase {
 		}
 	}
 
+	@Test
 	public void test09() {
 		PasswordFactory pf = new PasswordFactory(8);
 		pf.setSeedForRandomToEnforceReproducableResults(0x19630409L);
@@ -106,6 +114,7 @@ public class PasswordFactoryTest extends TestCase {
 		Assert.assertEquals(":MOCJXDG", psw);
 	}
 
+	@Test
 	public void test10() {
 		PasswordFactory pf = new PasswordFactory(8);
 		pf.setSeedForRandomToEnforceReproducableResults(0x19630409L);
@@ -117,6 +126,7 @@ public class PasswordFactoryTest extends TestCase {
 		}
 	}
 
+	@Test
 	public void test11() {
 		PasswordFactory pf = new PasswordFactory(4);
 		pf.setSeedForRandomToEnforceReproducableResults(0x19630409L);
@@ -126,6 +136,7 @@ public class PasswordFactoryTest extends TestCase {
 		Assert.assertEquals("a.d.", psw);
 	}
 
+	@Test
 	public void test12() {
 		PasswordFactory pf = new PasswordFactory(4);
 		pf.setSeedForRandomToEnforceReproducableResults(0x19630410L);
@@ -135,6 +146,7 @@ public class PasswordFactoryTest extends TestCase {
 		Assert.assertEquals("bd..", psw);
 	}
 
+	@Test
 	public void test13() {
 		PasswordFactory pf = new PasswordFactory(8);
 		pf.setSeedForRandomToEnforceReproducableResults(0x19630409L);
@@ -143,6 +155,7 @@ public class PasswordFactoryTest extends TestCase {
 		Assert.assertEquals("MOCJXDG:", psw);
 	}
 
+	@Test
 	public void test14() {
 		PasswordFactory pf = new PasswordFactory(8);
 		pf.setSeedForRandomToEnforceReproducableResults(0x19630410L);
@@ -151,6 +164,7 @@ public class PasswordFactoryTest extends TestCase {
 		Assert.assertEquals("ZRUHZFL:", psw);
 	}
 
+	@Test
 	public void test15() {
 		PasswordFactory pf = new PasswordFactory(8);
 		pf.setSeedForRandomToEnforceReproducableResults(0x19630410L);
@@ -159,6 +173,7 @@ public class PasswordFactoryTest extends TestCase {
 		Assert.assertEquals("ZRUHZF:L", psw);
 	}
 
+	@Test
 	public void test16() {
 		ServiceInfo si = new ServiceInfo("test");
 		si.setAdditionalInfo("10.08.2014");
@@ -172,6 +187,7 @@ public class PasswordFactoryTest extends TestCase {
 		Assert.assertEquals("y7zMGUS.Ixm&B#*)vhuB", psw);
 	}
 
+	@Test
 	public void test17() {
 		ServiceInfo si = new ServiceInfo("test");
 		si.setAdditionalInfo("10.08.2014");
@@ -186,6 +202,7 @@ public class PasswordFactoryTest extends TestCase {
 		Assert.assertEquals("jo4AKvkD0E$VJfKZ5ehh", psw);
 	}
 
+	@Test
 	public void test18() {
 		ServiceInfo si = new ServiceInfo("test");
 		si.setAdditionalInfo("10.08.2014");

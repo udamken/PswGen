@@ -20,23 +20,22 @@ package net.sf.pswgen.util;
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *****************************************************************************/
 
-import junit.framework.Assert;
 import junit.framework.TestCase;
-import net.sf.pswgen.util.EncryptionHelper;
+
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * <p>
  * Testklasse für EncryptionHelper.
  * </p>
  * <p>
- * Copyright (C) 2005-2013 Uwe Damken
+ * Copyright (C) 2005-2014 Uwe Damken
  * </p>
  */
 public class EncryptionHelperTest extends TestCase {
 
-	public EncryptionHelperTest() {
-	}
-
+	@Test
 	public void test01() {
 		Assert.assertEquals("00", EncryptionHelper.toHexString((new Integer(0)).byteValue()));
 		Assert.assertEquals("01", EncryptionHelper.toHexString((new Integer(1)).byteValue()));
@@ -47,6 +46,7 @@ public class EncryptionHelperTest extends TestCase {
 		Assert.assertEquals("FF", EncryptionHelper.toHexString((new Integer(255)).byteValue()));
 	}
 
+	@Test
 	public void test02() {
 		Assert.assertEquals((new Integer(0)).byteValue(), EncryptionHelper.toByte("0"));
 		Assert.assertEquals((new Integer(0)).byteValue(), EncryptionHelper.toByte("00"));
@@ -60,6 +60,7 @@ public class EncryptionHelperTest extends TestCase {
 		Assert.assertEquals((new Integer(255)).byteValue(), EncryptionHelper.toByte("FF"));
 	}
 
+	@Test
 	public void test03() {
 		Assert.assertEquals("0000", EncryptionHelper.toHexString(EncryptionHelper.toByteArray("0000")));
 		Assert.assertEquals("1234", EncryptionHelper.toHexString(EncryptionHelper.toByteArray("1234")));
@@ -67,6 +68,7 @@ public class EncryptionHelperTest extends TestCase {
 		Assert.assertEquals("FFFF", EncryptionHelper.toHexString(EncryptionHelper.toByteArray("FFFF")));
 	}
 
+	@Test
 	public void test04() {
 		String domainEncrypted = EncryptionHelper.encrypt("passphrase", "familie-damken.de");
 		Assert.assertEquals("9351384B3EAE15B20CBA3CFD0D8D8E804ADFD449CC1E691C", domainEncrypted);
