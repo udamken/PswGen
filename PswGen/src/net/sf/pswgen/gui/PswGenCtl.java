@@ -27,15 +27,20 @@ import java.awt.datatransfer.StringSelection;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.URI;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 import net.sf.pswgen.gui.base.BaseCtl;
@@ -44,9 +49,11 @@ import net.sf.pswgen.model.ServiceInfo;
 import net.sf.pswgen.model.ServiceInfoList;
 import net.sf.pswgen.util.Constants;
 import net.sf.pswgen.util.DomainException;
-import net.sf.pswgen.util.EmptyHelper;
 import net.sf.pswgen.util.EncryptionHelper;
 import net.sf.pswgen.util.PasswordFactory;
+
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 
 /**
  * <p>
@@ -60,7 +67,7 @@ import net.sf.pswgen.util.PasswordFactory;
  */
 public class PswGenCtl extends BaseCtl {
 
-	/** Der Logger für diese Klasse */
+	/** Der Logger dieser Anwendung */
 	private static final Logger LOGGER = Logger.getLogger(Constants.APPLICATION_PACKAGE_NAME + ".Logger",
 			Constants.APPLICATION_PACKAGE_NAME + ".Messages");
 
@@ -74,15 +81,79 @@ public class PswGenCtl extends BaseCtl {
 	private String validatedPassphrase;
 
 	/**
-	 * Erzeugt einen Controller, die Hauptklasse wird zum Runterfahren benötigt.
+	 * Erzeugt einen Controller.
 	 */
 	public PswGenCtl(final String givenServicesFilename) {
 		super();
 		servicesFile = new File(givenServicesFilename);
-		loadServiceInfoList();
+		setupLookAndFeel();
+	}
+
+	/**
+	 * Setzt das Look&Feel auf den System-Standard.
+	 */
+	private void setupLookAndFeel() {
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (Exception e) {
+			LOGGER.log(Level.WARNING, Constants.MSG_EXCP_LOOK_AND_FEEL, e);
+		}
+	}
+
+	/**
+	 * Datei lediglich in das neue Format konvertieren, dann endet die Anwendung.
+	 */
+	public void upgradeServiceInfoList(final String targetFilename) {
+		loadServiceInfoListFromXml();
+		if (services.isUnsupportedFormat()) {
+			JOptionPane.showMessageDialog(null, getGuiText("UnsupportedFileFormatMsg"),
+					Constants.APPLICATION_NAME, JOptionPane.ERROR_MESSAGE);
+			LOGGER.log(Level.SEVERE, Constants.MSG_UNSUPPORTED_FILE_FORMAT_VERSION);
+			System.exit(16);
+		} else if (services.isAdvancedFormat()) { // Schon im neuen Format? => nichts zu tun
+			JOptionPane.showMessageDialog(null, getGuiText("FileFormatAlreadyConvertedMsg"),
+					Constants.APPLICATION_NAME, JOptionPane.ERROR_MESSAGE);
+			LOGGER.log(Level.SEVERE, Constants.MSG_ALREADY_CONVERTED_FILE_FORMAT_VERSION);
+			System.exit(16);
+		}
+		// TODO Eventuell hier die Indexwerte auf Positionswerte umstellen?
+		// for (ServiceInfo si : services.getEncryptedServices()) { // Sind noch verschlüsselt ...
+		// if (si.isUseSpecialCharacters()
+		// && EmptyHelper.isEmpty(si.getSpecialCharactersCount())) {
+		// si.setSpecialCharactersCount(1); // für Sonderzeichen war 1 der Default
+		// }
+		// }
+		// Siehe saveServiceInfoList() für Konvertierungen in ein neues Dateiformat
+		servicesFile = new File(targetFilename);
+		saveServiceInfoList();
+		JOptionPane.showMessageDialog(null, getGuiText("FileFormatSuccessfullyConvertedMsg"),
+				Constants.APPLICATION_NAME, JOptionPane.INFORMATION_MESSAGE);
+	}
+
+	/**
+	 * Lädt die Dienstedatei, fragt die Passphrase ab und öffnet das Hauptfenster. Die Anwendung endet nach
+	 * dieser Methode nicht, das Beenden geschieht über die Oberfläche.
+	 */
+	public void start() {
+		try {
+			loadServiceInfoList();
+		} catch (Exception e) { // FIXME Exception konkretisieren ...
+			loadServiceInfoListFromXml();
+		}
+		if (services.isUnsupportedFormat()) {
+			JOptionPane.showMessageDialog(null, getGuiText("UnsupportedFileFormatMsg"),
+					Constants.APPLICATION_NAME, JOptionPane.ERROR_MESSAGE);
+			LOGGER.log(Level.SEVERE, Constants.MSG_UNSUPPORTED_FILE_FORMAT_VERSION);
+			System.exit(16);
+		} else if (!services.isAdvancedFormat()) { // Noch im alten Format? => Konvertieren
+			JOptionPane.showMessageDialog(null, getGuiText("FileFormatMustBeConvertedMsg"),
+					Constants.APPLICATION_NAME, JOptionPane.ERROR_MESSAGE);
+			LOGGER.log(Level.SEVERE, Constants.MSG_TO_BE_CONVERTED_FILE_FORMAT_VERSION);
+			System.exit(16);
+		}
 		StartupView startupView = new StartupView(this);
 		startupView.setTitle(Constants.APPLICATION_NAME + " " + Constants.APPLICATION_VERSION);
-		if (services.isAdvancedFormat()) { // Fortgeschrittenes Format?
+		if (!services.isNew()) { // Keine neue Datei?
 			startupView.disablePassphraseRepeated(); // Passphrase nur 1x eingeben!
 		}
 		addView(startupView);
@@ -113,12 +184,16 @@ public class PswGenCtl extends BaseCtl {
 	}
 
 	/**
-	 * Prüft die Passphrase und öffnet ggf. das Hauptfenster.
+	 * Prüft die Passphrase, aktualisert den Verifizierungs- und Versions-String (besonders wichtig bei neuen
+	 * Dateien) und öffnet ggf. das Hauptfenster.
 	 */
 	public void actionPerformedOpenServices(final StartupView startupView) {
 		try {
 			validatedPassphrase = validatePassphrase(startupView);
-			services.decrypt(validatedPassphrase); // Infos Collection entschlüsselt in Map stellen
+			services.decrypt(validatedPassphrase); // Info-Collection entschlüsselt in Map stellen
+			services.setVerifier(EncryptionHelper
+					.encrypt(validatedPassphrase, Constants.APPLICATION_VERIFIER));
+			services.setVersion(Constants.APPLICATION_VERSION);
 			startupView.dispose();
 			MainView mainView = new MainView(this);
 			mainView.setTitle(servicesFile.getAbsolutePath() + " - " + Constants.APPLICATION_NAME + " "
@@ -191,6 +266,7 @@ public class PswGenCtl extends BaseCtl {
 				if (si == null) { // Dienst gar nicht vorhanden?
 					throw new DomainException("ServiceAbbreviationMissingMsg");
 				} else {
+					services.encrypt(validatedPassphrase);
 					saveServiceInfoList();
 					mainView.updateStoredServices();
 					putServiceToView(mainView, new ServiceInfo());
@@ -317,7 +393,7 @@ public class PswGenCtl extends BaseCtl {
 	/**
 	 * Lädt alle Diensteinformationen.
 	 */
-	private void loadServiceInfoList() {
+	private void loadServiceInfoListFromXml() {
 		try {
 			JAXBContext context = JAXBContext.newInstance(ServiceInfoList.class);
 			Unmarshaller um = context.createUnmarshaller();
@@ -327,15 +403,6 @@ public class PswGenCtl extends BaseCtl {
 				FileInputStream in = new FileInputStream(servicesFile);
 				services = (ServiceInfoList) um.unmarshal(in);
 				in.close();
-				if (!services.isAdvancedFormat()) { // Noch im alten Format? => Konvertieren
-					for (ServiceInfo si : services.getEncryptedServices()) { // Sind noch verschlüsselt ...
-						if (si.isUseSpecialCharacters()
-								&& EmptyHelper.isEmpty(si.getSpecialCharactersCount())) {
-							si.setSpecialCharactersCount(1); // für Sonderzeichen war 1 der Default
-						}
-					}
-					// Siehe saveServiceInfoList() für Konvertierungen, die die Passphrase benötigen
-				}
 			}
 		} catch (Exception e) {
 			LOGGER.log(Level.WARNING, Constants.MSG_EXCP_SERVICES, e);
@@ -343,28 +410,168 @@ public class PswGenCtl extends BaseCtl {
 	}
 
 	/**
+	 * Lädt alle Diensteinformationen.
+	 */
+	private void loadServiceInfoList() {
+		try {
+			if (!servicesFile.exists()) { // Datei gibt's nicht? => Leere Liste erzeugen
+				services = new ServiceInfoList();
+			} else {
+				FileInputStream in = new FileInputStream(servicesFile);
+				services = readJsonStream(in);
+				in.close();
+			}
+		} catch (Exception e) {
+			LOGGER.log(Level.WARNING, Constants.MSG_EXCP_SERVICES, e);
+		}
+	}
+
+	public ServiceInfoList readJsonStream(FileInputStream in) throws IOException {
+		ServiceInfoList services = new ServiceInfoList();
+		JsonReader reader = new JsonReader(new InputStreamReader(in, "UTF-8"));
+		try {
+			reader.beginObject();
+			assert "version".equals(reader.nextName());
+			services.setVersion(reader.nextString());
+			assert "verifier".equals(reader.nextName());
+			services.setVerifier(reader.nextString());
+			addReadServices(services, reader);
+			reader.endObject();
+		} finally {
+			reader.close();
+		}
+		return services;
+	}
+
+	public void addReadServices(ServiceInfoList services, JsonReader reader) throws IOException {
+		assert "services".equals(reader.nextName());
+		reader.beginArray();
+		while (reader.hasNext()) {
+			services.addEncryptedService(readService(reader));
+		}
+		reader.endArray();
+	}
+
+	public ServiceInfo readService(JsonReader reader) throws IOException {
+		ServiceInfo si = new ServiceInfo();
+		reader.beginObject();
+		assert "serviceAbbreviation".equals(reader.nextName());
+		si.setServiceAbbreviation(reader.nextString());
+		assert "additionalInfo".equals(reader.nextName());
+		si.setAdditionalInfo(reader.nextString());
+		assert "loginUrl".equals(reader.nextName());
+		si.setLoginUrl(reader.nextString());
+		assert "loginInfo".equals(reader.nextName());
+		si.setLoginInfo(reader.nextString());
+		assert "additionalLoginInfo".equals(reader.nextName());
+		si.setAdditionalLoginInfo(reader.nextString());
+		assert "useSmallLetters".equals(reader.nextName());
+		si.setUseSmallLetters(reader.nextBoolean());
+		assert "useCapitalLetters".equals(reader.nextName());
+		si.setUseCapitalLetters(reader.nextBoolean());
+		assert "useDigits".equals(reader.nextName());
+		si.setUseDigits(reader.nextBoolean());
+		assert "useSpecialCharacters".equals(reader.nextName());
+		si.setUseSpecialCharacters(reader.nextBoolean());
+		assert "specialCharacters".equals(reader.nextName());
+		si.setSpecialCharacters(reader.nextString());
+		assert "smallLettersCount".equals(reader.nextName());
+		si.setSmallLettersCount(reader.nextInt());
+		assert "smallLettersStartIndex".equals(reader.nextName());
+		si.setSmallLettersStartIndex(reader.nextInt());
+		assert "smallLettersEndIndex".equals(reader.nextName());
+		si.setSmallLettersEndIndex(reader.nextInt());
+		assert "capitalLettersCount".equals(reader.nextName());
+		si.setCapitalLettersCount(reader.nextInt());
+		assert "capitalLettersStartIndex".equals(reader.nextName());
+		si.setCapitalLettersStartIndex(reader.nextInt());
+		assert "capitalLettersEndIndex".equals(reader.nextName());
+		si.setCapitalLettersEndIndex(reader.nextInt());
+		assert "digitsCount".equals(reader.nextName());
+		si.setDigitsCount(reader.nextInt());
+		assert "specialCharactersCount".equals(reader.nextName());
+		si.setSpecialCharactersCount(reader.nextInt());
+		assert "digitsStartIndex".equals(reader.nextName());
+		si.setDigitsStartIndex(reader.nextInt());
+		assert "digitsEndIndex".equals(reader.nextName());
+		si.setDigitsEndIndex(reader.nextInt());
+		assert "specialCharactersStartIndex".equals(reader.nextName());
+		si.setSpecialCharactersStartIndex(reader.nextInt());
+		assert "specialCharactersEndIndex".equals(reader.nextName());
+		si.setSpecialCharactersEndIndex(reader.nextInt());
+		assert "totalCharacterCount".equals(reader.nextName());
+		si.setTotalCharacterCount(reader.nextInt());
+		assert "password".equals(reader.nextName());
+		si.setPassword(reader.nextString());
+		assert "passwordRepeated".equals(reader.nextName());
+		si.setPasswordRepeated(reader.nextString());
+		reader.endObject();
+		return si;
+	}
+
+	/**
 	 * Speichert alle Diensteinformationen.
 	 */
 	private void saveServiceInfoList() {
 		try {
-			if (!services.isAdvancedFormat()) { // Noch im alten Format? => Konvertieren
-				final String verifierEncrypted = EncryptionHelper.encrypt(validatedPassphrase,
-						Constants.APPLICATION_VERIFIER);
-				services.setVerifier(verifierEncrypted);
-				services.setVersion(Constants.APPLICATION_VERSION);
-			}
-			// create JAXB context and instantiate marshaller
-			JAXBContext context = JAXBContext.newInstance(ServiceInfoList.class);
-			Marshaller m = context.createMarshaller();
-			m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 			FileOutputStream out = new FileOutputStream(servicesFile);
-			services.encrypt(validatedPassphrase); // Infos aus Map verschlüsselt in Collection stellen
-			m.marshal(services, out);
+			writeJsonStream(out, services);
 			out.close();
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new RuntimeException("Exception occured: " + e);
+			throw new RuntimeException("Exception occured: " + e); // FIXME ??
 		}
+	}
+
+	public void writeJsonStream(OutputStream out, ServiceInfoList services) throws IOException {
+		JsonWriter writer = new JsonWriter(new OutputStreamWriter(out, "UTF-8"));
+		writer.setIndent("\t");
+		writer.beginObject();
+		services.setVersion(Constants.APPLICATION_VERSION);
+		writer.name("version").value(services.getVersion());
+		writer.name("verifier").value(services.getVerifier());
+		writeServices(writer, services.getEncryptedServices());
+		writer.endObject();
+		writer.close();
+	}
+
+	public void writeServices(JsonWriter writer, Collection<ServiceInfo> services) throws IOException {
+		writer.name("services");
+		writer.beginArray();
+		for (ServiceInfo si : services) {
+			writeService(writer, si);
+		}
+		writer.endArray();
+	}
+
+	public void writeService(JsonWriter writer, ServiceInfo si) throws IOException {
+		writer.beginObject();
+		writer.name("serviceAbbreviation").value(si.getServiceAbbreviation());
+		writer.name("additionalInfo").value(si.getAdditionalInfo());
+		writer.name("loginUrl").value(si.getLoginUrl());
+		writer.name("loginInfo").value(si.getLoginInfo());
+		writer.name("additionalLoginInfo").value(si.getAdditionalLoginInfo());
+		writer.name("useSmallLetters").value(si.isUseSmallLetters());
+		writer.name("useCapitalLetters").value(si.isUseCapitalLetters());
+		writer.name("useDigits").value(si.isUseDigits());
+		writer.name("useSpecialCharacters").value(si.isUseSpecialCharacters());
+		writer.name("specialCharacters").value(si.getSpecialCharacters());
+		writer.name("smallLettersCount").value(si.getSmallLettersCount());
+		writer.name("smallLettersStartIndex").value(si.getSmallLettersStartIndex());
+		writer.name("smallLettersEndIndex").value(si.getSmallLettersEndIndex());
+		writer.name("capitalLettersCount").value(si.getCapitalLettersCount());
+		writer.name("capitalLettersStartIndex").value(si.getCapitalLettersStartIndex());
+		writer.name("capitalLettersEndIndex").value(si.getCapitalLettersEndIndex());
+		writer.name("digitsCount").value(si.getDigitsCount());
+		writer.name("specialCharactersCount").value(si.getSpecialCharactersCount());
+		writer.name("digitsStartIndex").value(si.getDigitsStartIndex());
+		writer.name("digitsEndIndex").value(si.getDigitsEndIndex());
+		writer.name("specialCharactersStartIndex").value(si.getSpecialCharactersStartIndex());
+		writer.name("specialCharactersEndIndex").value(si.getSpecialCharactersEndIndex());
+		writer.name("totalCharacterCount").value(si.getTotalCharacterCount());
+		writer.name("password").value(si.getPassword());
+		writer.name("passwordRepeated").value(si.getPasswordRepeated());
+		writer.endObject();
 	}
 
 	/**
@@ -459,17 +666,17 @@ public class PswGenCtl extends BaseCtl {
 		if (passphrase.length() == 0) {
 			throw new DomainException("PassphraseEmptyMsg");
 		}
-		if (services.isAdvancedFormat()) {
-			// Beim neuen Format wird geprüft, ob die Passphrase den Prüfstring entschlüsseln kann
+		if (services.isNew()) {
+			// Bei einer neuen Daten wird geprüft, ob die Passphrase zweimal gleich eingegeben wurde
+			if (!passphrase.equals(passphraseRepeated)) { // Mismatch?
+				throw new DomainException("PassphraseMismatchMsg");
+			}
+		} else {
+			// Sonst wird geprüft, ob die Passphrase den Prüfstring entschlüsseln kann
 			final String verifierEncrypted = services.getVerifier();
 			final String verifierDecrypted = EncryptionHelper.decrypt(passphrase, verifierEncrypted);
 			if (!verifierDecrypted.equals(Constants.APPLICATION_VERIFIER)) {
 				throw new DomainException("PassphraseInvalid");
-			}
-		} else {
-			// Beim alten Format wird geprüft, ob die Passphrase zweimal gleich eingegeben wurde
-			if (!passphrase.equals(passphraseRepeated)) { // Mismatch?
-				throw new DomainException("PassphraseMismatchMsg");
 			}
 		}
 		return passphrase;
@@ -547,6 +754,7 @@ public class PswGenCtl extends BaseCtl {
 			}
 		}
 		services.putServiceInfo(getServiceFromView(mainView));
+		services.encrypt(validatedPassphrase);
 		saveServiceInfoList();
 		mainView.setDirty(false);
 		mainView.updateStoredServices();

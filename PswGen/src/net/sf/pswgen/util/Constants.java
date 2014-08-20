@@ -33,7 +33,7 @@ import net.sf.pswgen.ApplicationPackageNameMarker;
  * müssen. Dies ist sinnvoll, um die Base-Klassen später mal extrahieren zu können.
  * </p>
  * <p>
- * Copyright (C) 2005-2013 Uwe Damken
+ * Copyright (C) 2005-2014 Uwe Damken
  * </p>
  */
 public class Constants {
@@ -42,10 +42,13 @@ public class Constants {
 	public static final String APPLICATION_NAME = "PswGen";
 
 	/** Die Version dieser Anwendung */
-	public static final String APPLICATION_VERSION = "1.6.2";
+	public static final String APPLICATION_VERSION = "1.7.0";
 
-	/** Die Version dieser Anwendung */
-	public static final String ADVANCED_FILE_FORMAT_VERSION = "1.6.0";
+	/** Die Version dieser Anwendung, ab der ein neues Dateiformat benutzt wird */
+	public static final String ADVANCED_FILE_FORMAT_VERSION = "1.7.0";
+
+	/** Die Version dieser Anwendung, bis zu der das Dateiformat nicht mehr unterstützt wird */
+	public static final String UNSUPPORTED_FILE_FORMAT_VERSION = "1.5.9";
 
 	/** Die Version dieser Anwendung */
 	public static final String APPLICATION_VERIFIER = "PswGen - Manages your websites and repeatably generates passwords for them, Copyright (C) Uwe Damken";
@@ -75,6 +78,12 @@ public class Constants {
 	public static final String MSG_EXCP_SERVICES = "100";
 
 	public static final String MSG_EXCP_LOOK_AND_FEEL = "101";
+
+	public static final String MSG_UNSUPPORTED_FILE_FORMAT_VERSION = "102";
+
+	public static final String MSG_TO_BE_CONVERTED_FILE_FORMAT_VERSION = "103";
+
+	public static final String MSG_ALREADY_CONVERTED_FILE_FORMAT_VERSION = "104";
 
 	/** Für die generierten Passworte verwendbare Zeichen */
 

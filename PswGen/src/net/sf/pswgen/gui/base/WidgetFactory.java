@@ -55,12 +55,12 @@ import net.sf.pswgen.util.ConverterHelper;
  * standardisierte Weise.
  * </p>
  * <p>
- * Copyright (C) 2005-2013 Uwe Damken
+ * Copyright (C) 2005-2014 Uwe Damken
  * </p>
  */
 public class WidgetFactory {
 
-	/** Der Logger für diese Klasse */
+	/** Der Logger dieser Anwendung */
 	private static final Logger LOGGER = Logger.getLogger(Constants.APPLICATION_PACKAGE_NAME + ".Logger",
 			Constants.APPLICATION_PACKAGE_NAME + ".Messages");
 

@@ -109,15 +109,9 @@ public class ServiceInfoList {
 	 */
 	private ServiceInfo decrypt(final String passphrase, final ServiceInfo e) {
 		ServiceInfo d = new ServiceInfo(); // e(ncrypt) --decrypt--> d(ecrypt)
-		if (isAdvancedFormat()) {
-			d.setServiceAbbreviation(EncryptionHelper.decrypt(passphrase, e.getServiceAbbreviation()));
-			d.setAdditionalInfo(EncryptionHelper.decrypt(passphrase, e.getAdditionalInfo()));
-			d.setLoginUrl(EncryptionHelper.decrypt(passphrase, e.getLoginUrl()));
-		} else {
-			d.setServiceAbbreviation(e.getServiceAbbreviation());
-			d.setAdditionalInfo(e.getAdditionalInfo());
-			d.setLoginUrl(e.getLoginUrl());
-		}
+		d.setServiceAbbreviation(EncryptionHelper.decrypt(passphrase, e.getServiceAbbreviation()));
+		d.setAdditionalInfo(EncryptionHelper.decrypt(passphrase, e.getAdditionalInfo()));
+		d.setLoginUrl(EncryptionHelper.decrypt(passphrase, e.getLoginUrl()));
 		d.setLoginInfo(EncryptionHelper.decrypt(passphrase, e.getLoginInfo()));
 		d.setAdditionalLoginInfo(EncryptionHelper.decrypt(passphrase, e.getAdditionalLoginInfo()));
 		d.setUseSmallLetters(e.isUseSmallLetters());
@@ -160,8 +154,8 @@ public class ServiceInfoList {
 	/**
 	 * Bereitet das Speichern dieser ServiceInfoList in eine XML-Datei vor, indem die Werte aus der Map in
 	 * eine Collection gestellt werden. Der Grund dafür ist, dass JAXB nicht mit Maps, sondern "nur" mit
-	 * Collections umgehen kann. Allerdings wird der Umweg hier ausgenutzt: Die Collection nur verschlüsselte
-	 * Daten enthält und die Map nur enstschlüsselte Daten, die Umwandlung geschieht beim Befüllen der
+	 * Collections umgehen kann. Allerdings wird der Umweg hier ausgenutzt: Die Collection enthält nur
+	 * verschlüsselte Daten und die Map nur enstschlüsselte Daten. Die Umwandlung geschieht beim Befüllen der
 	 * Collection aus der Map beim Speichern und beim Befüllen der Map aus der Collection beim Lesen.
 	 */
 	public void encrypt(final String passphrase) {
@@ -171,6 +165,17 @@ public class ServiceInfoList {
 				encryptedServices.add(encrypt(passphrase, si));
 			}
 		}
+	}
+
+	/**
+	 * Fügt den Collection verschlüsselter Dienste einen hinzu. Hierfür wird nicht setEncryptServices()
+	 * definiert, weil das mit der JAXB-Implementierung kollidiert.
+	 */
+	public void addEncryptedService(ServiceInfo si) {
+		if (encryptedServices == null) {
+			encryptedServices = new ArrayList<ServiceInfo>();
+		}
+		encryptedServices.add(si);
 	}
 
 	/**
@@ -190,12 +195,29 @@ public class ServiceInfoList {
 	}
 
 	/**
-	 * Liefert true, wenn die Version gesetzt und >= 1.6.0 ist und außerdem der Prüfstring auf einen nicht
+	 * Liefert true, wenn die geladene Datei keine Dienste enthält.
+	 */
+	public boolean isNew() {
+		return encryptedServices == null;
+	}
+
+	/**
+	 * Liefert true, wenn die Version gesetzt und >= 1.7.0 ist und außerdem der Prüfstring auf einen nicht
 	 * leeren Wert gesetzt ist.
 	 */
 	public boolean isAdvancedFormat() {
-		return version != null && version.compareTo(Constants.ADVANCED_FILE_FORMAT_VERSION) >= 0
+		return !isNew() && version != null && version.compareTo(Constants.ADVANCED_FILE_FORMAT_VERSION) >= 0
 				&& verifier != null && verifier.length() > 0;
+	}
+
+	/**
+	 * Liefert true, wenn die Version leer oder <= 1.5.9 ist oder der Prüfstring fehlt, aber die Datei nicht
+	 * leer ist.
+	 */
+	public boolean isUnsupportedFormat() {
+		return !isNew()
+				&& (version == null || version.compareTo(Constants.UNSUPPORTED_FILE_FORMAT_VERSION) <= 0
+						|| verifier == null || verifier.isEmpty());
 	}
 
 	/**
