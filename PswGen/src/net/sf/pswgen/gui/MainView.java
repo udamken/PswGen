@@ -172,7 +172,7 @@ public class MainView extends BaseView {
 		GridBagConstraintsFactory gbcf = GridBagConstraintsFactory.getInstance();
 		WidgetFactory wf = WidgetFactory.getInstance();
 		// Widgets erzeugen
-		JPanel panel = wf.getContentPane("MainFrame");
+		JPanel panel = wf.getContentPane("MainFrame", true);
 		panel.add(createPanelStoredServices(), gbcf.getTableConstraints(0, 1, 1, 1));
 		panel.add(createPanelEditService(), gbcf.getTableConstraints(0, 2, 1, 1));
 		return panel;

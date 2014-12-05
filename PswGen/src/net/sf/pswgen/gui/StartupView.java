@@ -87,7 +87,7 @@ public class StartupView extends BaseView {
 		GridBagConstraintsFactory gbcf = GridBagConstraintsFactory.getInstance();
 		WidgetFactory wf = WidgetFactory.getInstance();
 		// Widgets erzeugen
-		JPanel panel = wf.getContentPane("StartupFrame");
+		JPanel panel = wf.getContentPane("StartupFrame", true);
 		panel.add(createPanelPassphrase(), gbcf.getLabelConstraints(0, 0));
 		return panel;
 	}

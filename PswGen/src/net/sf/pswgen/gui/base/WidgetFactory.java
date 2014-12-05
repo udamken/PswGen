@@ -24,11 +24,14 @@ import java.awt.Component;
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.util.Collections;
 import java.util.Hashtable;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.prefs.Preferences;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -60,6 +63,10 @@ import net.sf.pswgen.util.ConverterHelper;
  */
 public class WidgetFactory {
 
+	private static final String PREFS_SUBKEY_HEIGHT = ".height";
+
+	private static final String PREFS_SUBKEY_WIDTH = ".width";
+
 	/** Der Logger dieser Anwendung */
 	private static final Logger LOGGER = Logger.getLogger(Constants.APPLICATION_PACKAGE_NAME + ".Logger",
 			Constants.APPLICATION_PACKAGE_NAME + ".Messages");
@@ -69,6 +76,9 @@ public class WidgetFactory {
 
 	/** Hashtable mit Informationen zu allen Widgets, die hier erzeugt werden können */
 	private Hashtable<String, WidgetInfo> widgetInfos = new Hashtable<String, WidgetInfo>();
+
+	/** Benutzereinstellungen, die gegebenenfalls die Einstellungen aus den Properties überschreiben */
+	private Preferences prefs = null;
 
 	/** Konstruktor ist nicht öffentlich zugreifbar => getInstance() nutzen */
 	private WidgetFactory() {
@@ -90,6 +100,7 @@ public class WidgetFactory {
 	 * Initialisiert die eine und einzige Instanz.
 	 */
 	private void initialize() {
+		prefs = Preferences.userRoot().node(Constants.APPLICATION_PACKAGE_NAME);
 		ResourceBundle bundle = ResourceBundle.getBundle(Constants.APPLICATION_PACKAGE_NAME + ".Widgets");
 		for (String key : Collections.list(bundle.getKeys())) {
 			String value = bundle.getString(key);
@@ -104,8 +115,11 @@ public class WidgetFactory {
 				if (preferredWidth == null || preferredHeight == null) {
 					widgetInfos.put(key, new WidgetInfo(text));
 				} else {
-					widgetInfos.put(key, new WidgetInfo(text, ConverterHelper.toInt(preferredWidth),
-							ConverterHelper.toInt(preferredHeight)));
+					// Wenn Breite und Höhe in den Preferences stehen, gelten die vorangig
+					int width = prefs.getInt(key + PREFS_SUBKEY_WIDTH, ConverterHelper.toInt(preferredWidth));
+					int height = prefs.getInt(key + PREFS_SUBKEY_HEIGHT,
+							ConverterHelper.toInt(preferredHeight));
+					widgetInfos.put(key, new WidgetInfo(text, width, height));
 				}
 			}
 		}
@@ -186,15 +200,36 @@ public class WidgetFactory {
 	}
 
 	/**
-	 * Liefert ein Panel, das als ContentPane gestaltet ist.
+	 * Liefert ein Panel, das als ContentPane gestaltet ist und sich Größenveränderungen *nicht* in den
+	 * User-Preference merkt.
 	 */
 	public JPanel getContentPane(final String widgetName) {
-		WidgetInfo wi = getWidgetInfo(widgetName);
-		JPanel panel = new JPanel();
+		return getContentPane(widgetName, false);
+	}
+
+	/**
+	 * Liefert ein Panel, das als ContentPane gestaltet ist.
+	 */
+	public JPanel getContentPane(final String widgetName, final boolean saveSizeOnResize) {
+		final WidgetInfo wi = getWidgetInfo(widgetName);
+		final JPanel panel = new JPanel();
 		panel.setLayout(new GridBagLayout());
 		panel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 		if (wi.getPreferredSize() != null) {
 			panel.setPreferredSize(wi.getPreferredSize());
+		}
+		if (saveSizeOnResize) {
+			panel.addComponentListener(new ComponentAdapter() {
+
+				@Override
+				public void componentResized(ComponentEvent e) {
+					if (e.getID() == ComponentEvent.COMPONENT_RESIZED) {
+						prefs.putInt(widgetName + PREFS_SUBKEY_WIDTH, panel.getWidth());
+						prefs.putInt(widgetName + PREFS_SUBKEY_HEIGHT, panel.getHeight());
+					}
+				}
+
+			});
 		}
 		return panel;
 	}
