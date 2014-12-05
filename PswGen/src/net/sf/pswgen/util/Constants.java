@@ -87,6 +87,8 @@ public class Constants {
 
 	public static final String MSG_EMPTY_FILE_NOT_UPGRADABLE = "105";
 
+	public static final String MSG_UNKNOWN_FILE_FORMAT_VERSION = "106";
+
 	/** Für die generierten Passworte verwendbare Zeichen */
 
 	public static final String UPPERCASE_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";

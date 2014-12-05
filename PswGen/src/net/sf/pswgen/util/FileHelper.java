@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
 import net.sf.pswgen.model.ServiceInfo;
@@ -78,7 +79,7 @@ public class FileHelper {
 	 * Lädt alle Diensteinformationen.
 	 */
 	public ServiceInfoList loadServiceInfoListFromXml(File servicesFile) {
-		ServiceInfoList services = new ServiceInfoList();
+		ServiceInfoList services = null;
 		try {
 			JAXBContext context = JAXBContext.newInstance(ServiceInfoList.class);
 			Unmarshaller um = context.createUnmarshaller();
@@ -86,8 +87,10 @@ public class FileHelper {
 				FileInputStream in = new FileInputStream(servicesFile);
 				services = (ServiceInfoList) um.unmarshal(in);
 				in.close();
+			} else {
+				services = new ServiceInfoList(); // später wird eine neue Datei erzeugt
 			}
-		} catch (Exception e) {
+		} catch (IOException | JAXBException e) {
 			LOGGER.log(Level.WARNING, Constants.MSG_EXCP_SERVICES, e);
 		}
 		return services;
@@ -97,14 +100,16 @@ public class FileHelper {
 	 * Lädt alle Diensteinformationen.
 	 */
 	public ServiceInfoList loadServiceInfoList(File servicesFile) {
-		ServiceInfoList services = new ServiceInfoList();
+		ServiceInfoList services = null;
 		try {
 			if (servicesFile.exists()) {
 				FileInputStream in = new FileInputStream(servicesFile);
 				services = readJsonStream(in);
 				in.close();
+			} else {
+				services = new ServiceInfoList(); // später wird eine neue Datei erzeugt
 			}
-		} catch (Exception e) {
+		} catch (IOException e) {
 			LOGGER.log(Level.WARNING, Constants.MSG_EXCP_SERVICES, e);
 		}
 		return services;

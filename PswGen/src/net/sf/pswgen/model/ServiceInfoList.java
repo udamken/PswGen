@@ -206,7 +206,7 @@ public class ServiceInfoList {
 	 * leeren Wert gesetzt ist.
 	 */
 	public boolean isAdvancedFormat() {
-		return !isNew() && version != null && version.compareTo(Constants.ADVANCED_FILE_FORMAT_VERSION) >= 0
+		return version != null && version.compareTo(Constants.ADVANCED_FILE_FORMAT_VERSION) >= 0
 				&& verifier != null && verifier.length() > 0;
 	}
 
@@ -215,9 +215,8 @@ public class ServiceInfoList {
 	 * leer ist.
 	 */
 	public boolean isUnsupportedFormat() {
-		return !isNew()
-				&& (version == null || version.compareTo(Constants.UNSUPPORTED_FILE_FORMAT_VERSION) <= 0
-						|| verifier == null || verifier.isEmpty());
+		return version == null || version.compareTo(Constants.UNSUPPORTED_FILE_FORMAT_VERSION) <= 0
+				|| verifier == null || verifier.isEmpty();
 	}
 
 	/**

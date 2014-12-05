@@ -128,17 +128,28 @@ public class PswGenCtl extends BaseCtl {
 	 * dieser Methode nicht, das Beenden geschieht über die Oberfläche.
 	 */
 	public void start() {
-		try {
-			services = FileHelper.getInstance().loadServiceInfoList(servicesFile);
-		} catch (Exception e) { // FIXME Exception konkretisieren ...
+		services = FileHelper.getInstance().loadServiceInfoList(servicesFile);
+		if (services == null) { // JSON-Datei konnte nicht gelesen werden? => XML-Datei versuchen
 			services = FileHelper.getInstance().loadServiceInfoListFromXml(servicesFile);
 		}
-		if (services.isUnsupportedFormat()) {
+		if (services == null) {
+			// Datei ist weder als JSON noch als XML lesbar
+			JOptionPane.showMessageDialog(null, getGuiText("UnknownFileFormatMsg"),
+					Constants.APPLICATION_NAME, JOptionPane.ERROR_MESSAGE);
+			LOGGER.log(Level.SEVERE, Constants.MSG_UNKNOWN_FILE_FORMAT_VERSION);
+			System.exit(20);
+		} else if (services.isNew()) {
+			// Ein frischer Anfang, beim Speichern wird eine neue Datei angelegt werden
+		} else if (services.isUnsupportedFormat()) {
+			// Dateiformat wird nicht mehr unterstützt und muss mit einer alten Version konvertiert werden
 			JOptionPane.showMessageDialog(null, getGuiText("UnsupportedFileFormatMsg"),
 					Constants.APPLICATION_NAME, JOptionPane.ERROR_MESSAGE);
 			LOGGER.log(Level.SEVERE, Constants.MSG_UNSUPPORTED_FILE_FORMAT_VERSION);
 			System.exit(16);
-		} else if (!services.isAdvancedFormat()) { // Noch im alten Format? => Konvertieren
+		} else if (services.isAdvancedFormat()) {
+			// Datei hat das aktuelle Format, es ist nichts weiter zu tun
+		} else {
+			// Datei hat ein altes Format und muss erst mit -upgrade konvertiert werden
 			JOptionPane.showMessageDialog(null, getGuiText("FileFormatMustBeConvertedMsg"),
 					Constants.APPLICATION_NAME, JOptionPane.ERROR_MESSAGE);
 			LOGGER.log(Level.SEVERE, Constants.MSG_TO_BE_CONVERTED_FILE_FORMAT_VERSION);
