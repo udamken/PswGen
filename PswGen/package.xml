@@ -29,7 +29,7 @@
 		<jar destfile="product/PswGen.jar" basedir="bin" excludes="**/*Test.class">
 			<manifest>
 				<attribute name="Main-Class" value="net.sf.pswgen.main.PswGen" />
-				<attribute name="Class-Path" value="commons-cli-1.2.jar;gson-2.2.4.jar" />
+				<attribute name="Class-Path" value="commons-cli-1.2.jar gson-2.2.4.jar" />
 			</manifest>
 		</jar>
 	</target>
