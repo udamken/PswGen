@@ -26,7 +26,10 @@ package net.sf.pswgen;
  * Anwendung verwertbar, d.h. abfragbar und refactoring-sicher festzuhalten.
  * </p>
  * <p>
- * Copyright (C) 2005-2013 Uwe Damken
+ * ACHTUNG: Diese Klasse ist für PswGen und PswGenDroid identisch, sprich kopiert.
+ * </p>
+ * <p>
+ * Copyright (C) 2005-2014 Uwe Damken
  * </p>
  */
 public interface ApplicationPackageNameMarker {

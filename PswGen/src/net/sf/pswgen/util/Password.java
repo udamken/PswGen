@@ -27,7 +27,10 @@ import java.util.Vector;
  * Stellt ein Passwort einer angegebenen Länge dar.
  * </p>
  * <p>
- * Copyright (C) 2005-2013 Uwe Damken
+ * ACHTUNG: Diese Klasse ist für PswGen und PswGenDroid identisch, sprich kopiert.
+ * </p>
+ * <p>
+ * Copyright (C) 2005-2014 Uwe Damken
  * </p>
  */
 public class Password {

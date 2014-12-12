@@ -31,7 +31,10 @@ import javax.crypto.spec.PBEParameterSpec;
  * Verschlüsselt und entschlüsselt Strings auf Basis einer Passphrase.
  * </p>
  * <p>
- * Copyright (C) 2005-2013 Uwe Damken
+ * ACHTUNG: Diese Klasse ist für PswGen und PswGenDroid identisch, sprich kopiert.
+ * </p>
+ * <p>
+ * Copyright (C) 2005-2014 Uwe Damken
  * </p>
  */
 public class EncryptionHelper {
@@ -84,7 +87,7 @@ public class EncryptionHelper {
 			final String psw = new String(pswByteArray);
 			return psw;
 		} catch (Exception e) {
-			throw new DomainException("PassphraseInvalid");
+			throw new DomainException("PassphraseInvalidMsg");
 		}
 	}
 

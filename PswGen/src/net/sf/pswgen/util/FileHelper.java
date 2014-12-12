@@ -11,10 +11,6 @@ import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-
 import net.sf.pswgen.model.ServiceInfo;
 import net.sf.pswgen.model.ServiceInfoList;
 
@@ -43,7 +39,10 @@ import com.google.gson.stream.JsonWriter;
 
 /**
  * <p>
- * FileHelper ist ein Singleton und hilft dabei, Dienstedaten zu speichern und zu laden.
+ * FileHelper ist ein Singleton und hilft dabei, Dienstedaten im JSON-Format zu speichern und zu laden.
+ * </p>
+ * <p>
+ * ACHTUNG: Diese Klasse ist für PswGen und PswGenDroid bis auf die JSON-Importe identisch, sprich kopiert.
  * </p>
  * <p>
  * Copyright (C) 2005-2014 Uwe Damken
@@ -52,8 +51,7 @@ import com.google.gson.stream.JsonWriter;
 public class FileHelper {
 
 	/** Der Logger dieser Anwendung */
-	private static final Logger LOGGER = Logger.getLogger(Constants.APPLICATION_PACKAGE_NAME + ".Logger",
-			Constants.APPLICATION_PACKAGE_NAME + ".Messages");
+	private static final Logger LOGGER = Logger.getLogger(Constants.APPLICATION_PACKAGE_NAME + ".Logger");
 
 	/** Die eine und einzige Instanz dieser Klasse */
 	private static FileHelper instance = null;
@@ -78,19 +76,16 @@ public class FileHelper {
 	/**
 	 * Lädt alle Diensteinformationen.
 	 */
-	public ServiceInfoList loadServiceInfoListFromXml(File servicesFile) {
+	public ServiceInfoList loadServiceInfoList(File servicesFile) {
 		ServiceInfoList services = null;
 		try {
-			JAXBContext context = JAXBContext.newInstance(ServiceInfoList.class);
-			Unmarshaller um = context.createUnmarshaller();
 			if (servicesFile.exists()) {
 				FileInputStream in = new FileInputStream(servicesFile);
-				services = (ServiceInfoList) um.unmarshal(in);
-				in.close();
+				services = loadServiceInfoList(in);
 			} else {
 				services = new ServiceInfoList(); // später wird eine neue Datei erzeugt
 			}
-		} catch (IOException | JAXBException e) {
+		} catch (IOException e) {
 			LOGGER.log(Level.WARNING, Constants.MSG_EXCP_SERVICES, e);
 		}
 		return services;
@@ -99,18 +94,18 @@ public class FileHelper {
 	/**
 	 * Lädt alle Diensteinformationen.
 	 */
-	public ServiceInfoList loadServiceInfoList(File servicesFile) {
+	public ServiceInfoList loadServiceInfoList(FileInputStream in) {
 		ServiceInfoList services = null;
 		try {
-			if (servicesFile.exists()) {
-				FileInputStream in = new FileInputStream(servicesFile);
-				services = readJsonStream(in);
-				in.close();
-			} else {
-				services = new ServiceInfoList(); // später wird eine neue Datei erzeugt
-			}
+			services = readJsonStream(in);
 		} catch (IOException e) {
 			LOGGER.log(Level.WARNING, Constants.MSG_EXCP_SERVICES, e);
+		} finally {
+			try {
+				in.close();
+			} catch (IOException e) {
+				LOGGER.log(Level.WARNING, Constants.MSG_EXCP_SERVICES, e);
+			}
 		}
 		return services;
 	}

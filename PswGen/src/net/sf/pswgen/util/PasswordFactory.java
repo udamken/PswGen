@@ -30,6 +30,9 @@ import net.sf.pswgen.model.ServiceInfo;
  * Instanz erzeugt werden.
  * </p>
  * <p>
+ * ACHTUNG: Diese Klasse ist für PswGen und PswGenDroid identisch, sprich kopiert.
+ * </p>
+ * <p>
  * Copyright (C) 2005-2014 Uwe Damken
  * </p>
  */

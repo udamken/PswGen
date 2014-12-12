@@ -68,8 +68,7 @@ public class WidgetFactory {
 	private static final String PREFS_SUBKEY_WIDTH = ".width";
 
 	/** Der Logger dieser Anwendung */
-	private static final Logger LOGGER = Logger.getLogger(Constants.APPLICATION_PACKAGE_NAME + ".Logger",
-			Constants.APPLICATION_PACKAGE_NAME + ".Messages");
+	private static final Logger LOGGER = Logger.getLogger(Constants.APPLICATION_PACKAGE_NAME + ".Logger");
 
 	/** Die eine und einzige Instanz dieser Klasse */
 	private static WidgetFactory instance = null;

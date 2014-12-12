@@ -29,7 +29,10 @@ import net.sf.pswgen.util.EmptyHelper;
  * Hält die Informationen für ein Dienstekürzel, die zum Generieren eines Passworts notwendig sind.
  * </p>
  * <p>
- * Copyright (C) 2005-2013 Uwe Damken
+ * ACHTUNG: Diese Klasse ist für PswGen und PswGenDroid fast (letzteres ohne JAXB) identisch, sprich kopiert.
+ * </p>
+ * <p>
+ * Copyright (C) 2005-2014 Uwe Damken
  * </p>
  */
 @XmlRootElement(name = "ServiceInfo")

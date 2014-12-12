@@ -43,6 +43,7 @@ import net.sf.pswgen.util.DomainException;
 import net.sf.pswgen.util.EncryptionHelper;
 import net.sf.pswgen.util.FileHelper;
 import net.sf.pswgen.util.PasswordFactory;
+import net.sf.pswgen.util.XmlFileHelper;
 
 /**
  * <p>
@@ -57,8 +58,7 @@ import net.sf.pswgen.util.PasswordFactory;
 public class PswGenCtl extends BaseCtl {
 
 	/** Der Logger dieser Anwendung */
-	private static final Logger LOGGER = Logger.getLogger(Constants.APPLICATION_PACKAGE_NAME + ".Logger",
-			Constants.APPLICATION_PACKAGE_NAME + ".Messages");
+	private static final Logger LOGGER = Logger.getLogger(Constants.APPLICATION_PACKAGE_NAME + ".Logger");
 
 	/** Alle Informationen zu Dienstekürzeln */
 	private ServiceInfoList services = new ServiceInfoList();
@@ -93,8 +93,8 @@ public class PswGenCtl extends BaseCtl {
 	 * Datei lediglich in das neue Format konvertieren, dann endet die Anwendung.
 	 */
 	public void upgradeServiceInfoList(final String targetFilename) {
-		services = FileHelper.getInstance().loadServiceInfoListFromXml(servicesFile);
-		if (services.isNew()) {
+		services = XmlFileHelper.getInstance().loadServiceInfoList(servicesFile);
+		if (services == null || services.isNew()) {
 			JOptionPane.showMessageDialog(null, getGuiText("EmptyFileNotUpgradableMsg"),
 					Constants.APPLICATION_NAME, JOptionPane.ERROR_MESSAGE);
 			LOGGER.log(Level.SEVERE, Constants.MSG_EMPTY_FILE_NOT_UPGRADABLE);
@@ -130,7 +130,7 @@ public class PswGenCtl extends BaseCtl {
 	public void start() {
 		services = FileHelper.getInstance().loadServiceInfoList(servicesFile);
 		if (services == null) { // JSON-Datei konnte nicht gelesen werden? => XML-Datei versuchen
-			services = FileHelper.getInstance().loadServiceInfoListFromXml(servicesFile);
+			services = XmlFileHelper.getInstance().loadServiceInfoList(servicesFile);
 		}
 		if (services == null) {
 			// Datei ist weder als JSON noch als XML lesbar
@@ -496,7 +496,7 @@ public class PswGenCtl extends BaseCtl {
 			final String verifierEncrypted = services.getVerifier();
 			final String verifierDecrypted = EncryptionHelper.decrypt(passphrase, verifierEncrypted);
 			if (!verifierDecrypted.equals(Constants.APPLICATION_VERIFIER)) {
-				throw new DomainException("PassphraseInvalid");
+				throw new DomainException("PassphraseInvalidMsg");
 			}
 		}
 		return passphrase;

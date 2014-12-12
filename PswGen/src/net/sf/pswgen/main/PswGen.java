@@ -23,6 +23,7 @@ package net.sf.pswgen.main;
 import java.io.File;
 
 import net.sf.pswgen.gui.PswGenCtl;
+import net.sf.pswgen.util.Constants;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -63,14 +64,14 @@ public class PswGen {
 			formatter.printHelp("pswgen", options);
 		} else if (line.hasOption("upgrade")) { // Hilfe ausgeben => nur das tun
 			String sourceFilename = line.getOptionValue("services", "services.xml");
-			String targetFilename = line.getOptionValue("services", "services.json");
-			if (sourceFilename.endsWith(".xml") && !targetFilename.endsWith("json")) {
-				targetFilename = sourceFilename.replace("\\.xml$", ".json");
+			String targetFilename = line.getOptionValue("services", Constants.SERVICES_FILENAME);
+			if (sourceFilename.endsWith(".xml") && !targetFilename.endsWith(".json")) {
+				targetFilename = sourceFilename.replaceFirst("\\.xml$", ".json");
 			}
 			PswGenCtl ctl = new PswGenCtl(sourceFilename);
 			ctl.upgradeServiceInfoList(targetFilename);
 		} else {
-			String servicesFilename = line.getOptionValue("services", "services.json");
+			String servicesFilename = line.getOptionValue("services", Constants.SERVICES_FILENAME);
 			if (!line.hasOption("services")) {
 				if (!(new File(servicesFilename)).exists()) {
 					// Möglicherweise ist die Command Line noch von PswGen < 1.7.0

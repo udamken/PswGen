@@ -25,7 +25,10 @@ package net.sf.pswgen.util;
  * Hilft bei der Behandlung von Leerwerten in Wertefelder, wie z.B. Zahlenfeldern.
  * </p>
  * <p>
- * Copyright (C) 2005-2013 Uwe Damken
+ * ACHTUNG: Diese Klasse ist für PswGen und PswGenDroid identisch, sprich kopiert.
+ * </p>
+ * <p>
+ * Copyright (C) 2005-2014 Uwe Damken
  * </p>
  */
 public class EmptyHelper {
