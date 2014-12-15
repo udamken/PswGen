@@ -319,6 +319,7 @@ public class PswGenCtl extends BaseCtl {
 	public void actionPerformedOpenHelpInBrowser(final MainView mainView) {
 		try {
 			mainView.setWaitCursor();
+			// FIXME dkn Besser aus Properties für die Sprachabhängigkeit
 			String url = Constants.HELP_URL_EN;
 			if (Locale.getDefault().getLanguage().equalsIgnoreCase("de")) {
 				url = Constants.HELP_URL_DE;
