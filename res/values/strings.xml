@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- AndroidManifest -->
+    <string name="app_name">PswGenDroid</string>
+
+    <!-- StartupActiviy -->
+    <string name="title_startup">PswGenDroid</string>
+    <string name="label_import_filepath">Dateipfad</string>
+    <string name="button_import_services">Importieren</string>
+    <string name="label_passphrase">Passphrase</string>
+    <string name="button_open_services">Öffnen</string>
+    <string name="button_open_help">Hilfe</string>
+    <string name="url_help">http://mind-and-useful.de/de/software/pswgendroid.html</string>
+    <string name="button_open_about">Über PswGenDroid</string>
+
+    <!-- ServiceListActivity -->
+    <string name="title_service_list">Gespeicherte Dienste</string>
+
+    <!-- ServiceDetailActivity -->
+    <string name="title_service_detail">Dienst anzeigen</string>
+
+    <!-- ServiceDetailFragment -->
+    <string name="label_additional_info">Zusatzinfos</string>
+    <string name="label_login_url">Internetseite</string>
+    <string name="label_login_info">Anmeldeinfos</string>
+    <string name="label_additional_login_info">Weitere Infos</string>
+    <string name="button_open_url">Öffnen</string>
+    <string name="button_copy_login_info">Anmeldeinfos kopieren</string>
+    <string name="button_copy_password">Passwort kopieren</string>
+    <string name="button_display_password">Passwort anzeigen</string>
+
+    <!-- AboutActivity -->
+    <string name="title_activity_about">Über PswGenDroid</string>
+    <string name="license">PswGen - Manages your websites and repeatably generates passwords for them\n
+\nPswGenDroid - Generates your passwords managed by PswGen on your mobile\n
+\nCopyright (C) 2005-2014 Uwe Damken\n
+\nThis program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.\n
+\nThis program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.\n
+\nYou should have received a copy of the GNU General Public License
+along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</string>
+
+    <!-- DomainException -->
+    <string name="passphrase_invalid">Die Passphrase ist ungültig.</string>
+    <string name="total_character_count_exceeded">Die Anzahl der zu verteilenden Zeichen bei einer Bis-Angabe überschreitet Gesamtlänge.</string>
+    <string name="invalid_character_count">Die Anzahl der zu verteilenden Zeichen überschreitet eine Von-/Bis-Angabe oder die Gesamtlänge.</string>
+    <string name="character_or_total_character_count_missing">Bitte geben Sie (genug) Zeichen zur Generierung und eine Gesamtlänge an.</string>
+    <string name="unknown_file_format">Das Dateiformat ist unbekannt und kann mit PswGen nicht verwendet werden.</string>
+
+</resources>
