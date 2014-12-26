@@ -23,7 +23,11 @@ package net.sf.pswgendroid;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.SearchView;
 
 /**
  * An activity representing a list of Services. This activity has different presentations for handset and
@@ -44,16 +48,20 @@ public class ServiceListActivity extends FragmentActivity implements ServiceList
 	 */
 	private boolean mTwoPane;
 
-	/**
-	 * The embedded fragment to handle service details.
-	 */
-	private ServiceDetailFragment fragment;
+	/** The embedded fragment to handle the service list */
+	private ServiceListFragment serviceListFragment;
+
+	/** The embedded fragment to handle service details */
+	private ServiceDetailFragment serviceDetailFragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_service_list);
+
+		serviceListFragment = (ServiceListFragment) getSupportFragmentManager().findFragmentById(
+				R.id.service_list);
 
 		if (findViewById(R.id.service_detail_container) != null) {
 			// The detail container view will be present only in the
@@ -64,8 +72,7 @@ public class ServiceListActivity extends FragmentActivity implements ServiceList
 
 			// In two-pane mode, list items should be given the
 			// 'activated' state when touched.
-			((ServiceListFragment) getSupportFragmentManager().findFragmentById(R.id.service_list))
-					.setActivateOnItemClick(true);
+			serviceListFragment.setActivateOnItemClick(true);
 		}
 
 		// TODO: If exposing deep links into your app, handle intents here.
@@ -83,10 +90,10 @@ public class ServiceListActivity extends FragmentActivity implements ServiceList
 			// fragment transaction.
 			Bundle arguments = new Bundle();
 			arguments.putString(ServiceDetailFragment.ARG_ITEM_ID, id);
-			fragment = new ServiceDetailFragment();
-			fragment.setArguments(arguments);
-			getSupportFragmentManager().beginTransaction().replace(R.id.service_detail_container, fragment)
-					.commit();
+			serviceDetailFragment = new ServiceDetailFragment();
+			serviceDetailFragment.setArguments(arguments);
+			getSupportFragmentManager().beginTransaction()
+					.replace(R.id.service_detail_container, serviceDetailFragment).commit();
 
 		} else {
 			// In single-pane mode, simply start the detail activity
@@ -97,24 +104,34 @@ public class ServiceListActivity extends FragmentActivity implements ServiceList
 		}
 	}
 
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.options_menu, menu);
+		MenuItem searchMenuItem = menu.findItem(R.id.search);
+		SearchView searchView = (SearchView) searchMenuItem.getActionView();
+		searchView.setOnQueryTextListener(serviceListFragment);
+		return true;
+	}
+
 	/**
 	 * Delegate incoming onClick-Calls to the corresponding service detail fragment.
 	 */
 
 	public void onClickButtonOpenUrl(final View buttonOpenUrl) {
-		fragment.onClickButtonOpenUrl(this, buttonOpenUrl);
+		serviceDetailFragment.onClickButtonOpenUrl(this, buttonOpenUrl);
 	}
 
 	public void onClickButtonCopyLoginInfo(final View buttonOpenUrl) {
-		fragment.onClickButtonCopyLoginInfo(this, buttonOpenUrl);
+		serviceDetailFragment.onClickButtonCopyLoginInfo(this, buttonOpenUrl);
 	}
 
 	public void onClickButtonCopyPassword(final View buttonOpenUrl) {
-		fragment.onClickButtonCopyPassword(this, buttonOpenUrl);
+		serviceDetailFragment.onClickButtonCopyPassword(this, buttonOpenUrl);
 	}
 
 	public void onClickButtonDisplayPassword(final View buttonOpenUrl) {
-		fragment.onClickButtonDisplayPassword(this, buttonOpenUrl);
+		serviceDetailFragment.onClickButtonDisplayPassword(this, buttonOpenUrl);
 	}
 
 }
