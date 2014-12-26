@@ -27,6 +27,7 @@ import android.support.v4.app.ListFragment;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SearchView.OnQueryTextListener;
 
 /**
  * A list fragment representing a list of Services. This fragment also supports tablet devices by allowing
@@ -35,7 +36,7 @@ import android.widget.ListView;
  * <p>
  * Activities containing this fragment MUST implement the {@link Callbacks} interface.
  */
-public class ServiceListFragment extends ListFragment {
+public class ServiceListFragment extends ListFragment implements OnQueryTextListener {
 
 	/**
 	 * The serialization (saved instance state) Bundle key representing the activated item position. Only used
@@ -52,6 +53,9 @@ public class ServiceListFragment extends ListFragment {
 	 * The current activated item position. Only used on tablets.
 	 */
 	private int mActivatedPosition = ListView.INVALID_POSITION;
+
+	/** Filterbarer Adapter zur Liste der Dienste */
+	private ArrayAdapter<ServiceInfo> arrayAdapter;
 
 	/**
 	 * A callback interface that all activities containing this fragment must implement. This mechanism allows
@@ -85,9 +89,10 @@ public class ServiceListFragment extends ListFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setListAdapter(new ArrayAdapter<ServiceInfo>(getActivity(),
+		arrayAdapter = new ArrayAdapter<ServiceInfo>(getActivity(),
 				android.R.layout.simple_list_item_activated_1, android.R.id.text1,
-				PswGenAdapter.getServicesAsList()));
+				PswGenAdapter.getServicesAsList());
+		setListAdapter(arrayAdapter);
 	}
 
 	@Override
@@ -158,4 +163,16 @@ public class ServiceListFragment extends ListFragment {
 
 		mActivatedPosition = position;
 	}
+
+	@Override
+	public boolean onQueryTextChange(String newText) {
+		arrayAdapter.getFilter().filter(newText);
+		return true; // action handled here
+	}
+
+	@Override
+	public boolean onQueryTextSubmit(String query) {
+		return false; // action not handled here, use default action
+	}
+
 }

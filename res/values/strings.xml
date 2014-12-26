@@ -16,6 +16,7 @@
 
     <!-- ServiceListActivity -->
     <string name="title_service_list">Gespeicherte Dienste</string>
+    <string name="search_title">Dienst suchen</string>
 
     <!-- ServiceDetailActivity -->
     <string name="title_service_detail">Dienst anzeigen</string>
