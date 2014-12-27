@@ -60,6 +60,7 @@ import net.sf.pswgen.gui.base.GridBagConstraintsFactory;
 import net.sf.pswgen.gui.base.WidgetFactory;
 import net.sf.pswgen.model.ServiceInfo;
 import net.sf.pswgen.util.Constants;
+import net.sf.pswgen.util.EmptyHelper;
 
 /**
  * <p>
@@ -197,7 +198,7 @@ public class MainView extends BaseView {
 			@Override
 			public void keyReleased(KeyEvent e) {
 				final String text = mServiceAbbreviationFilter.getText();
-				if (text.length() == 0) {
+				if (EmptyHelper.isEmpty(text)) {
 					mTableRowSorter.setRowFilter(null);
 				} else {
 					mTableRowSorter.setRowFilter(new RowFilter<StoredServicesTableModel, Integer>() {

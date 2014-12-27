@@ -188,6 +188,34 @@ public class PasswordFactoryTest extends TestCase {
 	}
 
 	@Test
+	public void test16a() {
+		ServiceInfo si = new ServiceInfo("test");
+		si.setAdditionalInfo("10.08.2014");
+		si.setUseSmallLetters(true);
+		si.setUseCapitalLetters(true);
+		si.setUseDigits(true);
+		si.setUseSpecialCharacters(true);
+		si.setSpecialCharacters(null);
+		si.setTotalCharacterCount(20);
+		String psw = PasswordFactory.getPassword(si, "test4711");
+		Assert.assertEquals("y7zMGUS.Ixm&B#*)vhuB", psw);
+	}
+
+	@Test
+	public void test16b() {
+		ServiceInfo si = new ServiceInfo("test");
+		si.setAdditionalInfo("10.08.2014");
+		si.setUseSmallLetters(true);
+		si.setUseCapitalLetters(true);
+		si.setUseDigits(true);
+		si.setUseSpecialCharacters(true);
+		si.setSpecialCharacters("");
+		si.setTotalCharacterCount(20);
+		String psw = PasswordFactory.getPassword(si, "test4711");
+		Assert.assertEquals("y7zMGUS.Ixm&B#*)vhuB", psw);
+	}
+
+	@Test
 	public void test17() {
 		ServiceInfo si = new ServiceInfo("test");
 		si.setAdditionalInfo("10.08.2014");

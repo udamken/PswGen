@@ -43,7 +43,7 @@ public class Constants {
 	public static final String APPLICATION_NAME = "PswGen";
 
 	/** Die Version dieser Anwendung */
-	public static final String APPLICATION_VERSION = "1.7.1";
+	public static final String APPLICATION_VERSION = "1.7.2";
 
 	/** Die Version dieser Anwendung, ab der ein neues Dateiformat benutzt wird */
 	public static final String ADVANCED_FILE_FORMAT_VERSION = "1.7.0";
@@ -53,12 +53,6 @@ public class Constants {
 
 	/** Die Version dieser Anwendung */
 	public static final String APPLICATION_VERIFIER = "PswGen - Manages your websites and repeatably generates passwords for them, Copyright (C) Uwe Damken";
-
-	/** Die URL zur deutschsprachigen Hilfe */
-	public static final String HELP_URL_DE = "http://mind-and-useful.de/de/software/pswgen.html";
-
-	/** Die URL zur englischsprachigen Hilfe */
-	public static final String HELP_URL_EN = "http://mind-and-useful.de/en/software/pswgen.html";
 
 	/** Das Package dieser Anwendung */
 	public static final String APPLICATION_PACKAGE_NAME = ApplicationPackageNameMarker.class.getPackage()

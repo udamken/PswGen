@@ -51,6 +51,7 @@ import javax.swing.table.AbstractTableModel;
 
 import net.sf.pswgen.util.Constants;
 import net.sf.pswgen.util.ConverterHelper;
+import net.sf.pswgen.util.EmptyHelper;
 
 /**
  * <p>
@@ -110,7 +111,7 @@ public class WidgetFactory {
 				String text = matcher.group(1);
 				String preferredWidth = matcher.group(3);
 				String preferredHeight = matcher.group(4);
-				text = (text.length() == 0) ? null : text;
+				text = (EmptyHelper.isEmpty(text)) ? null : text;
 				if (preferredWidth == null || preferredHeight == null) {
 					widgetInfos.put(key, new WidgetInfo(text));
 				} else {

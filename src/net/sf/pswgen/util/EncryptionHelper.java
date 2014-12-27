@@ -52,7 +52,7 @@ public class EncryptionHelper {
 	 */
 	public static String encrypt(final String passphrase, final String s) {
 		try {
-			if (s == null || s.length() == 0) { // Leer bleibt leer ...
+			if (EmptyHelper.isEmpty(s)) { // Leer bleibt leer ...
 				return "";
 			}
 			PBEKeySpec keySpec = new PBEKeySpec(passphrase.toCharArray());
@@ -74,7 +74,7 @@ public class EncryptionHelper {
 	 */
 	public static String decrypt(final String passphrase, final String sEncrypted) {
 		try {
-			if (sEncrypted == null || sEncrypted.length() == 0) { // Leer bleibt leer ...
+			if (EmptyHelper.isEmpty(sEncrypted)) { // Leer bleibt leer ...
 				return "";
 			}
 			PBEKeySpec keySpec = new PBEKeySpec(passphrase.toCharArray());
@@ -125,7 +125,7 @@ public class EncryptionHelper {
 	 * Konvertiert einen Hex-String mit zwei Hex-Zeichen (evtl. mit führender Null) in ein Byte.
 	 */
 	public static byte toByte(String s) {
-		return (new Integer(Integer.parseInt(s, 16))).byteValue();
+		return (Integer.valueOf(Integer.parseInt(s, 16))).byteValue();
 	}
 
 }
