@@ -11,7 +11,7 @@
     <string name="label_passphrase">Passphrase</string>
     <string name="button_open_services">Öffnen</string>
     <string name="button_open_help">Hilfe</string>
-    <string name="url_help">http://mind-and-useful.de/de/software/pswgendroid.html</string>
+    <string name="help_url">http://mind-and-useful.de/de/software/pswgendroid.html</string>
     <string name="button_open_about">Über PswGenDroid</string>
 
     <!-- ServiceListActivity -->
@@ -53,5 +53,9 @@ along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</str
     <string name="invalid_character_count">Die Anzahl der zu verteilenden Zeichen überschreitet eine Von-/Bis-Angabe oder die Gesamtlänge.</string>
     <string name="character_or_total_character_count_missing">Bitte geben Sie (genug) Zeichen zur Generierung und eine Gesamtlänge an.</string>
     <string name="unknown_file_format">Das Dateiformat ist unbekannt und kann mit PswGen nicht verwendet werden.</string>
+    
+    <!-- MessageFormat-Nachrichten -->
+    <string name="file_missing">&lt;{0}&gt; existiert nicht.</string>
+    <string name="file_imported">&lt;{0}&gt; nach &lt;{1}&gt; importiert.</string>
 
 </resources>

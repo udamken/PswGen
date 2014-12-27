@@ -43,7 +43,7 @@ public class Constants {
 	public static final String APPLICATION_NAME = "PswGen";
 
 	/** Die Version dieser Anwendung */
-	public static final String APPLICATION_VERSION = "1.7.1";
+	public static final String APPLICATION_VERSION = "1.7.2";
 
 	/** Die Version dieser Anwendung, ab der ein neues Dateiformat benutzt wird */
 	public static final String ADVANCED_FILE_FORMAT_VERSION = "1.7.0";
@@ -53,12 +53,6 @@ public class Constants {
 
 	/** Die Version dieser Anwendung */
 	public static final String APPLICATION_VERIFIER = "PswGen - Manages your websites and repeatably generates passwords for them, Copyright (C) Uwe Damken";
-
-	/** Die URL zur deutschsprachigen Hilfe */
-	public static final String HELP_URL_DE = "http://mind-and-useful.de/de/software/pswgen.html";
-
-	/** Die URL zur englischsprachigen Hilfe */
-	public static final String HELP_URL_EN = "http://mind-and-useful.de/en/software/pswgen.html";
 
 	/** Das Package dieser Anwendung */
 	public static final String APPLICATION_PACKAGE_NAME = ApplicationPackageNameMarker.class.getPackage()
@@ -70,25 +64,25 @@ public class Constants {
 	/** Resource Name des Images für den About-Dialog */
 	public static final String ABOUT_IMAGE_RESOURCE_NAME = "net/sf/pswgen/PswGenSplash.png";
 
-	/** Nummern der anwendungsspezifischen Meldungen, Texte dazu in Messages.properties */
+	/** Texte der anwendungsspezifischen Meldungen */
 
-	public static final String MSG_INVALID_WIDGET_INFO = "000";
+	public static final String MSG_INVALID_WIDGET_INFO = "Invalid WidgetInfo definition <{1}> for <{0}>";
 
-	public static final String MSG_NO_WIDGET_INFO = "001";
+	public static final String MSG_NO_WIDGET_INFO = "No WidgetInfo defined for <{0}>";
 
-	public static final String MSG_EXCP_SERVICES = "100";
+	public static final String MSG_EXCP_SERVICES = "Exception occured while loading services:";
 
-	public static final String MSG_EXCP_LOOK_AND_FEEL = "101";
+	public static final String MSG_EXCP_LOOK_AND_FEEL = "LookAndFeel could not be set";
 
-	public static final String MSG_UNSUPPORTED_FILE_FORMAT_VERSION = "102";
+	public static final String MSG_UNSUPPORTED_FILE_FORMAT_VERSION = "File format of PswGen < 1.6 is no longer supported: Use any PswGen 1.6.x to convert file to newer format. Use current PswGen afterwards to convert to current format.";
 
-	public static final String MSG_TO_BE_CONVERTED_FILE_FORMAT_VERSION = "103";
+	public static final String MSG_TO_BE_CONVERTED_FILE_FORMAT_VERSION = "File format of PswGen < 1.7 has to be converted: Use command line option -upgrade to convert the file.";
 
-	public static final String MSG_ALREADY_CONVERTED_FILE_FORMAT_VERSION = "104";
+	public static final String MSG_ALREADY_CONVERTED_FILE_FORMAT_VERSION = "File format of PswGen >= 1.7 doesn't need to be converted: Start PswGen without option -upgrade.";
 
-	public static final String MSG_EMPTY_FILE_NOT_UPGRADABLE = "105";
+	public static final String MSG_EMPTY_FILE_NOT_UPGRADABLE = "File format cannot be converted: File does not exist or is empty.";
 
-	public static final String MSG_UNKNOWN_FILE_FORMAT_VERSION = "106";
+	public static final String MSG_UNKNOWN_FILE_FORMAT_VERSION = "File format is unknown and not usable with PswGen.";
 
 	/** Für die generierten Passworte verwendbare Zeichen */
 

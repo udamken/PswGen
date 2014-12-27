@@ -21,8 +21,6 @@ package net.sf.pswgendroid;
  *****************************************************************************/
 
 import net.sf.pswgen.model.ServiceInfo;
-import net.sf.pswgen.util.Constants;
-import net.sf.pswgen.util.DomainException;
 import net.sf.pswgen.util.PasswordFactory;
 import android.app.Activity;
 import android.content.ClipData;
@@ -39,19 +37,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 /**
- * A fragment representing a single Service detail screen. This fragment is either contained in a
- * {@link ServiceListActivity} in two-pane mode (on tablets) or a {@link ServiceDetailActivity} on handsets.
+ * <p>
+ * Das Fragment für die Detailanzeige eines Dienstes, es ist bei großen Bildschirmen in die
+ * {@link ServiceListActivity} eingebunden und wird dann gleichzeitig mit der Liste der Dienste angezeigt. Bei
+ * kleineren Bildschirmen erfolgt die Anzeige separat in der {@link ServiceDetailActivity}.
+ * </p>
+ * <p>
+ * Copyright (C) 2014 Uwe Damken
+ * </p>
  */
 public class ServiceDetailFragment extends Fragment {
-	/**
-	 * The fragment argument representing the item ID that this fragment represents.
-	 */
+
+	/** Das Argument zur Übergabe des Dienstekürzels von der Liste zur Detailanzeige */
 	public static final String ARG_ITEM_ID = "item_id";
 
-	/**
-	 * The dummy content this fragment is presenting.
-	 */
-	private ServiceInfo mItem;
+	/** Der aktuell in der Detailanzeige dargestellte Dienst */
+	private ServiceInfo currentServiceInfo;
 
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the fragment (e.g. upon screen
@@ -65,10 +66,8 @@ public class ServiceDetailFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 
 		if (getArguments().containsKey(ARG_ITEM_ID)) {
-			// Load the dummy content specified by the fragment
-			// arguments. In a real-world scenario, use a Loader
-			// to load content from a content provider.
-			mItem = PswGenAdapter.getServiceInfo(getArguments().getString(ARG_ITEM_ID));
+			// Ausgewählten Dienst anhand des übergebenen Dienstekürzels holen
+			currentServiceInfo = PswGenAdapter.getServiceInfo(getArguments().getString(ARG_ITEM_ID));
 		}
 	}
 
@@ -76,22 +75,27 @@ public class ServiceDetailFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_service_detail, container, false);
 
-		// Show the dummy content as text in a TextView.
-		if (mItem != null) {
-			((TextView) rootView.findViewById(R.id.service_detail)).setText(mItem.getServiceAbbreviation());
-			((TextView) rootView.findViewById(R.id.additional_info)).setText(mItem.getAdditionalInfo());
-			((TextView) rootView.findViewById(R.id.login_url)).setText(mItem.getLoginUrl());
-			((TextView) rootView.findViewById(R.id.login_info)).setText(mItem.getLoginInfo());
-			((TextView) rootView.findViewById(R.id.additional_login_info)).setText(mItem
+		// Werte des Dienstes in die Detailanzeige übernehmen, wenn ein Dienst ausgewählt ist
+		if (currentServiceInfo != null) {
+			((TextView) rootView.findViewById(R.id.service_detail)).setText(currentServiceInfo
+					.getServiceAbbreviation());
+			((TextView) rootView.findViewById(R.id.additional_info)).setText(currentServiceInfo
+					.getAdditionalInfo());
+			((TextView) rootView.findViewById(R.id.login_url)).setText(currentServiceInfo.getLoginUrl());
+			((TextView) rootView.findViewById(R.id.login_info)).setText(currentServiceInfo.getLoginInfo());
+			((TextView) rootView.findViewById(R.id.additional_login_info)).setText(currentServiceInfo
 					.getAdditionalLoginInfo());
 		}
 
 		return rootView;
 	}
 
+	/**
+	 * Öffnet die Login-URL im Browser und kopiert die Login-Informationen in die Zwischenablage.
+	 */
 	public void onClickButtonOpenUrl(final Activity callingActivity, final View buttonOpenUrl) {
 		try {
-			String loginUrl = mItem.getLoginUrl();
+			String loginUrl = currentServiceInfo.getLoginUrl();
 			if (!loginUrl.startsWith("http://") && !loginUrl.startsWith("https://")) {
 				loginUrl = "http://" + loginUrl;
 			}
@@ -103,6 +107,9 @@ public class ServiceDetailFragment extends Fragment {
 		}
 	}
 
+	/**
+	 * Kopiert die Login-Informationen in die Zwischenablage.
+	 */
 	public void onClickButtonCopyLoginInfo(final Activity callingActivity, final View buttonOpenUrl) {
 		try {
 			copyLoginInfo(callingActivity);
@@ -111,6 +118,9 @@ public class ServiceDetailFragment extends Fragment {
 		}
 	}
 
+	/**
+	 * Generiert das Passwort und kopiert es in die Zwischenablage.
+	 */
 	public void onClickButtonCopyPassword(final Activity callingActivity, final View buttonOpenUrl) {
 		try {
 			String password = getValidatedOrGeneratedPassword();
@@ -122,6 +132,9 @@ public class ServiceDetailFragment extends Fragment {
 		}
 	}
 
+	/**
+	 * Generiert das Passwort und zeigt es an.
+	 */
 	public void onClickButtonDisplayPassword(final Activity callingActivity, final View buttonOpenUrl) {
 		try {
 			String password = getValidatedOrGeneratedPassword();
@@ -137,48 +150,16 @@ public class ServiceDetailFragment extends Fragment {
 	private void copyLoginInfo(final Activity callingActivity) {
 		ClipboardManager clipboard = (ClipboardManager) callingActivity
 				.getSystemService(Context.CLIPBOARD_SERVICE);
-		clipboard.setPrimaryClip(ClipData.newPlainText(null, mItem.getLoginInfo()));
+		clipboard.setPrimaryClip(ClipData.newPlainText(null, currentServiceInfo.getLoginInfo()));
 	}
 
 	/**
 	 * Liefert das eingegebene oder ein generiertes Passwort. Sobald entweder das Passwort oder das
 	 * wiederholte Passwort eingegeben wurden, müssen sie übereinstimmen, sonst wird eine Exception geworfen,
 	 * die zu einer Fehlermeldung führt. Eine Eingabe hat also in jedem Fall Vorrang vor der Generierung.
-	 * 
-	 * TODO dkn SpecialCharacters sollten eigentlich mitgespeichert werden, oder? TODO dkn Die Differenzierung
-	 * gespeichertes/generiertes Passwort in die PasswordFactory?
 	 */
 	private String getValidatedOrGeneratedPassword() {
-		String password = mItem.getPassword();
-		final String passwordRepeated = mItem.getPasswordRepeated();
-		if (password.length() == 0 && passwordRepeated.length() == 0) { // Beide leer? => generieren
-			ensureAtLeastDefaultSpecialCharacters();
-			validateServiceAbbreviation(mItem.getServiceAbbreviation());
-			password = PasswordFactory.getPassword(mItem, PswGenAdapter.getValidatedPassphrase());
-		} else {
-			if (!password.equals(passwordRepeated)) { // Mismatch?
-				throw new DomainException("PasswordMismatchMsg");
-			}
-		}
-		return password;
-	}
-
-	/**
-	 * Sonderzeichen müssen gesetzt sein, und wenn es nur eine Default-Auswahl ist.
-	 */
-	private void ensureAtLeastDefaultSpecialCharacters() {
-		if (mItem.getSpecialCharacters() == null || mItem.getSpecialCharacters().length() == 0) {
-			mItem.setSpecialCharacters(Constants.SPECIAL_CHARS);
-		}
-	}
-
-	/**
-	 * Eingabewert des Dienstekürzels überprüfen.
-	 */
-	private void validateServiceAbbreviation(final String serviceAbbreviation) {
-		if (serviceAbbreviation.length() == 0) {
-			throw new DomainException("ServiceAbbreviationEmptyMsg");
-		}
+		return PasswordFactory.getPassword(currentServiceInfo, PswGenAdapter.getValidatedPassphrase());
 	}
 
 }

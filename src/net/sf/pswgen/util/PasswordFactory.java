@@ -121,14 +121,34 @@ public class PasswordFactory {
 	}
 
 	/**
-	 * Generiert mit der übergebenen Passphrase ein Password gemäß den übergebenen Diensteinformationen.
+	 * Liefert das im Dienst hinterlegte oder ein generiertes Passwort. Sobald entweder das Passwort oder das
+	 * wiederholte Passwort im Dienst hinterlegt sind, müssen sie übereinstimmen, sonst wird eine Exception
+	 * geworfen. Ein hinterlegtes Passwort hat also in jedem Fall Vorrang vor der Generierung.
 	 */
 	public static String getPassword(ServiceInfo si, String passphrase) {
+		String password = si.getPassword();
+		if (EmptyHelper.isEmpty(si.getPassword())) {
+			password = getGeneratedPassword(si, passphrase);
+		} else if (!password.equals(si.getPasswordRepeated())) { // Mismatch?
+			throw new DomainException("PasswordMismatchMsg");
+		}
+		return password;
+	}
+
+	/**
+	 * Generiert mit der übergebenen Passphrase ein Password gemäß den übergebenen Diensteinformationen. Für
+	 * die Generierung wird zwingend ein Dienstekürzel zur Initialisierung des Zufallsgenerators benötigt.
+	 * Wenn es nicht gesetzt ist, wird eine Exception geworfen.
+	 */
+	private static String getGeneratedPassword(ServiceInfo si, String passphrase) {
 		String characters = ""; // Zeichen für den Rest des Passworts
 		final String serviceAbbreviation = si.getServiceAbbreviation();
+		if (EmptyHelper.isEmpty(serviceAbbreviation)) {
+			throw new DomainException("ServiceAbbreviationEmptyMsg");
+		}
 		long seed = passphrase.hashCode() + serviceAbbreviation.hashCode();
 		final String additionalInfo = si.getAdditionalInfo();
-		if (additionalInfo.length() != 0) { // Zusatzinfos vorhanden?
+		if (!EmptyHelper.isEmpty(additionalInfo)) { // Zusatzinfos vorhanden?
 			seed += additionalInfo.hashCode(); // => Zur Saat dazunehmen
 		}
 		final int pswLength = EmptyHelper.getValue(si.getTotalCharacterCount(), 0);
@@ -168,10 +188,14 @@ public class PasswordFactory {
 			int count = EmptyHelper.getValue(si.getSpecialCharactersCount(), 0);
 			int start = EmptyHelper.getValue(si.getSpecialCharactersStartIndex(), 0);
 			int end = EmptyHelper.getValue(si.getSpecialCharactersEndIndex(), pswLength - 1);
+			String specialCharacters = si.getSpecialCharacters();
+			if (EmptyHelper.isEmpty(specialCharacters)) {
+				specialCharacters = Constants.SPECIAL_CHARS;
+			}
 			if (count != 0) {
-				pg.distributeCharacters(count, si.getSpecialCharacters(), start, end);
+				pg.distributeCharacters(count, specialCharacters, start, end);
 			} else {
-				characters += si.getSpecialCharacters();
+				characters += specialCharacters;
 			}
 		}
 		return pg.getPassword(characters); // Rest auffüllen

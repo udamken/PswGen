@@ -30,23 +30,28 @@ import android.view.View;
 import android.widget.SearchView;
 
 /**
- * An activity representing a list of Services. This activity has different presentations for handset and
- * tablet-size devices. On handsets, the activity presents a list of items, which when touched, lead to a
- * {@link ServiceDetailActivity} representing item details. On tablets, the activity presents the list of
- * items and item details side-by-side using two vertical panes.
  * <p>
- * The activity makes heavy use of fragments. The list of items is a {@link ServiceListFragment} and the item
- * details (if present) is a {@link ServiceDetailFragment}.
+ * Diese Activity stellt die Liste der Dienste dar. Auf Geräten mit größeren Bildschirmen wird die Liste neben
+ * den Details eines Dienstes angezeigt. Bei kleinen Bildschirmen wird bei Auswahl eines Dienstes zur
+ * Detailanzeige zur {@link ServiceDetailActivity} verzweigt.
+ * </p>
  * <p>
- * This activity also implements the required {@link ServiceListFragment.Callbacks} interface to listen for
- * item selections.
+ * Die Liste der Einträge wird letztlich im {@link ServiceListFragment} angzeigt, eingebunden in diese
+ * Activity, und die Dienstdetails im {@link ServiceDetailFragment}, welches entweder in dieser Activity oder
+ * in {@link ServiceDetailActivity} eingebunden ist.
+ * </p>
+ * <p>
+ * Diese Activity implementiert {@link ServiceListFragment.Callbacks}, um die Auswahl von Einträgen mitgeteilt
+ * zu bekommen.
+ * </p>
+ * <p>
+ * Copyright (C) 2014 Uwe Damken
+ * </p>
  */
 public class ServiceListActivity extends FragmentActivity implements ServiceListFragment.Callbacks {
 
-	/**
-	 * Whether or not the activity is in two-pane mode, i.e. running on a tablet device.
-	 */
-	private boolean mTwoPane;
+	/** Gibt an, ob Liste und Details gleichzeitig angezeigt werden (bei großen Bildschirmen) */
+	private boolean inTwoPaneMode;
 
 	/** The embedded fragment to handle the service list */
 	private ServiceListFragment serviceListFragment;
@@ -57,25 +62,16 @@ public class ServiceListActivity extends FragmentActivity implements ServiceList
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		setContentView(R.layout.activity_service_list);
-
 		serviceListFragment = (ServiceListFragment) getSupportFragmentManager().findFragmentById(
 				R.id.service_list);
-
 		if (findViewById(R.id.service_detail_container) != null) {
-			// The detail container view will be present only in the
-			// large-screen layouts (res/values-large and
-			// res/values-sw600dp). If this view is present, then the
-			// activity should be in two-pane mode.
-			mTwoPane = true;
-
-			// In two-pane mode, list items should be given the
-			// 'activated' state when touched.
+			// Den Detail-Containter gibt es nur bei großen Bildschirmen (res/values-large,
+			// res/values-sw600dp), dann werden Liste und Details gleichzeitig angezeigt.
+			inTwoPaneMode = true;
+			// Bei gleichzeitiger Liste mit Details 'activate' auf den Listeneinträgen setzen.
 			serviceListFragment.setActivateOnItemClick(true);
 		}
-
-		// TODO: If exposing deep links into your app, handle intents here.
 	}
 
 	/**
@@ -84,10 +80,9 @@ public class ServiceListActivity extends FragmentActivity implements ServiceList
 	 */
 	@Override
 	public void onItemSelected(String id) {
-		if (mTwoPane) {
-			// In two-pane mode, show the detail view in this activity by
-			// adding or replacing the detail fragment using a
-			// fragment transaction.
+		if (inTwoPaneMode) {
+			// Bei gleichzeitiger Anzeige von Liste und Details die Dateils über eine
+			// Fragment-Manager-Transaktion einblenden.
 			Bundle arguments = new Bundle();
 			arguments.putString(ServiceDetailFragment.ARG_ITEM_ID, id);
 			serviceDetailFragment = new ServiceDetailFragment();
@@ -96,8 +91,7 @@ public class ServiceListActivity extends FragmentActivity implements ServiceList
 					.replace(R.id.service_detail_container, serviceDetailFragment).commit();
 
 		} else {
-			// In single-pane mode, simply start the detail activity
-			// for the selected item ID.
+			// Nur entweder Liste oder Details? Dann einfach die Detail-Activity starten.
 			Intent detailIntent = new Intent(this, ServiceDetailActivity.class);
 			detailIntent.putExtra(ServiceDetailFragment.ARG_ITEM_ID, id);
 			startActivity(detailIntent);
@@ -115,7 +109,7 @@ public class ServiceListActivity extends FragmentActivity implements ServiceList
 	}
 
 	/**
-	 * Delegate incoming onClick-Calls to the corresponding service detail fragment.
+	 * Eingehende On-Click-Events an das {@link ServiceDetailFragment} übergeben.
 	 */
 
 	public void onClickButtonOpenUrl(final View buttonOpenUrl) {

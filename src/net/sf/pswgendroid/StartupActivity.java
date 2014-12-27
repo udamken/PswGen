@@ -27,6 +27,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -40,6 +41,15 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+/**
+ * <p>
+ * Diese Activity wird beim Start der Anwendung aufgerufen und dient dazu, die Datei mit den Diensten zu
+ * importieren und nach Eingabe der Passphrase zu laden.
+ * </p>
+ * <p>
+ * Copyright (C) 2014 Uwe Damken
+ * </p>
+ */
 public class StartupActivity extends Activity {
 
 	/** Der Logger dieser Anwendung */
@@ -56,6 +66,10 @@ public class StartupActivity extends Activity {
 		editImportFilepath.setText(defaultImportFilepath);
 	}
 
+	/**
+	 * Importiert die Datei mit den Diensten von einem externen Speicher in den anwendungsspezifischen
+	 * Speicherbereich, bzw. in den Bereich, der dem Zertifikat dieser Anwendung zugeordnet ist.
+	 */
 	public void onClickButtonImportServices(final View buttonImportServices) {
 		EditText editImportFilepath = (EditText) findViewById(R.id.import_filepath);
 		String importFilepath = editImportFilepath.getText().toString();
@@ -66,21 +80,22 @@ public class StartupActivity extends Activity {
 				FileOutputStream out = openFileOutput(Constants.SERVICES_FILENAME, MODE_PRIVATE);
 				copyFile(importFile, out);
 				importFile.delete();
-				// FIXME dkn Nachricht aus den Ressourcen holen
-				Toast.makeText(
-						this,
-						"<" + importFile.getPath() + "> nach <" + Constants.SERVICES_FILENAME
-								+ "> importiert.", Toast.LENGTH_LONG).show();
+				String msg = MessageFormat.format(getString(R.string.file_imported), importFile.getPath(),
+						Constants.SERVICES_FILENAME);
+				Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
 			} else {
-				// FIXME dkn Nachricht aus den Ressourcen holen
-				Toast.makeText(this, "<" + importFile.getPath() + "> existiert nicht.", Toast.LENGTH_LONG)
-						.show();
+				String msg = MessageFormat.format(getString(R.string.file_missing), importFile.getPath());
+				Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
 			}
 		} catch (Exception e) {
 			PswGenAdapter.handleThrowable(this, e);
 		}
 	}
 
+	/**
+	 * Prüft die Passphrase, den Verifizierungs- und den Versions-String und öffnet ggf. die Liste der aus der
+	 * Datei geladenen Dienste.
+	 */
 	public void onClickButtonOpenServices(final View buttonOpenServices) {
 		try {
 			EditText editTextPassphrase = (EditText) findViewById(R.id.passphrase);
@@ -89,23 +104,28 @@ public class StartupActivity extends Activity {
 			Intent listIntent = new Intent(this, ServiceListActivity.class);
 			startActivity(listIntent);
 		} catch (FileNotFoundException e) {
-			// FIXME dkn Nachricht aus den Ressourcen holen
-			Toast.makeText(this, "<" + Constants.SERVICES_FILENAME + "> existiert nicht.", Toast.LENGTH_LONG)
-					.show();
+			String msg = MessageFormat.format(getString(R.string.file_missing), Constants.SERVICES_FILENAME);
+			Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
 		} catch (Exception e) {
 			PswGenAdapter.handleThrowable(this, e);
 		}
 	}
 
+	/**
+	 * Öffnet die Hilfe-URL im Browser.
+	 */
 	public void onClickButtonOpenHelp(final View buttonOpenHelp) {
 		try {
-			Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.url_help)));
+			Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.help_url)));
 			startActivity(browserIntent);
 		} catch (Exception e) {
 			PswGenAdapter.handleThrowable(this, e);
 		}
 	}
 
+	/**
+	 * Öffnet den About-Dialog.
+	 */
 	public void onClickButtonOpenAbout(final View buttonOpenAbout) {
 		try {
 			Intent aboutIntent = new Intent(this, AboutActivity.class);
@@ -124,10 +144,6 @@ public class StartupActivity extends Activity {
 			while ((numChars = reader.read(buff, 0, buff.length)) != -1) {
 				writer.write(buff, 0, numChars);
 			}
-		} catch (IOException ex) {
-			// FIXME dkn Nachricht aus den Ressourcen holen
-			throw new IOException("IOException beim Importieren von <" + sourceFile.getPath() + "> nach <"
-					+ Constants.SERVICES_FILENAME + ">.");
 		} finally {
 			try {
 				if (reader != null) {

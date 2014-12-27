@@ -30,57 +30,56 @@ import android.widget.ListView;
 import android.widget.SearchView.OnQueryTextListener;
 
 /**
- * A list fragment representing a list of Services. This fragment also supports tablet devices by allowing
- * list items to be given an 'activated' state upon selection. This helps indicate which item is currently
- * being viewed in a {@link ServiceDetailFragment}.
  * <p>
- * Activities containing this fragment MUST implement the {@link Callbacks} interface.
+ * Dieses Fragment stellt die Diensteliste dar. Auf Geräten mit großen Bildschirmen bekommt der selektierte
+ * Eintrag den Status 'activated'. Dadurch wird erkennbar, welcher Eintrag in {@link ServiceDetailFragment}
+ * angezeigt wird..
+ * </p>
+ * <p>
+ * Activity-Klassen, die dieses Fragment nutzen, müssen {@link Callbacks} implementieren.
+ * </p>
+ * <p>
+ * Copyright (C) 2014 Uwe Damken
+ * </p>
  */
 public class ServiceListFragment extends ListFragment implements OnQueryTextListener {
 
-	/**
-	 * The serialization (saved instance state) Bundle key representing the activated item position. Only used
-	 * on tablets.
-	 */
+	/** Bei Geräten mit großem Bildschirm der Key für die Serialisierung der Position des aktiven Eintrags */
 	private static final String STATE_ACTIVATED_POSITION = "activated_position";
 
-	/**
-	 * The fragment's current callback object, which is notified of list item clicks.
-	 */
-	private Callbacks mCallbacks = sDummyCallbacks;
+	/** Das aktuelle Callbacks-Objekt, dass über Änderungen in der Eintragsselektion informiert wird */
+	private Callbacks callbacks = DUMMY_CALLBACKS;
 
-	/**
-	 * The current activated item position. Only used on tablets.
-	 */
-	private int mActivatedPosition = ListView.INVALID_POSITION;
+	/** Bei Geräten mit großem Bildschirm die Position des zurzeit selektierten Eintrags */
+	private int activatedPosition = ListView.INVALID_POSITION;
 
 	/** Filterbarer Adapter zur Liste der Dienste */
 	private ArrayAdapter<ServiceInfo> arrayAdapter;
 
 	/**
-	 * A callback interface that all activities containing this fragment must implement. This mechanism allows
-	 * activities to be notified of item selections.
+	 * Alle Activity-Klassen, die dieses Fragment verwenden, müssen dieses Interface implementieren, damit sie
+	 * über Änderungen in der Eintragsselektion informiert werden.
 	 */
 	public interface Callbacks {
 		/**
-		 * Callback for when an item has been selected.
+		 * Callback für den Fall, dass ein Eintrag ausgewählt wurde.
 		 */
 		public void onItemSelected(String id);
 	}
 
 	/**
-	 * A dummy implementation of the {@link Callbacks} interface that does nothing. Used only when this
-	 * fragment is not attached to an activity.
+	 * Eine Dummy-Implementation von {@link Callbacks}, die nichts tut und nur verwendet wird, wenn dieses
+	 * Fragment nicht mit einer Activity verbunden ist, wann auch immer das der Fall sein kann.
 	 */
-	private static Callbacks sDummyCallbacks = new Callbacks() {
+	private static final Callbacks DUMMY_CALLBACKS = new Callbacks() {
 		@Override
 		public void onItemSelected(String id) {
 		}
 	};
 
 	/**
-	 * Mandatory empty constructor for the fragment manager to instantiate the fragment (e.g. upon screen
-	 * orientation changes).
+	 * Obligatorischer Default-Konstruktor für den FragmentManager zum Instantiieren des Fragments, z.B. beim
+	 * Umdrehen des Bildschirms.
 	 */
 	public ServiceListFragment() {
 	}
@@ -99,7 +98,7 @@ public class ServiceListFragment extends ListFragment implements OnQueryTextList
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		// Restore the previously serialized activated item position.
+		// Ggf. die vermerkte (ehemals) aktive Position reaktivieren
 		if (savedInstanceState != null && savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
 			setActivatedPosition(savedInstanceState.getInt(STATE_ACTIVATED_POSITION));
 		}
@@ -109,70 +108,66 @@ public class ServiceListFragment extends ListFragment implements OnQueryTextList
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 
-		// Activities containing this fragment must implement its callbacks.
+		// Activity-Klassen, die dieses Fragment nutzen, müssen {@link Callbacks} implementieren
 		if (!(activity instanceof Callbacks)) {
 			throw new IllegalStateException("Activity must implement fragment's callbacks.");
 		}
 
-		mCallbacks = (Callbacks) activity;
+		callbacks = (Callbacks) activity;
 	}
 
 	@Override
 	public void onDetach() {
 		super.onDetach();
 
-		// Reset the active callbacks interface to the dummy implementation.
-		mCallbacks = sDummyCallbacks;
+		// Zurück zur Dummy-Implementierung, es gibt keine zuständige Activity mehr
+		callbacks = DUMMY_CALLBACKS;
 	}
 
 	@Override
 	public void onListItemClick(ListView listView, View view, int position, long id) {
 		super.onListItemClick(listView, view, position, id);
 
-		// Notify the active callbacks interface (the activity, if the
-		// fragment is attached to one) that an item has been selected.
-		mCallbacks.onItemSelected(PswGenAdapter.getServiceInfo(position).getServiceAbbreviation());
+		// Die Activity-Klasse, die das Fragment verwendet, über die Selektion informieren
+		callbacks.onItemSelected(arrayAdapter.getItem(position).getServiceAbbreviation());
 	}
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		if (mActivatedPosition != ListView.INVALID_POSITION) {
-			// Serialize and persist the activated item position.
-			outState.putInt(STATE_ACTIVATED_POSITION, mActivatedPosition);
+		if (activatedPosition != ListView.INVALID_POSITION) {
+			// Aktivierte Position vermerken
+			outState.putInt(STATE_ACTIVATED_POSITION, activatedPosition);
 		}
 	}
 
 	/**
-	 * Turns on activate-on-click mode. When this mode is on, list items will be given the 'activated' state
-	 * when touched.
+	 * Aktiviert den Activate-On-Click-Modus, ausgewählte Einträge bekommen dann den Status 'activated'.
 	 */
 	public void setActivateOnItemClick(boolean activateOnItemClick) {
-		// When setting CHOICE_MODE_SINGLE, ListView will automatically
-		// give items the 'activated' state when touched.
+		// Im Modus CHOICE_MODE_SINGLE werden Einträge als 'activated' markiert
 		getListView().setChoiceMode(
 				activateOnItemClick ? ListView.CHOICE_MODE_SINGLE : ListView.CHOICE_MODE_NONE);
 	}
 
 	private void setActivatedPosition(int position) {
 		if (position == ListView.INVALID_POSITION) {
-			getListView().setItemChecked(mActivatedPosition, false);
+			getListView().setItemChecked(activatedPosition, false);
 		} else {
 			getListView().setItemChecked(position, true);
 		}
-
-		mActivatedPosition = position;
+		activatedPosition = position;
 	}
 
 	@Override
 	public boolean onQueryTextChange(String newText) {
 		arrayAdapter.getFilter().filter(newText);
-		return true; // action handled here
+		return true; // die Aktion wurde behandelt, es ist nichts mehr zu tun
 	}
 
 	@Override
 	public boolean onQueryTextSubmit(String query) {
-		return false; // action not handled here, use default action
+		return false; // die Aktion wurde nicht behandelt, es ist der Defaultmechnismus aufzurufen
 	}
 
 }

@@ -23,6 +23,8 @@ package net.sf.pswgendroid;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import net.sf.pswgen.model.ServiceInfo;
 import net.sf.pswgen.model.ServiceInfoList;
@@ -31,7 +33,6 @@ import net.sf.pswgen.util.DomainException;
 import net.sf.pswgen.util.EncryptionHelper;
 import net.sf.pswgen.util.FileHelper;
 import android.content.Context;
-import android.util.Log;
 import android.widget.Toast;
 
 /**
@@ -40,13 +41,13 @@ import android.widget.Toast;
  * Änderungen aus PswGen in PswGenDroid übernommen werden können.
  * </p>
  * <p>
- * Copyright (C) 2005-2014 Uwe Damken
+ * Copyright (C) 2014 Uwe Damken
  * </p>
  */
 public class PswGenAdapter {
 
-	/** Tag für das Logging unter Android */
-	public static final String TAG = "PswGenDroid";
+	/** Der Logger dieser Anwendung */
+	private static final Logger LOGGER = Logger.getLogger(Constants.APPLICATION_PACKAGE_NAME + ".Logger");
 
 	/** Alle Informationen zu Dienstekürzeln */
 	private static ServiceInfoList services;
@@ -109,11 +110,11 @@ public class PswGenAdapter {
 	 */
 	public static void handleThrowable(Context context, final Throwable t) {
 		if (t instanceof DomainException) {
-			Log.d(TAG, "DomainException caught: ", t);
+			LOGGER.log(Level.SEVERE, "DomainException caught: ", t);
 			Toast.makeText(context, getDomainExceptionText(context, (DomainException) t), Toast.LENGTH_LONG)
 					.show();
 		} else {
-			Log.e(TAG, "Throwable caught: ", t);
+			LOGGER.log(Level.SEVERE, "Throwable caught: ", t);
 			Toast.makeText(context, t.toString(), Toast.LENGTH_LONG).show();
 		}
 	}
