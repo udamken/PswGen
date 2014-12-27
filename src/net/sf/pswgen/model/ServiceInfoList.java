@@ -25,6 +25,7 @@ import java.util.Collection;
 import java.util.TreeMap;
 
 import net.sf.pswgen.util.Constants;
+import net.sf.pswgen.util.EmptyHelper;
 import net.sf.pswgen.util.EncryptionHelper;
 
 /**
@@ -203,7 +204,7 @@ public class ServiceInfoList {
 	 */
 	public boolean isAdvancedFormat() {
 		return version != null && version.compareTo(Constants.ADVANCED_FILE_FORMAT_VERSION) >= 0
-				&& verifier != null && verifier.length() > 0;
+				&& !EmptyHelper.isEmpty(verifier);
 	}
 
 	/**
@@ -212,7 +213,7 @@ public class ServiceInfoList {
 	 */
 	public boolean isUnsupportedFormat() {
 		return version == null || version.compareTo(Constants.UNSUPPORTED_FILE_FORMAT_VERSION) <= 0
-				|| verifier == null || verifier.isEmpty();
+				|| EmptyHelper.isEmpty(verifier);
 	}
 
 	/**

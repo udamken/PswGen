@@ -53,4 +53,11 @@ public class EmptyHelper {
 		return (value == EMPTY_INT);
 	}
 
+	/**
+	 * Liefert true, wenn der String null ist oder die Länge 0 hat.
+	 */
+	public static boolean isEmpty(String value) {
+		return value == null || value.length() == 0;
+	}
+
 }

@@ -23,6 +23,14 @@ package net.sf.pswgendroid;
 import android.app.Activity;
 import android.os.Bundle;
 
+/**
+ * <p>
+ * Diese Activity stellt einen About-Dialog dar, der z.B. die Lizenz anzeigt.
+ * </p>
+ * <p>
+ * Copyright (C) 2014 Uwe Damken
+ * </p>
+ */
 public class AboutActivity extends Activity {
 
 	@Override

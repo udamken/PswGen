@@ -28,18 +28,21 @@ import android.view.MenuItem;
 import android.view.View;
 
 /**
- * An activity representing a single Service detail screen. This activity is only used on handset devices. On
- * tablet-size devices, item details are presented side-by-side with a list of items in a
- * {@link ServiceListActivity}.
  * <p>
- * This activity is mostly just a 'shell' activity containing nothing more than a
- * {@link ServiceDetailFragment}.
+ * Diese Activity stellt die Detailanzeige für Dienste dar, sie wird nur für Geräte mit kleineren Bidlschirmen
+ * verwendet. Auf Geräten mit größerem Bildschirm erledigt dies die {@link ServiceListActivity}, wobei dann
+ * Diensteliste und Details eines Dienstes nebeneinander angezeigt werden.
+ * </p>
+ * <p>
+ * Diese Activity ist vor allem ein Halter, eine Schale, für das {@link ServiceDetailFragment}.
+ * </p>
+ * <p>
+ * Copyright (C) 2014 Uwe Damken
+ * </p>
  */
 public class ServiceDetailActivity extends FragmentActivity {
 
-	/**
-	 * The embedded fragment to handle service details.
-	 */
+	/** Das eingebettete Fragment für die Detailanzeige eines Dienstes */
 	private ServiceDetailFragment fragment;
 
 	@Override
@@ -47,21 +50,15 @@ public class ServiceDetailActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_service_detail);
 
-		// Show the Up button in the action bar.
+		// Up-Button im Action Bar anzeigen
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 
-		// savedInstanceState is non-null when there is fragment state
-		// saved from previous configurations of this activity
-		// (e.g. when rotating the screen from portrait to landscape).
-		// In this case, the fragment will automatically be re-added
-		// to its container so we don't need to manually add it.
-		// For more information, see the Fragments API guide at:
-		//
+		// Nur wenn der Fragment-Status von der vorherigen Aktivity-Konfiguration vermerkt wurde, z.B. beim
+		// Drehen des Bildschirm, ist savedInstanceState non-null. Dann wird das Fragment automatisch zu
+		// seinem Container hinzugefügt. Sonst müssen wir es manuell tun. Nähere Informationen dazu siehe
 		// http://developer.android.com/guide/components/fragments.html
-		//
 		if (savedInstanceState == null) {
-			// Create the detail fragment and add it to the activity
-			// using a fragment transaction.
+			// ServiceDetailFragment erzeugen und per Transaktion des FragmentManagers der Activity zuordnen
 			Bundle arguments = new Bundle();
 			String id = getIntent().getStringExtra(ServiceDetailFragment.ARG_ITEM_ID);
 			arguments.putString(ServiceDetailFragment.ARG_ITEM_ID, id);
@@ -76,13 +73,10 @@ public class ServiceDetailActivity extends FragmentActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int id = item.getItemId();
 		if (id == android.R.id.home) {
-			// This ID represents the Home or Up button. In the case of this
-			// activity, the Up button is shown. Use NavUtils to allow users
-			// to navigate up one level in the application structure. For
-			// more details, see the Navigation pattern on Android Design:
-			//
+			// Dies ID repräsentiert den Home- oder Up-Button. Bei dieser Activity wird der Up-Button gezeigt.
+			// Mit NavUtils kann der Anwender in der Anwendungsstruktur eine Ebene nach oben navigieren. Mehr
+			// Details zum Navigation Pattern unter Android finden sich hier:
 			// http://developer.android.com/design/patterns/navigation.html#up-vs-back
-			//
 			NavUtils.navigateUpTo(this, new Intent(this, ServiceListActivity.class));
 			return true;
 		}
@@ -90,7 +84,7 @@ public class ServiceDetailActivity extends FragmentActivity {
 	}
 
 	/**
-	 * Delegate incoming onClick-Calls to the corresponding service detail fragment.
+	 * Eingehende On-Click-Events an das {@link ServiceDetailFragment} übergeben.
 	 */
 
 	public void onClickButtonOpenUrl(final View buttonOpenUrl) {
