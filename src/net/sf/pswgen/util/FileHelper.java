@@ -207,15 +207,10 @@ public class FileHelper {
 	/**
 	 * Speichert alle Diensteinformationen.
 	 */
-	public void saveServiceInfoList(File servicesFile, ServiceInfoList services) {
-		try {
-			FileOutputStream out = new FileOutputStream(servicesFile);
-			writeJsonStream(out, services);
-			out.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException("Exception occured: " + e); // FIXME ??
-		}
+	public void saveServiceInfoList(File servicesFile, ServiceInfoList services) throws IOException {
+		FileOutputStream out = new FileOutputStream(servicesFile);
+		writeJsonStream(out, services);
+		out.close();
 	}
 
 	private void writeJsonStream(OutputStream out, ServiceInfoList services) throws IOException {

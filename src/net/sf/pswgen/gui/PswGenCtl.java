@@ -25,6 +25,7 @@ import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.util.Date;
 import java.util.logging.Level;
@@ -92,7 +93,7 @@ public class PswGenCtl extends BaseCtl {
 	/**
 	 * Datei lediglich in das neue Format konvertieren, dann endet die Anwendung.
 	 */
-	public void upgradeServiceInfoList(final String targetFilename) {
+	public void upgradeServiceInfoList(final String targetFilename) throws IOException {
 		services = XmlFileHelper.getInstance().loadServiceInfoList(servicesFile);
 		if (services == null || services.isNew()) {
 			JOptionPane.showMessageDialog(null, getGuiText("EmptyFileNotUpgradableMsg"),
@@ -504,7 +505,7 @@ public class PswGenCtl extends BaseCtl {
 	 * Liefert true, wenn die aktuelle Aktion abgebrochen werden soll, oder false, wenn die Änderungen
 	 * gespeichert oder verworfen werden sollen.
 	 */
-	private boolean cancelOnDirty(final MainView mainView) {
+	private boolean cancelOnDirty(final MainView mainView) throws IOException {
 		if (mainView.isDirty()) {
 			int chosenOption = JOptionPane.showConfirmDialog(mainView, mainView.getServiceAbbreviation()
 					+ getGuiText("SaveChangesMsg"), Constants.APPLICATION_NAME,
@@ -540,7 +541,7 @@ public class PswGenCtl extends BaseCtl {
 	/**
 	 * Werte des Dienstes in die Liste übernehmen und die gesamte Liste speichern.
 	 */
-	private void storeService(final MainView mainView) {
+	private void storeService(final MainView mainView) throws IOException {
 		String serviceAbbreviation = mainView.getServiceAbbreviation();
 		validateServiceAbbreviation(serviceAbbreviation);
 		if (services.getServiceInfo(serviceAbbreviation) != null) { // Ist der Dienst bereits vermerkt?

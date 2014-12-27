@@ -21,6 +21,7 @@ package net.sf.pswgen.main;
  *****************************************************************************/
 
 import java.io.File;
+import java.io.IOException;
 
 import net.sf.pswgen.gui.PswGenCtl;
 import net.sf.pswgen.util.Constants;
@@ -47,7 +48,7 @@ public class PswGen {
 	/**
 	 * Hier werden die Kommandozeilenparameter analysiert und die Anwendung gestartet.
 	 */
-	public static void main(String[] args) throws ParseException {
+	public static void main(String[] args) throws ParseException, IOException {
 		Options options = new Options();
 		Option help = new Option("help", "print this message");
 		@SuppressWarnings("static-access")
