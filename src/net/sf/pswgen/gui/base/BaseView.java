@@ -49,9 +49,6 @@ public abstract class BaseView extends JFrame {
 	/** Der Controller für diese View */
 	protected BaseCtl ctl = null;
 
-	/** Hey, it's me ... für die Listener */
-	private BaseView me = this;
-
 	/**
 	 * Konstruktor
 	 */
@@ -69,7 +66,7 @@ public abstract class BaseView extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				ctl.windowClosing(me);
+				ctl.windowClosing(BaseView.this);
 			}
 		});
 		setResizable(true);
