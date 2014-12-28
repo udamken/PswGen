@@ -31,6 +31,8 @@ import java.awt.event.KeyListener;
 import java.text.ParseException;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import javax.swing.AbstractButton;
 import javax.swing.JButton;
@@ -67,7 +69,7 @@ import net.sf.pswgen.util.EmptyHelper;
  * Dies ist die View des Hauptfensters von PswGen.
  * </p>
  * <p>
- * Copyright (C) 2005-2013 Uwe Damken
+ * Copyright (C) 2005-2014 Uwe Damken
  * </p>
  */
 public class MainView extends BaseView {
@@ -83,11 +85,15 @@ public class MainView extends BaseView {
 
 	private StoredServicesTableModel tableModelStoredServices;
 
-	private JTextField mServiceAbbreviationFilter;
+	private JTextField serviceAbbreviationFilter;
 
-	private JTable mTableStoredServices;
+	private JCheckBox serviceAbbreviationFilterAsRegex;
 
-	private TableRowSorter<StoredServicesTableModel> mTableRowSorter;
+	private JLabel regexContainsErrors;
+
+	private JTable tableStoredServices;
+
+	private TableRowSorter<StoredServicesTableModel> tableRowSorter;
 
 	private JTextField serviceAbbreviation;
 
@@ -188,8 +194,8 @@ public class MainView extends BaseView {
 		WidgetFactory wf = WidgetFactory.getInstance();
 		// Widgets erzeugen
 		JPanel panel = wf.getPanel("PanelStoredServices");
-		mServiceAbbreviationFilter = wf.getTextField("FieldServiceAbbreviation");
-		mServiceAbbreviationFilter.addKeyListener(new KeyListener() {
+		serviceAbbreviationFilter = wf.getTextField("FieldServiceAbbreviation");
+		serviceAbbreviationFilter.addKeyListener(new KeyListener() {
 
 			@Override
 			public void keyPressed(KeyEvent arg0) {
@@ -197,19 +203,7 @@ public class MainView extends BaseView {
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				final String text = mServiceAbbreviationFilter.getText();
-				if (EmptyHelper.isEmpty(text)) {
-					mTableRowSorter.setRowFilter(null);
-				} else {
-					mTableRowSorter.setRowFilter(new RowFilter<StoredServicesTableModel, Integer>() {
-						@Override
-						public boolean include(
-								Entry<? extends StoredServicesTableModel, ? extends Integer> entry) {
-							ServiceInfo si = entry.getModel().getServiceInfoAt(entry.getIdentifier());
-							return si.getServiceAbbreviation().toLowerCase().startsWith(text);
-						}
-					});
-				}
+				updateSearch();
 			}
 
 			@Override
@@ -217,14 +211,23 @@ public class MainView extends BaseView {
 			}
 
 		});
+		serviceAbbreviationFilterAsRegex = wf.getCheckBox("CheckBoxServiceAbbreviationFilterAsRegex");
+		serviceAbbreviationFilterAsRegex.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+				updateSearch();
+			}
+		});
+		regexContainsErrors = wf.getLabel("LabelRegexContainsErrors");
+		regexContainsErrors.setForeground(Color.RED);
 		tableModelStoredServices = new StoredServicesTableModel(
 				((PswGenCtl) ctl).getServices().getServices(), new String[] {
 						ctl.getGuiText("LabelServiceAbbreviation"), ctl.getGuiText("LabelAdditionalInfo"),
 						ctl.getGuiText("LabelLoginUrl") });
-		mTableStoredServices = wf.getTable("TableStoredServices", tableModelStoredServices);
-		mTableStoredServices.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		mTableRowSorter = new TableRowSorter<StoredServicesTableModel>(tableModelStoredServices);
-		mTableRowSorter.setComparator(StoredServicesTableModel.COL_ADDITIONAL_INFO, new Comparator<String>() {
+		tableStoredServices = wf.getTable("TableStoredServices", tableModelStoredServices);
+		tableStoredServices.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tableRowSorter = new TableRowSorter<StoredServicesTableModel>(tableModelStoredServices);
+		tableRowSorter.setComparator(StoredServicesTableModel.COL_ADDITIONAL_INFO, new Comparator<String>() {
 
 			@Override
 			public int compare(String leftString, String rightString) {
@@ -238,9 +241,9 @@ public class MainView extends BaseView {
 			}
 
 		});
-		mTableStoredServices.setRowSorter(mTableRowSorter);
+		tableStoredServices.setRowSorter(tableRowSorter);
 		// Ask to be notified of selection changes.
-		ListSelectionModel rowSM = mTableStoredServices.getSelectionModel();
+		ListSelectionModel rowSM = tableStoredServices.getSelectionModel();
 		rowSM.addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent event) {
@@ -250,22 +253,30 @@ public class MainView extends BaseView {
 				ListSelectionModel lsm = (ListSelectionModel) event.getSource();
 				if (!lsm.isSelectionEmpty()) { // Ist überhaupt eine Zeile ausgewählt?
 					int selectedRow = lsm.getMinSelectionIndex();
-					int modelRow = mTableStoredServices.convertRowIndexToModel(selectedRow);
+					int modelRow = tableStoredServices.convertRowIndexToModel(selectedRow);
 					String serviceAbbreviation = tableModelStoredServices.getServiceInfoAt(modelRow)
 							.getServiceAbbreviation();
 					((PswGenCtl) ctl).valueChangedLoadServiceFromList(me, serviceAbbreviation);
 				}
 			}
 		});
-		scrollableTableStoredServices = new JScrollPane(mTableStoredServices);
+		scrollableTableStoredServices = new JScrollPane(tableStoredServices);
 		// tableStoredServices.setFillsViewportHeight(true);
 		// Widgets zufügen, erste Zeile
 		int row = 0;
-		panel.add(mServiceAbbreviationFilter,
-				gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 4, 1));
+		panel.add(serviceAbbreviationFilter, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 4, 1));
+		// Nächste Zeile zum einfügen der Regex-Suche
+		row++;
+		panel.add(serviceAbbreviationFilterAsRegex,
+				gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 2, 1));
+		panel.add(regexContainsErrors, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 2, 1));
 		// Widgets zufügen, nächste Zeile
 		row++;
-		panel.add(scrollableTableStoredServices, gbcf.getTableConstraints(0, row, 1, 1));
+		panel.add(scrollableTableStoredServices, gbcf.getTableConstraints(0, row, 4, 1));
+
+		// Anzeige des regex-errors deaktivieren
+		showRegexErrorMessage(false);
+
 		// Panel zurückgeben
 		return panel;
 	}
@@ -544,6 +555,46 @@ public class MainView extends BaseView {
 		panel.add(makePasswordVisible, gbcf.getFieldConstraints(2, row, 4, 1));
 		// Panel zurückgeben
 		return panel;
+	}
+
+	public void updateSearch() {
+		showRegexErrorMessage(false);
+
+		final String text = serviceAbbreviationFilter.getText();
+		if (EmptyHelper.isEmpty(text)) {
+			tableRowSorter.setRowFilter(null);
+			return;
+		}
+
+		if (serviceAbbreviationFilterAsRegex.isSelected()) {
+			try {
+				final Pattern pattern = Pattern.compile(text);
+				tableRowSorter.setRowFilter(new RowFilter<StoredServicesTableModel, Integer>() {
+					@Override
+					public boolean include(Entry<? extends StoredServicesTableModel, ? extends Integer> entry) {
+						ServiceInfo si = entry.getModel().getServiceInfoAt(entry.getIdentifier());
+						return pattern.matcher(si.getServiceAbbreviation()).matches();
+					}
+				});
+			} catch (PatternSyntaxException ex) {
+				showRegexErrorMessage(true, ex.getLocalizedMessage());
+
+				tableRowSorter.setRowFilter(new RowFilter<StoredServicesTableModel, Integer>() {
+					@Override
+					public boolean include(Entry<? extends StoredServicesTableModel, ? extends Integer> entry) {
+						return false;
+					}
+				});
+			}
+		} else {
+			tableRowSorter.setRowFilter(new RowFilter<StoredServicesTableModel, Integer>() {
+				@Override
+				public boolean include(Entry<? extends StoredServicesTableModel, ? extends Integer> entry) {
+					ServiceInfo si = entry.getModel().getServiceInfoAt(entry.getIdentifier());
+					return si.getServiceAbbreviation().toLowerCase().startsWith(text.toLowerCase());
+				}
+			});
+		}
 	}
 
 	/**
@@ -911,4 +962,20 @@ public class MainView extends BaseView {
 		setTitle(((dirty) ? DIRTY_TAG_TITLE_PREFIX : "") + title);
 	}
 
+	public boolean isRegexEnable() {
+		return serviceAbbreviationFilterAsRegex.isSelected();
+	}
+
+	public void setRegexEnabled(boolean regexEnabled) {
+		serviceAbbreviationFilterAsRegex.setSelected(regexEnabled);
+	}
+
+	private void showRegexErrorMessage(boolean show, String message) {
+		regexContainsErrors.setVisible(show);
+		regexContainsErrors.setToolTipText((EmptyHelper.isEmpty(message)) ? null : message);
+	}
+
+	private void showRegexErrorMessage(boolean show) {
+		showRegexErrorMessage(show, null);
+	}
 }
