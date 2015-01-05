@@ -34,8 +34,10 @@ import java.util.logging.Logger;
 import net.sf.pswgen.util.Constants;
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.content.BroadcastReceiver;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -66,6 +68,13 @@ public class StartupActivity extends Activity implements PassphraseDialog.Listen
 		String defaultImportFilepath = Environment.getExternalStorageDirectory().getAbsolutePath()
 				+ File.separator + "Download" + File.separator + Constants.SERVICES_FILENAME;
 		editImportFilepath.setText(defaultImportFilepath);
+		// Manche Intents, und so auch der SCREEN_OFF-Intent müss im Code registriert werden, eine Angabe in
+		// AndroidManifest.xml wäre wirklungslos. Nähere Informationen dazu finden sich in folgenden Links:
+		// http://stackoverflow.com/questions/3651772/main-difference-between-manifest-and-programmatic-registering-of-broadcastreceiv
+		// http://thinkandroid.wordpress.com/2010/01/24/handling-screen-off-and-screen-on-intents/
+		IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
+		BroadcastReceiver broadcastReceiver = new ScreenBroadcastReceiver();
+		registerReceiver(broadcastReceiver, filter);
 	}
 
 	/**
