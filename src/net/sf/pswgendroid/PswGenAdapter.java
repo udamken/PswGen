@@ -41,7 +41,7 @@ import android.widget.Toast;
  * Änderungen aus PswGen in PswGenDroid übernommen werden können.
  * </p>
  * <p>
- * Copyright (C) 2014 Uwe Damken
+ * Copyright (C) 2014-2015 Uwe Damken
  * </p>
  */
 public class PswGenAdapter {
@@ -84,6 +84,13 @@ public class PswGenAdapter {
 		services = null;
 		servicesAsList = null;
 		validatedPassphrase = null;
+	}
+
+	/**
+	 * Liefert true, wenn die Dienste geladen wurden und die Passphrase gesetzt ist, sonst false.
+	 */
+	public static boolean isServiceInfoListLoaded() {
+		return services != null && servicesAsList != null && validatedPassphrase != null;
 	}
 
 	/**

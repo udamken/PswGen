@@ -48,15 +48,16 @@ import android.widget.SearchView;
  * Copyright (C) 2014-2015 Uwe Damken
  * </p>
  */
-public class ServiceListActivity extends FragmentActivity implements ServiceListFragment.Listener {
+public class ServiceListActivity extends FragmentActivity implements ServiceListFragment.Listener,
+		PassphraseDialog.Listener {
 
 	/** Gibt an, ob Liste und Details gleichzeitig angezeigt werden (bei großen Bildschirmen) */
 	private boolean inTwoPaneMode;
 
-	/** The embedded fragment to handle the service list */
+	/** Das eingebettete Fragment für die Anzeige der Diensteliste */
 	private ServiceListFragment serviceListFragment;
 
-	/** The embedded fragment to handle service details */
+	/** Das eingebettete Fragment für die Detailanzeige eines Dienstes */
 	private ServiceDetailFragment serviceDetailFragment;
 
 	@Override
@@ -126,6 +127,20 @@ public class ServiceListActivity extends FragmentActivity implements ServiceList
 
 	public void onClickButtonDisplayPassword(final View buttonOpenUrl) {
 		serviceDetailFragment.onClickButtonDisplayPassword(this, buttonOpenUrl);
+	}
+
+	/**
+	 * Eingehende On-Click-Events aus dem PassphraseDialog an das {@link ServiceDetailFragment} übergeben.
+	 */
+
+	@Override
+	public void onClickPassphraseDialogButtonPositive() {
+		serviceDetailFragment.onClickPassphraseDialogButtonPositive();
+	}
+
+	@Override
+	public void onClickPassphraseDialogButtonNegative() {
+		serviceDetailFragment.onClickPassphraseDialogButtonNegative();
 	}
 
 }
