@@ -78,6 +78,15 @@ public class PswGenAdapter {
 	}
 
 	/**
+	 * Bereits geladene Dienste "entladen", also dereferenzieren und die Passphrase löschen.
+	 */
+	public static void unloadServiceInfoList() {
+		services = null;
+		servicesAsList = null;
+		validatedPassphrase = null;
+	}
+
+	/**
 	 * Liefert den Dienst mit dem übergebenen Dienstekürzel.
 	 */
 	public static ServiceInfo getServiceInfo(String serviceAbbreviation) {

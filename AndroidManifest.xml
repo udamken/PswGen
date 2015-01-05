@@ -8,7 +8,10 @@
         android:minSdkVersion="17"
         android:targetSdkVersion="19" />
 
+    <!-- Benötigt zum Lesen der zu importierenden Dienste-Datei, z.B. von einer SD-Karte -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <!-- Benötigt zum Löschen der importierten Dienste-Datei, z.B. von der SD-Karte -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
@@ -16,6 +19,7 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+        
         <activity
             android:name=".StartupActivity"
             android:label="@string/title_startup" >
@@ -25,6 +29,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
         <activity
             android:name=".ServiceListActivity"
             android:label="@string/title_service_list" >
@@ -32,6 +37,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="net.sf.pswgendroid.StartupActivity" />
         </activity>
+        
         <activity
             android:name=".ServiceDetailActivity"
             android:label="@string/title_service_detail" >
@@ -39,10 +45,19 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="net.sf.pswgendroid.ServiceListActivity" />
         </activity>
+        
         <activity
             android:name=".AboutActivity"
             android:label="@string/title_activity_about" >
         </activity>
-    </application>
+
+		<!--
+			Manche Intents müssen im Code registiert werden, für PswGenDroid geschieht das
+			in StartupActivity#onCreate(), und zwar für die folgenden:
+			
+				SCREEN_OFF
+		-->
+        
+	</application>
 
 </manifest>
