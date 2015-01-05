@@ -33,6 +33,8 @@ import java.util.logging.Logger;
 
 import net.sf.pswgen.util.Constants;
 import android.app.Activity;
+import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -47,10 +49,10 @@ import android.widget.Toast;
  * importieren und nach Eingabe der Passphrase zu laden.
  * </p>
  * <p>
- * Copyright (C) 2014 Uwe Damken
+ * Copyright (C) 2014-2015 Uwe Damken
  * </p>
  */
-public class StartupActivity extends Activity {
+public class StartupActivity extends Activity implements PassphraseDialog.Listener {
 
 	/** Der Logger dieser Anwendung */
 	private static final Logger LOGGER = Logger.getLogger(Constants.APPLICATION_PACKAGE_NAME + ".Logger");
@@ -93,22 +95,12 @@ public class StartupActivity extends Activity {
 	}
 
 	/**
-	 * Prüft die Passphrase, den Verifizierungs- und den Versions-String und öffnet ggf. die Liste der aus der
-	 * Datei geladenen Dienste.
+	 * Fragt die Passphrase über einen Dialog ab. Nach Eingabe und Bestätigunt der Passphrase wird
+	 * onPassphraseDialogPositiveClick() aufgerufen.
 	 */
 	public void onClickButtonOpenServices(final View buttonOpenServices) {
-		try {
-			EditText editTextPassphrase = (EditText) findViewById(R.id.passphrase);
-			String passphrase = editTextPassphrase.getText().toString();
-			PswGenAdapter.loadServiceInfoList(openFileInput(Constants.SERVICES_FILENAME), passphrase);
-			Intent listIntent = new Intent(this, ServiceListActivity.class);
-			startActivity(listIntent);
-		} catch (FileNotFoundException e) {
-			String msg = MessageFormat.format(getString(R.string.file_missing), Constants.SERVICES_FILENAME);
-			Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
-		} catch (Exception e) {
-			PswGenAdapter.handleThrowable(this, e);
-		}
+		DialogFragment passphraseDialog = new PassphraseDialog();
+		passphraseDialog.show(getFragmentManager(), "passphrase_dialog");
 	}
 
 	/**
@@ -135,6 +127,9 @@ public class StartupActivity extends Activity {
 		}
 	}
 
+	/**
+	 * Kopiert die per File angegebene Quelldatei in den übergebenen FileOutputStream.
+	 */
 	public static void copyFile(File sourceFile, FileOutputStream targetStream) throws IOException {
 		BufferedInputStream reader = new BufferedInputStream(new FileInputStream(sourceFile));
 		BufferedOutputStream writer = new BufferedOutputStream(targetStream);
@@ -156,6 +151,29 @@ public class StartupActivity extends Activity {
 				LOGGER.log(Level.WARNING, Constants.MSG_EXCP_SERVICES, e);
 			}
 		}
+	}
+
+	/**
+	 * Prüft die vom Dialog übergebene Passphrase, den Verifizierungs- und den Versions-String und öffnet ggf.
+	 * die Liste der aus der Datei geladenen Dienste.
+	 */
+	@Override
+	public void onPassphraseDialogPositiveClick(DialogInterface dialog, String passphrase) {
+		try {
+			PswGenAdapter.loadServiceInfoList(openFileInput(Constants.SERVICES_FILENAME), passphrase);
+			Intent listIntent = new Intent(this, ServiceListActivity.class);
+			startActivity(listIntent);
+		} catch (FileNotFoundException e) {
+			String msg = MessageFormat.format(getString(R.string.file_missing), Constants.SERVICES_FILENAME);
+			Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+		} catch (Exception e) {
+			PswGenAdapter.handleThrowable(this, e);
+		}
+	}
+
+	@Override
+	public void onPassphraseDialogNegativeClick(DialogInterface dialog) {
+		// FIXME dkn Ist hier noch was zu tun?
 	}
 
 }

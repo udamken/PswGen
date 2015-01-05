@@ -4,15 +4,22 @@
     <!-- AndroidManifest -->
     <string name="app_name">PswGenDroid</string>
 
+	<!-- Allgemeines -->
+    <string name="button_cancel">Abbrechen</string>
+    <string name="button_ok">OK</string>
+    
     <!-- StartupActiviy -->
     <string name="title_startup">PswGenDroid</string>
     <string name="label_import_filepath">Dateipfad</string>
     <string name="button_import_services">Importieren</string>
-    <string name="label_passphrase">Passphrase</string>
     <string name="button_open_services">Öffnen</string>
     <string name="button_open_help">Hilfe</string>
     <string name="help_url">http://mind-and-useful.de/de/software/pswgendroid.html</string>
     <string name="button_open_about">Über PswGenDroid</string>
+
+    <!-- PassphraseDialog -->
+    <string name="title_passphrase">Dienstedatei öffnen</string>
+    <string name="hint_passphrase">Passphrase</string>
 
     <!-- ServiceListActivity -->
     <string name="title_service_list">Gespeicherte Dienste</string>

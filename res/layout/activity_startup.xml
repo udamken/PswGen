@@ -27,20 +27,6 @@
 	    android:text="@string/button_import_services"
 	    android:onClick="onClickButtonImportServices" />
 	
-    <TextView android:id="@+id/label_passphrase"
-	    style="?android:attr/textAppearanceMedium"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:text="@string/label_passphrase"
-	    android:textIsSelectable="false"
-	    android:labelFor="@+id/passphrase" />
-	
-	<EditText android:id="@+id/passphrase"
-	    style="?android:attr/textAppearanceSmall"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:inputType="textPassword" />
-	
 	<Button android:id="@+id/button_open_services"
 	    style="?android:attr/buttonStyle"
 	    android:layout_width="match_parent"
