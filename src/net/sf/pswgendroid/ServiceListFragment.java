@@ -66,6 +66,7 @@ public class ServiceListFragment extends ListFragment implements OnQueryTextList
 		 * Es wurde ein Eintrag ausgewählt.
 		 */
 		public void onItemSelected(String id);
+
 	}
 
 	/**
@@ -111,7 +112,8 @@ public class ServiceListFragment extends ListFragment implements OnQueryTextList
 
 		// Activity-Klassen, die dieses Fragment nutzen, müssen {@link Listener} implementieren
 		if (!(activity instanceof Listener)) {
-			throw new IllegalStateException("Activity must implement fragment's listener.");
+			throw new ClassCastException(activity.getClass().getName() + " must implement "
+					+ Listener.class.getName());
 		}
 
 		listener = (Listener) activity;

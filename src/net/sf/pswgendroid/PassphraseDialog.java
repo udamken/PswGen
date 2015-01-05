@@ -20,6 +20,11 @@ package net.sf.pswgendroid;
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.text.MessageFormat;
+
+import net.sf.pswgen.util.Constants;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -29,7 +34,9 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 /**
  * <p>
@@ -37,7 +44,7 @@ import android.widget.EditText;
  * das von der Activity implementiert wird, die den Dialog öffnet..
  * </p>
  * <p>
- * Copyright (C) 2014-2015 Uwe Damken
+ * Copyright (C) 2015 Uwe Damken
  * </p>
  */
 public class PassphraseDialog extends DialogFragment {
@@ -49,14 +56,14 @@ public class PassphraseDialog extends DialogFragment {
 	public interface Listener {
 
 		/**
-		 * Es wurde OK gedrückt, die (hoffentlich) eingegebene Passphrase wird mitgeliefert.
+		 * Es wurde OK gedrückt, die Passphrase validiert und die Diensteliste neu geladen.
 		 */
-		public void onPassphraseDialogPositiveClick(DialogInterface dialog, String passphrase);
+		public void onClickPassphraseDialogButtonPositive();
 
 		/**
 		 * Es wurde Abbrechen gedrückt.
 		 */
-		public void onPassphraseDialogNegativeClick(DialogInterface dialog);
+		public void onClickPassphraseDialogButtonNegative();
 	}
 
 	/** Die View für die Eingabe der Passphrase */
@@ -72,12 +79,14 @@ public class PassphraseDialog extends DialogFragment {
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		if (activity instanceof Listener) {
-			listener = (Listener) activity;
-		} else {
+
+		// Activity-Klassen, die dieses Fragment nutzen, müssen {@link Listener} implementieren
+		if (!(activity instanceof Listener)) {
 			throw new ClassCastException(activity.getClass().getName() + " must implement "
 					+ Listener.class.getName());
 		}
+
+		listener = (Listener) activity;
 	}
 
 	@SuppressLint("InflateParams")
@@ -87,20 +96,41 @@ public class PassphraseDialog extends DialogFragment {
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		View view = inflater.inflate(R.layout.dialog_passphrase, null);
 		editTextPassphrase = (EditText) view.findViewById(R.id.passphrase);
-		builder.setView(view).setTitle(R.string.title_passphrase)
-				.setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int id) {
-						String passphrase = editTextPassphrase.getText().toString();
-						listener.onPassphraseDialogPositiveClick(dialog, passphrase);
-					}
-				}).setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
+		final AlertDialog passphraseDialog = builder.setView(view).setTitle(R.string.title_passphrase)
+				.setPositiveButton(R.string.button_ok, null) // wird wegen der Prüfung unten überschrieben
+				.setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
 						PassphraseDialog.this.getDialog().cancel();
-						listener.onPassphraseDialogNegativeClick(dialog);
+						listener.onClickPassphraseDialogButtonNegative();
+					}
+				}).create();
+		passphraseDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+
+			@Override
+			public void onShow(DialogInterface dialog) {
+
+				Button b = passphraseDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+				b.setOnClickListener(new View.OnClickListener() {
+
+					@Override
+					public void onClick(View view) {
+						try {
+							FileInputStream input = getActivity().openFileInput(Constants.SERVICES_FILENAME);
+							String passphrase = editTextPassphrase.getText().toString();
+							PswGenAdapter.loadServiceInfoList(input, passphrase);
+							passphraseDialog.dismiss(); // Nur wenn alles okay ist, Dialog schließen ...
+							listener.onClickPassphraseDialogButtonPositive(); // ... und weitermelden
+						} catch (FileNotFoundException e) {
+							String msg = MessageFormat.format(getString(R.string.file_missing),
+									Constants.SERVICES_FILENAME);
+							Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
+						} catch (Exception e) {
+							PswGenAdapter.handleThrowable(getActivity(), e);
+						}
 					}
 				});
-		return builder.create();
+			}
+		});
+		return passphraseDialog;
 	}
-
 }

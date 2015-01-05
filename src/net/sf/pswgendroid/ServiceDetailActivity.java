@@ -29,7 +29,7 @@ import android.view.View;
 
 /**
  * <p>
- * Diese Activity stellt die Detailanzeige für Dienste dar, sie wird nur für Geräte mit kleineren Bidlschirmen
+ * Diese Activity stellt die Detailanzeige für Dienste dar, sie wird nur für Geräte mit kleineren Bildschirmen
  * verwendet. Auf Geräten mit größerem Bildschirm erledigt dies die {@link ServiceListActivity}, wobei dann
  * Diensteliste und Details eines Dienstes nebeneinander angezeigt werden.
  * </p>
@@ -37,13 +37,13 @@ import android.view.View;
  * Diese Activity ist vor allem ein Halter, eine Schale, für das {@link ServiceDetailFragment}.
  * </p>
  * <p>
- * Copyright (C) 2014 Uwe Damken
+ * Copyright (C) 2014-2015 Uwe Damken
  * </p>
  */
-public class ServiceDetailActivity extends FragmentActivity {
+public class ServiceDetailActivity extends FragmentActivity implements PassphraseDialog.Listener {
 
 	/** Das eingebettete Fragment für die Detailanzeige eines Dienstes */
-	private ServiceDetailFragment fragment;
+	private ServiceDetailFragment serviceDetailFragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -62,10 +62,10 @@ public class ServiceDetailActivity extends FragmentActivity {
 			Bundle arguments = new Bundle();
 			String id = getIntent().getStringExtra(ServiceDetailFragment.ARG_ITEM_ID);
 			arguments.putString(ServiceDetailFragment.ARG_ITEM_ID, id);
-			fragment = new ServiceDetailFragment();
-			fragment.setArguments(arguments);
-			getSupportFragmentManager().beginTransaction().add(R.id.service_detail_container, fragment)
-					.commit();
+			serviceDetailFragment = new ServiceDetailFragment();
+			serviceDetailFragment.setArguments(arguments);
+			getSupportFragmentManager().beginTransaction()
+					.add(R.id.service_detail_container, serviceDetailFragment).commit();
 		}
 	}
 
@@ -88,19 +88,30 @@ public class ServiceDetailActivity extends FragmentActivity {
 	 */
 
 	public void onClickButtonOpenUrl(final View buttonOpenUrl) {
-		fragment.onClickButtonOpenUrl(this, buttonOpenUrl);
+		serviceDetailFragment.onClickButtonOpenUrl(this, buttonOpenUrl);
+
 	}
 
 	public void onClickButtonCopyLoginInfo(final View buttonOpenUrl) {
-		fragment.onClickButtonCopyLoginInfo(this, buttonOpenUrl);
+		serviceDetailFragment.onClickButtonCopyLoginInfo(this, buttonOpenUrl);
 	}
 
 	public void onClickButtonCopyPassword(final View buttonOpenUrl) {
-		fragment.onClickButtonCopyPassword(this, buttonOpenUrl);
+		serviceDetailFragment.onClickButtonCopyPassword(this, buttonOpenUrl);
 	}
 
 	public void onClickButtonDisplayPassword(final View buttonOpenUrl) {
-		fragment.onClickButtonDisplayPassword(this, buttonOpenUrl);
+		serviceDetailFragment.onClickButtonDisplayPassword(this, buttonOpenUrl);
+	}
+
+	@Override
+	public void onClickPassphraseDialogButtonPositive() {
+		serviceDetailFragment.onClickPassphraseDialogButtonPositive();
+	}
+
+	@Override
+	public void onClickPassphraseDialogButtonNegative() {
+		serviceDetailFragment.onClickPassphraseDialogButtonNegative();
 	}
 
 }
