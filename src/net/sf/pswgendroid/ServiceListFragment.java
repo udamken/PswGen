@@ -36,10 +36,10 @@ import android.widget.SearchView.OnQueryTextListener;
  * angezeigt wird..
  * </p>
  * <p>
- * Activity-Klassen, die dieses Fragment nutzen, müssen {@link Callbacks} implementieren.
+ * Activity-Klassen, die dieses Fragment nutzen, müssen {@link Listener} implementieren.
  * </p>
  * <p>
- * Copyright (C) 2014 Uwe Damken
+ * Copyright (C) 2014-2015 Uwe Damken
  * </p>
  */
 public class ServiceListFragment extends ListFragment implements OnQueryTextListener {
@@ -47,8 +47,8 @@ public class ServiceListFragment extends ListFragment implements OnQueryTextList
 	/** Bei Geräten mit großem Bildschirm der Key für die Serialisierung der Position des aktiven Eintrags */
 	private static final String STATE_ACTIVATED_POSITION = "activated_position";
 
-	/** Das aktuelle Callbacks-Objekt, dass über Änderungen in der Eintragsselektion informiert wird */
-	private Callbacks callbacks = DUMMY_CALLBACKS;
+	/** Das aktuelle Listener-Objekt, dass über Änderungen in der Eintragsselektion informiert wird */
+	private Listener listener = DUMMY_LISTENER;
 
 	/** Bei Geräten mit großem Bildschirm die Position des zurzeit selektierten Eintrags */
 	private int activatedPosition = ListView.INVALID_POSITION;
@@ -60,18 +60,19 @@ public class ServiceListFragment extends ListFragment implements OnQueryTextList
 	 * Alle Activity-Klassen, die dieses Fragment verwenden, müssen dieses Interface implementieren, damit sie
 	 * über Änderungen in der Eintragsselektion informiert werden.
 	 */
-	public interface Callbacks {
+	public interface Listener {
+
 		/**
-		 * Callback für den Fall, dass ein Eintrag ausgewählt wurde.
+		 * Es wurde ein Eintrag ausgewählt.
 		 */
 		public void onItemSelected(String id);
 	}
 
 	/**
-	 * Eine Dummy-Implementation von {@link Callbacks}, die nichts tut und nur verwendet wird, wenn dieses
+	 * Eine Dummy-Implementation von {@link Listener}, die nichts tut und nur verwendet wird, wenn dieses
 	 * Fragment nicht mit einer Activity verbunden ist, wann auch immer das der Fall sein kann.
 	 */
-	private static final Callbacks DUMMY_CALLBACKS = new Callbacks() {
+	private static final Listener DUMMY_LISTENER = new Listener() {
 		@Override
 		public void onItemSelected(String id) {
 		}
@@ -108,12 +109,12 @@ public class ServiceListFragment extends ListFragment implements OnQueryTextList
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 
-		// Activity-Klassen, die dieses Fragment nutzen, müssen {@link Callbacks} implementieren
-		if (!(activity instanceof Callbacks)) {
-			throw new IllegalStateException("Activity must implement fragment's callbacks.");
+		// Activity-Klassen, die dieses Fragment nutzen, müssen {@link Listener} implementieren
+		if (!(activity instanceof Listener)) {
+			throw new IllegalStateException("Activity must implement fragment's listener.");
 		}
 
-		callbacks = (Callbacks) activity;
+		listener = (Listener) activity;
 	}
 
 	@Override
@@ -121,7 +122,7 @@ public class ServiceListFragment extends ListFragment implements OnQueryTextList
 		super.onDetach();
 
 		// Zurück zur Dummy-Implementierung, es gibt keine zuständige Activity mehr
-		callbacks = DUMMY_CALLBACKS;
+		listener = DUMMY_LISTENER;
 	}
 
 	@Override
@@ -129,7 +130,7 @@ public class ServiceListFragment extends ListFragment implements OnQueryTextList
 		super.onListItemClick(listView, view, position, id);
 
 		// Die Activity-Klasse, die das Fragment verwendet, über die Selektion informieren
-		callbacks.onItemSelected(arrayAdapter.getItem(position).getServiceAbbreviation());
+		listener.onItemSelected(arrayAdapter.getItem(position).getServiceAbbreviation());
 	}
 
 	@Override

@@ -41,14 +41,14 @@ import android.widget.SearchView;
  * in {@link ServiceDetailActivity} eingebunden ist.
  * </p>
  * <p>
- * Diese Activity implementiert {@link ServiceListFragment.Callbacks}, um die Auswahl von Einträgen mitgeteilt
+ * Diese Activity implementiert {@link ServiceListFragment.Listener}, um die Auswahl von Einträgen mitgeteilt
  * zu bekommen.
  * </p>
  * <p>
- * Copyright (C) 2014 Uwe Damken
+ * Copyright (C) 2014-2015 Uwe Damken
  * </p>
  */
-public class ServiceListActivity extends FragmentActivity implements ServiceListFragment.Callbacks {
+public class ServiceListActivity extends FragmentActivity implements ServiceListFragment.Listener {
 
 	/** Gibt an, ob Liste und Details gleichzeitig angezeigt werden (bei großen Bildschirmen) */
 	private boolean inTwoPaneMode;
@@ -75,7 +75,7 @@ public class ServiceListActivity extends FragmentActivity implements ServiceList
 	}
 
 	/**
-	 * Callback method from {@link ServiceListFragment.Callbacks} indicating that the item with the given ID
+	 * Callback method from {@link ServiceListFragment.Listener} indicating that the item with the given ID
 	 * was selected.
 	 */
 	@Override
