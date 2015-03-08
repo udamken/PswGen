@@ -4,7 +4,7 @@ package net.sf.pswgen.util;
  PswGen - Manages your websites and repeatably generates passwords for them
  PswGenDroid - Generates your passwords managed by PswGen on your mobile  
 
- Copyright (C) 2005-2014 Uwe Damken
+ Copyright (C) 2005-2015 Uwe Damken
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@ import org.junit.Test;
  * Testklasse für PasswordFactory.
  * </p>
  * <p>
- * Copyright (C) 2005-2014 Uwe Damken
+ * Copyright (C) 2005-2015 Uwe Damken
  * </p>
  */
 public class PasswordFactoryTest extends TestCase {
