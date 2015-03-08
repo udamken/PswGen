@@ -1,5 +1,5 @@
 {
-	"version": "1.7.1",
+	"version": "1.7.2",
 	"verifier": "65DC7542938128C98E369CBECD25EB6EE76A5B800827D6549FC8BA8A3FE9057307EBF105667C5894E9C86BB444B4FD4E9DCD1598BF04F7C4C4472AC248942A1FA3C052ACFBFDC6C6B9C4D1D1833129D67D6883D88189E35073E36ADFC5E7AB16EF14287590D3F218",
 	"services": [
 		{
@@ -109,6 +109,33 @@
 			"totalCharacterCount": 8,
 			"password": "",
 			"passwordRepeated": ""
+		},
+		{
+			"serviceAbbreviation": "5194F63599C0EC3FD60A9CAE13B8D752",
+			"additionalInfo": "99405E7AE84E4BDBE6078C3D7814DD5F",
+			"loginUrl": "",
+			"loginInfo": "",
+			"additionalLoginInfo": "",
+			"useSmallLetters": false,
+			"useCapitalLetters": false,
+			"useDigits": false,
+			"useSpecialCharacters": false,
+			"specialCharacters": "82EF6E9558DE4CC79D25444E42C0D63DEC78B31B6CD7053A",
+			"smallLettersCount": -2147483648,
+			"smallLettersStartIndex": -2147483648,
+			"smallLettersEndIndex": -2147483648,
+			"capitalLettersCount": -2147483648,
+			"capitalLettersStartIndex": -2147483648,
+			"capitalLettersEndIndex": -2147483648,
+			"digitsCount": -2147483648,
+			"specialCharactersCount": -2147483648,
+			"digitsStartIndex": -2147483648,
+			"digitsEndIndex": -2147483648,
+			"specialCharactersStartIndex": -2147483648,
+			"specialCharactersEndIndex": -2147483648,
+			"totalCharacterCount": -2147483648,
+			"password": "92993D96D802A387B4D110FF006E5566",
+			"passwordRepeated": "92993D96D802A387B4D110FF006E5566"
 		},
 		{
 			"serviceAbbreviation": "896BE247543ED2AA",
