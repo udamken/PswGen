@@ -106,7 +106,7 @@ public class EncryptionHelper {
 	 * Konvertiert ein Byte in einen Hex-String mit zwei Hex-Zeichen (ggf. mit führender Null).
 	 */
 	public static String toHexString(byte a) {
-		String s = "0" + Integer.toHexString((new Byte(a)).intValue());
+		String s = "0" + Integer.toHexString((Byte.valueOf(a)).intValue());
 		return s.substring(s.length() - 2).toUpperCase();
 	}
 
