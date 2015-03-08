@@ -4,7 +4,7 @@ package net.sf.pswgen.util;
  PswGen - Manages your websites and repeatably generates passwords for them
  PswGenDroid - Generates your passwords managed by PswGen on your mobile  
 
- Copyright (C) 2005-2014 Uwe Damken
+ Copyright (C) 2005-2015 Uwe Damken
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@ import javax.crypto.spec.PBEParameterSpec;
  * ACHTUNG: Diese Klasse ist für PswGen und PswGenDroid identisch, sprich kopiert.
  * </p>
  * <p>
- * Copyright (C) 2005-2014 Uwe Damken
+ * Copyright (C) 2005-2015 Uwe Damken
  * </p>
  */
 public class EncryptionHelper {
@@ -61,7 +61,7 @@ public class EncryptionHelper {
 			PBEParameterSpec pbeParamSpec = new PBEParameterSpec(ENCRYPTION_SALT, 20);
 			Cipher cipher = Cipher.getInstance(ENCRYPTION_ALGORITHM);
 			cipher.init(Cipher.ENCRYPT_MODE, secretKey, pbeParamSpec);
-			final byte[] encryptedByteArray = cipher.doFinal(s.getBytes());
+			final byte[] encryptedByteArray = cipher.doFinal(s.getBytes(Constants.CHARSET_NAME));
 			final String encrypted = EncryptionHelper.toHexString(encryptedByteArray);
 			return encrypted;
 		} catch (Exception e) {
@@ -84,7 +84,7 @@ public class EncryptionHelper {
 			Cipher cipher = Cipher.getInstance(ENCRYPTION_ALGORITHM);
 			cipher.init(Cipher.DECRYPT_MODE, secretKey, pbeParamSpec);
 			final byte[] pswByteArray = cipher.doFinal(EncryptionHelper.toByteArray(sEncrypted));
-			final String psw = new String(pswByteArray);
+			final String psw = new String(pswByteArray, Constants.CHARSET_NAME);
 			return psw;
 		} catch (Exception e) {
 			throw new DomainException("PassphraseInvalidMsg");
@@ -106,7 +106,7 @@ public class EncryptionHelper {
 	 * Konvertiert ein Byte in einen Hex-String mit zwei Hex-Zeichen (ggf. mit führender Null).
 	 */
 	public static String toHexString(byte a) {
-		String s = "0" + Integer.toHexString((new Byte(a)).intValue());
+		String s = "0" + Integer.toHexString((Byte.valueOf(a)).intValue());
 		return s.substring(s.length() - 2).toUpperCase();
 	}
 
