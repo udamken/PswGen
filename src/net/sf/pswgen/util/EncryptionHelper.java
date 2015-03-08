@@ -61,7 +61,7 @@ public class EncryptionHelper {
 			PBEParameterSpec pbeParamSpec = new PBEParameterSpec(ENCRYPTION_SALT, 20);
 			Cipher cipher = Cipher.getInstance(ENCRYPTION_ALGORITHM);
 			cipher.init(Cipher.ENCRYPT_MODE, secretKey, pbeParamSpec);
-			final byte[] encryptedByteArray = cipher.doFinal(s.getBytes());
+			final byte[] encryptedByteArray = cipher.doFinal(s.getBytes(Constants.CHARSET_NAME));
 			final String encrypted = EncryptionHelper.toHexString(encryptedByteArray);
 			return encrypted;
 		} catch (Exception e) {
@@ -84,7 +84,7 @@ public class EncryptionHelper {
 			Cipher cipher = Cipher.getInstance(ENCRYPTION_ALGORITHM);
 			cipher.init(Cipher.DECRYPT_MODE, secretKey, pbeParamSpec);
 			final byte[] pswByteArray = cipher.doFinal(EncryptionHelper.toByteArray(sEncrypted));
-			final String psw = new String(pswByteArray);
+			final String psw = new String(pswByteArray, Constants.CHARSET_NAME);
 			return psw;
 		} catch (Exception e) {
 			throw new DomainException("PassphraseInvalidMsg");

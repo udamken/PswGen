@@ -112,7 +112,7 @@ public class FileHelper {
 
 	private ServiceInfoList readJsonStream(FileInputStream in) throws IOException {
 		ServiceInfoList services = new ServiceInfoList();
-		JsonReader reader = new JsonReader(new InputStreamReader(in, "UTF-8"));
+		JsonReader reader = new JsonReader(new InputStreamReader(in, Constants.CHARSET_NAME));
 		try {
 			reader.beginObject();
 			checkJsonName(reader, "version");
@@ -214,7 +214,7 @@ public class FileHelper {
 	}
 
 	private void writeJsonStream(OutputStream out, ServiceInfoList services) throws IOException {
-		JsonWriter writer = new JsonWriter(new OutputStreamWriter(out, "UTF-8"));
+		JsonWriter writer = new JsonWriter(new OutputStreamWriter(out, Constants.CHARSET_NAME));
 		writer.setIndent("\t");
 		writer.beginObject();
 		services.setVersion(Constants.APPLICATION_VERSION);

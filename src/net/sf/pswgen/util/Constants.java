@@ -107,4 +107,6 @@ public class Constants {
 
 	public static final String SERVICES_FILENAME = "services.json";
 
+	public static final String CHARSET_NAME = "UTF-8";
+
 }
