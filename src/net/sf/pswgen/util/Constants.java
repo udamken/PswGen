@@ -4,7 +4,7 @@ package net.sf.pswgen.util;
  PswGen - Manages your websites and repeatably generates passwords for them
  PswGenDroid - Generates your passwords managed by PswGen on your mobile  
 
- Copyright (C) 2005-2014 Uwe Damken
+ Copyright (C) 2005-2015 Uwe Damken
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@ import net.sf.pswgen.ApplicationPackageNameMarker;
  * ACHTUNG: Diese Klasse ist für PswGen und PswGenDroid identisch, sprich kopiert.
  * </p>
  * <p>
- * Copyright (C) 2005-2014 Uwe Damken
+ * Copyright (C) 2005-2015 Uwe Damken
  * </p>
  */
 public class Constants {
@@ -43,7 +43,7 @@ public class Constants {
 	public static final String APPLICATION_NAME = "PswGen";
 
 	/** Die Version dieser Anwendung */
-	public static final String APPLICATION_VERSION = "1.7.1";
+	public static final String APPLICATION_VERSION = "1.7.2";
 
 	/** Die Version dieser Anwendung, ab der ein neues Dateiformat benutzt wird */
 	public static final String ADVANCED_FILE_FORMAT_VERSION = "1.7.0";
@@ -53,12 +53,6 @@ public class Constants {
 
 	/** Die Version dieser Anwendung */
 	public static final String APPLICATION_VERIFIER = "PswGen - Manages your websites and repeatably generates passwords for them, Copyright (C) Uwe Damken";
-
-	/** Die URL zur deutschsprachigen Hilfe */
-	public static final String HELP_URL_DE = "http://mind-and-useful.de/de/software/pswgen.html";
-
-	/** Die URL zur englischsprachigen Hilfe */
-	public static final String HELP_URL_EN = "http://mind-and-useful.de/en/software/pswgen.html";
 
 	/** Das Package dieser Anwendung */
 	public static final String APPLICATION_PACKAGE_NAME = ApplicationPackageNameMarker.class.getPackage()
@@ -112,5 +106,7 @@ public class Constants {
 			.getDefault().getCountry().equals("DE")) ? DATE_FORMAT_de_DE : DATE_FORMAT_NON_GERMAN;
 
 	public static final String SERVICES_FILENAME = "services.json";
+
+	public static final String CHARSET_NAME = "UTF-8";
 
 }

@@ -4,7 +4,7 @@ package net.sf.pswgen.gui.base;
  PswGen - Manages your websites and repeatably generates passwords for them
  PswGenDroid - Generates your passwords managed by PswGen on your mobile  
 
- Copyright (C) 2005-2014 Uwe Damken
+ Copyright (C) 2005-2015 Uwe Damken
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -51,6 +51,7 @@ import javax.swing.table.AbstractTableModel;
 
 import net.sf.pswgen.util.Constants;
 import net.sf.pswgen.util.ConverterHelper;
+import net.sf.pswgen.util.EmptyHelper;
 
 /**
  * <p>
@@ -58,7 +59,7 @@ import net.sf.pswgen.util.ConverterHelper;
  * standardisierte Weise.
  * </p>
  * <p>
- * Copyright (C) 2005-2014 Uwe Damken
+ * Copyright (C) 2005-2015 Uwe Damken
  * </p>
  */
 public class WidgetFactory {
@@ -110,7 +111,7 @@ public class WidgetFactory {
 				String text = matcher.group(1);
 				String preferredWidth = matcher.group(3);
 				String preferredHeight = matcher.group(4);
-				text = (text.length() == 0) ? null : text;
+				text = (EmptyHelper.isEmpty(text)) ? null : text;
 				if (preferredWidth == null || preferredHeight == null) {
 					widgetInfos.put(key, new WidgetInfo(text));
 				} else {

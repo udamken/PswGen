@@ -4,7 +4,7 @@ package net.sf.pswgen.model;
  PswGen - Manages your websites and repeatably generates passwords for them
  PswGenDroid - Generates your passwords managed by PswGen on your mobile  
 
- Copyright (C) 2005-2014 Uwe Damken
+ Copyright (C) 2005-2015 Uwe Damken
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -29,6 +29,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import net.sf.pswgen.util.Constants;
+import net.sf.pswgen.util.EmptyHelper;
 import net.sf.pswgen.util.EncryptionHelper;
 
 /**
@@ -40,7 +41,7 @@ import net.sf.pswgen.util.EncryptionHelper;
  * ACHTUNG: Diese Klasse ist für PswGen und PswGenDroid fast (letzteres ohne JAXB) identisch, sprich kopiert.
  * </p>
  * <p>
- * Copyright (C) 2005-2014 Uwe Damken
+ * Copyright (C) 2005-2015 Uwe Damken
  * </p>
  */
 @XmlRootElement(name = "ServiceList")
@@ -210,7 +211,7 @@ public class ServiceInfoList {
 	 */
 	public boolean isAdvancedFormat() {
 		return version != null && version.compareTo(Constants.ADVANCED_FILE_FORMAT_VERSION) >= 0
-				&& verifier != null && verifier.length() > 0;
+				&& !EmptyHelper.isEmpty(verifier);
 	}
 
 	/**
@@ -219,7 +220,7 @@ public class ServiceInfoList {
 	 */
 	public boolean isUnsupportedFormat() {
 		return version == null || version.compareTo(Constants.UNSUPPORTED_FILE_FORMAT_VERSION) <= 0
-				|| verifier == null || verifier.isEmpty();
+				|| EmptyHelper.isEmpty(verifier);
 	}
 
 	/**

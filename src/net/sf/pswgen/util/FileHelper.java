@@ -4,7 +4,7 @@ package net.sf.pswgen.util;
  PswGen - Manages your websites and repeatably generates passwords for them
  PswGenDroid - Generates your passwords managed by PswGen on your mobile  
 
- Copyright (C) 2005-2014 Uwe Damken
+ Copyright (C) 2005-2015 Uwe Damken
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -45,7 +45,7 @@ import com.google.gson.stream.JsonWriter;
  * ACHTUNG: Diese Klasse ist für PswGen und PswGenDroid bis auf die JSON-Importe identisch, sprich kopiert.
  * </p>
  * <p>
- * Copyright (C) 2005-2014 Uwe Damken
+ * Copyright (C) 2005-2015 Uwe Damken
  * </p>
  */
 public class FileHelper {
@@ -112,7 +112,7 @@ public class FileHelper {
 
 	private ServiceInfoList readJsonStream(FileInputStream in) throws IOException {
 		ServiceInfoList services = new ServiceInfoList();
-		JsonReader reader = new JsonReader(new InputStreamReader(in, "UTF-8"));
+		JsonReader reader = new JsonReader(new InputStreamReader(in, Constants.CHARSET_NAME));
 		try {
 			reader.beginObject();
 			checkJsonName(reader, "version");
@@ -207,19 +207,14 @@ public class FileHelper {
 	/**
 	 * Speichert alle Diensteinformationen.
 	 */
-	public void saveServiceInfoList(File servicesFile, ServiceInfoList services) {
-		try {
-			FileOutputStream out = new FileOutputStream(servicesFile);
-			writeJsonStream(out, services);
-			out.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException("Exception occured: " + e); // FIXME ??
-		}
+	public void saveServiceInfoList(File servicesFile, ServiceInfoList services) throws IOException {
+		FileOutputStream out = new FileOutputStream(servicesFile);
+		writeJsonStream(out, services);
+		out.close();
 	}
 
 	private void writeJsonStream(OutputStream out, ServiceInfoList services) throws IOException {
-		JsonWriter writer = new JsonWriter(new OutputStreamWriter(out, "UTF-8"));
+		JsonWriter writer = new JsonWriter(new OutputStreamWriter(out, Constants.CHARSET_NAME));
 		writer.setIndent("\t");
 		writer.beginObject();
 		services.setVersion(Constants.APPLICATION_VERSION);

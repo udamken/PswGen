@@ -4,7 +4,7 @@ package net.sf.pswgen.gui;
  PswGen - Manages your websites and repeatably generates passwords for them
  PswGenDroid - Generates your passwords managed by PswGen on your mobile  
 
- Copyright (C) 2005-2014 Uwe Damken
+ Copyright (C) 2005-2015 Uwe Damken
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -62,13 +62,14 @@ import net.sf.pswgen.gui.base.GridBagConstraintsFactory;
 import net.sf.pswgen.gui.base.WidgetFactory;
 import net.sf.pswgen.model.ServiceInfo;
 import net.sf.pswgen.util.Constants;
+import net.sf.pswgen.util.EmptyHelper;
 
 /**
  * <p>
  * Dies ist die View des Hauptfensters von PswGen.
  * </p>
  * <p>
- * Copyright (C) 2005-2013 Uwe Damken
+ * Copyright (C) 2005-2015 Uwe Damken
  * </p>
  */
 public class MainView extends BaseView {
@@ -84,15 +85,15 @@ public class MainView extends BaseView {
 
 	private StoredServicesTableModel tableModelStoredServices;
 
-	private JTextField mServiceAbbreviationFilter;
+	private JTextField serviceAbbreviationFilter;
 
-	private JCheckBox mServiceAbbreviationFilterAsRegex;
+	private JCheckBox serviceAbbreviationFilterAsRegex;
 
-	private JLabel mRegexContainsErrors;
+	private JLabel regexContainsErrors;
 
-	private JTable mTableStoredServices;
+	private JTable tableStoredServices;
 
-	private TableRowSorter<StoredServicesTableModel> mTableRowSorter;
+	private TableRowSorter<StoredServicesTableModel> tableRowSorter;
 
 	private JTextField serviceAbbreviation;
 
@@ -193,8 +194,8 @@ public class MainView extends BaseView {
 		WidgetFactory wf = WidgetFactory.getInstance();
 		// Widgets erzeugen
 		JPanel panel = wf.getPanel("PanelStoredServices");
-		mServiceAbbreviationFilter = wf.getTextField("FieldServiceAbbreviation");
-		mServiceAbbreviationFilter.addKeyListener(new KeyListener() {
+		serviceAbbreviationFilter = wf.getTextField("FieldServiceAbbreviation");
+		serviceAbbreviationFilter.addKeyListener(new KeyListener() {
 
 			@Override
 			public void keyPressed(KeyEvent arg0) {
@@ -210,23 +211,23 @@ public class MainView extends BaseView {
 			}
 
 		});
-		mServiceAbbreviationFilterAsRegex = wf.getCheckBox("ServiceAbbreviationFilterAsRegex");
-		mServiceAbbreviationFilterAsRegex.addItemListener(new ItemListener() {
+		serviceAbbreviationFilterAsRegex = wf.getCheckBox("CheckBoxServiceAbbreviationFilterAsRegex");
+		serviceAbbreviationFilterAsRegex.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent event) {
 				updateSearch();
 			}
 		});
-		mRegexContainsErrors = wf.getLabel("RegexContainsErrors");
-		mRegexContainsErrors.setForeground(Color.RED);
+		regexContainsErrors = wf.getLabel("LabelRegexContainsErrors");
+		regexContainsErrors.setForeground(Color.RED);
 		tableModelStoredServices = new StoredServicesTableModel(
 				((PswGenCtl) ctl).getServices().getServices(), new String[] {
 						ctl.getGuiText("LabelServiceAbbreviation"), ctl.getGuiText("LabelAdditionalInfo"),
 						ctl.getGuiText("LabelLoginUrl") });
-		mTableStoredServices = wf.getTable("TableStoredServices", tableModelStoredServices);
-		mTableStoredServices.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		mTableRowSorter = new TableRowSorter<StoredServicesTableModel>(tableModelStoredServices);
-		mTableRowSorter.setComparator(StoredServicesTableModel.COL_ADDITIONAL_INFO, new Comparator<String>() {
+		tableStoredServices = wf.getTable("TableStoredServices", tableModelStoredServices);
+		tableStoredServices.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tableRowSorter = new TableRowSorter<StoredServicesTableModel>(tableModelStoredServices);
+		tableRowSorter.setComparator(StoredServicesTableModel.COL_ADDITIONAL_INFO, new Comparator<String>() {
 
 			@Override
 			public int compare(String leftString, String rightString) {
@@ -240,9 +241,9 @@ public class MainView extends BaseView {
 			}
 
 		});
-		mTableStoredServices.setRowSorter(mTableRowSorter);
+		tableStoredServices.setRowSorter(tableRowSorter);
 		// Ask to be notified of selection changes.
-		ListSelectionModel rowSM = mTableStoredServices.getSelectionModel();
+		ListSelectionModel rowSM = tableStoredServices.getSelectionModel();
 		rowSM.addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent event) {
@@ -252,24 +253,23 @@ public class MainView extends BaseView {
 				ListSelectionModel lsm = (ListSelectionModel) event.getSource();
 				if (!lsm.isSelectionEmpty()) { // Ist überhaupt eine Zeile ausgewählt?
 					int selectedRow = lsm.getMinSelectionIndex();
-					int modelRow = mTableStoredServices.convertRowIndexToModel(selectedRow);
+					int modelRow = tableStoredServices.convertRowIndexToModel(selectedRow);
 					String serviceAbbreviation = tableModelStoredServices.getServiceInfoAt(modelRow)
 							.getServiceAbbreviation();
 					((PswGenCtl) ctl).valueChangedLoadServiceFromList(me, serviceAbbreviation);
 				}
 			}
 		});
-		scrollableTableStoredServices = new JScrollPane(mTableStoredServices);
+		scrollableTableStoredServices = new JScrollPane(tableStoredServices);
 		// tableStoredServices.setFillsViewportHeight(true);
 		// Widgets zufügen, erste Zeile
 		int row = 0;
-		panel.add(mServiceAbbreviationFilter,
-				gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 4, 1));
+		panel.add(serviceAbbreviationFilter, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 4, 1));
 		// Nächste Zeile zum einfügen der Regex-Suche
 		row++;
-		panel.add(mServiceAbbreviationFilterAsRegex,
+		panel.add(serviceAbbreviationFilterAsRegex,
 				gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 2, 1));
-		panel.add(mRegexContainsErrors, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 2, 1));
+		panel.add(regexContainsErrors, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 2, 1));
 		// Widgets zufügen, nächste Zeile
 		row++;
 		panel.add(scrollableTableStoredServices, gbcf.getTableConstraints(0, row, 4, 1));
@@ -560,16 +560,16 @@ public class MainView extends BaseView {
 	public void updateSearch() {
 		showRegexErrorMessage(false);
 
-		final String text = mServiceAbbreviationFilter.getText();
-		if (text.length() == 0) {
-			mTableRowSorter.setRowFilter(null);
+		final String text = serviceAbbreviationFilter.getText();
+		if (EmptyHelper.isEmpty(text)) {
+			tableRowSorter.setRowFilter(null);
 			return;
 		}
 
-		if (mServiceAbbreviationFilterAsRegex.isSelected()) {
+		if (serviceAbbreviationFilterAsRegex.isSelected()) {
 			try {
 				final Pattern pattern = Pattern.compile(text);
-				mTableRowSorter.setRowFilter(new RowFilter<StoredServicesTableModel, Integer>() {
+				tableRowSorter.setRowFilter(new RowFilter<StoredServicesTableModel, Integer>() {
 					@Override
 					public boolean include(Entry<? extends StoredServicesTableModel, ? extends Integer> entry) {
 						ServiceInfo si = entry.getModel().getServiceInfoAt(entry.getIdentifier());
@@ -579,7 +579,7 @@ public class MainView extends BaseView {
 			} catch (PatternSyntaxException ex) {
 				showRegexErrorMessage(true, ex.getLocalizedMessage());
 
-				mTableRowSorter.setRowFilter(new RowFilter<StoredServicesTableModel, Integer>() {
+				tableRowSorter.setRowFilter(new RowFilter<StoredServicesTableModel, Integer>() {
 					@Override
 					public boolean include(Entry<? extends StoredServicesTableModel, ? extends Integer> entry) {
 						return false;
@@ -587,7 +587,7 @@ public class MainView extends BaseView {
 				});
 			}
 		} else {
-			mTableRowSorter.setRowFilter(new RowFilter<StoredServicesTableModel, Integer>() {
+			tableRowSorter.setRowFilter(new RowFilter<StoredServicesTableModel, Integer>() {
 				@Override
 				public boolean include(Entry<? extends StoredServicesTableModel, ? extends Integer> entry) {
 					ServiceInfo si = entry.getModel().getServiceInfoAt(entry.getIdentifier());
@@ -963,18 +963,16 @@ public class MainView extends BaseView {
 	}
 
 	public boolean isRegexEnable() {
-		return mServiceAbbreviationFilterAsRegex.isSelected();
+		return serviceAbbreviationFilterAsRegex.isSelected();
 	}
 
 	public void setRegexEnabled(boolean regexEnabled) {
-		mServiceAbbreviationFilterAsRegex.setSelected(regexEnabled);
+		serviceAbbreviationFilterAsRegex.setSelected(regexEnabled);
 	}
 
 	private void showRegexErrorMessage(boolean show, String message) {
-		mRegexContainsErrors.setVisible(show);
-		if (message != null && message.length() > 0) {
-			mRegexContainsErrors.setToolTipText(message);
-		}
+		regexContainsErrors.setVisible(show);
+		regexContainsErrors.setToolTipText((EmptyHelper.isEmpty(message)) ? null : message);
 	}
 
 	private void showRegexErrorMessage(boolean show) {

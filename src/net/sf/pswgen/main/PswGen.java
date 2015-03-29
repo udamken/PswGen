@@ -4,7 +4,7 @@ package net.sf.pswgen.main;
  PswGen - Manages your websites and repeatably generates passwords for them
  PswGenDroid - Generates your passwords managed by PswGen on your mobile  
 
- Copyright (C) 2005-2014 Uwe Damken
+ Copyright (C) 2005-2015 Uwe Damken
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@ package net.sf.pswgen.main;
  *****************************************************************************/
 
 import java.io.File;
+import java.io.IOException;
 
 import net.sf.pswgen.gui.PswGenCtl;
 import net.sf.pswgen.util.Constants;
@@ -39,7 +40,7 @@ import org.apache.commons.cli.ParseException;
  * Die Main-Klasse dieser Anwendung.
  * </p>
  * <p>
- * Copyright (C) 2005-2014 Uwe Damken
+ * Copyright (C) 2005-2015 Uwe Damken
  * </p>
  */
 public class PswGen {
@@ -47,7 +48,7 @@ public class PswGen {
 	/**
 	 * Hier werden die Kommandozeilenparameter analysiert und die Anwendung gestartet.
 	 */
-	public static void main(String[] args) throws ParseException {
+	public static void main(String[] args) throws ParseException, IOException {
 		Options options = new Options();
 		Option help = new Option("help", "print this message");
 		@SuppressWarnings("static-access")

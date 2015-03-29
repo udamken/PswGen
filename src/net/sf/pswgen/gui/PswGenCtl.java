@@ -4,7 +4,7 @@ package net.sf.pswgen.gui;
  PswGen - Manages your websites and repeatably generates passwords for them
  PswGenDroid - Generates your passwords managed by PswGen on your mobile  
 
- Copyright (C) 2005-2014 Uwe Damken
+ Copyright (C) 2005-2015 Uwe Damken
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -25,9 +25,9 @@ import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.util.Date;
-import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -40,6 +40,7 @@ import net.sf.pswgen.model.ServiceInfo;
 import net.sf.pswgen.model.ServiceInfoList;
 import net.sf.pswgen.util.Constants;
 import net.sf.pswgen.util.DomainException;
+import net.sf.pswgen.util.EmptyHelper;
 import net.sf.pswgen.util.EncryptionHelper;
 import net.sf.pswgen.util.FileHelper;
 import net.sf.pswgen.util.PasswordFactory;
@@ -52,7 +53,7 @@ import net.sf.pswgen.util.XmlFileHelper;
  * die Klasse aber auch mal ein bisschen groß und die Anwendungslogik muss ausgelagert werden.
  * </p>
  * <p>
- * Copyright (C) 2005-2014 Uwe Damken
+ * Copyright (C) 2005-2015 Uwe Damken
  * </p>
  */
 public class PswGenCtl extends BaseCtl {
@@ -92,7 +93,7 @@ public class PswGenCtl extends BaseCtl {
 	/**
 	 * Datei lediglich in das neue Format konvertieren, dann endet die Anwendung.
 	 */
-	public void upgradeServiceInfoList(final String targetFilename) {
+	public void upgradeServiceInfoList(final String targetFilename) throws IOException {
 		services = XmlFileHelper.getInstance().loadServiceInfoList(servicesFile);
 		if (services == null || services.isNew()) {
 			JOptionPane.showMessageDialog(null, getGuiText("EmptyFileNotUpgradableMsg"),
@@ -110,14 +111,6 @@ public class PswGenCtl extends BaseCtl {
 			LOGGER.log(Level.SEVERE, Constants.MSG_ALREADY_CONVERTED_FILE_FORMAT_VERSION);
 			System.exit(16);
 		}
-		// TODO Eventuell hier die Indexwerte auf Positionswerte umstellen?
-		// for (ServiceInfo si : services.getEncryptedServices()) { // Sind noch verschlüsselt ...
-		// if (si.isUseSpecialCharacters()
-		// && EmptyHelper.isEmpty(si.getSpecialCharactersCount())) {
-		// si.setSpecialCharactersCount(1); // für Sonderzeichen war 1 der Default
-		// }
-		// }
-		// Siehe saveServiceInfoList() für Konvertierungen in ein neues Dateiformat
 		FileHelper.getInstance().saveServiceInfoList(new File(targetFilename), services);
 		JOptionPane.showMessageDialog(null, getGuiText("FileFormatSuccessfullyConvertedMsg"),
 				Constants.APPLICATION_NAME, JOptionPane.INFORMATION_MESSAGE);
@@ -319,12 +312,7 @@ public class PswGenCtl extends BaseCtl {
 	public void actionPerformedOpenHelpInBrowser(final MainView mainView) {
 		try {
 			mainView.setWaitCursor();
-			// FIXME dkn Besser aus Properties für die Sprachabhängigkeit
-			String url = Constants.HELP_URL_EN;
-			if (Locale.getDefault().getLanguage().equalsIgnoreCase("de")) {
-				url = Constants.HELP_URL_DE;
-			}
-			Desktop.getDesktop().browse(new URI(url));
+			Desktop.getDesktop().browse(new URI(getGuiText("HelpUrl")));
 		} catch (Throwable t) {
 			handleThrowable(t);
 		} finally {
@@ -470,10 +458,11 @@ public class PswGenCtl extends BaseCtl {
 	}
 
 	/**
-	 * Sonderzeichen müssen gesetzt sein, und wenn es nur eine Default-Auswahl ist.
+	 * Für die Generierung des Passwortes wird immer eine Default-Menge von Sonderzeichen benutzt. Das wird
+	 * hier nur in der GUI reflektiert.
 	 */
 	private void ensureAtLeastDefaultSpecialCharacters(final MainView mainView) {
-		if (mainView.getSpecialCharacters() == null || mainView.getSpecialCharacters().length() == 0) {
+		if (EmptyHelper.isEmpty(mainView.getSpecialCharacters())) {
 			mainView.setSpecialCharacters(Constants.SPECIAL_CHARS);
 		}
 	}
@@ -484,7 +473,7 @@ public class PswGenCtl extends BaseCtl {
 	private String validatePassphrase(final StartupView startupView) {
 		final String passphrase = startupView.getPassphrase();
 		final String passphraseRepeated = startupView.getPassphraseRepeated();
-		if (passphrase.length() == 0) {
+		if (EmptyHelper.isEmpty(passphrase)) {
 			throw new DomainException("PassphraseEmptyMsg");
 		}
 		if (services.isNew()) {
@@ -507,7 +496,7 @@ public class PswGenCtl extends BaseCtl {
 	 * Eingabewert des Dienstekürzels überprüfen.
 	 */
 	private void validateServiceAbbreviation(final String serviceAbbreviation) {
-		if (serviceAbbreviation.length() == 0) {
+		if (EmptyHelper.isEmpty(serviceAbbreviation)) {
 			throw new DomainException("ServiceAbbreviationEmptyMsg");
 		}
 	}
@@ -516,7 +505,7 @@ public class PswGenCtl extends BaseCtl {
 	 * Liefert true, wenn die aktuelle Aktion abgebrochen werden soll, oder false, wenn die Änderungen
 	 * gespeichert oder verworfen werden sollen.
 	 */
-	private boolean cancelOnDirty(final MainView mainView) {
+	private boolean cancelOnDirty(final MainView mainView) throws IOException {
 		if (mainView.isDirty()) {
 			int chosenOption = JOptionPane.showConfirmDialog(mainView, mainView.getServiceAbbreviation()
 					+ getGuiText("SaveChangesMsg"), Constants.APPLICATION_NAME,
@@ -545,25 +534,14 @@ public class PswGenCtl extends BaseCtl {
 	 * die zu einer Fehlermeldung führt. Eine Eingabe hat also in jedem Fall Vorrang vor der Generierung.
 	 */
 	private String getValidatedOrGeneratedPassword(final MainView mainView) {
-		String password = mainView.getPassword();
-		final String passwordRepeated = mainView.getPasswordRepeated();
-		if (password.length() == 0 && passwordRepeated.length() == 0) { // Beide leer? => generieren
-			mainView.setWaitCursor();
-			ensureAtLeastDefaultSpecialCharacters(mainView);
-			validateServiceAbbreviation(mainView.getServiceAbbreviation());
-			password = PasswordFactory.getPassword(getServiceFromView(mainView), validatedPassphrase);
-		} else {
-			if (!password.equals(passwordRepeated)) { // Mismatch?
-				throw new DomainException("PasswordMismatchMsg");
-			}
-		}
-		return password;
+		ensureAtLeastDefaultSpecialCharacters(mainView);
+		return PasswordFactory.getPassword(getServiceFromView(mainView), validatedPassphrase);
 	}
 
 	/**
 	 * Werte des Dienstes in die Liste übernehmen und die gesamte Liste speichern.
 	 */
-	private void storeService(final MainView mainView) {
+	private void storeService(final MainView mainView) throws IOException {
 		String serviceAbbreviation = mainView.getServiceAbbreviation();
 		validateServiceAbbreviation(serviceAbbreviation);
 		if (services.getServiceInfo(serviceAbbreviation) != null) { // Ist der Dienst bereits vermerkt?
