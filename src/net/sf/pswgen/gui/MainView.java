@@ -87,6 +87,8 @@ public class MainView extends BaseView {
 
 	private JTextField serviceAbbreviationFilter;
 
+	private JCheckBox serviceAbbreviationFilterCaseSensitive;
+
 	private JCheckBox serviceAbbreviationFilterAsRegex;
 
 	private JLabel regexContainsErrors;
@@ -211,6 +213,13 @@ public class MainView extends BaseView {
 			}
 
 		});
+		serviceAbbreviationFilterCaseSensitive = wf.getCheckBox("CheckBoxServiceAbbreviationFilterCaseSensitive");
+		serviceAbbreviationFilterCaseSensitive.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+				updateSearch();
+			}
+		});
 		serviceAbbreviationFilterAsRegex = wf.getCheckBox("CheckBoxServiceAbbreviationFilterAsRegex");
 		serviceAbbreviationFilterAsRegex.addItemListener(new ItemListener() {
 			@Override
@@ -264,11 +273,13 @@ public class MainView extends BaseView {
 		// tableStoredServices.setFillsViewportHeight(true);
 		// Widgets zufügen, erste Zeile
 		int row = 0;
-		panel.add(serviceAbbreviationFilter, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 4, 1));
+		panel.add(serviceAbbreviationFilter, gbcf.getFieldConstraints(0, row, 4, 1));
+		// Nächste Zeile zum einfügen von Groß-/Kleinschreibung
+		row++;
+		panel.add(serviceAbbreviationFilterCaseSensitive, gbcf.getFieldConstraints(0, row, 2, 1)); 
 		// Nächste Zeile zum einfügen der Regex-Suche
 		row++;
-		panel.add(serviceAbbreviationFilterAsRegex,
-				gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 2, 1));
+		panel.add(serviceAbbreviationFilterAsRegex, gbcf.getFieldConstraints(0, row, 2, 1));
 		panel.add(regexContainsErrors, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 2, 1));
 		// Widgets zufügen, nächste Zeile
 		row++;
@@ -568,7 +579,8 @@ public class MainView extends BaseView {
 
 		if (serviceAbbreviationFilterAsRegex.isSelected()) {
 			try {
-				final Pattern pattern = Pattern.compile(text);
+				final Pattern pattern = Pattern.compile(text,
+						serviceAbbreviationFilterCaseSensitive.isSelected() ? 0 : Pattern.CASE_INSENSITIVE);
 				tableRowSorter.setRowFilter(new RowFilter<StoredServicesTableModel, Integer>() {
 					@Override
 					public boolean include(Entry<? extends StoredServicesTableModel, ? extends Integer> entry) {
@@ -591,7 +603,16 @@ public class MainView extends BaseView {
 				@Override
 				public boolean include(Entry<? extends StoredServicesTableModel, ? extends Integer> entry) {
 					ServiceInfo si = entry.getModel().getServiceInfoAt(entry.getIdentifier());
-					return si.getServiceAbbreviation().toLowerCase().startsWith(text.toLowerCase());
+					String sa;
+					String startText;
+					if (serviceAbbreviationFilterCaseSensitive.isSelected()) {
+						sa = si.getServiceAbbreviation();
+						startText = text;
+					} else {
+						sa = si.getServiceAbbreviation().toLowerCase();
+						startText = text.toLowerCase();
+					}
+					return sa.startsWith(startText);
 				}
 			});
 		}
