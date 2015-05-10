@@ -148,14 +148,14 @@ public class PswGenCtl extends BaseCtl {
 			LOGGER.log(Level.SEVERE, Constants.MSG_TO_BE_CONVERTED_FILE_FORMAT_VERSION);
 			System.exit(16);
 		}
-		StartupView startupView = new StartupView(this);
-		startupView.setTitle(Constants.APPLICATION_NAME + " " + Constants.APPLICATION_VERSION);
+		StartupDialog startupDialog = new StartupDialog(this);
+		startupDialog.setTitle(Constants.APPLICATION_NAME + " " + Constants.APPLICATION_VERSION);
 		if (!services.isNew()) { // Keine neue Datei?
-			startupView.disablePassphraseRepeated(); // Passphrase nur 1x eingeben!
+			startupDialog.disablePassphraseRepeated(); // Passphrase nur 1x eingeben!
 		}
-		addView(startupView);
-		startupView.pack();
-		startupView.setVisible(true);
+		addDialog(startupDialog);
+		startupDialog.pack();
+		startupDialog.setVisible(true);
 	}
 
 	/*
@@ -184,7 +184,7 @@ public class PswGenCtl extends BaseCtl {
 	 * Prüft die Passphrase, aktualisert den Verifizierungs- und Versions-String (besonders wichtig bei neuen
 	 * Dateien) und öffnet ggf. das Hauptfenster.
 	 */
-	public void actionPerformedOpenServices(final StartupView startupView) {
+	public void actionPerformedOpenServices(final StartupDialog startupView) {
 		try {
 			validatedPassphrase = validatePassphrase(startupView);
 			services.decrypt(validatedPassphrase); // Info-Collection entschlüsselt in Map stellen
@@ -470,7 +470,7 @@ public class PswGenCtl extends BaseCtl {
 	/**
 	 * Prüft die Eingabewerte der Passphrase und gibt die Passphrase zurück oder wirft eine Exception.
 	 */
-	private String validatePassphrase(final StartupView startupView) {
+	private String validatePassphrase(final StartupDialog startupView) {
 		final String passphrase = startupView.getPassphrase();
 		final String passphraseRepeated = startupView.getPassphraseRepeated();
 		if (EmptyHelper.isEmpty(passphrase)) {

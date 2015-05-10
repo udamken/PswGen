@@ -34,7 +34,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 
 import net.sf.pswgen.gui.base.BaseCtl;
-import net.sf.pswgen.gui.base.BaseView;
+import net.sf.pswgen.gui.base.BaseDialog;
 import net.sf.pswgen.gui.base.GridBagConstraintsFactory;
 import net.sf.pswgen.gui.base.WidgetFactory;
 
@@ -46,7 +46,7 @@ import net.sf.pswgen.gui.base.WidgetFactory;
  * Copyright (C) 2005-2013 Uwe Damken
  * </p>
  */
-public class StartupView extends BaseView {
+public class StartupDialog extends BaseDialog {
 
 	/** Version für die Serialisierung */
 	private static final long serialVersionUID = 8851338816847637163L;
@@ -61,12 +61,12 @@ public class StartupView extends BaseView {
 	private JCheckBox makePassphraseVisible;
 
 	/** Hey, it's me ... für die Listener */
-	private StartupView me = this;
+	private StartupDialog me = this;
 
 	/**
 	 * Konstruiert diese View mit einer Referenz auf den zugehörigen Controller.
 	 */
-	public StartupView(BaseCtl ctl) {
+	public StartupDialog(BaseCtl ctl) {
 		super(ctl);
 	}
 
@@ -76,6 +76,8 @@ public class StartupView extends BaseView {
 	@Override
 	public void initialize() {
 		super.initialize();
+		this.setSize(100, 50);
+		this.setLocationByPlatform(true);
 	}
 
 	/**

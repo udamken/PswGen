@@ -41,6 +41,9 @@ public class BaseCtl {
 	/** Alle von diesem Controller gesteuerten Views */
 	public List<BaseView> views = new ArrayList<BaseView>();
 
+	/** Alle von diesem Controller gesteuerten Dialogs */
+	public List<BaseDialog> dialogs = new ArrayList<BaseDialog>();
+
 	/**
 	 * Konstruiert den Controller.
 	 */
@@ -54,6 +57,14 @@ public class BaseCtl {
 	public void windowClosing(final BaseView view) {
 		view.dispose(); // führt zum Aufruf von viewClosed
 		removeView(view); // raus aus der Sammlung
+	}
+	
+	/**
+	 * Reagiert auf den Wunsch des Nutzers, den Dialog zu schließen.
+	 */
+	public void windowClosing(final BaseDialog dialog) {
+		dialog.dispose();
+		removeDialog(dialog); // raus aus der Sammlung
 	}
 
 	/**
@@ -77,12 +88,26 @@ public class BaseCtl {
 	public boolean addView(final BaseView view) {
 		return views.add(view);
 	}
+	
+	/**
+	 * Nimmt ein View in die Sammlung der von diesem Controller gesteuerten Dialogs auf.
+	 */
+	public boolean addDialog(final BaseDialog dialog) {
+		return dialogs.add(dialog);
+	}
 
 	/**
 	 * Nimmt ein View in die Sammlung der von diesem Controller gesteuerten Views auf.
 	 */
 	public boolean removeView(final BaseView view) {
 		return views.remove(view);
+	}
+	
+	/**
+	 * Nimmt ein View in die Sammlung der von diesem Controller gesteuerten Views auf.
+	 */
+	public boolean removeDialog(final BaseDialog dialog) {
+		return dialogs.remove(dialog);
 	}
 
 	/**
