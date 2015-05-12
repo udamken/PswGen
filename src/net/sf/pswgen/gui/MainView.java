@@ -213,7 +213,8 @@ public class MainView extends BaseView {
 			}
 
 		});
-		serviceAbbreviationFilterCaseSensitive = wf.getCheckBox("CheckBoxServiceAbbreviationFilterCaseSensitive");
+		serviceAbbreviationFilterCaseSensitive = wf
+				.getCheckBox("CheckBoxServiceAbbreviationFilterCaseSensitive");
 		serviceAbbreviationFilterCaseSensitive.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent event) {
@@ -276,7 +277,7 @@ public class MainView extends BaseView {
 		panel.add(serviceAbbreviationFilter, gbcf.getFieldConstraints(0, row, 4, 1));
 		// Nächste Zeile zum einfügen von Groß-/Kleinschreibung
 		row++;
-		panel.add(serviceAbbreviationFilterCaseSensitive, gbcf.getFieldConstraints(0, row, 2, 1)); 
+		panel.add(serviceAbbreviationFilterCaseSensitive, gbcf.getFieldConstraints(0, row, 2, 1));
 		// Nächste Zeile zum einfügen der Regex-Suche
 		row++;
 		panel.add(serviceAbbreviationFilterAsRegex, gbcf.getFieldConstraints(0, row, 2, 1));
@@ -612,7 +613,24 @@ public class MainView extends BaseView {
 						sa = si.getServiceAbbreviation().toLowerCase();
 						startText = text.toLowerCase();
 					}
-					return sa.startsWith(startText);
+
+					StringBuilder replacementBuilder = new StringBuilder('%');
+					while (startText.contains(replacementBuilder)) {
+						replacementBuilder.append('%');
+					}
+					String replacement = replacementBuilder.toString();
+					startText = startText.replaceAll("\\\\\\|", replacement);
+					String[] startTexts = startText.split("\\|");
+					for (int i = 0; i < startTexts.length; i++) {
+						startTexts[i] = startTexts[i].replaceAll(Pattern.quote(replacement), "|");
+					}
+
+					for (final String str : startTexts) {
+						if (sa.startsWith(str)) {
+							return true;
+						}
+					}
+					return false;
 				}
 			});
 		}
