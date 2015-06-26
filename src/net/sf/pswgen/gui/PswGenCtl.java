@@ -153,7 +153,7 @@ public class PswGenCtl extends BaseCtl {
 		if (!services.isNew()) { // Keine neue Datei?
 			startupDialog.disablePassphraseRepeated(); // Passphrase nur 1x eingeben!
 		}
-		addDialog(startupDialog);
+		addWindow(startupDialog);
 		startupDialog.pack();
 		startupDialog.setVisible(true);
 	}
@@ -195,7 +195,7 @@ public class PswGenCtl extends BaseCtl {
 			MainView mainView = new MainView(this);
 			mainView.setTitle(servicesFile.getAbsolutePath() + " - " + Constants.APPLICATION_NAME + " "
 					+ Constants.APPLICATION_VERSION);
-			addView(mainView);
+			addWindow(mainView);
 			mainView.pack();
 			ensureAtLeastDefaultSpecialCharacters(mainView);
 			clearService(mainView); // Diensteinstellungen initialisieren (Tagesdatum)
@@ -327,7 +327,7 @@ public class PswGenCtl extends BaseCtl {
 	final MainView mainView) {
 		try {
 			AboutView aboutView = new AboutView(this);
-			addView(aboutView);
+			addWindow(aboutView);
 			aboutView.pack();
 			aboutView.setVisible(true);
 		} catch (Throwable t) {

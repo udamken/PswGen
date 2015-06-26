@@ -20,6 +20,7 @@ package net.sf.pswgen.gui.base;
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
+import java.awt.Window;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,11 +39,8 @@ import net.sf.pswgen.util.DomainException;
  */
 public class BaseCtl {
 
-	/** Alle von diesem Controller gesteuerten Views */
-	public List<BaseView> views = new ArrayList<BaseView>();
-
-	/** Alle von diesem Controller gesteuerten Dialogs */
-	public List<BaseDialog> dialogs = new ArrayList<BaseDialog>();
+	/** Alle von diesem Controller gesteuerten Fenster */
+	public List<Window> windows = new ArrayList<Window>();
 
 	/**
 	 * Konstruiert den Controller.
@@ -56,15 +54,15 @@ public class BaseCtl {
 	 */
 	public void windowClosing(final BaseView view) {
 		view.dispose(); // führt zum Aufruf von viewClosed
-		removeView(view); // raus aus der Sammlung
+		removeWindow(view); // raus aus der Sammlung
 	}
-	
+
 	/**
 	 * Reagiert auf den Wunsch des Nutzers, den Dialog zu schließen.
 	 */
 	public void windowClosing(final BaseDialog dialog) {
 		dialog.dispose();
-		removeDialog(dialog); // raus aus der Sammlung
+		removeWindow(dialog); // raus aus der Sammlung
 	}
 
 	/**
@@ -83,31 +81,17 @@ public class BaseCtl {
 	}
 
 	/**
-	 * Nimmt ein View in die Sammlung der von diesem Controller gesteuerten Views auf.
+	 * Nimmt ein Fenster in die Sammlung der von diesem Controller gesteuerten Fenster auf.
 	 */
-	public boolean addView(final BaseView view) {
-		return views.add(view);
-	}
-	
-	/**
-	 * Nimmt ein View in die Sammlung der von diesem Controller gesteuerten Dialogs auf.
-	 */
-	public boolean addDialog(final BaseDialog dialog) {
-		return dialogs.add(dialog);
+	public boolean addWindow(final Window window) {
+		return windows.add(window);
 	}
 
 	/**
-	 * Nimmt ein View in die Sammlung der von diesem Controller gesteuerten Views auf.
+	 * Nimmt ein Fenster aus der Sammlung der von diesem Controller gesteuerten Fenster.
 	 */
-	public boolean removeView(final BaseView view) {
-		return views.remove(view);
-	}
-	
-	/**
-	 * Nimmt ein View in die Sammlung der von diesem Controller gesteuerten Views auf.
-	 */
-	public boolean removeDialog(final BaseDialog dialog) {
-		return dialogs.remove(dialog);
+	public boolean removeWindow(final Window window) {
+		return windows.remove(window);
 	}
 
 	/**

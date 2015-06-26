@@ -614,7 +614,7 @@ public class MainView extends BaseView {
 						startText = text.toLowerCase();
 					}
 
-					StringBuilder replacementBuilder = new StringBuilder('%');
+					StringBuilder replacementBuilder = new StringBuilder("%");
 					while (startText.contains(replacementBuilder)) {
 						replacementBuilder.append('%');
 					}
