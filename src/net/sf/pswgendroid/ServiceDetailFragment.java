@@ -1,5 +1,19 @@
 package net.sf.pswgendroid;
 
+import android.app.Activity;
+import android.app.DialogFragment;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
 /******************************************************************************
  PswGen - Manages your websites and repeatably generates passwords for them
  PswGenDroid - Generates your passwords managed by PswGen on your mobile  
@@ -21,21 +35,8 @@ package net.sf.pswgendroid;
  *****************************************************************************/
 
 import net.sf.pswgen.model.ServiceInfo;
+import net.sf.pswgen.util.Constants;
 import net.sf.pswgen.util.PasswordFactory;
-import android.app.Activity;
-import android.app.DialogFragment;
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * <p>
@@ -157,8 +158,14 @@ public class ServiceDetailFragment extends Fragment {
 	 */
 	public void onClickButtonDisplayPassword(final Activity callingActivity, final View buttonOpenUrl) {
 		try {
+			Bundle arguments = new Bundle();
 			String password = getValidatedOrGeneratedPassword();
-			Toast.makeText(callingActivity, password, Toast.LENGTH_LONG).show();
+			String passwordExplanation = getPasswordExplanation(password);
+			arguments.putString(PasswordDialog.ARG_PASSWORD, password);
+			arguments.putString(PasswordDialog.ARG_PASSWORD_EXPLANATION, passwordExplanation);
+			DialogFragment passwordDialog = new PasswordDialog();
+			passwordDialog.setArguments(arguments);
+			passwordDialog.show(getActivity().getFragmentManager(), "password_dialog");
 		} catch (Exception e) {
 			PswGenAdapter.handleThrowable(callingActivity, e);
 		}
@@ -228,6 +235,35 @@ public class ServiceDetailFragment extends Fragment {
 	 */
 	private String getValidatedOrGeneratedPassword() {
 		return PasswordFactory.getPassword(currentServiceInfo, PswGenAdapter.getValidatedPassphrase());
+	}
+
+	/**
+	 * Liefert eine immer lesbare Erläuterung zum übergebenen Passwort.
+	 */
+	private String getPasswordExplanation(String password) {
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < password.length(); i++) {
+			if (i > 0) {
+				sb.append(" ");
+			}
+			char c = password.charAt(i);
+			int prefixResid;
+			if (Constants.LOWERCASE_LETTERS.indexOf(c) >= 0) {
+				prefixResid = R.string.prefix_lowercase_letters;
+			} else if (Constants.UPPERCASE_LETTERS.indexOf(c) >= 0) {
+				prefixResid = R.string.prefix_uppercase_letters;
+			} else if (Constants.DIGITS.indexOf(c) >= 0) {
+				prefixResid = R.string.prefix_digits;
+			} else { // Sonderzeichen, muss nicht Constants.SPECIAL_CHARS sein, da einggebbar
+				prefixResid = R.string.prefix_special_chars;
+			}
+			String prefix = getString(prefixResid);
+			if (!prefix.isEmpty()) {
+				sb.append(prefix).append("-");
+			}
+			sb.append(c);
+		}
+		return sb.toString();
 	}
 
 }
