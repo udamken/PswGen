@@ -55,7 +55,7 @@ public class PasswordDialog extends DialogFragment {
 		final AlertDialog passwordDialog = builder.setView(view).setTitle(R.string.title_password)
 				.setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
-						PasswordDialog.this.getDialog().cancel();
+						dismiss();
 					}
 				}).create();
 		return passwordDialog;
@@ -65,7 +65,7 @@ public class PasswordDialog extends DialogFragment {
 	public void onResume() {
 		super.onResume();
 		if (!PswGenAdapter.isServiceInfoListLoaded()) { // Zwischendurch SCREEN_OFF gewesen?
-			PasswordDialog.this.getDialog().cancel();
+			dismiss();
 		}
 	}
 

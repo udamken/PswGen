@@ -100,7 +100,7 @@ public class PassphraseDialog extends DialogFragment {
 				.setPositiveButton(R.string.button_ok, null) // wird wegen der Prüfung unten überschrieben
 				.setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
-						PassphraseDialog.this.getDialog().cancel();
+						dismiss();
 						listener.onClickPassphraseDialogButtonNegative();
 					}
 				}).create();
