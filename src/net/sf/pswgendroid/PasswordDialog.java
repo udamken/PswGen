@@ -52,7 +52,8 @@ public class PasswordDialog extends DialogFragment {
 		textViewPassword.setText(getArguments().getString(ARG_PASSWORD));
 		textViewPasswordExplanation = (TextView) view.findViewById(R.id.password_explanation);
 		textViewPasswordExplanation.setText(getArguments().getString(ARG_PASSWORD_EXPLANATION));
-		final AlertDialog passwordDialog = builder.setView(view).setTitle(R.string.title_password)
+		final AlertDialog passwordDialog = builder.setView(view) //
+				.setTitle(R.string.title_password) //
 				.setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
 						dismiss();
