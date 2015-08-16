@@ -43,7 +43,7 @@ public class Constants {
 	public static final String APPLICATION_NAME = "PswGen";
 
 	/** Die Version dieser Anwendung */
-	public static final String APPLICATION_VERSION = "1.7.2";
+	public static final String APPLICATION_VERSION = "1.7.3";
 
 	/** Die Version dieser Anwendung, ab der ein neues Dateiformat benutzt wird */
 	public static final String ADVANCED_FILE_FORMAT_VERSION = "1.7.0";
@@ -102,8 +102,8 @@ public class Constants {
 
 	private static final DateFormat DATE_FORMAT_NON_GERMAN = DateFormat.getDateInstance(DateFormat.SHORT);
 
-	public static final DateFormat DATE_FORMAT = (Locale.getDefault().getLanguage().equals("de") && Locale
-			.getDefault().getCountry().equals("DE")) ? DATE_FORMAT_de_DE : DATE_FORMAT_NON_GERMAN;
+	public static final DateFormat DATE_FORMAT = (Locale.getDefault().getLanguage().equals("de")
+			&& Locale.getDefault().getCountry().equals("DE")) ? DATE_FORMAT_de_DE : DATE_FORMAT_NON_GERMAN;
 
 	public static final String SERVICES_FILENAME = "services.json";
 
