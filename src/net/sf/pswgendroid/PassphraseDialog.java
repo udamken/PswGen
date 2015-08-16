@@ -24,7 +24,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.text.MessageFormat;
 
-import net.sf.pswgen.util.Constants;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -37,6 +36,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import net.sf.pswgen.util.Constants;
 
 /**
  * <p>
@@ -82,8 +82,8 @@ public class PassphraseDialog extends DialogFragment {
 
 		// Activity-Klassen, die dieses Fragment nutzen, müssen {@link Listener} implementieren
 		if (!(activity instanceof Listener)) {
-			throw new ClassCastException(activity.getClass().getName() + " must implement "
-					+ Listener.class.getName());
+			throw new ClassCastException(
+					activity.getClass().getName() + " must implement " + Listener.class.getName());
 		}
 
 		listener = (Listener) activity;
