@@ -96,7 +96,8 @@ public class PassphraseDialog extends DialogFragment {
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		View view = inflater.inflate(R.layout.dialog_passphrase, null);
 		editTextPassphrase = (EditText) view.findViewById(R.id.passphrase);
-		final AlertDialog passphraseDialog = builder.setView(view).setTitle(R.string.title_passphrase)
+		final AlertDialog passphraseDialog = builder.setView(view) //
+				.setTitle(R.string.title_passphrase) //
 				.setPositiveButton(R.string.button_ok, null) // wird wegen der Prüfung unten überschrieben
 				.setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
@@ -131,6 +132,7 @@ public class PassphraseDialog extends DialogFragment {
 				});
 			}
 		});
+		setCancelable(false); // passphraseDialog.setCancelable(false) bewirkt nichts
 		passphraseDialog.setCanceledOnTouchOutside(false);
 		return passphraseDialog;
 	}
