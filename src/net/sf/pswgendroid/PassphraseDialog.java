@@ -131,6 +131,7 @@ public class PassphraseDialog extends DialogFragment {
 				});
 			}
 		});
+		passphraseDialog.setCanceledOnTouchOutside(false);
 		return passphraseDialog;
 	}
 }
