@@ -35,7 +35,6 @@ import android.widget.TextView;
  *****************************************************************************/
 
 import net.sf.pswgen.model.ServiceInfo;
-import net.sf.pswgen.util.Constants;
 import net.sf.pswgen.util.PasswordFactory;
 
 /**
@@ -241,29 +240,12 @@ public class ServiceDetailFragment extends Fragment {
 	 * Liefert eine immer lesbare Erläuterung zum übergebenen Passwort.
 	 */
 	private String getPasswordExplanation(String password) {
-		StringBuffer sb = new StringBuffer();
-		for (int i = 0; i < password.length(); i++) {
-			if (i > 0) {
-				sb.append(" ");
-			}
-			char c = password.charAt(i);
-			int prefixResid;
-			if (Constants.LOWERCASE_LETTERS.indexOf(c) >= 0) {
-				prefixResid = R.string.prefix_lowercase_letters;
-			} else if (Constants.UPPERCASE_LETTERS.indexOf(c) >= 0) {
-				prefixResid = R.string.prefix_uppercase_letters;
-			} else if (Constants.DIGITS.indexOf(c) >= 0) {
-				prefixResid = R.string.prefix_digits;
-			} else { // Sonderzeichen, muss nicht Constants.SPECIAL_CHARS sein, da einggebbar
-				prefixResid = R.string.prefix_special_chars;
-			}
-			String prefix = getString(prefixResid);
-			if (!prefix.isEmpty()) {
-				sb.append(prefix).append("-");
-			}
-			sb.append(c);
-		}
-		return sb.toString();
+		final String prefixLowercaseLetters = getString(R.string.prefix_lowercase_letters);
+		final String prefixUppercaseLetters = getString(R.string.prefix_uppercase_letters);
+		final String prefixDigits = getString(R.string.prefix_digits);
+		final String prefixSpecialChars = getString(R.string.prefix_special_chars);
+		return PasswordFactory.getPasswordExplanation(password, prefixLowercaseLetters,
+				prefixUppercaseLetters, prefixDigits, prefixSpecialChars);
 	}
 
 }

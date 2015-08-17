@@ -201,4 +201,34 @@ public class PasswordFactory {
 		return pg.getPassword(characters); // Rest auffüllen
 	}
 
+	/**
+	 * Liefert eine immer lesbare Erläuterung zum übergebenen Passwort, also ein String mit allen Zeichen,
+	 * denen gegebenenfalls das jeweilige übergebene Präfix vorangestellt wird.
+	 */
+	public static String getPasswordExplanation(String password, String prefixLowercaseLetters,
+			String prefixUppercaseLetters, String prefixDigits, String prefixSpecialChars) {
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < password.length(); i++) {
+			if (i > 0) {
+				sb.append(" ");
+			}
+			char c = password.charAt(i);
+			String prefix;
+			if (Constants.LOWERCASE_LETTERS.indexOf(c) >= 0) {
+				prefix = prefixLowercaseLetters;
+			} else if (Constants.UPPERCASE_LETTERS.indexOf(c) >= 0) {
+				prefix = prefixUppercaseLetters;
+			} else if (Constants.DIGITS.indexOf(c) >= 0) {
+				prefix = prefixDigits;
+			} else { // Sonderzeichen, muss nicht Constants.SPECIAL_CHARS sein, da einggebbar
+				prefix = prefixSpecialChars;
+			}
+			if (prefix != null && !prefix.isEmpty()) {
+				sb.append(prefix).append("-");
+			}
+			sb.append(c);
+		}
+		return sb.toString();
+	}
+
 }
