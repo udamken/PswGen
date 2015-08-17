@@ -230,10 +230,9 @@ public class MainView extends BaseView {
 		});
 		regexContainsErrors = wf.getLabel("LabelRegexContainsErrors");
 		regexContainsErrors.setForeground(Color.RED);
-		tableModelStoredServices = new StoredServicesTableModel(
-				((PswGenCtl) ctl).getServices().getServices(), new String[] {
-						ctl.getGuiText("LabelServiceAbbreviation"), ctl.getGuiText("LabelAdditionalInfo"),
-						ctl.getGuiText("LabelLoginUrl") });
+		tableModelStoredServices = new StoredServicesTableModel(((PswGenCtl) ctl).getServices().getServices(),
+				new String[] { ctl.getGuiText("LabelServiceAbbreviation"),
+						ctl.getGuiText("LabelAdditionalInfo"), ctl.getGuiText("LabelLoginUrl") });
 		tableStoredServices = wf.getTable("TableStoredServices", tableModelStoredServices);
 		tableStoredServices.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tableRowSorter = new TableRowSorter<StoredServicesTableModel>(tableModelStoredServices);
@@ -376,7 +375,6 @@ public class MainView extends BaseView {
 		additionalLoginInfo.getDocument().addDocumentListener(documentListener);
 		JScrollPane additionalLoginInfoScrollPane = wf.getScrollPane("ScrollPaneAdditionalLoginInfo",
 				additionalLoginInfo);
-		// additionalLoginInfoScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		additionalLoginInfoScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		JButton buttonOpenHelp = wf.getButton("ButtonOpenHelp");
 		buttonOpenHelp.addActionListener(new ActionListener() {
@@ -546,7 +544,8 @@ public class MainView extends BaseView {
 		panel.add(specialCharactersCount, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 1, 1));
 		panel.add(specialCharactersStartIndex,
 				gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 1, 1));
-		panel.add(specialCharactersEndIndex, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 1, 1));
+		panel.add(specialCharactersEndIndex,
+				gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 1, 1));
 		// Widgets zufügen, nächste Zeile
 		row++;
 		panel.add(labelTotalCharacterCount, gbcf.getLabelConstraints(0, row, 2, 1));
@@ -584,7 +583,8 @@ public class MainView extends BaseView {
 						serviceAbbreviationFilterCaseSensitive.isSelected() ? 0 : Pattern.CASE_INSENSITIVE);
 				tableRowSorter.setRowFilter(new RowFilter<StoredServicesTableModel, Integer>() {
 					@Override
-					public boolean include(Entry<? extends StoredServicesTableModel, ? extends Integer> entry) {
+					public boolean include(
+							Entry<? extends StoredServicesTableModel, ? extends Integer> entry) {
 						ServiceInfo si = entry.getModel().getServiceInfoAt(entry.getIdentifier());
 						return pattern.matcher(si.getServiceAbbreviation()).matches();
 					}
@@ -594,7 +594,8 @@ public class MainView extends BaseView {
 
 				tableRowSorter.setRowFilter(new RowFilter<StoredServicesTableModel, Integer>() {
 					@Override
-					public boolean include(Entry<? extends StoredServicesTableModel, ? extends Integer> entry) {
+					public boolean include(
+							Entry<? extends StoredServicesTableModel, ? extends Integer> entry) {
 						return false;
 					}
 				});

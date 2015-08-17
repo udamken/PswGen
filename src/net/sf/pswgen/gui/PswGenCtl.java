@@ -184,14 +184,14 @@ public class PswGenCtl extends BaseCtl {
 	 * Prüft die Passphrase, aktualisert den Verifizierungs- und Versions-String (besonders wichtig bei neuen
 	 * Dateien) und öffnet ggf. das Hauptfenster.
 	 */
-	public void actionPerformedOpenServices(final StartupDialog startupView) {
+	public void actionPerformedOpenServices(final StartupDialog startupDialog) {
 		try {
-			validatedPassphrase = validatePassphrase(startupView);
+			validatedPassphrase = validatePassphrase(startupDialog);
 			services.decrypt(validatedPassphrase); // Info-Collection entschlüsselt in Map stellen
-			services.setVerifier(EncryptionHelper
-					.encrypt(validatedPassphrase, Constants.APPLICATION_VERIFIER));
+			services.setVerifier(
+					EncryptionHelper.encrypt(validatedPassphrase, Constants.APPLICATION_VERIFIER));
 			services.setVersion(Constants.APPLICATION_VERSION);
-			startupView.dispose();
+			startupDialog.dispose();
 			MainView mainView = new MainView(this);
 			mainView.setTitle(servicesFile.getAbsolutePath() + " - " + Constants.APPLICATION_NAME + " "
 					+ Constants.APPLICATION_VERSION);
@@ -255,8 +255,9 @@ public class PswGenCtl extends BaseCtl {
 		try {
 			mainView.setWaitCursor();
 			String serviceAbbreviation = mainView.getServiceAbbreviation();
-			int chosenOption = JOptionPane.showConfirmDialog(mainView, serviceAbbreviation
-					+ getGuiText("RemoveServiceMsg"), Constants.APPLICATION_NAME, JOptionPane.YES_NO_OPTION);
+			int chosenOption = JOptionPane.showConfirmDialog(mainView,
+					serviceAbbreviation + getGuiText("RemoveServiceMsg"), Constants.APPLICATION_NAME,
+					JOptionPane.YES_NO_OPTION);
 			if (chosenOption == JOptionPane.YES_OPTION) { // Dienst löschen?
 				validateServiceAbbreviation(serviceAbbreviation);
 				ServiceInfo si = services.removeServiceInfo(serviceAbbreviation);
@@ -360,8 +361,14 @@ public class PswGenCtl extends BaseCtl {
 		try {
 			mainView.setWaitCursor();
 			final String psw = getValidatedOrGeneratedPassword(mainView);
-			JOptionPane.showMessageDialog(mainView, getGuiText("DisplayPasswordMsg") + " \"" + psw + "\"",
-					Constants.APPLICATION_NAME, JOptionPane.PLAIN_MESSAGE);
+			PasswordDialog passwordDialog = new PasswordDialog(this);
+			passwordDialog.setTitle(mainView.getServiceAbbreviation() + " - " + Constants.APPLICATION_NAME
+					+ " " + Constants.APPLICATION_VERSION);
+			passwordDialog.setPassword(psw);
+			passwordDialog.setPasswordExplanation(getPasswordExplanation(psw));
+			addWindow(passwordDialog);
+			passwordDialog.pack();
+			passwordDialog.setVisible(true);
 		} catch (Throwable t) {
 			handleThrowable(t);
 		} finally {
@@ -381,6 +388,13 @@ public class PswGenCtl extends BaseCtl {
 		} finally {
 			mainView.setDefaultCursor();
 		}
+	}
+
+	/**
+	 * 
+	 */
+	public void actionPerformedPasswordOk(PasswordDialog passwordDialog) {
+		passwordDialog.dispose();
 	}
 
 	/**
@@ -507,12 +521,13 @@ public class PswGenCtl extends BaseCtl {
 	 */
 	private boolean cancelOnDirty(final MainView mainView) throws IOException {
 		if (mainView.isDirty()) {
-			int chosenOption = JOptionPane.showConfirmDialog(mainView, mainView.getServiceAbbreviation()
-					+ getGuiText("SaveChangesMsg"), Constants.APPLICATION_NAME,
-					JOptionPane.YES_NO_CANCEL_OPTION);
+			int chosenOption = JOptionPane.showConfirmDialog(mainView,
+					mainView.getServiceAbbreviation() + getGuiText("SaveChangesMsg"),
+					Constants.APPLICATION_NAME, JOptionPane.YES_NO_CANCEL_OPTION);
 			if (chosenOption == JOptionPane.YES_OPTION) { // Geänderte Werte speichern?
 				storeService(mainView);
-			} else if (chosenOption == JOptionPane.CANCEL_OPTION || chosenOption == JOptionPane.CLOSED_OPTION) {
+			} else
+				if (chosenOption == JOptionPane.CANCEL_OPTION || chosenOption == JOptionPane.CLOSED_OPTION) {
 				return true;
 			}
 		}
@@ -539,14 +554,26 @@ public class PswGenCtl extends BaseCtl {
 	}
 
 	/**
+	 * Liefert eine immer lesbare Erläuterung zum übergebenen Passwort.
+	 */
+	private String getPasswordExplanation(String password) {
+		final String prefixLowercaseLetters = getGuiText("PrefixLowercaseLetters");
+		final String prefixUppercaseLetters = getGuiText("PrefixUppercaseLetters");
+		final String prefixDigits = getGuiText("PrefixDigits");
+		final String prefixSpecialChars = getGuiText("PrefixSpecialChars");
+		return PasswordFactory.getPasswordExplanation(password, prefixLowercaseLetters,
+				prefixUppercaseLetters, prefixDigits, prefixSpecialChars);
+	}
+
+	/**
 	 * Werte des Dienstes in die Liste übernehmen und die gesamte Liste speichern.
 	 */
 	private void storeService(final MainView mainView) throws IOException {
 		String serviceAbbreviation = mainView.getServiceAbbreviation();
 		validateServiceAbbreviation(serviceAbbreviation);
 		if (services.getServiceInfo(serviceAbbreviation) != null) { // Ist der Dienst bereits vermerkt?
-			int chosenOption = JOptionPane.showConfirmDialog(mainView, serviceAbbreviation
-					+ getGuiText("OverwriteServiceMsg"), Constants.APPLICATION_NAME,
+			int chosenOption = JOptionPane.showConfirmDialog(mainView,
+					serviceAbbreviation + getGuiText("OverwriteServiceMsg"), Constants.APPLICATION_NAME,
 					JOptionPane.YES_NO_OPTION);
 			if (chosenOption == JOptionPane.NO_OPTION) { // Dienst nicht überschreiben? => fertig
 				return;
