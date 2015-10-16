@@ -110,14 +110,16 @@ public class PasswordFactory {
 	 * Diese Methode ist package-private, um im Test, aber nirgendwo sonst zugreifbar zu sein.
 	 */
 	String getPassword(final String characters) {
-		if (characters.length() == 0 || password.getLength() == 0) {
+		if (password.charactersSet(0, password.getLength() - 1) == password.getLength()) {
+			// Wenn schon alle Zeichen gesetzt sind, muss nichts mehr aufgefüllt werden
+		} else if (characters.length() == 0 || password.getLength() == 0) {
 			throw new DomainException("CharacterOrTotalCharacterCountMissingMsg");
 		} else {
 			for (int i = 0; i < password.getLength(); i++) {
 				setRandomCharacter(characters, i);
 			}
-			return password.getPassword();
 		}
+		return password.getPassword();
 	}
 
 	/**
