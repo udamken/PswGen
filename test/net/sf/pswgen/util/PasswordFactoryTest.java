@@ -1,5 +1,8 @@
 package net.sf.pswgen.util;
 
+import org.junit.Assert;
+import org.junit.Test;
+
 /******************************************************************************
  PswGen - Manages your websites and repeatably generates passwords for them
  PswGenDroid - Generates your passwords managed by PswGen on your mobile  
@@ -22,9 +25,6 @@ package net.sf.pswgen.util;
 
 import junit.framework.TestCase;
 import net.sf.pswgen.model.ServiceInfo;
-
-import org.junit.Assert;
-import org.junit.Test;
 
 /**
  * <p>
@@ -88,8 +88,8 @@ public class PasswordFactoryTest extends TestCase {
 	public void test07() {
 		PasswordFactory pf = new PasswordFactory(8);
 		pf.setSeedForRandomToEnforceReproducableResults(0x19630409L);
-		String psw = pf
-				.getPassword("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.;:!$&()=?+-*/#");
+		String psw = pf.getPassword(
+				"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.;:!$&()=?+-*/#");
 		Assert.assertEquals("kGm!CJXd", psw);
 	}
 
@@ -244,6 +244,24 @@ public class PasswordFactoryTest extends TestCase {
 		si.setTotalCharacterCount(20);
 		String psw = PasswordFactory.getPassword(si, "test4711");
 		Assert.assertEquals("jo4AKvkD0EVJfKZ5ehh!", psw);
+	}
+
+	@Test
+	public void test19() {
+		ServiceInfo si = new ServiceInfo("test");
+		si.setAdditionalInfo("10.08.2014");
+		si.setUseDigits(true);
+		si.setDigitsCount(5);
+		si.setDigitsStartIndex(5);
+		si.setDigitsEndIndex(9);
+		si.setUseSpecialCharacters(true);
+		si.setSpecialCharacters(".");
+		si.setSpecialCharactersCount(5);
+		si.setSpecialCharactersStartIndex(0);
+		si.setSpecialCharactersEndIndex(4);
+		si.setTotalCharacterCount(10);
+		String psw = PasswordFactory.getPassword(si, "test4711");
+		Assert.assertEquals(".....56947", psw);
 	}
 
 }
