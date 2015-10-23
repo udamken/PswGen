@@ -1,96 +1,102 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
     tools:context="net.sf.pswgendroid.ServiceDetailFragment" >
-    <!-- FIXME Scrollbar tools:layout="@android:layout/list_content" -->
-
-	<TextView android:id="@+id/service_detail"
-	    style="?android:attr/textAppearanceLarge"
+    
+	<LinearLayout
+	    android:orientation="vertical"
 	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:textIsSelectable="true" />
+	    android:layout_height="wrap_content" >
 	
-	<TextView android:id="@+id/label_additional_info"
-	    style="?android:attr/textAppearanceMedium"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:text="@string/label_additional_info"
-	    android:textIsSelectable="false" />
+		<TextView android:id="@+id/service_detail"
+		    style="?android:attr/textAppearanceLarge"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:textIsSelectable="true" />
+		
+		<TextView android:id="@+id/label_additional_info"
+		    style="?android:attr/textAppearanceMedium"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:text="@string/label_additional_info"
+		    android:textIsSelectable="false" />
+		
+		<TextView android:id="@+id/additional_info"
+		    style="?android:attr/textAppearanceSmall"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:textIsSelectable="true" />
+		
+		<TextView android:id="@+id/label_login_url"
+		    style="?android:attr/textAppearanceMedium"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:text="@string/label_login_url"
+		    android:textIsSelectable="false" />
+		
+		<TextView android:id="@+id/login_url"
+		    style="?android:attr/textAppearanceSmall"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:textIsSelectable="true" />
+		
+		<TextView android:id="@+id/label_login_info"
+		    style="?android:attr/textAppearanceMedium"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:text="@string/label_login_info"
+		    android:textIsSelectable="false" />
+		
+		<TextView android:id="@+id/login_info"
+		    style="?android:attr/textAppearanceSmall"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:textIsSelectable="true" />
+		
+		<TextView android:id="@+id/label_additional_login_info"
+		    style="?android:attr/textAppearanceMedium"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:text="@string/label_additional_login_info"
+		    android:textIsSelectable="false" />
+		
+		<TextView android:id="@+id/additional_login_info"
+		    style="?android:attr/textAppearanceSmall"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:textIsSelectable="true" />
+		
+		<Button android:id="@+id/button_open_url"
+		    style="?android:attr/buttonStyle"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:text="@string/button_open_url"
+		    android:onClick="onClickButtonOpenUrl" />
+		
+		<Button android:id="@+id/button_copy_login_info"
+		    style="?android:attr/buttonStyle"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:text="@string/button_copy_login_info"
+		    android:onClick="onClickButtonCopyLoginInfo" />
+		
+		<Button android:id="@+id/button_copy_password"
+		    style="?android:attr/buttonStyle"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:text="@string/button_copy_password"
+		    android:onClick="onClickButtonCopyPassword" />
+		
+		<Button android:id="@+id/button_display_password"
+		    style="?android:attr/buttonStyle"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:text="@string/button_display_password"
+		    android:onClick="onClickButtonDisplayPassword" />
+		
+	</LinearLayout>
 	
-	<TextView android:id="@+id/additional_info"
-	    style="?android:attr/textAppearanceSmall"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:textIsSelectable="true" />
-	
-	<TextView android:id="@+id/label_login_url"
-	    style="?android:attr/textAppearanceMedium"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:text="@string/label_login_url"
-	    android:textIsSelectable="false" />
-	
-	<TextView android:id="@+id/login_url"
-	    style="?android:attr/textAppearanceSmall"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:textIsSelectable="true" />
-	
-	<TextView android:id="@+id/label_login_info"
-	    style="?android:attr/textAppearanceMedium"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:text="@string/label_login_info"
-	    android:textIsSelectable="false" />
-	
-	<TextView android:id="@+id/login_info"
-	    style="?android:attr/textAppearanceSmall"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:textIsSelectable="true" />
-	
-	<TextView android:id="@+id/label_additional_login_info"
-	    style="?android:attr/textAppearanceMedium"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:text="@string/label_additional_login_info"
-	    android:textIsSelectable="false" />
-	
-	<TextView android:id="@+id/additional_login_info"
-	    style="?android:attr/textAppearanceSmall"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:textIsSelectable="true" />
-	
-	<Button android:id="@+id/button_open_url"
-	    style="?android:attr/buttonStyle"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:text="@string/button_open_url"
-	    android:onClick="onClickButtonOpenUrl" />
-	
-	<Button android:id="@+id/button_copy_login_info"
-	    style="?android:attr/buttonStyle"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:text="@string/button_copy_login_info"
-	    android:onClick="onClickButtonCopyLoginInfo" />
-	
-	<Button android:id="@+id/button_copy_password"
-	    style="?android:attr/buttonStyle"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:text="@string/button_copy_password"
-	    android:onClick="onClickButtonCopyPassword" />
-	
-	<Button android:id="@+id/button_display_password"
-	    style="?android:attr/buttonStyle"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:text="@string/button_display_password"
-	    android:onClick="onClickButtonDisplayPassword" />
-	
-</LinearLayout>
+</ScrollView>
