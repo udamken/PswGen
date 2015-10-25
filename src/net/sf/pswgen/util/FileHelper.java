@@ -31,11 +31,11 @@ import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import net.sf.pswgen.model.ServiceInfo;
-import net.sf.pswgen.model.ServiceInfoList;
-
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+
+import net.sf.pswgen.model.ServiceInfo;
+import net.sf.pswgen.model.ServiceInfoList;
 
 /**
  * <p>
@@ -118,8 +118,15 @@ public class FileHelper {
 			checkJsonName(reader, "version");
 			services.setVersion(reader.nextString());
 			checkJsonName(reader, "verifier");
-			services.setVerifier(reader.nextString());
+			services.setEncryptedVerifier(reader.nextString());
 			addReadServices(services, reader);
+			try {
+				checkJsonName(reader, "initializer");
+				services.setInitalizerAsHexString(reader.nextString());
+			} catch (IllegalStateException e) {
+				LOGGER.log(Level.INFO, Constants.MSG_EXCP_SERVICES, e);
+				// Erst ab 1.7.4 gibt es den initializer, daher ist er optional
+			}
 			reader.endObject();
 		} finally {
 			reader.close();
@@ -199,8 +206,8 @@ public class FileHelper {
 	private void checkJsonName(JsonReader reader, String expectedName) throws IOException {
 		String actualName = reader.nextName();
 		if (!expectedName.equals(actualName)) {
-			throw new IOException("Json name mismatch, expected=<" + expectedName + ">, actual=<"
-					+ actualName + ">");
+			throw new IOException(
+					"Json name mismatch, expected=<" + expectedName + ">, actual=<" + actualName + ">");
 		}
 	}
 
@@ -219,8 +226,9 @@ public class FileHelper {
 		writer.beginObject();
 		services.setVersion(Constants.APPLICATION_VERSION);
 		writer.name("version").value(services.getVersion());
-		writer.name("verifier").value(services.getVerifier());
+		writer.name("verifier").value(services.getEncryptedVerifier());
 		writeServices(writer, services.getEncryptedServices());
+		writer.name("initializer").value(services.getInitalizerAsHexString());
 		writer.endObject();
 		writer.close();
 	}

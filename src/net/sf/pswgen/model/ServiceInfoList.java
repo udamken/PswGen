@@ -22,13 +22,11 @@ package net.sf.pswgen.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.SortedMap;
 import java.util.TreeMap;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
-
 import net.sf.pswgen.util.Constants;
+import net.sf.pswgen.util.DomainException;
 import net.sf.pswgen.util.EmptyHelper;
 import net.sf.pswgen.util.EncryptionHelper;
 
@@ -44,22 +42,29 @@ import net.sf.pswgen.util.EncryptionHelper;
  * Copyright (C) 2005-2015 Uwe Damken
  * </p>
  */
-@XmlRootElement(name = "ServiceList")
 public class ServiceInfoList {
 
-	/** Version von PswGen, mit der die XML-Datei erstellt wurde */
+	/** Version von PswGen, mit der die Dienstedatei erstellt wurde */
 	private String version;
 
-	/** String zur Verifizierung der eingegebenen Passphrase */
-	private String verifier;
+	/** Verlüsselter String zur Verifizierung der eingegebenen Passphrase */
+	private String encryptedVerifier;
 
-	/** Die Werte aus der zu Grunde liegenden Map als Collection, JAXB kann "nur" Collections */
-	@XmlElementWrapper(name = "Services")
-	@XmlElement(name = "Service")
+	/** Initialisierungsvektor für die Verschlüsselung als Hex-String */
+	private String initalizerAsHexString;
+
+	/** Die Werte aus der zu Grunde liegenden Map als Collection */
 	private Collection<ServiceInfo> encryptedServices;
 
-	/** Die hinter dieser ServiceInfoList liegende HashMap */
-	private TreeMap<String, ServiceInfo> services;
+	/** Die hinter dieser ServiceInfoList liegende Map */
+	private SortedMap<String, ServiceInfo> services;
+
+	/**
+	 * Erzeugt eine neue ServiceInfoList ohne Dienste
+	 */
+	public ServiceInfoList() {
+		services = new TreeMap<String, ServiceInfo>();
+	}
 
 	/**
 	 * Ein Dienstekürzel und die zugehörigen Informationen zufügen.
@@ -71,18 +76,18 @@ public class ServiceInfoList {
 	/**
 	 * Liefert eine Kopie der übergebenen Dienstbeschreibung mit verschlüsselten Strings zurück.
 	 */
-	private ServiceInfo encrypt(final String passphrase, final ServiceInfo d) {
+	private ServiceInfo encrypt(EncryptionHelper encryptionHelper, final ServiceInfo d) {
 		ServiceInfo e = new ServiceInfo(); // d(ecrypt) --encrypt--> e(ncrypt)
-		e.setServiceAbbreviation(EncryptionHelper.encrypt(passphrase, d.getServiceAbbreviation()));
-		e.setAdditionalInfo(EncryptionHelper.encrypt(passphrase, d.getAdditionalInfo()));
-		e.setLoginUrl(EncryptionHelper.encrypt(passphrase, d.getLoginUrl()));
-		e.setLoginInfo(EncryptionHelper.encrypt(passphrase, d.getLoginInfo()));
-		e.setAdditionalLoginInfo(EncryptionHelper.encrypt(passphrase, d.getAdditionalLoginInfo()));
+		e.setServiceAbbreviation(encryptionHelper.encrypt(d.getServiceAbbreviation()));
+		e.setAdditionalInfo(encryptionHelper.encrypt(d.getAdditionalInfo()));
+		e.setLoginUrl(encryptionHelper.encrypt(d.getLoginUrl()));
+		e.setLoginInfo(encryptionHelper.encrypt(d.getLoginInfo()));
+		e.setAdditionalLoginInfo(encryptionHelper.encrypt(d.getAdditionalLoginInfo()));
 		e.setUseSmallLetters(d.isUseSmallLetters());
 		e.setUseCapitalLetters(d.isUseCapitalLetters());
 		e.setUseDigits(d.isUseDigits());
 		e.setUseSpecialCharacters(d.isUseSpecialCharacters());
-		e.setSpecialCharacters(EncryptionHelper.encrypt(passphrase, d.getSpecialCharacters()));
+		e.setSpecialCharacters(encryptionHelper.encrypt(d.getSpecialCharacters()));
 		e.setSmallLettersCount(d.getSmallLettersCount());
 		e.setSmallLettersStartIndex(d.getSmallLettersStartIndex());
 		e.setSmallLettersEndIndex(d.getSmallLettersEndIndex());
@@ -96,8 +101,8 @@ public class ServiceInfoList {
 		e.setSpecialCharactersStartIndex(d.getSpecialCharactersStartIndex());
 		e.setSpecialCharactersEndIndex(d.getSpecialCharactersEndIndex());
 		e.setTotalCharacterCount(d.getTotalCharacterCount());
-		e.setPassword(EncryptionHelper.encrypt(passphrase, d.getPassword()));
-		e.setPasswordRepeated(EncryptionHelper.encrypt(passphrase, d.getPasswordRepeated()));
+		e.setPassword(encryptionHelper.encrypt(d.getPassword()));
+		e.setPasswordRepeated(encryptionHelper.encrypt(d.getPasswordRepeated()));
 		return e;
 	}
 
@@ -111,18 +116,18 @@ public class ServiceInfoList {
 	/**
 	 * Liefert eine Kopie der übergebenen Dienstbeschreibung mit entschlüsselten Strings zurück.
 	 */
-	private ServiceInfo decrypt(final String passphrase, final ServiceInfo e) {
+	private ServiceInfo decrypt(EncryptionHelper encryptionHelper, final ServiceInfo e) {
 		ServiceInfo d = new ServiceInfo(); // e(ncrypt) --decrypt--> d(ecrypt)
-		d.setServiceAbbreviation(EncryptionHelper.decrypt(passphrase, e.getServiceAbbreviation()));
-		d.setAdditionalInfo(EncryptionHelper.decrypt(passphrase, e.getAdditionalInfo()));
-		d.setLoginUrl(EncryptionHelper.decrypt(passphrase, e.getLoginUrl()));
-		d.setLoginInfo(EncryptionHelper.decrypt(passphrase, e.getLoginInfo()));
-		d.setAdditionalLoginInfo(EncryptionHelper.decrypt(passphrase, e.getAdditionalLoginInfo()));
+		d.setServiceAbbreviation(encryptionHelper.decrypt(e.getServiceAbbreviation()));
+		d.setAdditionalInfo(encryptionHelper.decrypt(e.getAdditionalInfo()));
+		d.setLoginUrl(encryptionHelper.decrypt(e.getLoginUrl()));
+		d.setLoginInfo(encryptionHelper.decrypt(e.getLoginInfo()));
+		d.setAdditionalLoginInfo(encryptionHelper.decrypt(e.getAdditionalLoginInfo()));
 		d.setUseSmallLetters(e.isUseSmallLetters());
 		d.setUseCapitalLetters(e.isUseCapitalLetters());
 		d.setUseDigits(e.isUseDigits());
 		d.setUseSpecialCharacters(e.isUseSpecialCharacters());
-		d.setSpecialCharacters(EncryptionHelper.decrypt(passphrase, e.getSpecialCharacters()));
+		d.setSpecialCharacters(encryptionHelper.decrypt(e.getSpecialCharacters()));
 		d.setSmallLettersCount(e.getSmallLettersCount());
 		d.setSmallLettersStartIndex(e.getSmallLettersStartIndex());
 		d.setSmallLettersEndIndex(e.getSmallLettersEndIndex());
@@ -136,8 +141,8 @@ public class ServiceInfoList {
 		d.setSpecialCharactersStartIndex(e.getSpecialCharactersStartIndex());
 		d.setSpecialCharactersEndIndex(e.getSpecialCharactersEndIndex());
 		d.setTotalCharacterCount(e.getTotalCharacterCount());
-		d.setPassword(EncryptionHelper.decrypt(passphrase, e.getPassword()));
-		d.setPasswordRepeated(EncryptionHelper.decrypt(passphrase, e.getPasswordRepeated()));
+		d.setPassword(encryptionHelper.decrypt(e.getPassword()));
+		d.setPasswordRepeated(encryptionHelper.decrypt(e.getPasswordRepeated()));
 		return d;
 	}
 
@@ -156,24 +161,23 @@ public class ServiceInfoList {
 	}
 
 	/**
-	 * Bereitet das Speichern dieser ServiceInfoList in eine XML-Datei vor, indem die Werte aus der Map in
-	 * eine Collection gestellt werden. Der Grund dafür ist, dass JAXB nicht mit Maps, sondern "nur" mit
-	 * Collections umgehen kann. Allerdings wird der Umweg hier ausgenutzt: Die Collection enthält nur
-	 * verschlüsselte Daten und die Map nur enstschlüsselte Daten. Die Umwandlung geschieht beim Befüllen der
-	 * Collection aus der Map beim Speichern und beim Befüllen der Map aus der Collection beim Lesen.
+	 * Bereitet das Speichern dieser ServiceInfoList in eine Datei vor, indem die Werte aus der Map in eine
+	 * Collection gestellt werden. Die Collection enthält nur verschlüsselte Daten und die Map nur
+	 * enstschlüsselte Daten. Die Umwandlung geschieht beim Befüllen der Collection aus der Map beim Speichern
+	 * und beim Befüllen der Map aus der Collection beim Lesen.
 	 */
-	public void encrypt(final String passphrase) {
+	public void encrypt(EncryptionHelper encryptionHelper) {
+		encryptedVerifier = encryptionHelper.encrypt(Constants.APPLICATION_VERIFIER);
 		encryptedServices = new ArrayList<ServiceInfo>();
 		if (services != null) {
 			for (ServiceInfo si : services.values()) {
-				encryptedServices.add(encrypt(passphrase, si));
+				encryptedServices.add(encrypt(encryptionHelper, si));
 			}
 		}
 	}
 
 	/**
-	 * Fügt den Collection verschlüsselter Dienste einen hinzu. Hierfür wird nicht setEncryptServices()
-	 * definiert, weil das mit der JAXB-Implementierung kollidiert.
+	 * Fügt der Collection verschlüsselter Dienste einen hinzu.
 	 */
 	public void addEncryptedService(ServiceInfo si) {
 		if (encryptedServices == null) {
@@ -183,17 +187,19 @@ public class ServiceInfoList {
 	}
 
 	/**
-	 * Bereitet das Laden dieser ServiceInfoList aus einer XML-Datei nach, indem die Werte aus der Collection
-	 * wieder in die Map gestellt werden. Der Umweg ist nötig, weil JAXB nur mit Collections, nicht aber mit
-	 * Maps umgehen kann. Allerdings wird der Umweg hier ausgenutzt: Die Collection nur verschlüsselte Daten
-	 * enthält und die Map nur enstschlüsselte Daten, die Umwandlung geschieht beim Befüllen der Collection
-	 * aus der Map beim Speichern und beim Befüllen der Map aus der Collection beim Lesen.
+	 * Bereitet das Laden dieser ServiceInfoList aus einer Datei nach, indem die Werte aus der Collection
+	 * wieder in die Map gestellt werden. Die Collection enthält nur verschlüsselte Daten und die Map nur
+	 * enstschlüsselte Daten, die Umwandlung geschieht beim Befüllen der Collection aus der Map beim Speichern
+	 * und beim Befüllen der Map aus der Collection beim Lesen.
 	 */
-	public void decrypt(final String passphrase) {
-		services = new TreeMap<String, ServiceInfo>();
+	public void decrypt(EncryptionHelper encryptionHelper) {
+		String decryptedVerifier = encryptionHelper.decrypt(encryptedVerifier);
+		if (!decryptedVerifier.equals(Constants.APPLICATION_VERIFIER)) {
+			throw new DomainException("PassphraseInvalidMsg");
+		}
 		if (encryptedServices != null) {
 			for (ServiceInfo serviceInfo : encryptedServices) {
-				putServiceInfo(decrypt(passphrase, serviceInfo));
+				putServiceInfo(decrypt(encryptionHelper, serviceInfo));
 			}
 		}
 	}
@@ -206,21 +212,22 @@ public class ServiceInfoList {
 	}
 
 	/**
-	 * Liefert true, wenn die Version gesetzt und >= 1.7.0 ist und außerdem der Prüfstring auf einen nicht
-	 * leeren Wert gesetzt ist.
+	 * Liefert true, wenn die Version gesetzt und größer oder gleich der aktuellen Dateiformatsversion
+	 * (ADVANCED_FILE_FORMAT_VERSION) ist und außerdem der Prüfstring auf einen nicht leeren Wert gesetzt ist.
 	 */
 	public boolean isAdvancedFormat() {
 		return version != null && version.compareTo(Constants.ADVANCED_FILE_FORMAT_VERSION) >= 0
-				&& !EmptyHelper.isEmpty(verifier);
+				&& !EmptyHelper.isEmpty(encryptedVerifier);
 	}
 
 	/**
-	 * Liefert true, wenn die Version leer oder <= 1.5.9 ist oder der Prüfstring fehlt, aber die Datei nicht
-	 * leer ist.
+	 * Liefert true, wenn die Version leer oder kleiner als die niedrigste (ggf. mit Upgrade) unterstützte
+	 * Dateiformatsversion (LOWEST_SUPPORTED_FILE_FORMAT_VERSION) ist oder der Prüfstring fehlt, aber die
+	 * Datei nicht leer ist.
 	 */
 	public boolean isUnsupportedFormat() {
-		return version == null || version.compareTo(Constants.UNSUPPORTED_FILE_FORMAT_VERSION) <= 0
-				|| EmptyHelper.isEmpty(verifier);
+		return version == null || version.compareTo(Constants.LOWEST_SUPPORTED_FILE_FORMAT_VERSION) < 0
+				|| EmptyHelper.isEmpty(encryptedVerifier);
 	}
 
 	/**
@@ -239,18 +246,18 @@ public class ServiceInfoList {
 	}
 
 	/**
-	 * @return the verifier
+	 * @return the encryptedVerifier
 	 */
-	public String getVerifier() {
-		return verifier;
+	public String getEncryptedVerifier() {
+		return encryptedVerifier;
 	}
 
 	/**
-	 * @param verifier
-	 *            the verifier to set
+	 * @param encryptedVerifier
+	 *            the encryptedVerifier to set
 	 */
-	public void setVerifier(String verifier) {
-		this.verifier = verifier;
+	public void setEncryptedVerifier(String verifier) {
+		this.encryptedVerifier = verifier;
 	}
 
 	/**
@@ -258,6 +265,14 @@ public class ServiceInfoList {
 	 */
 	public Collection<ServiceInfo> getEncryptedServices() {
 		return encryptedServices;
+	}
+
+	public String getInitalizerAsHexString() {
+		return initalizerAsHexString;
+	}
+
+	public void setInitalizerAsHexString(String initalizer) {
+		this.initalizerAsHexString = initalizer;
 	}
 
 }

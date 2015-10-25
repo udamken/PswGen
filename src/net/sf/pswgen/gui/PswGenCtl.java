@@ -20,6 +20,9 @@ package net.sf.pswgen.gui;
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
+import static net.sf.pswgen.util.Constants.APPLICATION_NAME;
+import static net.sf.pswgen.util.Constants.APPLICATION_VERSION;
+
 import java.awt.Desktop;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
@@ -27,6 +30,7 @@ import java.awt.datatransfer.StringSelection;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.nio.file.Files;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -44,7 +48,6 @@ import net.sf.pswgen.util.EmptyHelper;
 import net.sf.pswgen.util.EncryptionHelper;
 import net.sf.pswgen.util.FileHelper;
 import net.sf.pswgen.util.PasswordFactory;
-import net.sf.pswgen.util.XmlFileHelper;
 
 /**
  * <p>
@@ -93,27 +96,38 @@ public class PswGenCtl extends BaseCtl {
 	/**
 	 * Datei lediglich in das neue Format konvertieren, dann endet die Anwendung.
 	 */
-	public void upgradeServiceInfoList(final String targetFilename) throws IOException {
-		services = XmlFileHelper.getInstance().loadServiceInfoList(servicesFile);
+	public void upgradeServiceInfoList(final String passphrase) throws IOException {
+		services = FileHelper.getInstance().loadServiceInfoList(servicesFile);
 		if (services == null || services.isNew()) {
-			JOptionPane.showMessageDialog(null, getGuiText("EmptyFileNotUpgradableMsg"),
-					Constants.APPLICATION_NAME, JOptionPane.ERROR_MESSAGE);
-			LOGGER.log(Level.SEVERE, Constants.MSG_EMPTY_FILE_NOT_UPGRADABLE);
+			String message = getGuiText("EmptyFileNotUpgradableMsg");
+			JOptionPane.showMessageDialog(null, message, APPLICATION_NAME, JOptionPane.ERROR_MESSAGE);
+			LOGGER.log(Level.SEVERE, message);
 			System.exit(16);
 		} else if (services.isUnsupportedFormat()) {
-			JOptionPane.showMessageDialog(null, getGuiText("UnsupportedFileFormatMsg"),
-					Constants.APPLICATION_NAME, JOptionPane.ERROR_MESSAGE);
-			LOGGER.log(Level.SEVERE, Constants.MSG_UNSUPPORTED_FILE_FORMAT_VERSION);
+			String message = getGuiText("UnsupportedFileFormatMsg");
+			JOptionPane.showMessageDialog(null, message, APPLICATION_NAME, JOptionPane.ERROR_MESSAGE);
+			LOGGER.log(Level.SEVERE, message);
 			System.exit(16);
 		} else if (services.isAdvancedFormat()) { // Schon im neuen Format? => nichts zu tun
-			JOptionPane.showMessageDialog(null, getGuiText("FileFormatAlreadyConvertedMsg"),
-					Constants.APPLICATION_NAME, JOptionPane.ERROR_MESSAGE);
-			LOGGER.log(Level.SEVERE, Constants.MSG_ALREADY_CONVERTED_FILE_FORMAT_VERSION);
+			String message = getGuiText("FileFormatAlreadyConvertedMsg");
+			JOptionPane.showMessageDialog(null, message, APPLICATION_NAME, JOptionPane.ERROR_MESSAGE);
+			LOGGER.log(Level.SEVERE, message);
 			System.exit(16);
 		}
-		FileHelper.getInstance().saveServiceInfoList(new File(targetFilename), services);
+		try {
+			// Geladene Services mit einem EncryptionHelper auf die bisherige Art entschlüsseln
+			EncryptionHelper encryptionHelper = new EncryptionHelper(passphrase.toCharArray(), null);
+			services.decrypt(encryptionHelper);
+		} catch (DomainException e) {
+			LOGGER.log(Level.SEVERE, Constants.MSG_PASSPHRASE_INVALID + e);
+			System.exit(16);
+		}
+		// Alte Datei zur Sicherheit durch Umbenennen aufbewahren
+		Files.move(servicesFile.toPath(), (new File(servicesFile.getPath() + ".upgraded")).toPath());
+		// Service in eine neue Datei mit neuer Verschlüsselungsart speichern
+		saveServiceInfoList(passphrase);
 		JOptionPane.showMessageDialog(null, getGuiText("FileFormatSuccessfullyConvertedMsg"),
-				Constants.APPLICATION_NAME, JOptionPane.INFORMATION_MESSAGE);
+				APPLICATION_NAME, JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	/**
@@ -122,34 +136,31 @@ public class PswGenCtl extends BaseCtl {
 	 */
 	public void start() {
 		services = FileHelper.getInstance().loadServiceInfoList(servicesFile);
-		if (services == null) { // JSON-Datei konnte nicht gelesen werden? => XML-Datei versuchen
-			services = XmlFileHelper.getInstance().loadServiceInfoList(servicesFile);
-		}
 		if (services == null) {
-			// Datei ist weder als JSON noch als XML lesbar
-			JOptionPane.showMessageDialog(null, getGuiText("UnknownFileFormatMsg"),
-					Constants.APPLICATION_NAME, JOptionPane.ERROR_MESSAGE);
-			LOGGER.log(Level.SEVERE, Constants.MSG_UNKNOWN_FILE_FORMAT_VERSION);
+			// Datei ist nicht (als JSON) lesbar
+			String message = getGuiText("UnknownFileFormatMsg");
+			JOptionPane.showMessageDialog(null, message, APPLICATION_NAME, JOptionPane.ERROR_MESSAGE);
+			LOGGER.log(Level.SEVERE, message);
 			System.exit(20);
 		} else if (services.isNew()) {
 			// Ein frischer Anfang, beim Speichern wird eine neue Datei angelegt werden
 		} else if (services.isUnsupportedFormat()) {
 			// Dateiformat wird nicht mehr unterstützt und muss mit einer alten Version konvertiert werden
-			JOptionPane.showMessageDialog(null, getGuiText("UnsupportedFileFormatMsg"),
-					Constants.APPLICATION_NAME, JOptionPane.ERROR_MESSAGE);
-			LOGGER.log(Level.SEVERE, Constants.MSG_UNSUPPORTED_FILE_FORMAT_VERSION);
+			String message = getGuiText("UnsupportedFileFormatMsg");
+			JOptionPane.showMessageDialog(null, message, APPLICATION_NAME, JOptionPane.ERROR_MESSAGE);
+			LOGGER.log(Level.SEVERE, message);
 			System.exit(16);
 		} else if (services.isAdvancedFormat()) {
 			// Datei hat das aktuelle Format, es ist nichts weiter zu tun
 		} else {
 			// Datei hat ein altes Format und muss erst mit -upgrade konvertiert werden
-			JOptionPane.showMessageDialog(null, getGuiText("FileFormatMustBeConvertedMsg"),
-					Constants.APPLICATION_NAME, JOptionPane.ERROR_MESSAGE);
-			LOGGER.log(Level.SEVERE, Constants.MSG_TO_BE_CONVERTED_FILE_FORMAT_VERSION);
+			String message = getGuiText("FileFormatMustBeConvertedMsg");
+			JOptionPane.showMessageDialog(null, message, APPLICATION_NAME, JOptionPane.ERROR_MESSAGE);
+			LOGGER.log(Level.SEVERE, message);
 			System.exit(16);
 		}
 		StartupDialog startupDialog = new StartupDialog(this);
-		startupDialog.setTitle(Constants.APPLICATION_NAME + " " + Constants.APPLICATION_VERSION);
+		startupDialog.setTitle(APPLICATION_NAME + " " + APPLICATION_VERSION);
 		if (!services.isNew()) { // Keine neue Datei?
 			startupDialog.disablePassphraseRepeated(); // Passphrase nur 1x eingeben!
 		}
@@ -186,15 +197,11 @@ public class PswGenCtl extends BaseCtl {
 	 */
 	public void actionPerformedOpenServices(final StartupDialog startupDialog) {
 		try {
-			validatedPassphrase = validatePassphrase(startupDialog);
-			services.decrypt(validatedPassphrase); // Info-Collection entschlüsselt in Map stellen
-			services.setVerifier(
-					EncryptionHelper.encrypt(validatedPassphrase, Constants.APPLICATION_VERIFIER));
-			services.setVersion(Constants.APPLICATION_VERSION);
+			validatedPassphrase = validatePassphraseAndDecryptServices(startupDialog);
 			startupDialog.dispose();
 			MainView mainView = new MainView(this);
-			mainView.setTitle(servicesFile.getAbsolutePath() + " - " + Constants.APPLICATION_NAME + " "
-					+ Constants.APPLICATION_VERSION);
+			mainView.setTitle(
+					servicesFile.getAbsolutePath() + " - " + APPLICATION_NAME + " " + APPLICATION_VERSION);
 			addWindow(mainView);
 			mainView.pack();
 			ensureAtLeastDefaultSpecialCharacters(mainView);
@@ -256,7 +263,7 @@ public class PswGenCtl extends BaseCtl {
 			mainView.setWaitCursor();
 			String serviceAbbreviation = mainView.getServiceAbbreviation();
 			int chosenOption = JOptionPane.showConfirmDialog(mainView,
-					serviceAbbreviation + getGuiText("RemoveServiceMsg"), Constants.APPLICATION_NAME,
+					serviceAbbreviation + getGuiText("RemoveServiceMsg"), APPLICATION_NAME,
 					JOptionPane.YES_NO_OPTION);
 			if (chosenOption == JOptionPane.YES_OPTION) { // Dienst löschen?
 				validateServiceAbbreviation(serviceAbbreviation);
@@ -264,8 +271,7 @@ public class PswGenCtl extends BaseCtl {
 				if (si == null) { // Dienst gar nicht vorhanden?
 					throw new DomainException("ServiceAbbreviationMissingMsg");
 				} else {
-					services.encrypt(validatedPassphrase);
-					FileHelper.getInstance().saveServiceInfoList(servicesFile, services);
+					saveServiceInfoList(validatedPassphrase);
 					mainView.updateStoredServices();
 					putServiceToView(mainView, new ServiceInfo());
 				}
@@ -362,8 +368,8 @@ public class PswGenCtl extends BaseCtl {
 			mainView.setWaitCursor();
 			final String psw = getValidatedOrGeneratedPassword(mainView);
 			PasswordDialog passwordDialog = new PasswordDialog(this);
-			passwordDialog.setTitle(mainView.getServiceAbbreviation() + " - " + Constants.APPLICATION_NAME
-					+ " " + Constants.APPLICATION_VERSION);
+			passwordDialog.setTitle(
+					mainView.getServiceAbbreviation() + " - " + APPLICATION_NAME + " " + APPLICATION_VERSION);
 			passwordDialog.setPassword(psw);
 			passwordDialog.setPasswordExplanation(getPasswordExplanation(psw));
 			addWindow(passwordDialog);
@@ -482,9 +488,10 @@ public class PswGenCtl extends BaseCtl {
 	}
 
 	/**
-	 * Prüft die Eingabewerte der Passphrase und gibt die Passphrase zurück oder wirft eine Exception.
+	 * Prüft die Eingabewerte der Passphrase, entschlüsselt die Services und gibt die Passphrase zurück oder
+	 * wirft eine Exception.
 	 */
-	private String validatePassphrase(final StartupDialog startupView) {
+	private String validatePassphraseAndDecryptServices(final StartupDialog startupView) {
 		final String passphrase = startupView.getPassphrase();
 		final String passphraseRepeated = startupView.getPassphraseRepeated();
 		if (EmptyHelper.isEmpty(passphrase)) {
@@ -496,12 +503,9 @@ public class PswGenCtl extends BaseCtl {
 				throw new DomainException("PassphraseMismatchMsg");
 			}
 		} else {
-			// Sonst wird geprüft, ob die Passphrase den Prüfstring entschlüsseln kann
-			final String verifierEncrypted = services.getVerifier();
-			final String verifierDecrypted = EncryptionHelper.decrypt(passphrase, verifierEncrypted);
-			if (!verifierDecrypted.equals(Constants.APPLICATION_VERIFIER)) {
-				throw new DomainException("PassphraseInvalidMsg");
-			}
+			EncryptionHelper encryptionHelper = new EncryptionHelper(passphrase.toCharArray(),
+					services.getInitalizerAsHexString());
+			services.decrypt(encryptionHelper); // Info-Collection entschlüsselt in Map stellen
 		}
 		return passphrase;
 	}
@@ -522,8 +526,8 @@ public class PswGenCtl extends BaseCtl {
 	private boolean cancelOnDirty(final MainView mainView) throws IOException {
 		if (mainView.isDirty()) {
 			int chosenOption = JOptionPane.showConfirmDialog(mainView,
-					mainView.getServiceAbbreviation() + getGuiText("SaveChangesMsg"),
-					Constants.APPLICATION_NAME, JOptionPane.YES_NO_CANCEL_OPTION);
+					mainView.getServiceAbbreviation() + getGuiText("SaveChangesMsg"), APPLICATION_NAME,
+					JOptionPane.YES_NO_CANCEL_OPTION);
 			if (chosenOption == JOptionPane.YES_OPTION) { // Geänderte Werte speichern?
 				storeService(mainView);
 			} else
@@ -573,19 +577,31 @@ public class PswGenCtl extends BaseCtl {
 		validateServiceAbbreviation(serviceAbbreviation);
 		if (services.getServiceInfo(serviceAbbreviation) != null) { // Ist der Dienst bereits vermerkt?
 			int chosenOption = JOptionPane.showConfirmDialog(mainView,
-					serviceAbbreviation + getGuiText("OverwriteServiceMsg"), Constants.APPLICATION_NAME,
+					serviceAbbreviation + getGuiText("OverwriteServiceMsg"), APPLICATION_NAME,
 					JOptionPane.YES_NO_OPTION);
 			if (chosenOption == JOptionPane.NO_OPTION) { // Dienst nicht überschreiben? => fertig
 				return;
 			}
 		}
 		services.putServiceInfo(getServiceFromView(mainView));
-		services.encrypt(validatedPassphrase);
-		FileHelper.getInstance().saveServiceInfoList(servicesFile, services);
+		saveServiceInfoList(validatedPassphrase);
 		mainView.setDirty(false);
 		mainView.updateStoredServices();
 	}
 
+	/**
+	 * Liste der Diente in eine Datei speichern
+	 */
+	private void saveServiceInfoList(final String passphrase) throws IOException {
+		EncryptionHelper encryptionHelper = new EncryptionHelper(passphrase.toCharArray());
+		services.setInitalizerAsHexString(encryptionHelper.getInitializerAsHexString());
+		services.encrypt(encryptionHelper);
+		FileHelper.getInstance().saveServiceInfoList(servicesFile, services);
+	}
+
+	/**
+	 * Liefert die Liste der Dienste
+	 */
 	public ServiceInfoList getServices() {
 		return services;
 	}

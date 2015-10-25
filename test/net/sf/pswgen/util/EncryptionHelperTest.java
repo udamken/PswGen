@@ -1,5 +1,8 @@
 package net.sf.pswgen.util;
 
+import org.junit.Assert;
+import org.junit.Test;
+
 /******************************************************************************
  PswGen - Manages your websites and repeatably generates passwords for them
  PswGenDroid - Generates your passwords managed by PswGen on your mobile  
@@ -21,9 +24,6 @@ package net.sf.pswgen.util;
  *****************************************************************************/
 
 import junit.framework.TestCase;
-
-import org.junit.Assert;
-import org.junit.Test;
 
 /**
  * <p>
@@ -70,13 +70,24 @@ public class EncryptionHelperTest extends TestCase {
 
 	@Test
 	public void test04() {
-		String domainEncrypted = EncryptionHelper.encrypt("passphrase", "familie-damken.de");
-		Assert.assertEquals("9351384B3EAE15B20CBA3CFD0D8D8E804ADFD449CC1E691C", domainEncrypted);
-		Assert.assertEquals("familie-damken.de", EncryptionHelper.decrypt("passphrase", domainEncrypted));
-		Assert.assertEquals(
-				"1234567890 / defghijkl",
-				EncryptionHelper.decrypt("passphrase",
-						EncryptionHelper.encrypt("passphrase", "1234567890 / defghijkl")));
+		String passphrase = "passphrase";
+		String s = "familie-damken.de";
+		EncryptionHelper encryptionHelper = new EncryptionHelper(passphrase.toCharArray());
+		String sEncrypted = encryptionHelper.encrypt(s);
+		EncryptionHelper decryptionHelper = new EncryptionHelper(passphrase.toCharArray(),
+				encryptionHelper.getInitializerAsHexString());
+		Assert.assertEquals(s, decryptionHelper.decrypt(sEncrypted));
+	}
+
+	@Test
+	public void test05() {
+		String passphrase = "passphrase";
+		String s = "1234567890 / defghijkl";
+		EncryptionHelper encryptionHelper = new EncryptionHelper(passphrase.toCharArray());
+		String sEncrypted = encryptionHelper.encrypt(s);
+		EncryptionHelper decryptionHelper = new EncryptionHelper(passphrase.toCharArray(),
+				encryptionHelper.getInitializerAsHexString());
+		Assert.assertEquals(s, decryptionHelper.decrypt(sEncrypted));
 	}
 
 }
