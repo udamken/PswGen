@@ -1,5 +1,6 @@
 package net.sf.pswgen.util;
 
+import java.security.SecureRandom;
 import java.security.spec.KeySpec;
 
 /******************************************************************************
@@ -43,9 +44,8 @@ import javax.crypto.spec.SecretKeySpec;
  */
 public class EncryptionHelper {
 
-	/** Salz für das Erzeugen eines Schlüssels aus der übergebenen Passphrase */
-	private static final byte[] KEY_SALT = { (byte) 0xc7, (byte) 0x73, (byte) 0x21, (byte) 0x8c, (byte) 0x7e,
-			(byte) 0xc8, (byte) 0xee, (byte) 0x99 };
+	/** Länge für das Salz für die Erzeugung eines Schlüssels aus der übergebenen Passphrase */
+	private static final int SALT_LENGTH = 16;
 
 	/** Anzahl der Durchläufe zum Erzeugen eines Schlüssels aus der Passphrase */
 	private static final int KEY_ITERATION_COUNT = 1024;
@@ -73,12 +73,15 @@ public class EncryptionHelper {
 	/** Für ältere Dateien zu verwendender Algorithmus für PBE (Password Based Encryption) */
 	private static final String PREVIOUS_ENCRYPTION_ALGORITHM = "PBEWithMD5AndDES";
 
-	/** Für ältere Dateien das Salz für das Erzeugen eines Schlüssels aus der Passphrase */
+	/** Für ältere Dateien das Salz für die Erzeugung eines Schlüssels aus der Passphrase */
 	private static final byte[] PREVIOUS_ENCRYPTION_SALT = { (byte) 0xc7, (byte) 0x73, (byte) 0x21,
 			(byte) 0x8c, (byte) 0x7e, (byte) 0xc8, (byte) 0xee, (byte) 0x99 };
 
 	/** Für ältere Dateien die Anzahl der Durchläufe zum Erzeugen eines Schlüssels aus der Passphrase */
 	private static final int PREVIOUS_KEY_ITERATION_COUNT = 20;
+
+	/** Salz für das Erzeugen eines Schlüssels aus der übergebenen Passphrase */
+	private byte[] salt;
 
 	/** Initialisierungsvektor der Verschlüsselung oder für die Entschlüsselung */
 	private byte[] initializer;
@@ -91,10 +94,12 @@ public class EncryptionHelper {
 	 */
 	public EncryptionHelper(final char[] passphrase) {
 		try {
-			KeySpec keySpec = new javax.crypto.spec.PBEKeySpec(passphrase, KEY_SALT, KEY_ITERATION_COUNT,
-					KEY_LENGTH);
-			SecretKey secretKey = SecretKeyFactory.getInstance(SECRET_KEY_FACTORY_ALGORITHM)
-					.generateSecret(keySpec);
+			SecureRandom secureRandom = new SecureRandom();
+			salt = new byte[SALT_LENGTH];
+			secureRandom.nextBytes(salt);
+			KeySpec keySpec = new PBEKeySpec(passphrase, salt, KEY_ITERATION_COUNT, KEY_LENGTH);
+			SecretKeyFactory secretKeyFactory = SecretKeyFactory.getInstance(SECRET_KEY_FACTORY_ALGORITHM);
+			SecretKey secretKey = secretKeyFactory.generateSecret(keySpec);
 			cipher = Cipher.getInstance(CIPHER_TRANSFORMATION);
 			cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(secretKey.getEncoded(), CIPHER_ALGORITHM));
 			initializer = cipher.getParameters().getParameterSpec(IvParameterSpec.class).getIV();
@@ -109,33 +114,40 @@ public class EncryptionHelper {
 	/**
 	 * Liefert einen EncryptionHelper für die Entschlüsselung
 	 */
-	public EncryptionHelper(final char[] passphrase, final String initializerAsHexString) {
+	public EncryptionHelper(final char[] passphrase, final String saltAsHexString,
+			final String initializerAsHexString) {
 		try {
-			if (initializerAsHexString == null) { // Bisherigen Algorithmus verwenden?
-				PBEKeySpec keySpec = new PBEKeySpec(passphrase);
-				SecretKeyFactory secretKeyFactory = SecretKeyFactory
-						.getInstance(PREVIOUS_ENCRYPTION_ALGORITHM);
-				SecretKey secretKey = secretKeyFactory.generateSecret(keySpec);
-				PBEParameterSpec pbeParamSpec = new PBEParameterSpec(PREVIOUS_ENCRYPTION_SALT,
-						PREVIOUS_KEY_ITERATION_COUNT);
-				cipher = Cipher.getInstance(PREVIOUS_ENCRYPTION_ALGORITHM);
-				cipher.init(Cipher.DECRYPT_MODE, secretKey, pbeParamSpec);
-			} else {
-				initializer = EncryptionHelper.toByteArray(initializerAsHexString);
-				KeySpec keySpec = new javax.crypto.spec.PBEKeySpec(passphrase, KEY_SALT, KEY_ITERATION_COUNT,
-						KEY_LENGTH);
-				SecretKey secretKey = SecretKeyFactory.getInstance(SECRET_KEY_FACTORY_ALGORITHM)
-						.generateSecret(keySpec);
-				cipher = Cipher.getInstance(CIPHER_TRANSFORMATION);
-				cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(secretKey.getEncoded(), CIPHER_ALGORITHM),
-						new IvParameterSpec(initializer));
+			if (saltAsHexString == null && initializerAsHexString == null) {
+				initAsPreviouEncryptionHelper(passphrase);
+				return;
 			}
+			salt = EncryptionHelper.toByteArray(saltAsHexString);
+			initializer = EncryptionHelper.toByteArray(initializerAsHexString);
+			KeySpec keySpec = new PBEKeySpec(passphrase, salt, KEY_ITERATION_COUNT, KEY_LENGTH);
+			SecretKeyFactory secretKeyFactory = SecretKeyFactory.getInstance(SECRET_KEY_FACTORY_ALGORITHM);
+			SecretKey secretKey = secretKeyFactory.generateSecret(keySpec);
+			cipher = Cipher.getInstance(CIPHER_TRANSFORMATION);
+			SecretKeySpec secretKeySpec = new SecretKeySpec(secretKey.getEncoded(), CIPHER_ALGORITHM);
+			cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, new IvParameterSpec(initializer));
 		} catch (Exception e) {
 			throw new RuntimeException(
 					"Exception beim Erzeugen einer ExceptionHelper-Instanz zum Verschlüsseln: "
 							+ e.getMessage(),
 					e);
 		}
+	}
+
+	/**
+	 * @deprecated Liefert einen EncryptionHelper für die bisherige Entschlüsselung
+	 */
+	public void initAsPreviouEncryptionHelper(final char[] passphrase) throws Exception {
+		PBEKeySpec keySpec = new PBEKeySpec(passphrase);
+		SecretKeyFactory secretKeyFactory = SecretKeyFactory.getInstance(PREVIOUS_ENCRYPTION_ALGORITHM);
+		SecretKey secretKey = secretKeyFactory.generateSecret(keySpec);
+		PBEParameterSpec pbeParamSpec = new PBEParameterSpec(PREVIOUS_ENCRYPTION_SALT,
+				PREVIOUS_KEY_ITERATION_COUNT);
+		cipher = Cipher.getInstance(PREVIOUS_ENCRYPTION_ALGORITHM);
+		cipher.init(Cipher.DECRYPT_MODE, secretKey, pbeParamSpec);
 	}
 
 	/**
@@ -208,7 +220,14 @@ public class EncryptionHelper {
 	}
 
 	/**
-	 * Liefert den Initialisierungsvektor der Verschlüsselung
+	 * Liefert das Salz für die Erzeugung eines Schlüssels aus der Passphrase als Hex-String
+	 */
+	public String getSaltAsHexString() {
+		return EncryptionHelper.toHexString(salt);
+	}
+
+	/**
+	 * Liefert den Initialisierungsvektor der Verschlüsselung als Hex-String
 	 */
 	public String getInitializerAsHexString() {
 		return EncryptionHelper.toHexString(initializer);

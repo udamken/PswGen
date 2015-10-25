@@ -68,7 +68,7 @@ public class PswGenAdapter {
 			throw new DomainException("UnknownFileFormatMsg");
 		}
 		EncryptionHelper encryptionHelper = new EncryptionHelper(passphrase.toCharArray(),
-				services.getInitalizerAsHexString());
+				services.getSaltAsHexString(), services.getInitializerAsHexString());
 		services.decrypt(encryptionHelper); // Info-Collection entschlüsselt in Map stellen
 		servicesAsList = new ArrayList<ServiceInfo>(services.getServices());
 		validatedPassphrase = passphrase;

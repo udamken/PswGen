@@ -50,8 +50,11 @@ public class ServiceInfoList {
 	/** Verlüsselter String zur Verifizierung der eingegebenen Passphrase */
 	private String encryptedVerifier;
 
+	/** Salz für die Erzeugung eines Schlüssels aus der Passphrase als Hex-String */
+	private String saltAsHexString;
+
 	/** Initialisierungsvektor für die Verschlüsselung als Hex-String */
-	private String initalizerAsHexString;
+	private String initializerAsHexString;
 
 	/** Die Werte aus der zu Grunde liegenden Map als Collection */
 	private Collection<ServiceInfo> encryptedServices;
@@ -267,12 +270,34 @@ public class ServiceInfoList {
 		return encryptedServices;
 	}
 
-	public String getInitalizerAsHexString() {
-		return initalizerAsHexString;
+	/**
+	 * @return the saltAsHexString
+	 */
+	public String getSaltAsHexString() {
+		return saltAsHexString;
 	}
 
-	public void setInitalizerAsHexString(String initalizer) {
-		this.initalizerAsHexString = initalizer;
+	/**
+	 * @param saltAsHexString
+	 *            the saltAsHexString to set
+	 */
+	public void setSaltAsHexString(String saltAsHexString) {
+		this.saltAsHexString = saltAsHexString;
+	}
+
+	/**
+	 * @return the initializerAsHexString
+	 */
+	public String getInitializerAsHexString() {
+		return initializerAsHexString;
+	}
+
+	/**
+	 * @param initializerAsHexString
+	 *            the initializerAsHexString to set
+	 */
+	public void setInitializerAsHexString(String initializerAsHexString) {
+		this.initializerAsHexString = initializerAsHexString;
 	}
 
 }
