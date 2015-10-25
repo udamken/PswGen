@@ -116,7 +116,7 @@ public class PswGenCtl extends BaseCtl {
 		}
 		try {
 			// Geladene Services mit einem EncryptionHelper auf die bisherige Art entschlüsseln
-			EncryptionHelper encryptionHelper = new EncryptionHelper(passphrase.toCharArray(), null);
+			EncryptionHelper encryptionHelper = new EncryptionHelper(passphrase.toCharArray(), null, null);
 			services.decrypt(encryptionHelper);
 		} catch (DomainException e) {
 			LOGGER.log(Level.SEVERE, Constants.MSG_PASSPHRASE_INVALID + e);
@@ -504,7 +504,7 @@ public class PswGenCtl extends BaseCtl {
 			}
 		} else {
 			EncryptionHelper encryptionHelper = new EncryptionHelper(passphrase.toCharArray(),
-					services.getInitalizerAsHexString());
+					services.getSaltAsHexString(), services.getInitializerAsHexString());
 			services.decrypt(encryptionHelper); // Info-Collection entschlüsselt in Map stellen
 		}
 		return passphrase;
@@ -594,7 +594,8 @@ public class PswGenCtl extends BaseCtl {
 	 */
 	private void saveServiceInfoList(final String passphrase) throws IOException {
 		EncryptionHelper encryptionHelper = new EncryptionHelper(passphrase.toCharArray());
-		services.setInitalizerAsHexString(encryptionHelper.getInitializerAsHexString());
+		services.setSaltAsHexString(encryptionHelper.getSaltAsHexString());
+		services.setInitializerAsHexString(encryptionHelper.getInitializerAsHexString());
 		services.encrypt(encryptionHelper);
 		FileHelper.getInstance().saveServiceInfoList(servicesFile, services);
 	}

@@ -32,6 +32,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 
 import net.sf.pswgen.model.ServiceInfo;
@@ -120,12 +121,12 @@ public class FileHelper {
 			checkJsonName(reader, "verifier");
 			services.setEncryptedVerifier(reader.nextString());
 			addReadServices(services, reader);
-			try {
+			if (reader.peek() != JsonToken.END_OBJECT) {
+				// Erst ab 1.7.4 gibt es salt und initializer, daher ist beides optional
+				checkJsonName(reader, "salt");
+				services.setSaltAsHexString(reader.nextString());
 				checkJsonName(reader, "initializer");
-				services.setInitalizerAsHexString(reader.nextString());
-			} catch (IllegalStateException e) {
-				LOGGER.log(Level.INFO, Constants.MSG_EXCP_SERVICES, e);
-				// Erst ab 1.7.4 gibt es den initializer, daher ist er optional
+				services.setInitializerAsHexString(reader.nextString());
 			}
 			reader.endObject();
 		} finally {
@@ -228,7 +229,18 @@ public class FileHelper {
 		writer.name("version").value(services.getVersion());
 		writer.name("verifier").value(services.getEncryptedVerifier());
 		writeServices(writer, services.getEncryptedServices());
-		writer.name("initializer").value(services.getInitalizerAsHexString());
+		/**
+		 * <pre>
+		 * http://stackoverflow.com/questions/13901529/symmetric-encryption-aes-is-saving-the-iv-and-salt-alongside-the-encrypted-da
+		 * 
+		 * Storing the IV and Salt a long with the cipher text is proper and a best practice. Hard coding the
+		 * salt is not useful, being random is important, hard coding the iterations is perfectly okay but is
+		 * typically much higher than 300 (in fact at least 1000 and you typically go much higher if your
+		 * machine/usage can handle it).
+		 * </pre>
+		 */
+		writer.name("salt").value(services.getSaltAsHexString());
+		writer.name("initializer").value(services.getInitializerAsHexString());
 		writer.endObject();
 		writer.close();
 	}
