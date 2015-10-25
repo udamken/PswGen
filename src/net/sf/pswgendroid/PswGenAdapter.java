@@ -26,14 +26,14 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import android.content.Context;
+import android.widget.Toast;
 import net.sf.pswgen.model.ServiceInfo;
 import net.sf.pswgen.model.ServiceInfoList;
 import net.sf.pswgen.util.Constants;
 import net.sf.pswgen.util.DomainException;
 import net.sf.pswgen.util.EncryptionHelper;
 import net.sf.pswgen.util.FileHelper;
-import android.content.Context;
-import android.widget.Toast;
 
 /**
  * <p>
@@ -67,12 +67,9 @@ public class PswGenAdapter {
 		if (services == null) {
 			throw new DomainException("UnknownFileFormatMsg");
 		}
-		final String verifierEncrypted = services.getVerifier();
-		final String verifierDecrypted = EncryptionHelper.decrypt(passphrase, verifierEncrypted);
-		if (!verifierDecrypted.equals(Constants.APPLICATION_VERIFIER)) {
-			throw new DomainException("PassphraseInvalidMsg");
-		}
-		services.decrypt(passphrase); // Info-Collection entschlüsselt in Map stellen
+		EncryptionHelper encryptionHelper = new EncryptionHelper(passphrase.toCharArray(),
+				services.getInitalizerAsHexString());
+		services.decrypt(encryptionHelper); // Info-Collection entschlüsselt in Map stellen
 		servicesAsList = new ArrayList<ServiceInfo>(services.getServices());
 		validatedPassphrase = passphrase;
 	}
