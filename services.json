@@ -1,9 +1,9 @@
 {
 	"version": "1.7.4",
-	"verifier": "8575827C6FD3EE28F5C82917031E3AE00118AFA0EEDA3E09FF09D3F0B8F406E55285B709FEE5BFC5FF3543A032D75E3DCB25BE197385E2D3DBF1383CA398951A414276D2E77D13F32B4EE9541783FFAABF4251C06029467C6478C3958DC32647EB2F4B5B1CF44A8C05738FB23CAF8C31",
+	"verifier": "795B4F3BD5F179DF3292CF3D6068EAA626C2C49B49F68DA0CE23A38DD0AEF3C09202157888551A2546523A8B69D24E5509386594AD7A6E9D66B5CC0A597592680B0B78B1165F75C410F97CFC3875C55C42192A04371A2D683E7EF9AFB0F8DE7E9BAF44C156861EDF53645181EFD85F9C",
 	"services": [
 		{
-			"serviceAbbreviation": "5E5F520E1CD4FB3E355D43FF0D944310",
+			"serviceAbbreviation": "72558A431E9C04611E3208E16EA6BFAD",
 			"additionalInfo": "",
 			"loginUrl": "",
 			"loginInfo": "",
@@ -12,7 +12,7 @@
 			"useCapitalLetters": false,
 			"useDigits": false,
 			"useSpecialCharacters": false,
-			"specialCharacters": "9F5EA480FCA3BA2C6890933C3ACC1A17534FD0D9C9977FF11CDB7BA0BFFC026A",
+			"specialCharacters": "6C88E79691C90EFD0D1150A2915E369B9C40171D027F44C5A3075887ACDEF84A",
 			"smallLettersCount": -2147483648,
 			"smallLettersStartIndex": -2147483648,
 			"smallLettersEndIndex": -2147483648,
@@ -30,9 +30,9 @@
 			"passwordRepeated": ""
 		},
 		{
-			"serviceAbbreviation": "B584B64DDC14BA913D7A49C45A5EACD0",
-			"additionalInfo": "A0949E1EC0F6073BF7F7AC4D96580313",
-			"loginUrl": "B6E82F19CF18530DB37473E2C6CBC749",
+			"serviceAbbreviation": "4EB60E05D3E33E7D36C208439A864D0A",
+			"additionalInfo": "B731A9073A8FAA7382B3957CE62D80B6",
+			"loginUrl": "6D290D42DCAB812B21FE1780ED1EB902",
 			"loginInfo": "",
 			"additionalLoginInfo": "",
 			"useSmallLetters": false,
@@ -57,9 +57,9 @@
 			"passwordRepeated": ""
 		},
 		{
-			"serviceAbbreviation": "28688319337E2F66C65DDC1227B1F0CE",
-			"additionalInfo": "B6E82F19CF18530DB37473E2C6CBC749",
-			"loginUrl": "B6E82F19CF18530DB37473E2C6CBC749",
+			"serviceAbbreviation": "268BBBECC22B42C506B56226C7621F80",
+			"additionalInfo": "6D290D42DCAB812B21FE1780ED1EB902",
+			"loginUrl": "6D290D42DCAB812B21FE1780ED1EB902",
 			"loginInfo": "",
 			"additionalLoginInfo": "",
 			"useSmallLetters": false,
@@ -84,16 +84,16 @@
 			"passwordRepeated": ""
 		},
 		{
-			"serviceAbbreviation": "613A60F40A4C5A19EED10E3E44FF60C8",
-			"additionalInfo": "E5B1671CE8ACA9E539C3B8C1FC5F9868",
-			"loginUrl": "97048B0B8F27F8CBB6623E8287056F20",
-			"loginInfo": "A01BB8625ADD9928EDBE3CCDF717E9DA",
-			"additionalLoginInfo": "7F0D1CBEAE4662E31926E57A296FA42E",
+			"serviceAbbreviation": "AA4C0432EC50BDC5565DD5A5EB265D1F",
+			"additionalInfo": "57646D811C24519FAFB424350BF77D63",
+			"loginUrl": "BF4A320A999D366ED1EF39D2054FC83A",
+			"loginInfo": "A69E81F4485ED9DF8093E642B8CAC441",
+			"additionalLoginInfo": "8FB935F042EDB1A810700E0B13A4094D",
 			"useSmallLetters": true,
 			"useCapitalLetters": true,
 			"useDigits": true,
 			"useSpecialCharacters": true,
-			"specialCharacters": "9F5EA480FCA3BA2C6890933C3ACC1A17534FD0D9C9977FF11CDB7BA0BFFC026A",
+			"specialCharacters": "6C88E79691C90EFD0D1150A2915E369B9C40171D027F44C5A3075887ACDEF84A",
 			"smallLettersCount": -2147483648,
 			"smallLettersStartIndex": -2147483648,
 			"smallLettersEndIndex": -2147483648,
@@ -111,8 +111,8 @@
 			"passwordRepeated": ""
 		},
 		{
-			"serviceAbbreviation": "6C56EC046FF16E9A137F5F907A16A622",
-			"additionalInfo": "FF12AF77776A88D0B2ABA373086E2A9E",
+			"serviceAbbreviation": "E04AD0454F33BAF664050B000D7FDFE9",
+			"additionalInfo": "9E7EE3FF0A80623CA3E9A3FD56FEFD7C",
 			"loginUrl": "",
 			"loginInfo": "",
 			"additionalLoginInfo": "",
@@ -120,7 +120,7 @@
 			"useCapitalLetters": false,
 			"useDigits": false,
 			"useSpecialCharacters": false,
-			"specialCharacters": "9F5EA480FCA3BA2C6890933C3ACC1A17534FD0D9C9977FF11CDB7BA0BFFC026A",
+			"specialCharacters": "6C88E79691C90EFD0D1150A2915E369B9C40171D027F44C5A3075887ACDEF84A",
 			"smallLettersCount": -2147483648,
 			"smallLettersStartIndex": -2147483648,
 			"smallLettersEndIndex": -2147483648,
@@ -134,20 +134,20 @@
 			"specialCharactersStartIndex": -2147483648,
 			"specialCharactersEndIndex": -2147483648,
 			"totalCharacterCount": -2147483648,
-			"password": "13F435431D3CB1B4500F3BAA779229E1",
-			"passwordRepeated": "13F435431D3CB1B4500F3BAA779229E1"
+			"password": "71B09AE7CF4203059A7BEAC99A028162",
+			"passwordRepeated": "71B09AE7CF4203059A7BEAC99A028162"
 		},
 		{
-			"serviceAbbreviation": "B6E82F19CF18530DB37473E2C6CBC749",
-			"additionalInfo": "F4454262D7DFBB5288D3B2AB404A8B31",
-			"loginUrl": "30DDB25F08FEEFFFC6C49E37A298D330",
-			"loginInfo": "A01BB8625ADD9928EDBE3CCDF717E9DA",
-			"additionalLoginInfo": "BC144E99CED2EFA5607C53F22031AF204CD7401E1B51A34F0D8A277AB1A89B039116F0669E40450DDF6FF076B5A7BA135BA29A5F30352EA881EB4990908506592B0685B802FD434C8E7962466F2E9FBD49428E4A818CBCEE0B6577338471D652E61BE5EA23AD234A618D85489F2CF408",
+			"serviceAbbreviation": "6D290D42DCAB812B21FE1780ED1EB902",
+			"additionalInfo": "0AC3FA8F669B3DA10AAED12EE1F3491F",
+			"loginUrl": "168E846546F2D66A89BECE54116945CF",
+			"loginInfo": "A69E81F4485ED9DF8093E642B8CAC441",
+			"additionalLoginInfo": "BE93B173B9CBC5561290E4F15ECB71481CD894C814332905478B214745C89809EFC204655C8C1D07F976970CEC1A9F0DF2A67F0D3A2FF7886BE1C87CE5AC90744A353696771DAAA55C9B7DEBBD01C0FA909C963B5AE9045D778232262A55BBBE9E5B46F82D92A24F1BDDB537F4DBA63C",
 			"useSmallLetters": false,
 			"useCapitalLetters": false,
 			"useDigits": false,
 			"useSpecialCharacters": false,
-			"specialCharacters": "9F5EA480FCA3BA2C6890933C3ACC1A17534FD0D9C9977FF11CDB7BA0BFFC026A",
+			"specialCharacters": "6C88E79691C90EFD0D1150A2915E369B9C40171D027F44C5A3075887ACDEF84A",
 			"smallLettersCount": -2147483648,
 			"smallLettersStartIndex": -2147483648,
 			"smallLettersEndIndex": -2147483648,
@@ -165,8 +165,8 @@
 			"passwordRepeated": ""
 		},
 		{
-			"serviceAbbreviation": "CB2772BA6D70CB2B84DA515C686FA39C",
-			"additionalInfo": "16020CEBFF4B4924F339316D1A8F5E0F",
+			"serviceAbbreviation": "CFBB9991AAEAD94845625FF516C50773",
+			"additionalInfo": "C119C850C9631A37A6265D1AC1184047",
 			"loginUrl": "",
 			"loginInfo": "",
 			"additionalLoginInfo": "",
@@ -192,8 +192,8 @@
 			"passwordRepeated": ""
 		},
 		{
-			"serviceAbbreviation": "A0949E1EC0F6073BF7F7AC4D96580313",
-			"additionalInfo": "131ECEA25FAA6B5D6AA023AB18EF706E",
+			"serviceAbbreviation": "B731A9073A8FAA7382B3957CE62D80B6",
+			"additionalInfo": "78EB5C1DD246B306C59DAEEFBDFE936F",
 			"loginUrl": "",
 			"loginInfo": "",
 			"additionalLoginInfo": "",
@@ -219,8 +219,8 @@
 			"passwordRepeated": ""
 		},
 		{
-			"serviceAbbreviation": "2DC646F453961202E45DEC92B98BFBAD",
-			"additionalInfo": "38B739E862BFB15FF2C7A316AE763AE9",
+			"serviceAbbreviation": "A464B9B5028EEAE41FF2322E00E49942",
+			"additionalInfo": "820A19AF134244125BD5D520B5EE42B2",
 			"loginUrl": "",
 			"loginInfo": "",
 			"additionalLoginInfo": "",
@@ -246,8 +246,8 @@
 			"passwordRepeated": ""
 		},
 		{
-			"serviceAbbreviation": "650B8F6366C6812B9D9FB7EE513531C0",
-			"additionalInfo": "D14A8E9952764171EE4C875BA8DB3DEC",
+			"serviceAbbreviation": "61CCF486EDDA1C544CF4BC51B505E0A5",
+			"additionalInfo": "08638B9F829AEFA13FC5843F09676691",
 			"loginUrl": "",
 			"loginInfo": "",
 			"additionalLoginInfo": "",
@@ -273,8 +273,8 @@
 			"passwordRepeated": ""
 		},
 		{
-			"serviceAbbreviation": "521DAA05D7E2BBE55E721478538C66AF",
-			"additionalInfo": "FF12AF77776A88D0B2ABA373086E2A9E",
+			"serviceAbbreviation": "0879F58FF12A2D44E1F5411214E27D8B",
+			"additionalInfo": "9E7EE3FF0A80623CA3E9A3FD56FEFD7C",
 			"loginUrl": "",
 			"loginInfo": "",
 			"additionalLoginInfo": "",
@@ -282,7 +282,7 @@
 			"useCapitalLetters": false,
 			"useDigits": false,
 			"useSpecialCharacters": false,
-			"specialCharacters": "9F5EA480FCA3BA2C6890933C3ACC1A17534FD0D9C9977FF11CDB7BA0BFFC026A",
+			"specialCharacters": "6C88E79691C90EFD0D1150A2915E369B9C40171D027F44C5A3075887ACDEF84A",
 			"smallLettersCount": -2147483648,
 			"smallLettersStartIndex": -2147483648,
 			"smallLettersEndIndex": -2147483648,
@@ -300,5 +300,6 @@
 			"passwordRepeated": ""
 		}
 	],
-	"initializer": "CEB8417D6BE955CA196D4FEF28629EC9"
+	"salt": "FF891AC8B7A9D82F903887470BE3C041",
+	"initializer": "50092D7289B512BF0D71B9EC65B6094B"
 }
