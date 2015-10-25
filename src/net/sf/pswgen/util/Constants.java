@@ -46,10 +46,10 @@ public class Constants {
 	public static final String APPLICATION_VERSION = "1.7.4";
 
 	/** Die Version dieser Anwendung, ab der ein neues Dateiformat benutzt wird */
-	public static final String ADVANCED_FILE_FORMAT_VERSION = "1.7.0";
+	public static final String ADVANCED_FILE_FORMAT_VERSION = "1.7.4";
 
-	/** Die Version dieser Anwendung, bis zu der das Dateiformat nicht mehr unterstützt wird */
-	public static final String UNSUPPORTED_FILE_FORMAT_VERSION = "1.5.9";
+	/** Die Version dieser Anwendung, ab der das Dateiformat (mit Upgrade) unterstützt wird */
+	public static final String LOWEST_SUPPORTED_FILE_FORMAT_VERSION = "1.7.0";
 
 	/** Die Version dieser Anwendung */
 	public static final String APPLICATION_VERIFIER = "PswGen - Manages your websites and repeatably generates passwords for them, Copyright (C) Uwe Damken";
@@ -74,15 +74,7 @@ public class Constants {
 
 	public static final String MSG_EXCP_LOOK_AND_FEEL = "LookAndFeel could not be set";
 
-	public static final String MSG_UNSUPPORTED_FILE_FORMAT_VERSION = "File format of PswGen < 1.6 is no longer supported: Use any PswGen 1.6.x to convert file to newer format. Use current PswGen afterwards to convert to current format.";
-
-	public static final String MSG_TO_BE_CONVERTED_FILE_FORMAT_VERSION = "File format of PswGen < 1.7 has to be converted: Use command line option -upgrade to convert the file.";
-
-	public static final String MSG_ALREADY_CONVERTED_FILE_FORMAT_VERSION = "File format of PswGen >= 1.7 doesn't need to be converted: Start PswGen without option -upgrade.";
-
-	public static final String MSG_EMPTY_FILE_NOT_UPGRADABLE = "File format cannot be converted: File does not exist or is empty.";
-
-	public static final String MSG_UNKNOWN_FILE_FORMAT_VERSION = "File format is unknown and not usable with PswGen.";
+	public static final String MSG_PASSPHRASE_INVALID = "Passphrase given as parameter to the upgrade option is not valid: ";
 
 	/** Für die generierten Passworte verwendbare Zeichen */
 
