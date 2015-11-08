@@ -27,7 +27,7 @@ public class PswGen {
 	/**
 	 * Hier werden die Kommandozeilenparameter analysiert und die Anwendung gestartet.
 	 */
-	public static void main(String[] args) throws ParseException, IOException {
+	public static void main(String[] args) throws IOException {
 		Options options = new Options();
 		Option help = new Option("help", "print this message");
 		@SuppressWarnings("static-access")
@@ -41,8 +41,13 @@ public class PswGen {
 		options.addOption(services);
 		options.addOption(upgrade);
 		CommandLineParser parser = new GnuParser(); // GnuParser => mehrbuchstabige Optionen
-		CommandLine line = parser.parse(options, args);
-		if (line.hasOption("help")) { // Hilfe ausgeben => nur das tun
+		CommandLine line = null;
+		try {
+			line = parser.parse(options, args);
+		} catch (ParseException e) {
+			System.err.println(e.getMessage()); // line bleibt null, dann kommt die Hilfe
+		}
+		if (line == null || line.hasOption("help")) { // Hilfe ausgeben => nur das tun
 			HelpFormatter formatter = new HelpFormatter();
 			formatter.printHelp("pswgen", options);
 		} else if (line.hasOption("upgrade")) { // Datei umformatieren => nur das tun
