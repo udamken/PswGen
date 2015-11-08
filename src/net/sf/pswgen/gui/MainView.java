@@ -615,17 +615,21 @@ public class MainView extends BaseView {
 						startText = text.toLowerCase();
 					}
 
+					// Generate as much percents as needed as a replacement for \| to not to affect any other percent.
 					StringBuilder replacementBuilder = new StringBuilder("%");
 					while (startText.contains(replacementBuilder)) {
 						replacementBuilder.append('%');
 					}
 					String replacement = replacementBuilder.toString();
+					// Replace \| with the generated replacement.
 					startText = startText.replaceAll("\\\\\\|", replacement);
 					String[] startTexts = startText.split("\\|");
 					for (int i = 0; i < startTexts.length; i++) {
+						// Now, re-replace \| to |.
 						startTexts[i] = startTexts[i].replaceAll(Pattern.quote(replacement), "|");
 					}
 
+					// Matching any service appreviation in a loop in order to match every search parameter.
 					for (final String str : startTexts) {
 						if (sa.startsWith(str)) {
 							return true;
