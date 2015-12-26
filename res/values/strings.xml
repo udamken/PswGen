@@ -14,7 +14,7 @@
     <string name="button_import_services">Importieren</string>
     <string name="button_open_services">Öffnen</string>
     <string name="button_open_help">Hilfe</string>
-    <string name="help_url">http://mind-and-useful.de/de/software/pswgendroid.html</string>
+    <string name="help_url">https://github.com/udamken/PswGenDroid/wiki</string>
     <string name="button_open_about">Über PswGenDroid</string>
 
     <!-- PassphraseDialog -->
