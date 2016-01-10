@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="net.sf.pswgendroid"
-    android:versionCode="2"
-    android:versionName="1.7.5" >
+    package="de.dknapps.pswgendroid"
+    android:versionCode="3"
+    android:versionName="1.7.6" >
 
     <uses-sdk
         android:minSdkVersion="17"
@@ -21,7 +21,7 @@
         android:theme="@style/AppTheme" >
         
         <activity
-            android:name=".StartupActivity"
+            android:name="de.dknapps.pswgendroid.StartupActivity"
             android:label="@string/title_startup" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,23 +31,23 @@
         </activity>
         
         <activity
-            android:name=".ServiceListActivity"
+            android:name="de.dknapps.pswgendroid.ServiceListActivity"
             android:label="@string/title_service_list" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="net.sf.pswgendroid.StartupActivity" />
+                android:value="de.dknapps.pswgendroid.StartupActivity" />
         </activity>
         
         <activity
-            android:name=".ServiceDetailActivity"
+            android:name="de.dknapps.pswgendroid.ServiceDetailActivity"
             android:label="@string/title_service_detail" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="net.sf.pswgendroid.ServiceListActivity" />
+                android:value="de.dknapps.pswgendroid.ServiceListActivity" />
         </activity>
         
         <activity
-            android:name=".AboutActivity"
+            android:name="de.dknapps.pswgendroid.AboutActivity"
             android:label="@string/title_activity_about" >
         </activity>
 
