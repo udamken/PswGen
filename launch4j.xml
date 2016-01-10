@@ -14,7 +14,7 @@
   <manifest></manifest>
   <icon>PswGen.ico</icon>
   <classPath>
-    <mainClass>net.sf.pswgen.main.PswGen</mainClass>
+    <mainClass>de.dknapps.pswgen.main.PswGen</mainClass>
     <cp>commons-cli-1.2.jar</cp>
     <cp>gson-2.2.4.jar</cp>
   </classPath>
@@ -27,7 +27,7 @@
     <runtimeBits>64/32</runtimeBits>
   </jre>
   <splash>
-    <file>etc/net/sf/pswgen/PswGenSplash.bmp</file>
+    <file>etc/de/dknapps/pswgen/PswGenSplash.bmp</file>
     <waitForWindow>true</waitForWindow>
     <timeout>60</timeout>
     <timeoutErr>true</timeoutErr>

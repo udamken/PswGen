@@ -11,7 +11,7 @@
 	</target>
 
 	<target name="loadVersion">
-		<loadproperties srcfile="src/net/sf/pswgen/util/Constants.java">
+		<loadproperties srcfile="src/de/dknapps/pswgen/util/Constants.java">
 			<filterchain>
 				<tokenfilter>
 					<containsstring contains="APPLICATION_VERSION"/>
@@ -28,7 +28,7 @@
 	<target name="createJar">
 		<jar destfile="product/PswGen.jar" basedir="bin" excludes="**/*Test.class">
 			<manifest>
-				<attribute name="Main-Class" value="net.sf.pswgen.main.PswGen" />
+				<attribute name="Main-Class" value="de.dknapps.pswgen.main.PswGen" />
 				<attribute name="Class-Path" value="commons-cli-1.2.jar gson-2.2.4.jar" />
 			</manifest>
 		</jar>
