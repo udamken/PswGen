@@ -8,7 +8,7 @@
     android:divider="?android:attr/dividerHorizontal"
     android:orientation="horizontal"
     android:showDividers="middle"
-    tools:context="net.sf.pswgendroid.ServiceListActivity" >
+    tools:context="de.dknapps.pswgendroid.ServiceListActivity" >
 
     <!--
     This layout is a two-pane layout for the Services
@@ -23,7 +23,7 @@
 
     <fragment
         android:id="@+id/service_list"
-        android:name="net.sf.pswgendroid.ServiceListFragment"
+        android:name="de.dknapps.pswgendroid.ServiceListFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"

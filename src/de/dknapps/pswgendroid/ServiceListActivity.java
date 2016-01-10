@@ -1,4 +1,4 @@
-package net.sf.pswgendroid;
+package de.dknapps.pswgendroid;
 
 /******************************************************************************
  PswGen - Manages your websites and repeatably generates passwords for them
@@ -28,6 +28,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.SearchView;
+import de.dknapps.pswgendroid.R;
 
 /**
  * <p>

@@ -1,4 +1,4 @@
-package net.sf.pswgendroid;
+package de.dknapps.pswgendroid;
 
 /******************************************************************************
  PswGen - Manages your websites and repeatably generates passwords for them
@@ -30,7 +30,6 @@ import java.text.MessageFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import net.sf.pswgen.util.Constants;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.BroadcastReceiver;
@@ -42,6 +41,8 @@ import android.os.Environment;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+import de.dknapps.pswgen.util.Constants;
+import de.dknapps.pswgendroid.R;
 
 /**
  * <p>

@@ -1,4 +1,4 @@
-package net.sf.pswgendroid;
+package de.dknapps.pswgen.util;
 
 /******************************************************************************
  PswGen - Manages your websites and repeatably generates passwords for them
@@ -20,22 +20,25 @@ package net.sf.pswgendroid;
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-import android.app.Activity;
-import android.os.Bundle;
-
 /**
  * <p>
- * Diese Activity stellt einen About-Dialog dar, der z.B. die Lizenz anzeigt.
+ * Zur möglichst einfachen Realisierung von Fachfehlern werden diese als Instanzen dieser Klasse und damit als
+ * RuntimeException geworfen. Einziger Zweck ist es, einen Fehlertext zur Oberfläche durchzureichen. Ein
+ * tolles Konzept ist das nicht, funktioniert aber.
  * </p>
  * <p>
- * Copyright (C) 2014 Uwe Damken
+ * ACHTUNG: Diese Klasse ist für PswGen und PswGenDroid identisch, sprich kopiert.
+ * </p>
+ * <p>
+ * Copyright (C) 2005-2015 Uwe Damken
  * </p>
  */
-public class AboutActivity extends Activity {
+public class DomainException extends RuntimeException {
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_about);
+	private static final long serialVersionUID = 7931546922671727841L;
+
+	public DomainException(String arg0) {
+		super(arg0);
 	}
+
 }
