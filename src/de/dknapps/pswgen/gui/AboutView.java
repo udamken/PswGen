@@ -4,7 +4,7 @@ package de.dknapps.pswgen.gui;
  PswGen - Manages your websites and repeatably generates passwords for them
  PswGenDroid - Generates your passwords managed by PswGen on your mobile  
 
- Copyright (C) 2005-2015 Uwe Damken
+ Copyright (C) 2005-2016 Uwe Damken
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@ import de.dknapps.pswgen.util.ImageHelper;
  * Dies ist die View des About-Dialogs.
  * </p>
  * <p>
- * Copyright (C) 2005-2013 Uwe Damken
+ * Copyright (C) 2005-2016 Uwe Damken
  * </p>
  */
 public class AboutView extends BaseView {

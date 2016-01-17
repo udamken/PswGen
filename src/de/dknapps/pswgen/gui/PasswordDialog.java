@@ -21,7 +21,7 @@ import de.dknapps.pswgen.gui.base.WidgetFactory;
  * Dies ist die View der Passwortanzeige von PswGen.
  * </p>
  * <p>
- * Copyright (C) 2005-2015 Uwe Damken
+ * Copyright (C) 2005-2016 Uwe Damken
  * </p>
  */
 public class PasswordDialog extends BaseDialog {
