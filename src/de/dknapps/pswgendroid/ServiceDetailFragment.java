@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import de.dknapps.pswgen.model.ServiceInfo;
 import de.dknapps.pswgen.util.PasswordFactory;
-import de.dknapps.pswgendroid.R;
 
 /**
  * <p>
@@ -53,7 +52,6 @@ public class ServiceDetailFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 	}
 
 	@Override

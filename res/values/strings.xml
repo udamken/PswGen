@@ -10,12 +10,15 @@
     
     <!-- StartupActiviy -->
     <string name="title_startup">PswGenDroid</string>
-    <string name="label_import_filepath">Dateipfad</string>
-    <string name="button_import_services">Importieren</string>
+    <string name="label_filepath">Dateipfad</string>
     <string name="button_open_services">Öffnen</string>
     <string name="button_open_help">Hilfe</string>
     <string name="help_url">https://github.com/udamken/PswGenDroid/wiki</string>
     <string name="button_open_about">Über PswGenDroid</string>
+    
+    <!-- Einstellungen (ohne Preferences-Dialog) -->
+    <string name="preferences_filename">preferences</string>
+    <string name="preference_filepath">filepath</string>
 
     <!-- PassphraseDialog -->
     <string name="title_passphrase">Dienstedatei öffnen</string>
