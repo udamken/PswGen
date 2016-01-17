@@ -10,7 +10,7 @@ import de.dknapps.pswgen.util.EmptyHelper;
  * ACHTUNG: Diese Klasse ist für PswGen und PswGenDroid fast (letzteres ohne JAXB) identisch, sprich kopiert.
  * </p>
  * <p>
- * Copyright (C) 2005-2015 Uwe Damken
+ * Copyright (C) 2005-2016 Uwe Damken
  * </p>
  */
 public class ServiceInfo {
