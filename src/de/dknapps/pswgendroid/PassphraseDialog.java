@@ -29,15 +29,15 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import de.dknapps.pswgen.util.Constants;
-import de.dknapps.pswgendroid.R;
 
 /**
  * <p>
@@ -66,6 +66,9 @@ public class PassphraseDialog extends DialogFragment {
 		 */
 		public void onClickPassphraseDialogButtonNegative();
 	}
+
+	/** Das Argument zur Übergabe des Dateipfades vom Start zum PassphraseDialog */
+	public static final String ARG_ITEM_ID = "item_id";
 
 	/** Die View für die Eingabe der Passphrase */
 	private EditText editTextPassphrase;
@@ -116,15 +119,17 @@ public class PassphraseDialog extends DialogFragment {
 
 					@Override
 					public void onClick(View view) {
+						SharedPreferences prefs = getActivity().getSharedPreferences(
+								getString(R.string.preferences_filename), Context.MODE_PRIVATE);
+						String filepath = prefs.getString(getString(R.string.preference_filepath), null);
 						try {
-							FileInputStream input = getActivity().openFileInput(Constants.SERVICES_FILENAME);
+							FileInputStream input = new FileInputStream(filepath);
 							String passphrase = editTextPassphrase.getText().toString();
 							PswGenAdapter.loadServiceInfoList(input, passphrase);
 							passphraseDialog.dismiss(); // Nur wenn alles okay ist, Dialog schließen ...
 							listener.onClickPassphraseDialogButtonPositive(); // ... und weitermelden
 						} catch (FileNotFoundException e) {
-							String msg = MessageFormat.format(getString(R.string.file_missing),
-									Constants.SERVICES_FILENAME);
+							String msg = MessageFormat.format(getString(R.string.file_missing), filepath);
 							Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
 						} catch (Exception e) {
 							PswGenAdapter.handleThrowable(getActivity(), e);

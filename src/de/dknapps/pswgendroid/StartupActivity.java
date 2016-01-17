@@ -26,21 +26,21 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.MessageFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 import de.dknapps.pswgen.util.Constants;
 
 /**
@@ -64,11 +64,14 @@ public class StartupActivity extends Activity implements PassphraseDialog.Listen
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_startup);
-		EditText editImportFilepath = (EditText) findViewById(R.id.import_filepath);
+		EditText editFilepath = (EditText) findViewById(R.id.filepath);
 		// Das ist auf dem Samsung S4 mini /storage/emulated/0/Download
-		String defaultImportFilepath = Environment.getExternalStorageDirectory().getAbsolutePath()
-				+ File.separator + "Download" + File.separator + Constants.SERVICES_FILENAME;
-		editImportFilepath.setText(defaultImportFilepath);
+		String defaultFilepath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator
+				+ "Download" + File.separator + Constants.SERVICES_FILENAME;
+		SharedPreferences prefs = getSharedPreferences(getString(R.string.preferences_filename),
+				Context.MODE_PRIVATE);
+		String filepath = prefs.getString(getString(R.string.preference_filepath), defaultFilepath);
+		editFilepath.setText(filepath);
 		// Manche Intents, und so auch der SCREEN_OFF-Intent müssen im Code registriert werden, eine Angabe in
 		// AndroidManifest.xml wäre wirklungslos. Nähere Informationen dazu finden sich in folgenden Links:
 		// http://stackoverflow.com/questions/3651772/main-difference-between-manifest-and-programmatic-registering-of-broadcastreceiv
@@ -86,36 +89,19 @@ public class StartupActivity extends Activity implements PassphraseDialog.Listen
 	}
 
 	/**
-	 * Importiert die Datei mit den Diensten von einem externen Speicher in den anwendungsspezifischen
-	 * Speicherbereich, bzw. in den Bereich, der dem Zertifikat dieser Anwendung zugeordnet ist.
-	 */
-	public void onClickButtonImportServices(final View buttonImportServices) {
-		EditText editImportFilepath = (EditText) findViewById(R.id.import_filepath);
-		String importFilepath = editImportFilepath.getText().toString();
-		try {
-			File importFile = new File(importFilepath);
-			if (importFile.exists()) {
-				deleteFile(Constants.SERVICES_FILENAME); // Bisherige Datei kommentarlos löschen
-				FileOutputStream out = openFileOutput(Constants.SERVICES_FILENAME, MODE_PRIVATE);
-				copyFile(importFile, out);
-				importFile.delete();
-				String msg = MessageFormat.format(getString(R.string.file_imported), importFile.getPath(),
-						Constants.SERVICES_FILENAME);
-				Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
-			} else {
-				String msg = MessageFormat.format(getString(R.string.file_missing), importFile.getPath());
-				Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
-			}
-		} catch (Exception e) {
-			PswGenAdapter.handleThrowable(this, e);
-		}
-	}
-
-	/**
 	 * Fragt die Passphrase über einen Dialog ab, lädt die Dienste und verifiziert die Passphrase. Danach wird
 	 * onPassphraseDialogPositive() oder onPassphraseDialogNegative() aufgerufen.
 	 */
 	public void onClickButtonOpenServices(final View buttonOpenServices) {
+		EditText editFilepath = (EditText) findViewById(R.id.filepath);
+		String filepath = editFilepath.getText().toString();
+		// Dateipfad direkt speichern statt eines Einstellungsdialogs
+		SharedPreferences prefs = getSharedPreferences(getString(R.string.preferences_filename),
+				Context.MODE_PRIVATE);
+		SharedPreferences.Editor editor = prefs.edit();
+		editor.putString(getString(R.string.preference_filepath), filepath);
+		editor.commit();
+		// Dann den Dialog zur Passphrase-Eingabe öffnen
 		DialogFragment passphraseDialog = new PassphraseDialog();
 		passphraseDialog.show(getFragmentManager(), "passphrase_dialog");
 	}
