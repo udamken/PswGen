@@ -28,7 +28,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.SearchView;
-import de.dknapps.pswgendroid.R;
 
 /**
  * <p>
@@ -49,8 +48,8 @@ import de.dknapps.pswgendroid.R;
  * Copyright (C) 2014-2015 Uwe Damken
  * </p>
  */
-public class ServiceListActivity extends FragmentActivity implements ServiceListFragment.Listener,
-		PassphraseDialog.Listener {
+public class ServiceListActivity extends FragmentActivity
+		implements ServiceListFragment.Listener, PassphraseDialog.Listener {
 
 	/** Gibt an, ob Liste und Details gleichzeitig angezeigt werden (bei großen Bildschirmen) */
 	private boolean inTwoPaneMode;
@@ -65,8 +64,8 @@ public class ServiceListActivity extends FragmentActivity implements ServiceList
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_service_list);
-		serviceListFragment = (ServiceListFragment) getSupportFragmentManager().findFragmentById(
-				R.id.service_list);
+		serviceListFragment = (ServiceListFragment) getSupportFragmentManager()
+				.findFragmentById(R.id.service_list);
 		if (findViewById(R.id.service_detail_container) != null) {
 			// Den Detail-Containter gibt es nur bei großen Bildschirmen (res/values-large,
 			// res/values-sw600dp), dann werden Liste und Details gleichzeitig angezeigt.
@@ -83,7 +82,7 @@ public class ServiceListActivity extends FragmentActivity implements ServiceList
 	@Override
 	public void onItemSelected(String id) {
 		if (inTwoPaneMode) {
-			// Bei gleichzeitiger Anzeige von Liste und Details die Dateils über eine
+			// Bei gleichzeitiger Anzeige von Liste und Details die Details über eine
 			// Fragment-Manager-Transaktion einblenden.
 			Bundle arguments = new Bundle();
 			arguments.putString(ServiceDetailFragment.ARG_ITEM_ID, id);

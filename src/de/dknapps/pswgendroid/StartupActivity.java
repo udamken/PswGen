@@ -42,7 +42,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 import de.dknapps.pswgen.util.Constants;
-import de.dknapps.pswgendroid.R;
 
 /**
  * <p>
@@ -114,7 +113,7 @@ public class StartupActivity extends Activity implements PassphraseDialog.Listen
 
 	/**
 	 * Fragt die Passphrase über einen Dialog ab, lädt die Dienste und verifiziert die Passphrase. Danach wird
-	 * onPassphraseDialogPositiveClick() oder onPassphraseDialogNegativeClick() aufgerufen.
+	 * onPassphraseDialogPositive() oder onPassphraseDialogNegative() aufgerufen.
 	 */
 	public void onClickButtonOpenServices(final View buttonOpenServices) {
 		DialogFragment passphraseDialog = new PassphraseDialog();
