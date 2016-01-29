@@ -22,6 +22,7 @@ package de.dknapps.pswgendroid;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.webkit.WebView;
 
 /**
  * <p>
@@ -37,5 +38,9 @@ public class AboutActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_about);
+		WebView myTextview;
+
+		myTextview = (WebView) findViewById(R.id.about_apache_license_text);
+		myTextview.loadUrl(getString(R.string.about_apache_license_file_url));
 	}
 }

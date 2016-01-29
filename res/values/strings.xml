@@ -1,80 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- AndroidManifest -->
-    <string name="app_name">PswGenDroid</string>
+	<!-- AndroidManifest -->
+	<string name="app_name">PswGenDroid</string>
 
 	<!-- Allgemeines -->
-    <string name="button_cancel">Abbrechen</string>
-    <string name="button_ok">OK</string>
-    
-    <!-- StartupActiviy -->
-    <string name="title_startup">PswGenDroid</string>
-    <string name="label_filepath">Dateipfad</string>
-    <string name="button_open_services">Öffnen</string>
-    <string name="button_open_help">Hilfe</string>
-    <string name="help_url">https://github.com/udamken/PswGenDroid/wiki</string>
-    <string name="button_open_about">Über PswGenDroid</string>
-    
-    <!-- Einstellungen (ohne Preferences-Dialog) -->
-    <string name="preferences_filename">preferences</string>
-    <string name="preference_filepath">filepath</string>
+	<string name="button_cancel">Abbrechen</string>
+	<string name="button_ok">OK</string>
 
-    <!-- PassphraseDialog -->
-    <string name="title_passphrase">Dienstedatei öffnen</string>
-    <string name="hint_passphrase">Passphrase</string>
+	<!-- StartupActiviy -->
+	<string name="title_startup">PswGenDroid</string>
+	<string name="label_filepath">Dateipfad</string>
+	<string name="button_open_services">Öffnen</string>
+	<string name="button_open_help">Hilfe</string>
+	<string name="help_url">https://github.com/udamken/PswGenDroid/wiki</string>
+	<string name="button_open_about">Über PswGenDroid</string>
 
-    <!-- ServiceListActivity -->
-    <string name="title_service_list">Gespeicherte Dienste</string>
-    <string name="search_title">Dienst suchen</string>
+	<!-- Einstellungen (ohne Preferences-Dialog) -->
+	<string name="preferences_filename">preferences</string>
+	<string name="preference_filepath">filepath</string>
 
-    <!-- ServiceDetailActivity -->
-    <string name="title_service_detail">Dienst anzeigen</string>
+	<!-- PassphraseDialog -->
+	<string name="title_passphrase">Dienstedatei öffnen</string>
+	<string name="hint_passphrase">Passphrase</string>
 
-    <!-- ServiceDetailFragment -->
-    <string name="label_additional_info">Zusatzinfos</string>
-    <string name="label_login_url">Internetseite</string>
-    <string name="label_login_info">Anmeldeinfos</string>
-    <string name="label_additional_login_info">Weitere Infos</string>
-    <string name="button_open_url">Öffnen</string>
-    <string name="button_copy_login_info">Anmeldeinfos kopieren</string>
-    <string name="button_copy_password">Passwort kopieren</string>
-    <string name="button_display_password">Passwort anzeigen</string>
+	<!-- ServiceListActivity -->
+	<string name="title_service_list">Gespeicherte Dienste</string>
+	<string name="search_title">Dienst suchen</string>
 
-    <!-- PasswordDialog -->
-    <string name="title_password">Passwort anzeigen</string>
-    <string name="label_password">Passwort</string>
-    <string name="label_password_explanation">Erläuterung</string>
-    <string name="prefix_lowercase_letters"></string>
-    <string name="prefix_uppercase_letters">Groß</string>
-    <string name="prefix_digits">Ziffer</string>
-    <string name="prefix_special_chars"></string>
+	<!-- ServiceDetailActivity -->
+	<string name="title_service_detail">Dienst anzeigen</string>
 
-    <!-- AboutActivity -->
-    <string name="title_activity_about">Über PswGenDroid</string>
-    <string name="license">PswGen - Manages your websites and repeatably generates passwords for them\n
-\nPswGenDroid - Generates your passwords managed by PswGen on your mobile\n
-\nCopyright &#169; 2005-2016 Uwe Damken\n
-\nThis program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.\n
-\nThis program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.\n
-\nYou should have received a copy of the GNU General Public License
-along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</string>
+	<!-- ServiceDetailFragment -->
+	<string name="label_additional_info">Zusatzinfos</string>
+	<string name="label_login_url">Internetseite</string>
+	<string name="label_login_info">Anmeldeinfos</string>
+	<string name="label_additional_login_info">Weitere Infos</string>
+	<string name="button_open_url">Öffnen</string>
+	<string name="button_copy_login_info">Anmeldeinfos kopieren</string>
+	<string name="button_copy_password">Passwort kopieren</string>
+	<string name="button_display_password">Passwort anzeigen</string>
 
-    <!-- DomainException -->
-    <string name="passphrase_invalid">Die Passphrase ist ungültig.</string>
-    <string name="total_character_count_exceeded">Die Anzahl der zu verteilenden Zeichen bei einer Bis-Angabe überschreitet Gesamtlänge.</string>
-    <string name="invalid_character_count">Die Anzahl der zu verteilenden Zeichen überschreitet eine Von-/Bis-Angabe oder die Gesamtlänge.</string>
-    <string name="character_or_total_character_count_missing">Bitte geben Sie (genug) Zeichen zur Generierung und eine Gesamtlänge an.</string>
-    <string name="unknown_file_format">Das Dateiformat ist unbekannt und kann mit PswGen nicht verwendet werden.</string>
-    
-    <!-- MessageFormat-Nachrichten -->
-    <string name="file_missing">&lt;{0}&gt; existiert nicht.</string>
-    <string name="file_imported">&lt;{0}&gt; nach &lt;{1}&gt; importiert.</string>
+	<!-- PasswordDialog -->
+	<string name="title_password">Passwort anzeigen</string>
+	<string name="label_password">Passwort</string>
+	<string name="label_password_explanation">Erläuterung</string>
+	<string name="prefix_lowercase_letters"></string>
+	<string name="prefix_uppercase_letters">Groß</string>
+	<string name="prefix_digits">Ziffer</string>
+	<string name="prefix_special_chars"></string>
+
+	<!-- AboutActivity -->
+	<string name="title_activity_about">Über PswGenDroid</string>
+	<string name="about_summary_pswgen_title">PswGen</string>
+	<string name="about_summary_pswgen_text">Manages your websites and repeatably generates passwords for them</string>
+	<string name="about_summary_pswgendroid_title">PswGenDroid</string>
+	<string name="about_summary_pswgendroid_text">Generates your passwords managed by PswGen on your mobile</string>
+	<string name="about_copyright">Copyright &#169; 2005-2016 Uwe Damken</string>
+	<string name="about_dknapps_de">http://dknapps.de\n<br/><a href="mailto:pswgendroid\@dknapps.de"><small>pswgendroid@dknapps.de</small></a></string>
+	<string name="about_apache_license_reference">Licensed under the Apache License, version 2.0 (copy below)</string>
+	<string name="about_apache_license_file_url">file:///android_asset/APACHE-LICENSE-2.0.html</string>
+
+	<!-- DomainException -->
+	<string name="passphrase_invalid">Die Passphrase ist ungültig.</string>
+	<string name="total_character_count_exceeded">Die Anzahl der zu verteilenden Zeichen bei einer Bis-Angabe überschreitet Gesamtlänge.</string>
+	<string name="invalid_character_count">Die Anzahl der zu verteilenden Zeichen überschreitet eine Von-/Bis-Angabe oder die Gesamtlänge.</string>
+	<string name="character_or_total_character_count_missing">Bitte geben Sie (genug) Zeichen zur Generierung und eine Gesamtlänge an.</string>
+	<string name="unknown_file_format">Das Dateiformat ist unbekannt und kann mit PswGen nicht verwendet werden.</string>
+
+	<!-- MessageFormat-Nachrichten -->
+	<string name="file_missing">&lt;{0}&gt; existiert nicht.</string>
+	<string name="file_imported">&lt;{0}&gt; nach &lt;{1}&gt; importiert.</string>
 
 </resources>
