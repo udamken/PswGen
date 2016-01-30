@@ -1,3 +1,21 @@
+/*******************************************************************************
+ * PswGen - Manages your websites and repeatably generates passwords for them
+ * PswGenDroid - Generates your passwords managed by PswGen on your mobile  
+ *
+ *     Copyright (C) 2005, 2016 Uwe Damken
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *******************************************************************************/
 package de.dknapps.pswgendroid;
 
 import android.app.Activity;
@@ -9,19 +27,6 @@ import android.widget.ListView;
 import android.widget.SearchView.OnQueryTextListener;
 import de.dknapps.pswgen.model.ServiceInfo;
 
-/**
- * <p>
- * Dieses Fragment stellt die Diensteliste dar. Auf Geräten mit großen Bildschirmen bekommt der selektierte
- * Eintrag den Status 'activated'. Dadurch wird erkennbar, welcher Eintrag in {@link ServiceDetailFragment}
- * angezeigt wird..
- * </p>
- * <p>
- * Activity-Klassen, die dieses Fragment nutzen, müssen {@link Listener} implementieren.
- * </p>
- * <p>
- * Copyright (C) 2014-2015 Uwe Damken
- * </p>
- */
 public class ServiceListFragment extends ListFragment implements OnQueryTextListener {
 
 	/** Bei Geräten mit großem Bildschirm der Key für die Serialisierung der Position des aktiven Eintrags */
@@ -92,8 +97,8 @@ public class ServiceListFragment extends ListFragment implements OnQueryTextList
 
 		// Activity-Klassen, die dieses Fragment nutzen, müssen {@link Listener} implementieren
 		if (!(activity instanceof Listener)) {
-			throw new ClassCastException(activity.getClass().getName() + " must implement "
-					+ Listener.class.getName());
+			throw new ClassCastException(
+					activity.getClass().getName() + " must implement " + Listener.class.getName());
 		}
 
 		listener = (Listener) activity;
@@ -129,8 +134,8 @@ public class ServiceListFragment extends ListFragment implements OnQueryTextList
 	 */
 	public void setActivateOnItemClick(boolean activateOnItemClick) {
 		// Im Modus CHOICE_MODE_SINGLE werden Einträge als 'activated' markiert
-		getListView().setChoiceMode(
-				activateOnItemClick ? ListView.CHOICE_MODE_SINGLE : ListView.CHOICE_MODE_NONE);
+		getListView()
+				.setChoiceMode(activateOnItemClick ? ListView.CHOICE_MODE_SINGLE : ListView.CHOICE_MODE_NONE);
 	}
 
 	private void setActivatedPosition(int position) {

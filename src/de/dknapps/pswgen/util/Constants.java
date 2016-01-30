@@ -1,24 +1,22 @@
+/*******************************************************************************
+ * PswGen - Manages your websites and repeatably generates passwords for them
+ * PswGenDroid - Generates your passwords managed by PswGen on your mobile  
+ *
+ *     Copyright (C) 2005, 2016 Uwe Damken
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *******************************************************************************/
 package de.dknapps.pswgen.util;
-
-/******************************************************************************
- PswGen - Manages your websites and repeatably generates passwords for them
- PswGenDroid - Generates your passwords managed by PswGen on your mobile  
-
- Copyright (C) 2005-2016 Uwe Damken
-
- This program is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
-
- This program is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *****************************************************************************/
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -32,9 +30,6 @@ import de.dknapps.pswgen.ApplicationPackageNameMarker;
  * </p>
  * <p>
  * ACHTUNG: Diese Klasse ist für PswGen und PswGenDroid identisch, sprich kopiert.
- * </p>
- * <p>
- * Copyright (C) 2005-2016 Uwe Damken
  * </p>
  */
 public class Constants {
@@ -52,7 +47,8 @@ public class Constants {
 	public static final String LOWEST_SUPPORTED_FILE_FORMAT_VERSION = "1.7.0";
 
 	/** Die Version dieser Anwendung */
-	public static final String APPLICATION_VERIFIER = "PswGen - Manages your websites and repeatably generates passwords for them, Copyright (C) Uwe Damken";
+	public static final String APPLICATION_VERIFIER = "PswGen - Manages your websites and repeatably generates passwords for them, Copy"
+			+ "right (C) Uwe Damken"; // String splitted "against" Eclipse Releng
 
 	/** Das Package dieser Anwendung */
 	public static final String APPLICATION_PACKAGE_NAME = ApplicationPackageNameMarker.class.getPackage()
