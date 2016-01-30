@@ -1,3 +1,21 @@
+/*******************************************************************************
+ * PswGen - Manages your websites and repeatably generates passwords for them
+ * PswGenDroid - Generates your passwords managed by PswGen on your mobile  
+ *
+ *     Copyright (C) 2005, 2016 Uwe Damken
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *******************************************************************************/
 package de.dknapps.pswgen.gui;
 
 import static de.dknapps.pswgen.util.Constants.APPLICATION_NAME;
@@ -29,16 +47,6 @@ import de.dknapps.pswgen.util.EncryptionHelper;
 import de.dknapps.pswgen.util.FileHelper;
 import de.dknapps.pswgen.util.PasswordFactory;
 
-/**
- * <p>
- * Der Controller der Anwendung. Hier werden sämtliche Dialoge gesteuert und die Anwendungsfälle
- * implementiert. Als Alternative zu der Idee, je Dialog einen Controller zu implementieren. Eventuell wird
- * die Klasse aber auch mal ein bisschen groß und die Anwendungslogik muss ausgelagert werden.
- * </p>
- * <p>
- * Copyright (C) 2005-2016 Uwe Damken
- * </p>
- */
 public class PswGenCtl extends BaseCtl {
 
 	/** Der Logger dieser Anwendung */
@@ -510,8 +518,8 @@ public class PswGenCtl extends BaseCtl {
 					JOptionPane.YES_NO_CANCEL_OPTION);
 			if (chosenOption == JOptionPane.YES_OPTION) { // Geänderte Werte speichern?
 				storeService(mainView);
-			} else
-				if (chosenOption == JOptionPane.CANCEL_OPTION || chosenOption == JOptionPane.CLOSED_OPTION) {
+			} else if (chosenOption == JOptionPane.CANCEL_OPTION
+					|| chosenOption == JOptionPane.CLOSED_OPTION) {
 				return true;
 			}
 		}
