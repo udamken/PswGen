@@ -57,8 +57,8 @@ public class Constants {
 	/** Resource Name des Icons der Anwendung */
 	public static final String APPLICATION_IMAGE_RESOURCE_NAME = "de/dknapps/pswgen/PswGen.png";
 
-	/** Resource Name des Images für den About-Dialog */
-	public static final String ABOUT_IMAGE_RESOURCE_NAME = "de/dknapps/pswgen/PswGenSplash.png";
+	/** URL zur HTML-Datei für den About-Dialog */
+	public static final String ABOUT_DIALOG_HTML_FILENAME = "about.html";
 
 	/** Texte der anwendungsspezifischen Meldungen */
 
