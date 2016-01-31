@@ -19,8 +19,10 @@
 package de.dknapps.pswgendroid;
 
 import android.app.Activity;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.webkit.WebView;
+import android.widget.TextView;
 
 /**
  * <p>
@@ -33,9 +35,15 @@ public class AboutActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_about);
-		WebView myTextview;
-
-		myTextview = (WebView) findViewById(R.id.about_apache_license_text);
-		myTextview.loadUrl(getString(R.string.about_apache_license_file_url));
+		TextView textViewAboutPswGenDroidTitle = (TextView) findViewById(R.id.about_pswgendroid_title);
+		String versionName = "Version N/A";
+		try {
+			versionName = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+		} catch (NameNotFoundException e) {
+			// Schweigend ignorieren
+		}
+		textViewAboutPswGenDroidTitle.setText(getText(R.string.app_name) + " " + versionName);
+		WebView webViewAboutApacheLicenseText = (WebView) findViewById(R.id.about_apache_license_text);
+		webViewAboutApacheLicenseText.loadUrl(getString(R.string.about_apache_license_file_url));
 	}
 }
