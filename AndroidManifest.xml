@@ -51,23 +51,32 @@
         
         <activity
             android:name="de.dknapps.pswgendroid.ServiceListActivity"
-            android:label="@string/title_service_list" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="de.dknapps.pswgendroid.StartupActivity" />
+            android:label="@string/title_service_list"
+			android:parentActivityName="de.dknapps.pswgendroid.StartupActivity" >
+        	<!-- Parent activity meta-data to support 4.0 and lower -->
+<!--         	<meta-data -->
+<!--                 android:name="android.support.PARENT_ACTIVITY" -->
+<!--                 android:value="de.dknapps.pswgendroid.StartupActivity" /> -->
         </activity>
         
         <activity
             android:name="de.dknapps.pswgendroid.ServiceDetailActivity"
-            android:label="@string/title_service_detail" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="de.dknapps.pswgendroid.ServiceListActivity" />
+            android:label="@string/title_service_detail"
+			android:parentActivityName="de.dknapps.pswgendroid.ServiceListActivity" >
+			<!-- Parent activity meta-data to support 4.0 and lower -->
+<!--         	<meta-data -->
+<!--                 android:name="android.support.PARENT_ACTIVITY" -->
+<!--                 android:value="de.dknapps.pswgendroid.ServiceListActivity" /> -->
         </activity>
         
         <activity
             android:name="de.dknapps.pswgendroid.AboutActivity"
-            android:label="@string/title_activity_about" >
+            android:label="@string/title_activity_about"
+			android:parentActivityName="de.dknapps.pswgendroid.StartupActivity" >
+			<!-- Parent activity meta-data to support 4.0 and lower -->
+<!-- 			<meta-data -->
+<!-- 				android:name="android.support.PARENT_ACTIVITY" -->
+<!-- 				android:value="de.dknapps.pswgendroid.StartupActivity" /> -->
         </activity>
 
 		<!--
