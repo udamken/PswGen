@@ -53,11 +53,6 @@
 		</jar>
 	</target>
 
-	<!--
-		ACHTUNG: PswGenSplash.bmp muss von GIMP aus PswGenSplash.xcf mit Kompatibilitätsoption
-		"Farbraum nicht schreiben" und 24-Bit exportiert werden, sonst startet das von launch4j
-		erzeugte exe-File nicht.
-	-->
 	<target name="createExe">
 		<launch4j configFile="launch4j.xml" />
 	</target>
@@ -72,7 +67,7 @@
 				<include name="*.jar" />
 			</fileset>
 			<fileset dir=".">
-				<include name="LICENSE.txt" />
+				<include name="LICENSE" />
 			</fileset>
 		</zip>
 	</target>
