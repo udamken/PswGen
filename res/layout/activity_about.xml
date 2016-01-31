@@ -55,13 +55,13 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:gravity="center"
-			android:text="@string/about_summary_pswgen_title" />
+			android:text="@string/about_pswgen_title" />
 
 		<TextView
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:gravity="center"
-			android:text="@string/about_summary_pswgen_text"
+			android:text="@string/about_pswgen_text"
 			android:textSize="12sp" />
 
 		<View
@@ -69,16 +69,16 @@
 			android:layout_height="8sp" />
 
 		<TextView
+			android:id="@+id/about_pswgendroid_title"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:gravity="center"
-			android:text="@string/about_summary_pswgendroid_title" />
+			android:gravity="center" />
 
 		<TextView
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:gravity="center"
-			android:text="@string/about_summary_pswgendroid_text"
+			android:text="@string/about_pswgendroid_text"
 			android:textSize="12sp" />
 
 		<TextView

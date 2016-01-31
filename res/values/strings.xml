@@ -71,11 +71,10 @@
 
 	<!-- AboutActivity -->
 	<string name="title_activity_about">Über PswGenDroid</string>
-	<string name="about_summary_pswgen_title">PswGen</string>
-	<string name="about_summary_pswgen_text">Manages your websites and repeatably generates passwords for them</string>
-	<string name="about_summary_pswgendroid_title">PswGenDroid</string>
-	<string name="about_summary_pswgendroid_text">Generates your passwords managed by PswGen on your mobile</string>
-	<string name="about_copyright">Copyright &#169; 2005-2016 Uwe Damken</string>
+	<string name="about_pswgen_title">PswGen</string>
+	<string name="about_pswgen_text">Manages your websites and repeatably generates passwords for them</string>
+	<string name="about_pswgendroid_text">Generates your passwords managed by PswGen on your mobile</string>
+	<string name="about_copyright">Copyright &#169; 2005, 2016 Uwe Damken</string>
 	<string name="about_dknapps_de">http://dknapps.de\n<br/><a href="mailto:pswgendroid\@dknapps.de"><small>pswgendroid@dknapps.de</small></a></string>
 	<string name="about_apache_license_reference">Licensed under the Apache License, version 2.0 (copy below)</string>
 	<string name="about_apache_license_file_url">file:///android_asset/APACHE-LICENSE-2.0.html</string>
