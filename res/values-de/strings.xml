@@ -24,53 +24,53 @@
 	<string name="app_name">PswGenDroid</string>
 
 	<!-- Allgemeines -->
-	<string name="button_cancel">Cancel</string>
+	<string name="button_cancel">Abbrechen</string>
 	<string name="button_ok">OK</string>
 
 	<!-- StartupActiviy -->
 	<string name="title_startup">PswGenDroid</string>
-	<string name="label_filepath">Filepath</string>
-	<string name="button_open_services">Open</string>
-	<string name="button_open_help">Help</string>
+	<string name="label_filepath">Dateipfad</string>
+	<string name="button_open_services">Öffnen</string>
+	<string name="button_open_help">Hilfe</string>
 	<string name="help_url">https://github.com/udamken/PswGenDroid/wiki</string>
-	<string name="button_open_about">About PswGenDroid</string>
+	<string name="button_open_about">Über PswGenDroid</string>
 
 	<!-- Einstellungen (ohne Preferences-Dialog) -->
 	<string name="preferences_filename">preferences</string>
 	<string name="preference_filepath">filepath</string>
 
 	<!-- PassphraseDialog -->
-	<string name="title_passphrase">Open Service File</string>
+	<string name="title_passphrase">Dienstedatei öffnen</string>
 	<string name="hint_passphrase">Passphrase</string>
 
 	<!-- ServiceListActivity -->
-	<string name="title_service_list">Stored Services</string>
-	<string name="search_title">Search Service</string>
+	<string name="title_service_list">Gespeicherte Dienste</string>
+	<string name="search_title">Dienst suchen</string>
 
 	<!-- ServiceDetailActivity -->
-	<string name="title_service_detail">Service Details</string>
+	<string name="title_service_detail">Dienst Details</string>
 
 	<!-- ServiceDetailFragment -->
-	<string name="label_additional_info">Addt\'l Information</string>
-	<string name="label_login_url">Website</string>
-	<string name="label_login_info">Login Information</string>
-	<string name="label_additional_login_info">Addt\'l Login Information</string>
-	<string name="button_open_url">Open</string>
-	<string name="button_copy_login_info">Copy Login Information</string>
-	<string name="button_copy_password">Copy Password</string>
-	<string name="button_display_password">Display Password</string>
+	<string name="label_additional_info">Zusatzinfos</string>
+	<string name="label_login_url">Internetseite</string>
+	<string name="label_login_info">Anmeldeinfos</string>
+	<string name="label_additional_login_info">Weitere Infos</string>
+	<string name="button_open_url">Öffnen</string>
+	<string name="button_copy_login_info">Anmeldeinfos kopieren</string>
+	<string name="button_copy_password">Passwort kopieren</string>
+	<string name="button_display_password">Passwort anzeigen</string>
 
 	<!-- PasswordDialog -->
-	<string name="title_password">Password</string>
-	<string name="label_password">Password</string>
-	<string name="label_password_explanation">Explanation</string>
+	<string name="title_password">Passwort</string>
+	<string name="label_password">Passwort</string>
+	<string name="label_password_explanation">Erläuterung</string>
 	<string name="prefix_lowercase_letters"></string>
-	<string name="prefix_uppercase_letters">Capital</string>
-	<string name="prefix_digits">Digit</string>
+	<string name="prefix_uppercase_letters">Groß</string>
+	<string name="prefix_digits">Ziffer</string>
 	<string name="prefix_special_chars"></string>
 
 	<!-- AboutActivity -->
-	<string name="title_activity_about">About PswGenDroid</string>
+	<string name="title_activity_about">Über PswGenDroid</string>
 	<string name="about_pswgen_title">PswGen</string>
 	<string name="about_pswgen_text">Manages your websites and repeatably generates passwords for them</string>
 	<string name="about_pswgendroid_text">Generates your passwords managed by PswGen on your mobile</string>
@@ -80,13 +80,13 @@
 	<string name="about_apache_license_file_url">file:///android_asset/APACHE-LICENSE-2.0.html</string>
 
 	<!-- DomainException -->
-	<string name="passphrase_invalid">Passphrase is invalid.</string>
-	<string name="total_character_count_exceeded">Character count with given end exceeds total character count.</string>
-	<string name="invalid_character_count">Character count exceeds start/end or total character count.</string>
-	<string name="character_or_total_character_count_missing">Please specify (enough) characters and total character count to generate password.</string>
-	<string name="unknown_file_format">File format is unknown and not usable with PswGenDroid.</string>
+	<string name="passphrase_invalid">Die Passphrase ist ungültig.</string>
+	<string name="total_character_count_exceeded">Die Anzahl der zu verteilenden Zeichen bei einer Bis-Angabe überschreitet Gesamtlänge.</string>
+	<string name="invalid_character_count">Die Anzahl der zu verteilenden Zeichen überschreitet eine Von-/Bis-Angabe oder die Gesamtlänge.</string>
+	<string name="character_or_total_character_count_missing">Bitte geben Sie (genug) Zeichen zur Generierung und eine Gesamtlänge an.</string>
+	<string name="unknown_file_format">Das Dateiformat ist unbekannt und kann mit PswGenDroid nicht verwendet werden.</string>
 
 	<!-- MessageFormat-Nachrichten -->
-	<string name="file_missing">&lt;{0}&gt; does not exist.</string>
+	<string name="file_missing">&lt;{0}&gt; existiert nicht.</string>
 
 </resources>
