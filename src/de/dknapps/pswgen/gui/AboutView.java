@@ -18,13 +18,22 @@
  *******************************************************************************/
 package de.dknapps.pswgen.gui;
 
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import java.awt.Desktop;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 
+import javax.swing.JEditorPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
+
+import de.dknapps.pswgen.ApplicationPackageNameMarker;
 import de.dknapps.pswgen.gui.base.BaseCtl;
 import de.dknapps.pswgen.gui.base.BaseView;
+import de.dknapps.pswgen.gui.base.WidgetFactory;
 import de.dknapps.pswgen.util.Constants;
-import de.dknapps.pswgen.util.ImageHelper;
 
 /**
  * <p>
@@ -61,10 +70,34 @@ public class AboutView extends BaseView {
 	 */
 	@Override
 	public JPanel createContentPane() {
-		JPanel panel = new JPanel();
-		JLabel labelSplashImage = new JLabel(
-				ImageHelper.getInstance().getImageIcon(Constants.ABOUT_IMAGE_RESOURCE_NAME));
-		panel.add(labelSplashImage);
+		WidgetFactory wf = WidgetFactory.getInstance();
+		JPanel panel = wf.getContentPane("PanelAboutPswGen");
+		// JPanel panel = new JPanel();
+		JEditorPane aboutPswGenEditorPane = new JEditorPane();
+		aboutPswGenEditorPane.setEditable(false);
+		aboutPswGenEditorPane.setEditorKit(JEditorPane.createEditorKitForContentType("text/html"));
+		aboutPswGenEditorPane.addHyperlinkListener(new HyperlinkListener() {
+			public void hyperlinkUpdate(HyperlinkEvent event) {
+				if (event.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+					try {
+						Desktop.getDesktop().browse(event.getURL().toURI());
+					} catch (IOException | URISyntaxException e) {
+						throw new RuntimeException("Could not load HTML file for AboutView", e);
+					}
+				}
+			}
+		});
+		URL aboutURL = ApplicationPackageNameMarker.class.getResource(Constants.ABOUT_DIALOG_HTML_FILENAME);
+		try {
+			aboutPswGenEditorPane.setPage(aboutURL);
+		} catch (IOException e) {
+			throw new RuntimeException("Could not load HTML file for AboutView", e);
+		}
+
+		// Put the editor pane in a scroll pane.
+		JScrollPane aboutPswGenScrollPane = wf.getScrollPane("ScrollPaneAboutPswGen", aboutPswGenEditorPane);
+		aboutPswGenScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		panel.add(aboutPswGenScrollPane);
 		return panel;
 	}
 }
