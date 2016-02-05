@@ -125,17 +125,17 @@ public class ServiceListActivity extends FragmentActivity
 	}
 
 	/**
-	 * Eingehende On-Click-Events aus dem PassphraseDialog an das {@link ServiceDetailFragment} übergeben.
+	 * Eingehende On-Click-Events aus dem PassphraseDialog an das {@link ServiceListFragment} übergeben.
 	 */
 
 	@Override
 	public void onClickPassphraseDialogButtonPositive() {
-		serviceDetailFragment.onClickPassphraseDialogButtonPositive();
+		serviceListFragment.onClickPassphraseDialogButtonPositive();
 	}
 
 	@Override
 	public void onClickPassphraseDialogButtonNegative() {
-		serviceDetailFragment.onClickPassphraseDialogButtonNegative();
+		serviceListFragment.onClickPassphraseDialogButtonNegative();
 	}
 
 }

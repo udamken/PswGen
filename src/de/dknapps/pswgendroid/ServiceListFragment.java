@@ -18,7 +18,12 @@
  *******************************************************************************/
 package de.dknapps.pswgendroid;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
+import android.app.DialogFragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.View;
@@ -74,11 +79,17 @@ public class ServiceListFragment extends ListFragment implements OnQueryTextList
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setUpListAdapter(PswGenAdapter.getServicesAsList());
+	}
 
-		arrayAdapter = new ArrayAdapter<ServiceInfo>(getActivity(),
-				android.R.layout.simple_list_item_activated_1, android.R.id.text1,
-				PswGenAdapter.getServicesAsList());
-		setListAdapter(arrayAdapter);
+	@Override
+	public void onResume() {
+		if (!PswGenAdapter.isServiceInfoListLoaded()) { // Zwischendurch SCREEN_OFF gewesen?
+			setUpListAdapter(new ArrayList<ServiceInfo>()); // die Liste darf nicht mehr gezeigt werden
+			DialogFragment passphraseDialog = new PassphraseDialog();
+			passphraseDialog.show(getActivity().getFragmentManager(), "passphrase_dialog");
+		}
+		super.onResume();
 	}
 
 	@Override
@@ -156,6 +167,31 @@ public class ServiceListFragment extends ListFragment implements OnQueryTextList
 	@Override
 	public boolean onQueryTextSubmit(String query) {
 		return false; // die Aktion wurde nicht behandelt, es ist der Defaultmechnismus aufzurufen
+	}
+
+	/**
+	 * Liste (erneut) anzeigen.
+	 */
+	public void onClickPassphraseDialogButtonPositive() {
+		setUpListAdapter(PswGenAdapter.getServicesAsList());
+	}
+
+	/**
+	 * Die Passphrase hätte erneut eingegeben werden müssen, das ist aber nicht erfolgt, darum gehts zurück
+	 * zum Anfang, zur StartupActivity.
+	 */
+	public void onClickPassphraseDialogButtonNegative() {
+		Intent startupIntent = new Intent(getActivity(), StartupActivity.class);
+		startActivity(startupIntent);
+	}
+
+	/**
+	 * Erstellt den filterbaren Adapter zur Liste der Dienste.
+	 */
+	private void setUpListAdapter(List<ServiceInfo> serviceInfoList) {
+		arrayAdapter = new ArrayAdapter<ServiceInfo>(getActivity(),
+				android.R.layout.simple_list_item_activated_1, android.R.id.text1, serviceInfoList);
+		setListAdapter(arrayAdapter);
 	}
 
 }
