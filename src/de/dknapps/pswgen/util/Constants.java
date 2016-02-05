@@ -38,7 +38,7 @@ public class Constants {
 	public static final String APPLICATION_NAME = "PswGen";
 
 	/** Die Version dieser Anwendung */
-	public static final String APPLICATION_VERSION = "1.7.6";
+	public static final String APPLICATION_VERSION = "1.7.7";
 
 	/** Die Version dieser Anwendung, ab der ein neues Dateiformat benutzt wird */
 	public static final String ADVANCED_FILE_FORMAT_VERSION = "1.7.4";
@@ -55,7 +55,7 @@ public class Constants {
 			.getName();
 
 	/** Resource Name des Icons der Anwendung */
-	public static final String APPLICATION_IMAGE_RESOURCE_NAME = "de/dknapps/pswgen/PswGen.png";
+	public static final String APPLICATION_IMAGE_RESOURCE_NAME = "de/dknapps/pswgen/PswGen.ico";
 
 	/** URL zur HTML-Datei für den About-Dialog */
 	public static final String ABOUT_DIALOG_HTML_FILENAME = "about.html";
