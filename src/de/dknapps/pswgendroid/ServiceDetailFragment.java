@@ -64,7 +64,6 @@ public class ServiceDetailFragment extends Fragment {
 
 	@Override
 	public void onResume() {
-		super.onResume();
 		if (!PswGenAdapter.isServiceInfoListLoaded()) { // Zwischendurch SCREEN_OFF gewesen?
 			currentServiceInfo = null; // der aktuelle Dienst darf nicht mehr gezeigt werden
 			showCurrentServiceInfo(); // Anzeigefelder des Dienstes löschen
@@ -73,6 +72,7 @@ public class ServiceDetailFragment extends Fragment {
 		} else {
 			loadAndShowCurrentServiceInfo(); // Dienst gemäß des übergebenen Arguments laden
 		}
+		super.onResume();
 	}
 
 	@Override
@@ -168,8 +168,8 @@ public class ServiceDetailFragment extends Fragment {
 	 * zum Anfang, zur StartupActivity.
 	 */
 	public void onClickPassphraseDialogButtonNegative() {
-		Intent aboutIntent = new Intent(getActivity(), StartupActivity.class);
-		startActivity(aboutIntent);
+		Intent startupIntent = new Intent(getActivity(), StartupActivity.class);
+		startActivity(startupIntent);
 	}
 
 	/**
