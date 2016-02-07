@@ -65,10 +65,14 @@ public class ServiceDetailFragment extends Fragment {
 	@Override
 	public void onResume() {
 		if (!PswGenAdapter.isServiceInfoListLoaded()) { // Zwischendurch SCREEN_OFF gewesen?
-			currentServiceInfo = null; // der aktuelle Dienst darf nicht mehr gezeigt werden
-			showCurrentServiceInfo(); // Anzeigefelder des Dienstes löschen
-			DialogFragment passphraseDialog = new PassphraseDialog();
-			passphraseDialog.show(getActivity().getFragmentManager(), "passphrase_dialog");
+			showEmptyCurrentServiceInfo(); // Anzeigefelder des Dienstes löschen
+			if (getActivity() instanceof ServiceDetailActivity) {
+				// Wenn die aufrufende Activity keine ServiceDetailActivity ist, dann ist es
+				// die ServiceListActivity und in dem Fall soll nur dort die Abfrage der
+				// Passphrase erfolgen, damit das nicht zweimal (hier und dort) geschieht
+				DialogFragment passphraseDialog = new PassphraseDialog();
+				passphraseDialog.show(getActivity().getFragmentManager(), "passphrase_dialog");
+			}
 		} else {
 			loadAndShowCurrentServiceInfo(); // Dienst gemäß des übergebenen Arguments laden
 		}
@@ -160,7 +164,7 @@ public class ServiceDetailFragment extends Fragment {
 	 * Dienst (erneut) raussuchen und anzeigen.
 	 */
 	public void onClickPassphraseDialogButtonPositive() {
-		loadAndShowCurrentServiceInfo();
+		showCurrentServiceInfo();
 	}
 
 	/**
@@ -170,6 +174,13 @@ public class ServiceDetailFragment extends Fragment {
 	public void onClickPassphraseDialogButtonNegative() {
 		Intent startupIntent = new Intent(getActivity(), StartupActivity.class);
 		startActivity(startupIntent);
+	}
+
+	/**
+	 * Liefert true, wenn gerade ein Dienst angezeigt wird.
+	 */
+	public boolean hasCurrentServiceInfo() {
+		return currentServiceInfo != null;
 	}
 
 	/**
@@ -187,19 +198,26 @@ public class ServiceDetailFragment extends Fragment {
 	 * Zeigt den aktuellen Dienst an, wenn vorhanden, oder löscht die Anzeigefelder.
 	 */
 	private void showCurrentServiceInfo() {
-		if (currentServiceInfo == null) {
-			textViewServiceAbbreviation.setText(null);
-			textViewAdditionalInfo.setText(null);
-			textViewLoginUrl.setText(null);
-			textViewLoginInfo.setText(null);
-			textViewAdditionalLoginInfo.setText(null);
-		} else {
+		if (hasCurrentServiceInfo()) {
 			textViewServiceAbbreviation.setText(currentServiceInfo.getServiceAbbreviation());
 			textViewAdditionalInfo.setText(currentServiceInfo.getAdditionalInfo());
 			textViewLoginUrl.setText(currentServiceInfo.getLoginUrl());
 			textViewLoginInfo.setText(currentServiceInfo.getLoginInfo());
 			textViewAdditionalLoginInfo.setText(currentServiceInfo.getAdditionalLoginInfo());
+		} else {
+			showEmptyCurrentServiceInfo();
 		}
+	}
+
+	/**
+	 * Löscht die Anzeigefelder.
+	 */
+	private void showEmptyCurrentServiceInfo() {
+		textViewServiceAbbreviation.setText(null);
+		textViewAdditionalInfo.setText(null);
+		textViewLoginUrl.setText(null);
+		textViewLoginInfo.setText(null);
+		textViewAdditionalLoginInfo.setText(null);
 	}
 
 	/**

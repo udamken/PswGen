@@ -134,10 +134,17 @@ public class ServiceListFragment extends ListFragment implements OnQueryTextList
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		if (activatedPosition != ListView.INVALID_POSITION) {
+		if (hasActivatedPosition()) {
 			// Aktivierte Position vermerken
 			outState.putInt(STATE_ACTIVATED_POSITION, activatedPosition);
 		}
+	}
+
+	/**
+	 * Liefert true, wenn ein Dienst ausgewählt wurde.
+	 */
+	public boolean hasActivatedPosition() {
+		return activatedPosition != ListView.INVALID_POSITION;
 	}
 
 	/**
@@ -150,10 +157,10 @@ public class ServiceListFragment extends ListFragment implements OnQueryTextList
 	}
 
 	private void setActivatedPosition(int position) {
-		if (position == ListView.INVALID_POSITION) {
-			getListView().setItemChecked(activatedPosition, false);
-		} else {
+		if (hasActivatedPosition()) { // vorher schon ein Dienst ausgewählt gewesen?
 			getListView().setItemChecked(position, true);
+		} else {
+			getListView().setItemChecked(activatedPosition, false);
 		}
 		activatedPosition = position;
 	}

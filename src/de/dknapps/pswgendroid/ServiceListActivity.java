@@ -131,6 +131,18 @@ public class ServiceListActivity extends FragmentActivity
 	@Override
 	public void onClickPassphraseDialogButtonPositive() {
 		serviceListFragment.onClickPassphraseDialogButtonPositive();
+		if (areTwoPanesActive()) {
+			serviceDetailFragment.onClickPassphraseDialogButtonPositive();
+		}
+	}
+
+	/**
+	 * Liefert true, wenn sich die Anwendung im Two-Pane-Modus befindet *und* tatsächlich ein Dienst zur
+	 * Anzeige in den Details ausgewählt wurde.
+	 */
+	public boolean areTwoPanesActive() {
+		return inTwoPaneMode && serviceDetailFragment != null
+				&& serviceDetailFragment.hasCurrentServiceInfo();
 	}
 
 	@Override
