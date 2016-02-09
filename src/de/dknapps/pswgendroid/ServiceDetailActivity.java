@@ -2,7 +2,7 @@
  * PswGen - Manages your websites and repeatably generates passwords for them
  * PswGenDroid - Generates your passwords managed by PswGen on your mobile  
  *
- *     Copyright (C) 2005, 2016 Uwe Damken
+ *     Copyright (C) 2005-2016 Uwe Damken
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
