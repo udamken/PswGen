@@ -1,0 +1,173 @@
+<project
+	xmlns="http://maven.apache.org/POM/4.0.0" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+
+
+	<!-- ===== Main Information ===== -->
+
+	<parent>
+		<groupId>de.dknapps.pswgen</groupId>
+		<artifactId>pswgen-parent</artifactId>
+		<version>1.7.8-SNAPSHOT</version>
+		<relativePath>../</relativePath>
+	</parent>
+
+	<artifactId>pswgendroid</artifactId>
+	<packaging>apk</packaging>
+
+
+
+	<!-- ===== Properties ===== -->
+
+	<properties>
+		<project.properties.android.version>17</project.properties.android.version>
+		<project.properties.android.supportVersion>18.0.0</project.properties.android.supportVersion>
+	</properties>
+
+
+
+	<!-- ===== Project Information ===== -->
+
+	<name>PswGenDroid</name>
+	<description>Generates your passwords managed by PswGen on your mobile.</description>
+
+
+
+	<!-- ===== Repositories ===== -->
+
+	<repositories>
+		<repository>
+			<id>android-support-repo</id>
+			<url>file://${env.ANDROID_HOME}/extras/android/m2repository</url>
+		</repository>
+	</repositories>
+
+
+
+	<!-- ===== Dependencies ===== -->
+
+	<dependencies>
+		<dependency>
+			<groupId>com.google.android</groupId>
+			<artifactId>android</artifactId>
+			<version>${project.properties.android.version}</version>
+			<scope>system</scope>
+			<systemPath>${env.ANDROID_HOME}/platforms/android-${project.properties.android.version}/android.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.android.support</groupId>
+			<artifactId>support-v4</artifactId>
+			<version>${project.properties.android.supportVersion}</version>
+		</dependency>
+	</dependencies>
+
+
+
+	<!-- ===== Build Information ===== -->
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>enforce-android-rules</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<requireEnvironmentVariable>
+									<variableName>ANDROID_HOME</variableName>
+								</requireEnvironmentVariable>
+							</rules>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>include-native-dependencies</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<excludeTransitive>true</excludeTransitive>
+							<includeScope>runtime</includeScope>
+							<outputDirectory>${project.build.directory}/libs</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>com.simpligility.maven.plugins</groupId>
+				<artifactId>android-maven-plugin</artifactId>
+				<extensions>true</extensions>
+				<configuration>
+					<dexCoreLibrary>true</dexCoreLibrary>
+					<excludeJarResources>
+						<excludeJarResource>android.jar</excludeJarResource>
+					</excludeJarResources>
+					<nativeLibrariesDirectory>${project.build.directory}/libs</nativeLibrariesDirectory>
+					<sdk>
+						<platform>${project.properties.android.version}</platform>
+					</sdk>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+
+
+	<!-- ===== Profiles ===== -->
+
+	<profiles>
+		<profile>
+			<id>release</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>com.simpligility.maven.plugins</groupId>
+						<artifactId>android-maven-plugin</artifactId>
+						<configuration>
+							<sign>
+								<debug>false</debug>
+							</sign>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>sign</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-jarsigner-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>sign-jar</id>
+								<configuration>
+									<includes>
+										<include>${project.build.directory}/*.apk</include>
+									</includes>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+</project>
+
