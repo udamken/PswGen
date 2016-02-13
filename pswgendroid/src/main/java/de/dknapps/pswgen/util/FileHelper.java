@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -76,6 +76,8 @@ public class FileHelper {
 		ServiceInfoList services = null;
 		try {
 			if (servicesFile.exists()) {
+				// is closed in the loadServiceInfoList(...) method
+				@SuppressWarnings("resource")
 				FileInputStream in = new FileInputStream(servicesFile);
 				services = loadServiceInfoList(in);
 			} else {
@@ -202,8 +204,8 @@ public class FileHelper {
 	private void checkJsonName(JsonReader reader, String expectedName) throws IOException {
 		String actualName = reader.nextName();
 		if (!expectedName.equals(actualName)) {
-			throw new IOException(
-					"Json name mismatch, expected=<" + expectedName + ">, actual=<" + actualName + ">");
+			throw new IOException("Json name mismatch, expected=<" + expectedName + ">, actual=<"
+					+ actualName + ">");
 		}
 	}
 

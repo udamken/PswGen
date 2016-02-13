@@ -189,8 +189,8 @@ public class PswGenCtl extends BaseCtl {
 			validatedPassphrase = validatePassphraseAndDecryptServices(startupDialog);
 			startupDialog.dispose();
 			MainView mainView = new MainView(this);
-			mainView.setTitle(
-					servicesFile.getAbsolutePath() + " - " + APPLICATION_NAME + " " + APPLICATION_VERSION);
+			mainView.setTitle(servicesFile.getAbsolutePath() + " - " + APPLICATION_NAME + " "
+					+ APPLICATION_VERSION);
 			addWindow(mainView);
 			mainView.pack();
 			ensureAtLeastDefaultSpecialCharacters(mainView);
@@ -216,9 +216,8 @@ public class PswGenCtl extends BaseCtl {
 			ServiceInfo si = services.getServiceInfo(serviceAbbreviation);
 			if (si == null) {
 				throw new DomainException("ServiceAbbreviationMissingMsg");
-			} else {
-				putServiceToView(mainView, si);
 			}
+			putServiceToView(mainView, si);
 		} catch (Throwable t) {
 			handleThrowable(t);
 		} finally {
@@ -251,19 +250,17 @@ public class PswGenCtl extends BaseCtl {
 		try {
 			mainView.setWaitCursor();
 			String serviceAbbreviation = mainView.getServiceAbbreviation();
-			int chosenOption = JOptionPane.showConfirmDialog(mainView,
-					serviceAbbreviation + getGuiText("RemoveServiceMsg"), APPLICATION_NAME,
-					JOptionPane.YES_NO_OPTION);
+			int chosenOption = JOptionPane.showConfirmDialog(mainView, serviceAbbreviation
+					+ getGuiText("RemoveServiceMsg"), APPLICATION_NAME, JOptionPane.YES_NO_OPTION);
 			if (chosenOption == JOptionPane.YES_OPTION) { // Dienst löschen?
 				validateServiceAbbreviation(serviceAbbreviation);
 				ServiceInfo si = services.removeServiceInfo(serviceAbbreviation);
 				if (si == null) { // Dienst gar nicht vorhanden?
 					throw new DomainException("ServiceAbbreviationMissingMsg");
-				} else {
-					saveServiceInfoList(validatedPassphrase);
-					mainView.updateStoredServices();
-					putServiceToView(mainView, new ServiceInfo());
 				}
+				saveServiceInfoList(validatedPassphrase);
+				mainView.updateStoredServices();
+				putServiceToView(mainView, new ServiceInfo());
 			}
 		} catch (Throwable t) {
 			handleThrowable(t);
@@ -357,8 +354,8 @@ public class PswGenCtl extends BaseCtl {
 			mainView.setWaitCursor();
 			final String psw = getValidatedOrGeneratedPassword(mainView);
 			PasswordDialog passwordDialog = new PasswordDialog(this);
-			passwordDialog.setTitle(
-					mainView.getServiceAbbreviation() + " - " + APPLICATION_NAME + " " + APPLICATION_VERSION);
+			passwordDialog.setTitle(mainView.getServiceAbbreviation() + " - " + APPLICATION_NAME + " "
+					+ APPLICATION_VERSION);
 			passwordDialog.setPassword(psw);
 			passwordDialog.setPasswordExplanation(getPasswordExplanation(psw));
 			addWindow(passwordDialog);
@@ -514,13 +511,11 @@ public class PswGenCtl extends BaseCtl {
 	 */
 	private boolean cancelOnDirty(final MainView mainView) throws IOException {
 		if (mainView.isDirty()) {
-			int chosenOption = JOptionPane.showConfirmDialog(mainView,
-					mainView.getServiceAbbreviation() + getGuiText("SaveChangesMsg"), APPLICATION_NAME,
-					JOptionPane.YES_NO_CANCEL_OPTION);
+			int chosenOption = JOptionPane.showConfirmDialog(mainView, mainView.getServiceAbbreviation()
+					+ getGuiText("SaveChangesMsg"), APPLICATION_NAME, JOptionPane.YES_NO_CANCEL_OPTION);
 			if (chosenOption == JOptionPane.YES_OPTION) { // Geänderte Werte speichern?
 				storeService(mainView);
-			} else if (chosenOption == JOptionPane.CANCEL_OPTION
-					|| chosenOption == JOptionPane.CLOSED_OPTION) {
+			} else if (chosenOption == JOptionPane.CANCEL_OPTION || chosenOption == JOptionPane.CLOSED_OPTION) {
 				return true;
 			}
 		}
@@ -565,9 +560,8 @@ public class PswGenCtl extends BaseCtl {
 		String serviceAbbreviation = mainView.getServiceAbbreviation();
 		validateServiceAbbreviation(serviceAbbreviation);
 		if (services.getServiceInfo(serviceAbbreviation) != null) { // Ist der Dienst bereits vermerkt?
-			int chosenOption = JOptionPane.showConfirmDialog(mainView,
-					serviceAbbreviation + getGuiText("OverwriteServiceMsg"), APPLICATION_NAME,
-					JOptionPane.YES_NO_OPTION);
+			int chosenOption = JOptionPane.showConfirmDialog(mainView, serviceAbbreviation
+					+ getGuiText("OverwriteServiceMsg"), APPLICATION_NAME, JOptionPane.YES_NO_OPTION);
 			if (chosenOption == JOptionPane.NO_OPTION) { // Dienst nicht überschreiben? => fertig
 				return;
 			}

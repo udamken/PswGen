@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -109,8 +109,8 @@ public class ServiceListFragment extends ListFragment implements OnQueryTextList
 
 		// Activity-Klassen, die dieses Fragment nutzen, müssen {@link Listener} implementieren
 		if (!(activity instanceof Listener)) {
-			throw new ClassCastException(
-					activity.getClass().getName() + " must implement " + Listener.class.getName());
+			throw new ClassCastException(activity.getClass().getName() + " must implement "
+					+ Listener.class.getName());
 		}
 
 		listener = (Listener) activity;
@@ -153,8 +153,8 @@ public class ServiceListFragment extends ListFragment implements OnQueryTextList
 	 */
 	public void setActivateOnItemClick(boolean activateOnItemClick) {
 		// Im Modus CHOICE_MODE_SINGLE werden Einträge als 'activated' markiert
-		getListView()
-				.setChoiceMode(activateOnItemClick ? ListView.CHOICE_MODE_SINGLE : ListView.CHOICE_MODE_NONE);
+		getListView().setChoiceMode(
+				activateOnItemClick ? ListView.CHOICE_MODE_SINGLE : ListView.CHOICE_MODE_NONE);
 	}
 
 	private void setActivatedPosition(int position) {

@@ -109,9 +109,8 @@ public class Password {
 	public char getCharacterAt(final int i) {
 		if (isCharacterSet(i)) {
 			return characters.elementAt(i).charValue();
-		} else {
-			return NOT_SET_SURROGATE;
 		}
+		return NOT_SET_SURROGATE;
 	}
 
 	/**

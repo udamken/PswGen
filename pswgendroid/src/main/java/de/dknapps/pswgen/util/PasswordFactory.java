@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -44,7 +44,7 @@ public class PasswordFactory {
 	 * Konstruktor für eine PasswordFactory, die genau ein Passwort erzeugt. Nach dem Konstruktor sollte null-
 	 * bis mehrfach distributeCharacters() unter Verwendung der Konstanten dieser Klasse aufgerufen werden.
 	 * Abschließend kann das Passwort mit getPassword abgeholt werden.
-	 * 
+	 *
 	 * Diese Methode ist package-private, um im Test, aber nirgendwo sonst zugreifbar zu sein.
 	 */
 	PasswordFactory(final int length) {
@@ -55,7 +55,7 @@ public class PasswordFactory {
 	 * Führt setSeed auf dem verwendeten Zufallsgenerator aus und damit in der Folge zu wiederholbaren
 	 * Ergebnisse und sollte daher nur für JUnit-Tests verwendet werden, dann aber auch direkt nach dem
 	 * Konstruktor.
-	 * 
+	 *
 	 * Diese Methode ist package-private, um im Test, aber nirgendwo sonst zugreifbar zu sein.
 	 */
 	void setSeedForRandomToEnforceReproducableResults(final long seedForRandom) {
@@ -70,17 +70,16 @@ public class PasswordFactory {
 	private boolean setRandomCharacter(final String characters, final int position) {
 		if (password.isCharacterSet(position)) { // Position bereits besetzt?
 			return false;
-		} else {
-			final int pos = random.nextInt(characters.length());
-			password.setCharacterAt(new Character(characters.charAt(pos)), position);
-			return true;
 		}
+		final int pos = random.nextInt(characters.length());
+		password.setCharacterAt(new Character(characters.charAt(pos)), position);
+		return true;
 	}
 
 	/**
 	 * Verteilt die angegebene Anzahl von Zeichen aus dem übergebenen Satz von Zeichen auf den gewünschten
 	 * Positionsbereich im übergebenen Passwort.
-	 * 
+	 *
 	 * Diese Methode ist package-private, um im Test, aber nirgendwo sonst zugreifbar zu sein.
 	 */
 	void distributeCharacters(final int count, final String characters, final int leftmost,
@@ -102,7 +101,7 @@ public class PasswordFactory {
 
 	/**
 	 * Liefert das Password als Ergebnis des Fabrikationsprozesses, aufgefüllt mit Zeichen aus characters.
-	 * 
+	 *
 	 * Diese Methode ist package-private, um im Test, aber nirgendwo sonst zugreifbar zu sein.
 	 */
 	String getPassword(final String characters) {

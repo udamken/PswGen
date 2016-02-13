@@ -78,6 +78,7 @@ public class AboutView extends BaseView {
 		aboutPswGenEditorPane.setEditable(false);
 		aboutPswGenEditorPane.setEditorKit(JEditorPane.createEditorKitForContentType("text/html"));
 		aboutPswGenEditorPane.addHyperlinkListener(new HyperlinkListener() {
+			@Override
 			public void hyperlinkUpdate(HyperlinkEvent event) {
 				if (event.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
 					try {

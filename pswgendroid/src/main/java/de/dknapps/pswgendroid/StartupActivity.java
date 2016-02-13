@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import android.R;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.BroadcastReceiver;
@@ -117,7 +118,8 @@ public class StartupActivity extends Activity implements PassphraseDialog.Listen
 	/**
 	 * Öffnet den About-Dialog.
 	 */
-	public void onClickButtonOpenAbout(final View buttonOpenAbout) {
+	public void onClickButtonOpenAbout(@SuppressWarnings("unused")
+	final View buttonOpenAbout) {
 		try {
 			Intent aboutIntent = new Intent(this, AboutActivity.class);
 			startActivity(aboutIntent);
@@ -140,12 +142,8 @@ public class StartupActivity extends Activity implements PassphraseDialog.Listen
 			}
 		} finally {
 			try {
-				if (reader != null) {
-					reader.close();
-				}
-				if (writer != null) {
-					writer.close();
-				}
+				reader.close();
+				writer.close();
 			} catch (IOException e) {
 				LOGGER.log(Level.WARNING, Constants.MSG_EXCP_SERVICES, e);
 			}

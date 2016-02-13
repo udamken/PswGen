@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import android.R;
 import android.content.Context;
 import android.widget.Toast;
 import de.dknapps.pswgen.model.ServiceInfo;
@@ -121,7 +122,7 @@ public class PswGenAdapter {
 		if (t instanceof DomainException) {
 			LOGGER.log(Level.SEVERE, "DomainException caught: ", t);
 			Toast.makeText(context, getDomainExceptionText(context, (DomainException) t), Toast.LENGTH_LONG)
-					.show();
+			.show();
 		} else {
 			LOGGER.log(Level.SEVERE, "Throwable caught: ", t);
 			Toast.makeText(context, t.toString(), Toast.LENGTH_LONG).show();

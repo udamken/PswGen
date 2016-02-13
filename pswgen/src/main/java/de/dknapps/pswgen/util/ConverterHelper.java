@@ -44,9 +44,8 @@ public class ConverterHelper {
 	public static String toString(final int i) {
 		if (EmptyHelper.isEmpty(i)) {
 			return EmptyHelper.EMPTY_STRING;
-		} else {
-			return Integer.toString(i);
 		}
+		return Integer.toString(i);
 	}
 
 }

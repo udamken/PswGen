@@ -77,6 +77,8 @@ public class FileHelper {
 		ServiceInfoList services = null;
 		try {
 			if (servicesFile.exists()) {
+				// is closed in the loadServiceInfoList(...) method
+				@SuppressWarnings("resource")
 				FileInputStream in = new FileInputStream(servicesFile);
 				services = loadServiceInfoList(in);
 			} else {
@@ -203,8 +205,8 @@ public class FileHelper {
 	private void checkJsonName(JsonReader reader, String expectedName) throws IOException {
 		String actualName = reader.nextName();
 		if (!expectedName.equals(actualName)) {
-			throw new IOException(
-					"Json name mismatch, expected=<" + expectedName + ">, actual=<" + actualName + ">");
+			throw new IOException("Json name mismatch, expected=<" + expectedName + ">, actual=<"
+					+ actualName + ">");
 		}
 	}
 

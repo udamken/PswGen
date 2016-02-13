@@ -102,8 +102,7 @@ public class EncryptionHelper {
 		} catch (Exception e) {
 			throw new RuntimeException(
 					"Exception beim Erzeugen einer ExceptionHelper-Instanz zum Verschlüsseln: "
-							+ e.getMessage(),
-					e);
+							+ e.getMessage(), e);
 		}
 	}
 
@@ -128,14 +127,14 @@ public class EncryptionHelper {
 		} catch (Exception e) {
 			throw new RuntimeException(
 					"Exception beim Erzeugen einer ExceptionHelper-Instanz zum Verschlüsseln: "
-							+ e.getMessage(),
-					e);
+							+ e.getMessage(), e);
 		}
 	}
 
 	/**
 	 * @deprecated Liefert einen EncryptionHelper für die bisherige Entschlüsselung
 	 */
+	@Deprecated
 	public void initAsPreviouEncryptionHelper(final char[] passphrase) throws Exception {
 		PBEKeySpec keySpec = new PBEKeySpec(passphrase);
 		SecretKeyFactory secretKeyFactory = SecretKeyFactory.getInstance(PREVIOUS_ENCRYPTION_ALGORITHM);

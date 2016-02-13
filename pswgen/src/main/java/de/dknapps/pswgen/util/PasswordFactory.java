@@ -70,11 +70,11 @@ public class PasswordFactory {
 	private boolean setRandomCharacter(final String characters, final int position) {
 		if (password.isCharacterSet(position)) { // Position bereits besetzt?
 			return false;
-		} else {
-			final int pos = random.nextInt(characters.length());
-			password.setCharacterAt(new Character(characters.charAt(pos)), position);
-			return true;
 		}
+
+		final int pos = random.nextInt(characters.length());
+		password.setCharacterAt(new Character(characters.charAt(pos)), position);
+		return true;
 	}
 
 	/**

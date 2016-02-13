@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,6 +23,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.text.MessageFormat;
 
+import android.R;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -82,8 +83,8 @@ public class PassphraseDialog extends DialogFragment {
 
 		// Activity-Klassen, die dieses Fragment nutzen, müssen {@link Listener} implementieren
 		if (!(activity instanceof Listener)) {
-			throw new ClassCastException(
-					activity.getClass().getName() + " must implement " + Listener.class.getName());
+			throw new ClassCastException(activity.getClass().getName() + " must implement "
+					+ Listener.class.getName());
 		}
 
 		listener = (Listener) activity;
@@ -100,6 +101,7 @@ public class PassphraseDialog extends DialogFragment {
 				.setTitle(R.string.title_passphrase) //
 				.setPositiveButton(R.string.button_ok, null) // wird wegen der Prüfung unten überschrieben
 				.setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
+					@Override
 					public void onClick(DialogInterface dialog, int id) {
 						dismiss();
 						listener.onClickPassphraseDialogButtonNegative();

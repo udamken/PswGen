@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,6 +19,7 @@
  */
 package de.dknapps.pswgendroid;
 
+import android.R;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.ClipData;
@@ -95,10 +96,11 @@ public class ServiceDetailFragment extends Fragment {
 
 	/**
 	 * Öffnet die Login-URL im Browser und kopiert die Login-Informationen in die Zwischenablage.
-	 * 
+	 *
 	 * FIXME dkn Die callingActivity kann durch getActivity() ersetzt werden.
 	 */
-	public void onClickButtonOpenUrl(final Activity callingActivity, final View buttonOpenUrl) {
+	public void onClickButtonOpenUrl(final Activity callingActivity, @SuppressWarnings("unused")
+	final View buttonOpenUrl) {
 		try {
 			String loginUrl = currentServiceInfo.getLoginUrl();
 			if (!loginUrl.startsWith("http://") && !loginUrl.startsWith("https://")) {
@@ -114,10 +116,11 @@ public class ServiceDetailFragment extends Fragment {
 
 	/**
 	 * Kopiert die Login-Informationen in die Zwischenablage.
-	 * 
+	 *
 	 * FIXME dkn Die callingActivity kann durch getActivity() ersetzt werden.
 	 */
-	public void onClickButtonCopyLoginInfo(final Activity callingActivity, final View buttonOpenUrl) {
+	public void onClickButtonCopyLoginInfo(final Activity callingActivity, @SuppressWarnings("unused")
+	final View buttonOpenUrl) {
 		try {
 			copyLoginInfo(callingActivity);
 		} catch (Exception e) {
@@ -127,10 +130,11 @@ public class ServiceDetailFragment extends Fragment {
 
 	/**
 	 * Generiert das Passwort und kopiert es in die Zwischenablage.
-	 * 
+	 *
 	 * FIXME dkn Die callingActivity kann durch getActivity() ersetzt werden.
 	 */
-	public void onClickButtonCopyPassword(final Activity callingActivity, final View buttonOpenUrl) {
+	public void onClickButtonCopyPassword(final Activity callingActivity, @SuppressWarnings("unused")
+	final View buttonOpenUrl) {
 		try {
 			String password = getValidatedOrGeneratedPassword();
 			ClipboardManager clipboard = (ClipboardManager) callingActivity
@@ -143,10 +147,11 @@ public class ServiceDetailFragment extends Fragment {
 
 	/**
 	 * Generiert das Passwort und zeigt es an.
-	 * 
+	 *
 	 * FIXME dkn Die callingActivity kann durch getActivity() ersetzt werden.
 	 */
-	public void onClickButtonDisplayPassword(final Activity callingActivity, final View buttonOpenUrl) {
+	public void onClickButtonDisplayPassword(final Activity callingActivity, @SuppressWarnings("unused")
+	final View buttonOpenUrl) {
 		try {
 			Bundle arguments = new Bundle();
 			String password = getValidatedOrGeneratedPassword();
@@ -223,7 +228,7 @@ public class ServiceDetailFragment extends Fragment {
 
 	/**
 	 * Kopiert die Login-Informationen in die Zwischenablage.
-	 * 
+	 *
 	 * FIXME dkn Die callingActivity kann durch getActivity() ersetzt werden.
 	 */
 	private void copyLoginInfo(final Activity callingActivity) {

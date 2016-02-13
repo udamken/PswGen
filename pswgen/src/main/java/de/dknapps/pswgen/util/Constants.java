@@ -91,8 +91,8 @@ public class Constants {
 
 	private static final DateFormat DATE_FORMAT_NON_GERMAN = DateFormat.getDateInstance(DateFormat.SHORT);
 
-	public static final DateFormat DATE_FORMAT = (Locale.getDefault().getLanguage().equals("de")
-			&& Locale.getDefault().getCountry().equals("DE")) ? DATE_FORMAT_de_DE : DATE_FORMAT_NON_GERMAN;
+	public static final DateFormat DATE_FORMAT = (Locale.getDefault().getLanguage().equals("de") && Locale
+			.getDefault().getCountry().equals("DE")) ? DATE_FORMAT_de_DE : DATE_FORMAT_NON_GERMAN;
 
 	public static final String SERVICES_FILENAME = "services.json";
 
