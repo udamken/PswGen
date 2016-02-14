@@ -56,7 +56,7 @@ public class Constants {
 			.getName();
 
 	/** Resource Name des Icons der Anwendung */
-	public static final String APPLICATION_IMAGE_RESOURCE_NAME = "de/dknapps/pswgen/PswGen-128x128.png";
+	public static final String APPLICATION_IMAGE_RESOURCE_NAME = "de/dknapps/pswgen/PswGen.ico";
 
 	/** URL zur HTML-Datei für den About-Dialog */
 	public static final String ABOUT_DIALOG_HTML_FILENAME = "about.html";

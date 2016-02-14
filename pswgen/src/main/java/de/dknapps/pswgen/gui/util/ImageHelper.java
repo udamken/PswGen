@@ -17,7 +17,7 @@
  * limitations under the License.
  * #L%
  */
-package de.dknapps.pswgen.util;
+package de.dknapps.pswgen.gui.util;
 
 import java.awt.Image;
 import java.net.URL;
@@ -71,5 +71,4 @@ public class ImageHelper {
 	public Image getImage(String imageResourceName) {
 		return getImageIcon(imageResourceName).getImage();
 	}
-
 }

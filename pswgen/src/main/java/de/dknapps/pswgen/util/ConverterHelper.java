@@ -24,6 +24,7 @@ package de.dknapps.pswgen.util;
  * Konvertiert Werte vom Textformat in ein anderes und zurück.
  * </p>
  */
+@Deprecated
 public class ConverterHelper {
 
 	/**

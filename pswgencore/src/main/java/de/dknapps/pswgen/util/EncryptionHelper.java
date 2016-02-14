@@ -53,9 +53,9 @@ public class EncryptionHelper {
 	 * Länge des Schlüssels, > 128 Bit müssen in der Oracle JRE die "Java Cryptography Extension (JCE)
 	 * Unlimited Strength Jurisdiction Policy Files" installiert werden. Um dies zu vermeiden und weil das BSI
 	 * auch AES-128 noch empfiehlt, belasse ich die PswGen-Verschlüsselung bei 128 Bit. Infos dazu:
-	 * 
+	 *
 	 * http://stackoverflow.com/questions/6481627/java-security-illegal-key-size-or-default-parameters
-	 * 
+	 *
 	 * https://www.bsi.bund.de/cae/servlet/contentblob/477256/publicationFile/30924/BSI-TR-02102_V1_0_pdf.pdf
 	 */
 	private static final int KEY_LENGTH = 128;
@@ -71,7 +71,7 @@ public class EncryptionHelper {
 
 	/** Für ältere Dateien das Salz für die Erzeugung eines Schlüssels aus der Passphrase */
 	private static final byte[] PREVIOUS_ENCRYPTION_SALT = { (byte) 0xc7, (byte) 0x73, (byte) 0x21,
-			(byte) 0x8c, (byte) 0x7e, (byte) 0xc8, (byte) 0xee, (byte) 0x99 };
+		(byte) 0x8c, (byte) 0x7e, (byte) 0xc8, (byte) 0xee, (byte) 0x99 };
 
 	/** Für ältere Dateien die Anzahl der Durchläufe zum Erzeugen eines Schlüssels aus der Passphrase */
 	private static final int PREVIOUS_KEY_ITERATION_COUNT = 20;

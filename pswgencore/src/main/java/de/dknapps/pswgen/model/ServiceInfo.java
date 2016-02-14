@@ -19,19 +19,8 @@
  */
 package de.dknapps.pswgen.model;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
 import de.dknapps.pswgen.util.EmptyHelper;
 
-/**
- * <p>
- * Hält die Informationen für ein Dienstekürzel, die zum Generieren eines Passworts notwendig sind.
- * </p>
- * <p>
- * ACHTUNG: Diese Klasse ist für PswGen und PswGenDroid fast (letzteres ohne JAXB) identisch, sprich kopiert.
- * </p>
- */
-@XmlRootElement(name = "ServiceInfo")
 public class ServiceInfo {
 
 	private String serviceAbbreviation;
@@ -91,9 +80,22 @@ public class ServiceInfo {
 		super();
 	}
 
+	/**
+	 * Der Konstruktor für die "richtige" Arbeit.
+	 */
+	public ServiceInfo(String serviceAbbreviation) {
+		this();
+		this.serviceAbbreviation = serviceAbbreviation;
+	}
+
 	@Override
 	protected Object clone() throws CloneNotSupportedException {
 		return super.clone();
+	}
+
+	@Override
+	public String toString() {
+		return serviceAbbreviation;
 	}
 
 	/**
@@ -292,25 +294,10 @@ public class ServiceInfo {
 		this.passwordRepeated = passwordRepeated;
 	}
 
-	/**
-	 * Der Konstruktor für die "richtige" Arbeit.
-	 */
-	public ServiceInfo(String serviceAbbreviation) {
-		this();
-		this.serviceAbbreviation = serviceAbbreviation;
-	}
-
-	/**
-	 * @return the specialCharacters
-	 */
 	public String getSpecialCharacters() {
 		return specialCharacters;
 	}
 
-	/**
-	 * @param specialCharacters
-	 *            the specialCharacters to set
-	 */
 	public void setSpecialCharacters(String specialCharacters) {
 		this.specialCharacters = specialCharacters;
 	}
