@@ -24,7 +24,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.PlainDocument;
 
-import de.dknapps.pswgen.util.ConverterHelper;
+import de.dknapps.pswgencore.util.ConverterHelper;
 
 /**
  * <p>

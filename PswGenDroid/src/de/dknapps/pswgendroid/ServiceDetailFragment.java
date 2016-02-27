@@ -31,8 +31,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import de.dknapps.pswgen.model.ServiceInfo;
-import de.dknapps.pswgen.util.PasswordFactory;
+import de.dknapps.pswgencore.model.ServiceInfo;
+import de.dknapps.pswgencore.util.PasswordFactory;
 
 public class ServiceDetailFragment extends Fragment {
 

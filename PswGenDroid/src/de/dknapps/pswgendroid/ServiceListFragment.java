@@ -30,7 +30,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView.OnQueryTextListener;
-import de.dknapps.pswgen.model.ServiceInfo;
+import de.dknapps.pswgencore.model.ServiceInfo;
 
 public class ServiceListFragment extends ListFragment implements OnQueryTextListener {
 

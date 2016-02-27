@@ -39,7 +39,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
 import android.widget.EditText;
-import de.dknapps.pswgen.util.Constants;
+import de.dknapps.pswgencore.util.Constants;
 
 /**
  * <p>

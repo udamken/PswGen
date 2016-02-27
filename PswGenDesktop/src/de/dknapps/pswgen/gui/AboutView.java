@@ -33,7 +33,7 @@ import de.dknapps.pswgen.ApplicationPackageNameMarker;
 import de.dknapps.pswgen.gui.base.BaseCtl;
 import de.dknapps.pswgen.gui.base.BaseView;
 import de.dknapps.pswgen.gui.base.WidgetFactory;
-import de.dknapps.pswgen.util.Constants;
+import de.dknapps.pswgencore.util.Constants;
 
 /**
  * <p>

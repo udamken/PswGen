@@ -26,12 +26,13 @@ import java.util.logging.Logger;
 
 import android.content.Context;
 import android.widget.Toast;
-import de.dknapps.pswgen.model.ServiceInfo;
-import de.dknapps.pswgen.model.ServiceInfoList;
-import de.dknapps.pswgen.util.Constants;
-import de.dknapps.pswgen.util.DomainException;
-import de.dknapps.pswgen.util.EncryptionHelper;
-import de.dknapps.pswgen.util.FileHelper;
+import de.dknapps.pswgencore.model.ServiceInfo;
+import de.dknapps.pswgencore.model.ServiceInfoList;
+import de.dknapps.pswgencore.util.Constants;
+import de.dknapps.pswgencore.util.DomainException;
+import de.dknapps.pswgencore.util.EncryptionHelper;
+import de.dknapps.pswgencore.util.FileHelper;
+import de.dknapps.pswgendroid.util.CommonJsonReaderWriterFactoryAndroidImpl;
 
 /**
  * <p>
@@ -58,7 +59,8 @@ public class PswGenAdapter {
 	 * aufbewahren.
 	 */
 	public static void loadServiceInfoList(FileInputStream in, String passphrase) {
-		services = FileHelper.getInstance().loadServiceInfoList(in);
+		FileHelper fileHelper = FileHelper.getInstance(new CommonJsonReaderWriterFactoryAndroidImpl());
+		services = fileHelper.loadServiceInfoList(in);
 		if (services == null) {
 			throw new DomainException("UnknownFileFormatMsg");
 		}

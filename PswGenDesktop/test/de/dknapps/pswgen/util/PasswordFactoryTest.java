@@ -21,7 +21,10 @@ package de.dknapps.pswgen.util;
 import org.junit.Assert;
 import org.junit.Test;
 
-import de.dknapps.pswgen.model.ServiceInfo;
+import de.dknapps.pswgencore.model.ServiceInfo;
+import de.dknapps.pswgencore.util.Constants;
+import de.dknapps.pswgencore.util.DomainException;
+import de.dknapps.pswgencore.util.PasswordFactory;
 import junit.framework.TestCase;
 
 /**

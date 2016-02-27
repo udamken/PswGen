@@ -47,9 +47,9 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.AbstractTableModel;
 
-import de.dknapps.pswgen.util.Constants;
-import de.dknapps.pswgen.util.ConverterHelper;
-import de.dknapps.pswgen.util.EmptyHelper;
+import de.dknapps.pswgencore.util.Constants;
+import de.dknapps.pswgencore.util.ConverterHelper;
+import de.dknapps.pswgencore.util.EmptyHelper;
 
 /**
  * <p>
@@ -64,7 +64,7 @@ public class WidgetFactory {
 	private static final String PREFS_SUBKEY_WIDTH = ".width";
 
 	/** Der Logger dieser Anwendung */
-	private static final Logger LOGGER = Logger.getLogger(Constants.APPLICATION_PACKAGE_NAME + ".Logger");
+	private static final Logger LOGGER = Logger.getLogger(WidgetFactory.class.getName());
 
 	/** Die eine und einzige Instanz dieser Klasse */
 	private static WidgetFactory instance = null;

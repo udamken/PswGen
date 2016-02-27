@@ -31,6 +31,7 @@ import javax.crypto.spec.SecretKeySpec;
 import org.junit.Assert;
 import org.junit.Test;
 
+import de.dknapps.pswgencore.util.EncryptionHelper;
 import junit.framework.TestCase;
 
 /**

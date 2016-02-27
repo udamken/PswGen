@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package de.dknapps.pswgen.util;
+package de.dknapps.pswgencore.util;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -29,12 +29,8 @@ import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonToken;
-import com.google.gson.stream.JsonWriter;
-
-import de.dknapps.pswgen.model.ServiceInfo;
-import de.dknapps.pswgen.model.ServiceInfoList;
+import de.dknapps.pswgencore.model.ServiceInfo;
+import de.dknapps.pswgencore.model.ServiceInfoList;
 
 /**
  * <p>
@@ -47,24 +43,26 @@ import de.dknapps.pswgen.model.ServiceInfoList;
 public class FileHelper {
 
 	/** Der Logger dieser Anwendung */
-	private static final Logger LOGGER = Logger.getLogger(Constants.APPLICATION_PACKAGE_NAME + ".Logger");
+	private static final Logger LOGGER = Logger.getLogger(FileHelper.class.getName());
 
 	/** Die eine und einzige Instanz dieser Klasse */
 	private static FileHelper instance = null;
 
+	private CommonJsonReaderWriterFactory commonJsonReaderWriterFactory;
+
 	/**
 	 * Singleton => privater Konstruktor
 	 */
-	private FileHelper() {
-		// Nichts zu tun
+	private FileHelper(CommonJsonReaderWriterFactory commonJsonReaderWriterFactory) {
+		this.commonJsonReaderWriterFactory = commonJsonReaderWriterFactory;
 	}
 
 	/**
 	 * Liefert die eine und einzige Instanz.
 	 */
-	public static synchronized FileHelper getInstance() {
+	public static synchronized FileHelper getInstance(CommonJsonReaderWriterFactory commonJsonReaderWriterFactory) {
 		if (instance == null) {
-			instance = new FileHelper();
+			instance = new FileHelper(commonJsonReaderWriterFactory);
 		}
 		return instance;
 	}
@@ -108,7 +106,8 @@ public class FileHelper {
 
 	private ServiceInfoList readJsonStream(FileInputStream in) throws IOException {
 		ServiceInfoList services = new ServiceInfoList();
-		JsonReader reader = new JsonReader(new InputStreamReader(in, Constants.CHARSET_NAME));
+		CommonJsonReader reader = commonJsonReaderWriterFactory
+				.getJsonReader(new InputStreamReader(in, Constants.CHARSET_NAME));
 		try {
 			reader.beginObject();
 			checkJsonName(reader, "version");
@@ -116,7 +115,7 @@ public class FileHelper {
 			checkJsonName(reader, "verifier");
 			services.setEncryptedVerifier(reader.nextString());
 			addReadServices(services, reader);
-			if (reader.peek() != JsonToken.END_OBJECT) {
+			if (!reader.peekReturnsEndObject()) {
 				// Erst ab 1.7.4 gibt es salt und initializer, daher ist beides optional
 				checkJsonName(reader, "salt");
 				services.setSaltAsHexString(reader.nextString());
@@ -130,7 +129,7 @@ public class FileHelper {
 		return services;
 	}
 
-	private void addReadServices(ServiceInfoList services, JsonReader reader) throws IOException {
+	private void addReadServices(ServiceInfoList services, CommonJsonReader reader) throws IOException {
 		checkJsonName(reader, "services");
 		reader.beginArray();
 		while (reader.hasNext()) {
@@ -139,7 +138,7 @@ public class FileHelper {
 		reader.endArray();
 	}
 
-	private ServiceInfo readService(JsonReader reader) throws IOException {
+	private ServiceInfo readService(CommonJsonReader reader) throws IOException {
 		ServiceInfo si = new ServiceInfo();
 		reader.beginObject();
 		checkJsonName(reader, "serviceAbbreviation");
@@ -199,7 +198,7 @@ public class FileHelper {
 	/**
 	 * Prüft den nächsten am Reader vorliegenden Elementnamen und wirft bei einer Abweichung eine Exception.
 	 */
-	private void checkJsonName(JsonReader reader, String expectedName) throws IOException {
+	private void checkJsonName(CommonJsonReader reader, String expectedName) throws IOException {
 		String actualName = reader.nextName();
 		if (!expectedName.equals(actualName)) {
 			throw new IOException(
@@ -217,7 +216,8 @@ public class FileHelper {
 	}
 
 	private void writeJsonStream(OutputStream out, ServiceInfoList services) throws IOException {
-		JsonWriter writer = new JsonWriter(new OutputStreamWriter(out, Constants.CHARSET_NAME));
+		CommonJsonWriter writer = commonJsonReaderWriterFactory
+				.getJsonWriter(new OutputStreamWriter(out, Constants.CHARSET_NAME));
 		writer.setIndent("\t");
 		writer.beginObject();
 		services.setVersion(Constants.APPLICATION_VERSION);
@@ -240,7 +240,7 @@ public class FileHelper {
 		writer.close();
 	}
 
-	private void writeServices(JsonWriter writer, Collection<ServiceInfo> services) throws IOException {
+	private void writeServices(CommonJsonWriter writer, Collection<ServiceInfo> services) throws IOException {
 		writer.name("services");
 		writer.beginArray();
 		for (ServiceInfo si : services) {
@@ -249,7 +249,7 @@ public class FileHelper {
 		writer.endArray();
 	}
 
-	private void writeService(JsonWriter writer, ServiceInfo si) throws IOException {
+	private void writeService(CommonJsonWriter writer, ServiceInfo si) throws IOException {
 		writer.beginObject();
 		writer.name("serviceAbbreviation").value(si.getServiceAbbreviation());
 		writer.name("additionalInfo").value(si.getAdditionalInfo());
