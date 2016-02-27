@@ -16,11 +16,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package de.dknapps.pswgen.util;
+package de.dknapps.pswgencore.util;
 
 import java.util.Random;
 
-import de.dknapps.pswgen.model.ServiceInfo;
+import de.dknapps.pswgencore.model.ServiceInfo;
 
 /**
  * <p>
@@ -46,7 +46,7 @@ public class PasswordFactory {
 	 * 
 	 * Diese Methode ist package-private, um im Test, aber nirgendwo sonst zugreifbar zu sein.
 	 */
-	PasswordFactory(final int length) {
+	public PasswordFactory(final int length) {
 		password = new Password(length);
 	}
 
@@ -57,7 +57,7 @@ public class PasswordFactory {
 	 * 
 	 * Diese Methode ist package-private, um im Test, aber nirgendwo sonst zugreifbar zu sein.
 	 */
-	void setSeedForRandomToEnforceReproducableResults(final long seedForRandom) {
+	public void setSeedForRandomToEnforceReproducableResults(final long seedForRandom) {
 		random.setSeed(seedForRandom);
 	}
 
@@ -82,7 +82,7 @@ public class PasswordFactory {
 	 * 
 	 * Diese Methode ist package-private, um im Test, aber nirgendwo sonst zugreifbar zu sein.
 	 */
-	void distributeCharacters(final int count, final String characters, final int leftmost,
+	public void distributeCharacters(final int count, final String characters, final int leftmost,
 			final int rightmost) {
 		if (rightmost > password.getLength() - 1) {
 			throw new DomainException("TotalCharacterCountExceededMsg");
@@ -104,7 +104,7 @@ public class PasswordFactory {
 	 * 
 	 * Diese Methode ist package-private, um im Test, aber nirgendwo sonst zugreifbar zu sein.
 	 */
-	String getPassword(final String characters) {
+	public String getPassword(final String characters) {
 		if (password.charactersSet(0, password.getLength() - 1) == password.getLength()) {
 			// Wenn schon alle Zeichen gesetzt sind, muss nichts mehr aufgefüllt werden
 		} else if (characters.length() == 0 || password.getLength() == 0) {

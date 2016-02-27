@@ -18,8 +18,8 @@
  *******************************************************************************/
 package de.dknapps.pswgen.gui;
 
-import static de.dknapps.pswgen.util.Constants.APPLICATION_NAME;
-import static de.dknapps.pswgen.util.Constants.APPLICATION_VERSION;
+import static de.dknapps.pswgencore.util.Constants.APPLICATION_NAME;
+import static de.dknapps.pswgencore.util.Constants.APPLICATION_VERSION;
 
 import java.awt.Desktop;
 import java.awt.Toolkit;
@@ -38,19 +38,20 @@ import javax.swing.UIManager;
 
 import de.dknapps.pswgen.gui.base.BaseCtl;
 import de.dknapps.pswgen.gui.base.BaseView;
-import de.dknapps.pswgen.model.ServiceInfo;
-import de.dknapps.pswgen.model.ServiceInfoList;
-import de.dknapps.pswgen.util.Constants;
-import de.dknapps.pswgen.util.DomainException;
-import de.dknapps.pswgen.util.EmptyHelper;
-import de.dknapps.pswgen.util.EncryptionHelper;
-import de.dknapps.pswgen.util.FileHelper;
-import de.dknapps.pswgen.util.PasswordFactory;
+import de.dknapps.pswgen.util.CommonJsonReaderWriterFactoryGsonImpl;
+import de.dknapps.pswgencore.model.ServiceInfo;
+import de.dknapps.pswgencore.model.ServiceInfoList;
+import de.dknapps.pswgencore.util.Constants;
+import de.dknapps.pswgencore.util.DomainException;
+import de.dknapps.pswgencore.util.EmptyHelper;
+import de.dknapps.pswgencore.util.EncryptionHelper;
+import de.dknapps.pswgencore.util.FileHelper;
+import de.dknapps.pswgencore.util.PasswordFactory;
 
 public class PswGenCtl extends BaseCtl {
 
 	/** Der Logger dieser Anwendung */
-	private static final Logger LOGGER = Logger.getLogger(Constants.APPLICATION_PACKAGE_NAME + ".Logger");
+	private static final Logger LOGGER = Logger.getLogger(PswGenCtl.class.getName());
 
 	/** Alle Informationen zu Dienstekürzeln */
 	private ServiceInfoList services = new ServiceInfoList();
@@ -85,7 +86,8 @@ public class PswGenCtl extends BaseCtl {
 	 * Datei lediglich in das neue Format konvertieren, dann endet die Anwendung.
 	 */
 	public void upgradeServiceInfoList(final String passphrase) throws IOException {
-		services = FileHelper.getInstance().loadServiceInfoList(servicesFile);
+		FileHelper fileHelper = FileHelper.getInstance(new CommonJsonReaderWriterFactoryGsonImpl());
+		services = fileHelper.loadServiceInfoList(servicesFile);
 		if (services == null || services.isNew()) {
 			String message = getGuiText("EmptyFileNotUpgradableMsg");
 			JOptionPane.showMessageDialog(null, message, APPLICATION_NAME, JOptionPane.ERROR_MESSAGE);
@@ -123,7 +125,8 @@ public class PswGenCtl extends BaseCtl {
 	 * dieser Methode nicht, das Beenden geschieht über die Oberfläche.
 	 */
 	public void start() {
-		services = FileHelper.getInstance().loadServiceInfoList(servicesFile);
+		FileHelper fileHelper = FileHelper.getInstance(new CommonJsonReaderWriterFactoryGsonImpl());
+		services = fileHelper.loadServiceInfoList(servicesFile);
 		if (services == null) {
 			// Datei ist nicht (als JSON) lesbar
 			String message = getGuiText("UnknownFileFormatMsg");
@@ -581,11 +584,12 @@ public class PswGenCtl extends BaseCtl {
 	 * Liste der Diente in eine Datei speichern
 	 */
 	private void saveServiceInfoList(final String passphrase) throws IOException {
+		FileHelper fileHelper = FileHelper.getInstance(new CommonJsonReaderWriterFactoryGsonImpl());
 		EncryptionHelper encryptionHelper = new EncryptionHelper(passphrase.toCharArray());
 		services.setSaltAsHexString(encryptionHelper.getSaltAsHexString());
 		services.setInitializerAsHexString(encryptionHelper.getInitializerAsHexString());
 		services.encrypt(encryptionHelper);
-		FileHelper.getInstance().saveServiceInfoList(servicesFile, services);
+		fileHelper.saveServiceInfoList(servicesFile, services);
 	}
 
 	/**

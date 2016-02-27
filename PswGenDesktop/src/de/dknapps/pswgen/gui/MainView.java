@@ -58,9 +58,9 @@ import de.dknapps.pswgen.gui.base.BaseView;
 import de.dknapps.pswgen.gui.base.DbcIntegerField;
 import de.dknapps.pswgen.gui.base.GridBagConstraintsFactory;
 import de.dknapps.pswgen.gui.base.WidgetFactory;
-import de.dknapps.pswgen.model.ServiceInfo;
-import de.dknapps.pswgen.util.Constants;
-import de.dknapps.pswgen.util.EmptyHelper;
+import de.dknapps.pswgencore.model.ServiceInfo;
+import de.dknapps.pswgencore.util.Constants;
+import de.dknapps.pswgencore.util.EmptyHelper;
 
 /**
  * <p>

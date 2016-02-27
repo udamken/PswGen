@@ -24,7 +24,6 @@ import java.util.logging.Logger;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import de.dknapps.pswgen.util.Constants;
 
 /**
  * <p>
@@ -35,7 +34,7 @@ import de.dknapps.pswgen.util.Constants;
 public class ScreenBroadcastReceiver extends BroadcastReceiver {
 
 	/** Der Logger dieser Anwendung */
-	private static final Logger LOGGER = Logger.getLogger(Constants.APPLICATION_PACKAGE_NAME + ".Logger");
+	private static final Logger LOGGER = Logger.getLogger(ScreenBroadcastReceiver.class.getName());
 
 	@Override
 	public void onReceive(Context context, Intent intent) {

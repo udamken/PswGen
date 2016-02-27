@@ -25,8 +25,8 @@ import java.awt.event.WindowEvent;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 
-import de.dknapps.pswgen.util.Constants;
-import de.dknapps.pswgen.util.ImageHelper;
+import de.dknapps.pswgencore.util.Constants;
+import de.dknapps.pswgencore.util.ImageHelper;
 
 /**
  * <p>

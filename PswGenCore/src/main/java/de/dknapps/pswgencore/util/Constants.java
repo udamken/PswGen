@@ -16,13 +16,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package de.dknapps.pswgen.util;
+package de.dknapps.pswgencore.util;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
-
-import de.dknapps.pswgen.ApplicationPackageNameMarker;
 
 /**
  * <p>
@@ -51,8 +49,7 @@ public class Constants {
 			+ "right (C) Uwe Damken"; // String splitted "against" Eclipse Releng
 
 	/** Das Package dieser Anwendung */
-	public static final String APPLICATION_PACKAGE_NAME = ApplicationPackageNameMarker.class.getPackage()
-			.getName();
+	public static final String APPLICATION_PACKAGE_NAME = "de.dknapps.pswgen";
 
 	/** Resource Name des Icons der Anwendung */
 	public static final String APPLICATION_IMAGE_RESOURCE_NAME = "de/dknapps/pswgen/PswGen-128x128.png";

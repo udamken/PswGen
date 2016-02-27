@@ -24,8 +24,8 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import de.dknapps.pswgen.util.Constants;
-import de.dknapps.pswgen.util.DomainException;
+import de.dknapps.pswgencore.util.Constants;
+import de.dknapps.pswgencore.util.DomainException;
 
 /**
  * <p>

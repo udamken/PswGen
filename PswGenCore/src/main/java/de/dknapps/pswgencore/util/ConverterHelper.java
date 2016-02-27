@@ -16,24 +16,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package de.dknapps.pswgen.util;
+package de.dknapps.pswgencore.util;
 
 /**
  * <p>
- * Zur möglichst einfachen Realisierung von Fachfehlern werden diese als Instanzen dieser Klasse und damit als
- * RuntimeException geworfen. Einziger Zweck ist es, einen Fehlertext zur Oberfläche durchzureichen. Ein
- * tolles Konzept ist das nicht, funktioniert aber.
- * </p>
- * <p>
- * ACHTUNG: Diese Klasse ist für PswGen und PswGenDroid identisch, sprich kopiert.
+ * Konvertiert Werte vom Textformat in ein anderes und zurück.
  * </p>
  */
-public class DomainException extends RuntimeException {
+public class ConverterHelper {
 
-	private static final long serialVersionUID = 7931546922671727841L;
+	/**
+	 * Liefert den Zahlenwert eines Strings oder einen Nullwert, wenn der String keinen Zahlenwert darstellt,
+	 * und damit insbesondere auch, wenn er leer ist.
+	 */
+	public static int toInt(final String s) {
+		try {
+			return Integer.parseInt(s);
+		} catch (NumberFormatException e) {
+			return EmptyHelper.EMPTY_INT;
+		}
+	}
 
-	public DomainException(String arg0) {
-		super(arg0);
+	/**
+	 * Liefert den String eines Zahlenwertes oder einen Leerstring, wenn der Zahlenwert ein Leerwert ist.
+	 */
+	public static String toString(final int i) {
+		if (EmptyHelper.isEmpty(i)) {
+			return EmptyHelper.EMPTY_STRING;
+		} else {
+			return Integer.toString(i);
+		}
 	}
 
 }

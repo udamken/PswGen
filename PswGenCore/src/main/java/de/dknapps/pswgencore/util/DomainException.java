@@ -16,43 +16,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package de.dknapps.pswgen.util;
+package de.dknapps.pswgencore.util;
 
 /**
  * <p>
- * Hilft bei der Behandlung von Leerwerten in Wertefelder, wie z.B. Zahlenfeldern.
+ * Zur möglichst einfachen Realisierung von Fachfehlern werden diese als Instanzen dieser Klasse und damit als
+ * RuntimeException geworfen. Einziger Zweck ist es, einen Fehlertext zur Oberfläche durchzureichen. Ein
+ * tolles Konzept ist das nicht, funktioniert aber.
  * </p>
  * <p>
  * ACHTUNG: Diese Klasse ist für PswGen und PswGenDroid identisch, sprich kopiert.
  * </p>
  */
-public class EmptyHelper {
+public class DomainException extends RuntimeException {
 
-	/** Der Leerwert für einen Integer */
-	public static final int EMPTY_INT = Integer.MIN_VALUE;
+	private static final long serialVersionUID = 7931546922671727841L;
 
-	/** Der Leerwert für einen String */
-	public static final String EMPTY_STRING = "";
-
-	/**
-	 * Liefert den defaultValue, wenn der übergebene value der Leerwert ist.
-	 */
-	public static int getValue(final int value, final int defaultValue) {
-		return (isEmpty(value)) ? defaultValue : value;
-	}
-
-	/**
-	 * Liefert true, wenn der übergebene Zahlenwert der Leerwert ist.
-	 */
-	public static boolean isEmpty(int value) {
-		return (value == EMPTY_INT);
-	}
-
-	/**
-	 * Liefert true, wenn der String null ist oder die Länge 0 hat.
-	 */
-	public static boolean isEmpty(String value) {
-		return value == null || value.length() == 0;
+	public DomainException(String arg0) {
+		super(arg0);
 	}
 
 }

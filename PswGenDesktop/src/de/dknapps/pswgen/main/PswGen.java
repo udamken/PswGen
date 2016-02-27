@@ -30,7 +30,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
 import de.dknapps.pswgen.gui.PswGenCtl;
-import de.dknapps.pswgen.util.Constants;
+import de.dknapps.pswgencore.util.Constants;
 
 public class PswGen {
 

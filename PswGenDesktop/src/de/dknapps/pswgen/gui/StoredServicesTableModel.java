@@ -22,7 +22,7 @@ import java.util.Collection;
 
 import javax.swing.table.AbstractTableModel;
 
-import de.dknapps.pswgen.model.ServiceInfo;
+import de.dknapps.pswgencore.model.ServiceInfo;
 
 /**
  * <p>

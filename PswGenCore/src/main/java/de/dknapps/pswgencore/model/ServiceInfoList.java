@@ -16,25 +16,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package de.dknapps.pswgen.model;
+package de.dknapps.pswgencore.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import de.dknapps.pswgen.util.Constants;
-import de.dknapps.pswgen.util.DomainException;
-import de.dknapps.pswgen.util.EmptyHelper;
-import de.dknapps.pswgen.util.EncryptionHelper;
+import de.dknapps.pswgencore.util.Constants;
+import de.dknapps.pswgencore.util.DomainException;
+import de.dknapps.pswgencore.util.EmptyHelper;
+import de.dknapps.pswgencore.util.EncryptionHelper;
 
 /**
  * <p>
  * Hält eine Zuordnung von Dienstekürzeln zu zugehörigen Informationen, die zum Generieren eines Passworts
  * nötig sind.
- * </p>
- * <p>
- * ACHTUNG: Diese Klasse ist für PswGen und PswGenDroid fast (letzteres ohne JAXB) identisch, sprich kopiert.
  * </p>
  */
 public class ServiceInfoList {
