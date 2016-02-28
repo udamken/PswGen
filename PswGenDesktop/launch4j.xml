@@ -2,8 +2,8 @@
 <launch4jConfig>
   <dontWrapJar>true</dontWrapJar>
   <headerType>gui</headerType>
-  <jar>PswGen.jar</jar>
-  <outfile>product/PswGen.exe</outfile>
+  <jar>PswGenDesktop.jar</jar>
+  <outfile>product/PswGenDesktop.exe</outfile>
   <errTitle></errTitle>
   <cmdLine></cmdLine>
   <chdir></chdir>
@@ -14,9 +14,10 @@
   <manifest></manifest>
   <icon>misc/PswGen.ico</icon>
   <classPath>
-    <mainClass>de.dknapps.pswgen.main.PswGen</mainClass>
+    <mainClass>de.dknapps.pswgendesktop.main.PswGenDesktop</mainClass>
     <cp>commons-cli-1.2.jar</cp>
     <cp>gson-2.2.4.jar</cp>
+    <cp>PswGenCore.jar</cp>
   </classPath>
   <jre>
     <path></path>

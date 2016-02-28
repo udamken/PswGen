@@ -28,7 +28,6 @@ import android.content.Context;
 import android.widget.Toast;
 import de.dknapps.pswgencore.model.ServiceInfo;
 import de.dknapps.pswgencore.model.ServiceInfoList;
-import de.dknapps.pswgencore.util.Constants;
 import de.dknapps.pswgencore.util.DomainException;
 import de.dknapps.pswgencore.util.EncryptionHelper;
 import de.dknapps.pswgencore.util.FileHelper;
@@ -43,7 +42,7 @@ import de.dknapps.pswgendroid.util.CommonJsonReaderWriterFactoryAndroidImpl;
 public class PswGenAdapter {
 
 	/** Der Logger dieser Anwendung */
-	private static final Logger LOGGER = Logger.getLogger(Constants.APPLICATION_PACKAGE_NAME + ".Logger");
+	private static final Logger LOGGER = Logger.getLogger(DroidConstants.LOGGER_NAME);
 
 	/** Alle Informationen zu Dienstekürzeln */
 	private static ServiceInfoList services;

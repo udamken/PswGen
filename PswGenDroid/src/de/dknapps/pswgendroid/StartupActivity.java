@@ -39,7 +39,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
 import android.widget.EditText;
-import de.dknapps.pswgencore.util.Constants;
+import de.dknapps.pswgencore.CoreConstants;
 
 /**
  * <p>
@@ -50,7 +50,7 @@ import de.dknapps.pswgencore.util.Constants;
 public class StartupActivity extends Activity implements PassphraseDialog.Listener {
 
 	/** Der Logger dieser Anwendung */
-	private static final Logger LOGGER = Logger.getLogger(Constants.APPLICATION_PACKAGE_NAME + ".Logger");
+	private static final Logger LOGGER = Logger.getLogger(DroidConstants.LOGGER_NAME);
 
 	/** Der BroadcastReceiver, der über SCREEN_OFF-Intents informiert wird */
 	private BroadcastReceiver screenBroadcastReceiver;
@@ -62,7 +62,7 @@ public class StartupActivity extends Activity implements PassphraseDialog.Listen
 		EditText editFilepath = (EditText) findViewById(R.id.filepath);
 		// Das ist auf dem Samsung S4 mini /storage/emulated/0/Download
 		String defaultFilepath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator
-				+ "Download" + File.separator + Constants.SERVICES_FILENAME;
+				+ "Download" + File.separator + CoreConstants.SERVICES_FILENAME;
 		SharedPreferences prefs = getSharedPreferences(getString(R.string.preferences_filename),
 				Context.MODE_PRIVATE);
 		String filepath = prefs.getString(getString(R.string.preference_filepath), defaultFilepath);
@@ -146,7 +146,7 @@ public class StartupActivity extends Activity implements PassphraseDialog.Listen
 					writer.close();
 				}
 			} catch (IOException e) {
-				LOGGER.log(Level.WARNING, Constants.MSG_EXCP_SERVICES, e);
+				LOGGER.log(Level.WARNING, CoreConstants.MSG_EXCP_SERVICES, e);
 			}
 		}
 	}

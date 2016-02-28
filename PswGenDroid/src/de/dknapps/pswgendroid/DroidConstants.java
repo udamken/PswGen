@@ -18,29 +18,17 @@
  *******************************************************************************/
 package de.dknapps.pswgendroid;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-
 /**
  * <p>
- * Dieser BroadcastReceiver wird benutzt, um festzustellen, ob das Gerät inaktiv geworden, was in der Regel
- * dann der Fall ist, wenn der Bildschirm ausgeschaltet ist.
+ * Hält die Konstanten und markiert das Top-Level-Package von PswGenDroid.
  * </p>
  */
-public class ScreenBroadcastReceiver extends BroadcastReceiver {
+public class DroidConstants {
 
-	/** Der Logger dieser Anwendung */
-	private static final Logger LOGGER = Logger.getLogger(DroidConstants.LOGGER_NAME);
+	/** Das Top-Level-Package von PswGenDroid */
+	public static final String APPLICATION_PACKAGE_NAME = DroidConstants.class.getPackage().getName();
 
-	@Override
-	public void onReceive(Context context, Intent intent) {
-		LOGGER.log(Level.INFO, this.getClass().getName() + " received " + intent.getAction());
-		if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
-			PswGenAdapter.unloadServiceInfoList();
-		}
-	}
+	/** Der Name des Loggers von PswGenDroid */
+	public static final String LOGGER_NAME = APPLICATION_PACKAGE_NAME + ".Logger";
+
 }

@@ -23,7 +23,7 @@ import java.util.Collection;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import de.dknapps.pswgencore.util.Constants;
+import de.dknapps.pswgencore.CoreConstants;
 import de.dknapps.pswgencore.util.DomainException;
 import de.dknapps.pswgencore.util.EmptyHelper;
 import de.dknapps.pswgencore.util.EncryptionHelper;
@@ -162,7 +162,7 @@ public class ServiceInfoList {
 	 * und beim Befüllen der Map aus der Collection beim Lesen.
 	 */
 	public void encrypt(EncryptionHelper encryptionHelper) {
-		encryptedVerifier = encryptionHelper.encrypt(Constants.APPLICATION_VERIFIER);
+		encryptedVerifier = encryptionHelper.encrypt(CoreConstants.APPLICATION_VERIFIER);
 		encryptedServices = new ArrayList<ServiceInfo>();
 		if (services != null) {
 			for (ServiceInfo si : services.values()) {
@@ -189,7 +189,7 @@ public class ServiceInfoList {
 	 */
 	public void decrypt(EncryptionHelper encryptionHelper) {
 		String decryptedVerifier = encryptionHelper.decrypt(encryptedVerifier);
-		if (!decryptedVerifier.equals(Constants.APPLICATION_VERIFIER)) {
+		if (!decryptedVerifier.equals(CoreConstants.APPLICATION_VERIFIER)) {
 			throw new DomainException("PassphraseInvalidMsg");
 		}
 		if (encryptedServices != null) {
@@ -211,7 +211,7 @@ public class ServiceInfoList {
 	 * (ADVANCED_FILE_FORMAT_VERSION) ist und außerdem der Prüfstring auf einen nicht leeren Wert gesetzt ist.
 	 */
 	public boolean isAdvancedFormat() {
-		return version != null && version.compareTo(Constants.ADVANCED_FILE_FORMAT_VERSION) >= 0
+		return version != null && version.compareTo(CoreConstants.ADVANCED_FILE_FORMAT_VERSION) >= 0
 				&& !EmptyHelper.isEmpty(encryptedVerifier);
 	}
 
@@ -221,7 +221,7 @@ public class ServiceInfoList {
 	 * Datei nicht leer ist.
 	 */
 	public boolean isUnsupportedFormat() {
-		return version == null || version.compareTo(Constants.LOWEST_SUPPORTED_FILE_FORMAT_VERSION) < 0
+		return version == null || version.compareTo(CoreConstants.LOWEST_SUPPORTED_FILE_FORMAT_VERSION) < 0
 				|| EmptyHelper.isEmpty(encryptedVerifier);
 	}
 

@@ -20,6 +20,7 @@ package de.dknapps.pswgencore.util;
 
 import java.util.Random;
 
+import de.dknapps.pswgencore.CoreConstants;
 import de.dknapps.pswgencore.model.ServiceInfo;
 
 /**
@@ -156,9 +157,9 @@ public class PasswordFactory {
 			int start = EmptyHelper.getValue(si.getSmallLettersStartIndex(), 0);
 			int end = EmptyHelper.getValue(si.getSmallLettersEndIndex(), pswLength - 1);
 			if (count != 0) {
-				pg.distributeCharacters(count, Constants.LOWERCASE_LETTERS, start, end);
+				pg.distributeCharacters(count, CoreConstants.LOWERCASE_LETTERS, start, end);
 			} else {
-				characters += Constants.LOWERCASE_LETTERS;
+				characters += CoreConstants.LOWERCASE_LETTERS;
 			}
 		}
 		if (si.isUseCapitalLetters()) {
@@ -166,9 +167,9 @@ public class PasswordFactory {
 			int start = EmptyHelper.getValue(si.getCapitalLettersStartIndex(), 0);
 			int end = EmptyHelper.getValue(si.getCapitalLettersEndIndex(), pswLength - 1);
 			if (count != 0) {
-				pg.distributeCharacters(count, Constants.UPPERCASE_LETTERS, start, end);
+				pg.distributeCharacters(count, CoreConstants.UPPERCASE_LETTERS, start, end);
 			} else {
-				characters += Constants.UPPERCASE_LETTERS;
+				characters += CoreConstants.UPPERCASE_LETTERS;
 			}
 		}
 		if (si.isUseDigits()) {
@@ -176,9 +177,9 @@ public class PasswordFactory {
 			int start = EmptyHelper.getValue(si.getDigitsStartIndex(), 0);
 			int end = EmptyHelper.getValue(si.getDigitsEndIndex(), pswLength - 1);
 			if (count != 0) {
-				pg.distributeCharacters(count, Constants.DIGITS, start, end);
+				pg.distributeCharacters(count, CoreConstants.DIGITS, start, end);
 			} else {
-				characters += Constants.DIGITS;
+				characters += CoreConstants.DIGITS;
 			}
 		}
 		if (si.isUseSpecialCharacters()) {
@@ -187,7 +188,7 @@ public class PasswordFactory {
 			int end = EmptyHelper.getValue(si.getSpecialCharactersEndIndex(), pswLength - 1);
 			String specialCharacters = si.getSpecialCharacters();
 			if (EmptyHelper.isEmpty(specialCharacters)) {
-				specialCharacters = Constants.SPECIAL_CHARS;
+				specialCharacters = CoreConstants.SPECIAL_CHARS;
 			}
 			if (count != 0) {
 				pg.distributeCharacters(count, specialCharacters, start, end);
@@ -211,13 +212,13 @@ public class PasswordFactory {
 			}
 			char c = password.charAt(i);
 			String prefix;
-			if (Constants.LOWERCASE_LETTERS.indexOf(c) >= 0) {
+			if (CoreConstants.LOWERCASE_LETTERS.indexOf(c) >= 0) {
 				prefix = prefixLowercaseLetters;
-			} else if (Constants.UPPERCASE_LETTERS.indexOf(c) >= 0) {
+			} else if (CoreConstants.UPPERCASE_LETTERS.indexOf(c) >= 0) {
 				prefix = prefixUppercaseLetters;
-			} else if (Constants.DIGITS.indexOf(c) >= 0) {
+			} else if (CoreConstants.DIGITS.indexOf(c) >= 0) {
 				prefix = prefixDigits;
-			} else { // Sonderzeichen, muss nicht Constants.SPECIAL_CHARS sein, da einggebbar
+			} else { // Sonderzeichen, muss nicht CoreConstants.SPECIAL_CHARS sein, da einggebbar
 				prefix = prefixSpecialChars;
 			}
 			if (prefix != null && !prefix.isEmpty()) {
