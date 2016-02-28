@@ -29,6 +29,7 @@ import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import de.dknapps.pswgencore.CoreConstants;
 import de.dknapps.pswgencore.model.ServiceInfo;
 import de.dknapps.pswgencore.model.ServiceInfoList;
 
@@ -43,7 +44,7 @@ import de.dknapps.pswgencore.model.ServiceInfoList;
 public class FileHelper {
 
 	/** Der Logger dieser Anwendung */
-	private static final Logger LOGGER = Logger.getLogger(FileHelper.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(CoreConstants.LOGGER_NAME);
 
 	/** Die eine und einzige Instanz dieser Klasse */
 	private static FileHelper instance = null;
@@ -60,7 +61,8 @@ public class FileHelper {
 	/**
 	 * Liefert die eine und einzige Instanz.
 	 */
-	public static synchronized FileHelper getInstance(CommonJsonReaderWriterFactory commonJsonReaderWriterFactory) {
+	public static synchronized FileHelper getInstance(
+			CommonJsonReaderWriterFactory commonJsonReaderWriterFactory) {
 		if (instance == null) {
 			instance = new FileHelper(commonJsonReaderWriterFactory);
 		}
@@ -80,7 +82,7 @@ public class FileHelper {
 				services = new ServiceInfoList(); // später wird eine neue Datei erzeugt
 			}
 		} catch (IOException e) {
-			LOGGER.log(Level.WARNING, Constants.MSG_EXCP_SERVICES, e);
+			LOGGER.log(Level.WARNING, CoreConstants.MSG_EXCP_SERVICES, e);
 		}
 		return services;
 	}
@@ -93,12 +95,12 @@ public class FileHelper {
 		try {
 			services = readJsonStream(in);
 		} catch (IOException e) {
-			LOGGER.log(Level.WARNING, Constants.MSG_EXCP_SERVICES, e);
+			LOGGER.log(Level.WARNING, CoreConstants.MSG_EXCP_SERVICES, e);
 		} finally {
 			try {
 				in.close();
 			} catch (IOException e) {
-				LOGGER.log(Level.WARNING, Constants.MSG_EXCP_SERVICES, e);
+				LOGGER.log(Level.WARNING, CoreConstants.MSG_EXCP_SERVICES, e);
 			}
 		}
 		return services;
@@ -107,7 +109,7 @@ public class FileHelper {
 	private ServiceInfoList readJsonStream(FileInputStream in) throws IOException {
 		ServiceInfoList services = new ServiceInfoList();
 		CommonJsonReader reader = commonJsonReaderWriterFactory
-				.getJsonReader(new InputStreamReader(in, Constants.CHARSET_NAME));
+				.getJsonReader(new InputStreamReader(in, CoreConstants.CHARSET_NAME));
 		try {
 			reader.beginObject();
 			checkJsonName(reader, "version");
@@ -217,10 +219,10 @@ public class FileHelper {
 
 	private void writeJsonStream(OutputStream out, ServiceInfoList services) throws IOException {
 		CommonJsonWriter writer = commonJsonReaderWriterFactory
-				.getJsonWriter(new OutputStreamWriter(out, Constants.CHARSET_NAME));
+				.getJsonWriter(new OutputStreamWriter(out, CoreConstants.CHARSET_NAME));
 		writer.setIndent("\t");
 		writer.beginObject();
-		services.setVersion(Constants.APPLICATION_VERSION);
+		services.setVersion(CoreConstants.APPLICATION_VERSION);
 		writer.name("version").value(services.getVersion());
 		writer.name("verifier").value(services.getEncryptedVerifier());
 		writeServices(writer, services.getEncryptedServices());

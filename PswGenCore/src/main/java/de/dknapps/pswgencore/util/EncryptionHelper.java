@@ -29,6 +29,8 @@ import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import de.dknapps.pswgencore.CoreConstants;
+
 /**
  * <p>
  * Verschlüsselt und entschlüsselt Strings auf Basis einer Passphrase.
@@ -153,7 +155,7 @@ public class EncryptionHelper {
 			if (EmptyHelper.isEmpty(s)) { // Leer bleibt leer ...
 				return "";
 			}
-			final byte[] encryptedByteArray = cipher.doFinal(s.getBytes(Constants.CHARSET_NAME));
+			final byte[] encryptedByteArray = cipher.doFinal(s.getBytes(CoreConstants.CHARSET_NAME));
 			final String encrypted = EncryptionHelper.toHexString(encryptedByteArray);
 			return encrypted;
 		} catch (Exception e) {
@@ -170,7 +172,7 @@ public class EncryptionHelper {
 				return "";
 			}
 			final byte[] sByteArray = cipher.doFinal(EncryptionHelper.toByteArray(sEncrypted));
-			final String s = new String(sByteArray, Constants.CHARSET_NAME);
+			final String s = new String(sByteArray, CoreConstants.CHARSET_NAME);
 			return s;
 		} catch (Exception e) {
 			throw new DomainException("PassphraseInvalidMsg");

@@ -19,7 +19,7 @@
     limitations under the License.
  -->
 
-<project name="Create PswGen.zip in product subdirectory" default="package" basedir=".">
+<project name="Create PswGenDesktop.zip in product subdirectory" default="package" basedir=".">
 
 	<property name="launch4j.dir" location="/opt/launch4j" />
 
@@ -30,7 +30,7 @@
 	</target>
 
 	<target name="loadVersion">
-		<loadproperties srcfile="src/de/dknapps/pswgen/util/Constants.java">
+		<loadproperties srcfile="../PswGenCore/src/main/java/de/dknapps/pswgencore/CoreConstants.java">
 			<filterchain>
 				<tokenfilter>
 					<containsstring contains="APPLICATION_VERSION"/>
@@ -45,10 +45,10 @@
 	</target>
 
 	<target name="createJar">
-		<jar destfile="product/PswGen.jar" basedir="bin" excludes="**/*Test.class">
+		<jar destfile="product/PswGenDesktop.jar" basedir="bin" excludes="**/*Test.class">
 			<manifest>
-				<attribute name="Main-Class" value="de.dknapps.pswgen.main.PswGen" />
-				<attribute name="Class-Path" value="commons-cli-1.2.jar gson-2.2.4.jar" />
+				<attribute name="Main-Class" value="de.dknapps.pswgendesktop.main.PswGenDesktop" />
+				<attribute name="Class-Path" value="commons-cli-1.2.jar gson-2.2.4.jar PswGenCore.jar" />
 			</manifest>
 		</jar>
 	</target>
@@ -58,7 +58,7 @@
 	</target>
 
 	<target name="createZip">
-		<zip destfile="product/PswGen_${pswgen.version}.zip">
+		<zip destfile="product/PswGenDesktop_${pswgen.version}.zip">
 			<fileset dir="lib">
 				<include name="*.jar" />
 			</fileset>
@@ -73,8 +73,8 @@
 	</target>
 
 	<target name="cleanup">
-		<delete file="product/PswGen.jar" />
-		<delete file="product/PswGen.exe" />
+		<delete file="product/PswGenDesktop.jar" />
+		<delete file="product/PswGenDesktop.exe" />
 	</target>
 
 </project>
