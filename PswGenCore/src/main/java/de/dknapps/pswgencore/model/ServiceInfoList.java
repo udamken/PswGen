@@ -24,8 +24,6 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import de.dknapps.pswgencore.CoreConstants;
-import de.dknapps.pswgencore.util.DomainException;
-import de.dknapps.pswgencore.util.EmptyHelper;
 import de.dknapps.pswgencore.util.EncryptionHelper;
 
 /**
@@ -38,9 +36,6 @@ public class ServiceInfoList {
 
 	/** Version von PswGen, mit der die Dienstedatei erstellt wurde */
 	private String version;
-
-	/** Verlüsselter String zur Verifizierung der eingegebenen Passphrase */
-	private String encryptedVerifier;
 
 	/** Salz für die Erzeugung eines Schlüssels aus der Passphrase als Hex-String */
 	private String saltAsHexString;
@@ -162,7 +157,6 @@ public class ServiceInfoList {
 	 * und beim Befüllen der Map aus der Collection beim Lesen.
 	 */
 	public void encrypt(EncryptionHelper encryptionHelper) {
-		encryptedVerifier = encryptionHelper.encrypt(CoreConstants.APPLICATION_VERIFIER);
 		encryptedServices = new ArrayList<ServiceInfo>();
 		if (services != null) {
 			for (ServiceInfo si : services.values()) {
@@ -188,10 +182,10 @@ public class ServiceInfoList {
 	 * und beim Befüllen der Map aus der Collection beim Lesen.
 	 */
 	public void decrypt(EncryptionHelper encryptionHelper) {
-		String decryptedVerifier = encryptionHelper.decrypt(encryptedVerifier);
-		if (!decryptedVerifier.equals(CoreConstants.APPLICATION_VERIFIER)) {
-			throw new DomainException("PassphraseInvalidMsg");
-		}
+		// String decryptedVerifier = encryptionHelper.decrypt(encryptedVerifier);
+		// if (!decryptedVerifier.equals(CoreConstants.APPLICATION_VERIFIER)) {
+		// throw new DomainException("PassphraseInvalidMsg");
+		// }
 		if (encryptedServices != null) {
 			for (ServiceInfo serviceInfo : encryptedServices) {
 				putServiceInfo(decrypt(encryptionHelper, serviceInfo));
@@ -211,8 +205,7 @@ public class ServiceInfoList {
 	 * (ADVANCED_FILE_FORMAT_VERSION) ist und außerdem der Prüfstring auf einen nicht leeren Wert gesetzt ist.
 	 */
 	public boolean isAdvancedFormat() {
-		return version != null && version.compareTo(CoreConstants.ADVANCED_FILE_FORMAT_VERSION) >= 0
-				&& !EmptyHelper.isEmpty(encryptedVerifier);
+		return version != null && version.compareTo(CoreConstants.ADVANCED_FILE_FORMAT_VERSION) >= 0;
 	}
 
 	/**
@@ -221,8 +214,7 @@ public class ServiceInfoList {
 	 * Datei nicht leer ist.
 	 */
 	public boolean isUnsupportedFormat() {
-		return version == null || version.compareTo(CoreConstants.LOWEST_SUPPORTED_FILE_FORMAT_VERSION) < 0
-				|| EmptyHelper.isEmpty(encryptedVerifier);
+		return version == null || version.compareTo(CoreConstants.LOWEST_SUPPORTED_FILE_FORMAT_VERSION) < 0;
 	}
 
 	/**
@@ -238,21 +230,6 @@ public class ServiceInfoList {
 	 */
 	public void setVersion(String version) {
 		this.version = version;
-	}
-
-	/**
-	 * @return the encryptedVerifier
-	 */
-	public String getEncryptedVerifier() {
-		return encryptedVerifier;
-	}
-
-	/**
-	 * @param encryptedVerifier
-	 *            the encryptedVerifier to set
-	 */
-	public void setEncryptedVerifier(String verifier) {
-		this.encryptedVerifier = verifier;
 	}
 
 	/**

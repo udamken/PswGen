@@ -24,16 +24,17 @@ package de.dknapps.pswgencore.util;
  * RuntimeException geworfen. Einziger Zweck ist es, einen Fehlertext zur Oberfläche durchzureichen. Ein
  * tolles Konzept ist das nicht, funktioniert aber.
  * </p>
- * <p>
- * ACHTUNG: Diese Klasse ist für PswGen und PswGenDroid identisch, sprich kopiert.
- * </p>
  */
 public class DomainException extends RuntimeException {
 
 	private static final long serialVersionUID = 7931546922671727841L;
 
-	public DomainException(String arg0) {
-		super(arg0);
+	public DomainException(String message) {
+		super(message);
+	}
+
+	public DomainException(String message, Throwable cause) {
+		super(message, cause);
 	}
 
 }

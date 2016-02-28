@@ -22,9 +22,6 @@ package de.dknapps.pswgencore.util;
  * <p>
  * Hilft bei der Behandlung von Leerwerten in Wertefelder, wie z.B. Zahlenfeldern.
  * </p>
- * <p>
- * ACHTUNG: Diese Klasse ist für PswGen und PswGenDroid identisch, sprich kopiert.
- * </p>
  */
 public class EmptyHelper {
 

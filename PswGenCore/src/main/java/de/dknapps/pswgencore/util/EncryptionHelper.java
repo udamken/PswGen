@@ -35,9 +35,6 @@ import de.dknapps.pswgencore.CoreConstants;
  * <p>
  * Verschlüsselt und entschlüsselt Strings auf Basis einer Passphrase.
  * </p>
- * <p>
- * ACHTUNG: Diese Klasse ist für PswGen und PswGenDroid identisch, sprich kopiert.
- * </p>
  */
 public class EncryptionHelper {
 
@@ -175,7 +172,7 @@ public class EncryptionHelper {
 			final String s = new String(sByteArray, CoreConstants.CHARSET_NAME);
 			return s;
 		} catch (Exception e) {
-			throw new DomainException("PassphraseInvalidMsg");
+			throw new DomainException("PassphraseInvalidMsg", e);
 		}
 	}
 

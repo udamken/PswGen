@@ -28,9 +28,6 @@ import de.dknapps.pswgencore.model.ServiceInfo;
  * Eine Instanz dieser Klasse generiert ein Passwort. Zum Holen eines neuen Passworts sollte daher eine neue
  * Instanz erzeugt werden.
  * </p>
- * <p>
- * ACHTUNG: Diese Klasse ist für PswGen und PswGenDroid identisch, sprich kopiert.
- * </p>
  */
 public class PasswordFactory {
 

@@ -37,9 +37,6 @@ import de.dknapps.pswgencore.model.ServiceInfoList;
  * <p>
  * FileHelper ist ein Singleton und hilft dabei, Dienstedaten im JSON-Format zu speichern und zu laden.
  * </p>
- * <p>
- * ACHTUNG: Diese Klasse ist für PswGen und PswGenDroid bis auf die JSON-Importe identisch, sprich kopiert.
- * </p>
  */
 public class FileHelper {
 
@@ -114,8 +111,6 @@ public class FileHelper {
 			reader.beginObject();
 			checkJsonName(reader, "version");
 			services.setVersion(reader.nextString());
-			checkJsonName(reader, "verifier");
-			services.setEncryptedVerifier(reader.nextString());
 			addReadServices(services, reader);
 			if (!reader.peekReturnsEndObject()) {
 				// Erst ab 1.7.4 gibt es salt und initializer, daher ist beides optional
@@ -132,7 +127,14 @@ public class FileHelper {
 	}
 
 	private void addReadServices(ServiceInfoList services, CommonJsonReader reader) throws IOException {
-		checkJsonName(reader, "services");
+		try {
+			checkJsonName(reader, "services");
+		} catch (IOException e) {
+			LOGGER.log(Level.WARNING, "Exception silently ignored", e);
+			// Probably an old file with a verifier => ignore silently and go on to services
+			reader.nextString();
+			checkJsonName(reader, "services");
+		}
 		reader.beginArray();
 		while (reader.hasNext()) {
 			services.addEncryptedService(readService(reader));
@@ -224,7 +226,6 @@ public class FileHelper {
 		writer.beginObject();
 		services.setVersion(CoreConstants.APPLICATION_VERSION);
 		writer.name("version").value(services.getVersion());
-		writer.name("verifier").value(services.getEncryptedVerifier());
 		writeServices(writer, services.getEncryptedServices());
 		/**
 		 * <pre>

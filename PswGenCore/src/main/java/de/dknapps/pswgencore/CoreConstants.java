@@ -35,11 +35,6 @@ public class CoreConstants {
 	/** Die Version aller Teile von PswGen, ab der das Dateiformat (mit Upgrade) unterstützt wird */
 	public static final String LOWEST_SUPPORTED_FILE_FORMAT_VERSION = "1.7.0";
 
-	/** Verifizierungsstring zur Überprüfung der Passphrase */
-	// FIXME dkn Der Verifier entfällt zu Gunsten zweier Hashes (alt und aktuell)!
-	public static final String APPLICATION_VERIFIER = "PswGen - Manages your websites and repeatably generates passwords for them, Copy"
-			+ "right (C) Uwe Damken"; // String splitted "against" Eclipse Releng
-
 	/** Die Version aller Teile von PswGen */
 	public static final String APPLICATION_VERSION = "1.7.8";
 

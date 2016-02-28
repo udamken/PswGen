@@ -105,6 +105,20 @@ public class EncryptionHelperTest extends TestCase {
 		Assert.assertEquals(s, sEncryptedDecrypted);
 	}
 
+	@Test
+	public void test07() throws Exception {
+		char[] password = "password".toCharArray();
+		char[] wrongPassword = "wrongPassword".toCharArray();
+		String s = "an unencryted string to be encrypted and decrypted";
+		byte[] sEncrypted = encrypt(password, s);
+		try {
+			String sEncryptedDecrypted = decrypt(wrongPassword, sEncrypted);
+			Assert.assertNotEquals("Successful decryption with wrong password?", s, sEncryptedDecrypted);
+		} catch (Exception e) {
+			// An exception is expected here because wrong password used for decryption
+		}
+	}
+
 	private static final int SALT_LENGTH = 16;
 	private static final int KEY_ITERATION_COUNT = 1024;
 	private static final String CIPHER_TRANSFORMATION = "AES/CBC/PKCS5Padding";
