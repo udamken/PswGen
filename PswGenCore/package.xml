@@ -19,13 +19,9 @@
     limitations under the License.
  -->
 
-<project name="Create PswGenDesktop.zip in product subdirectory" default="package" basedir=".">
+<project name="Create PswGenCore.jar in PswGenDesktop/lib and PswGenDroid/libs" default="package" basedir=".">
 
-	<property name="launch4j.dir" location="/opt/launch4j" />
-
-	<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${launch4j.dir}/launch4j.jar:${launch4j.dir}/lib/xstream.jar" />
-
-	<target name="package" depends="loadVersion,compileNotSupported,createJar,createExe,createZip,cleanup">
+	<target name="package" depends="loadVersion,compileNotSupported,createJar,copyJar">
 		<echo message="${pswgen.version} built successfully" />
 	</target>
 
@@ -48,37 +44,21 @@
 	</target>
 
 	<target name="createJar">
-		<jar destfile="product/PswGenDesktop.jar" basedir="bin" excludes="**/*Test.class">
+		
+		<jar destfile="../PswGenDesktop/lib/PswGenCore.jar" basedir="bin" excludes="**/*Test.class">
 			<manifest>
-				<attribute name="Main-Class" value="de.dknapps.pswgendesktop.main.PswGenDesktop" />
-				<attribute name="Class-Path" value="commons-cli-1.2.jar gson-2.2.4.jar PswGenCore.jar" />
 				<attribute name="PswGen-Version" value="${pswgen.version}" />
 				<attribute name="Build-Timestamp" value="${TODAY}" />
 			</manifest>
 		</jar>
 	</target>
 
-	<target name="createExe">
-		<launch4j configFile="launch4j.xml" />
-	</target>
-
-	<target name="createZip">
-		<zip destfile="product/PswGenDesktop_${pswgen.version}.zip">
-			<fileset dir="lib">
-				<include name="*.jar" />
-			</fileset>
-			<fileset dir="product">
-				<include name="*.exe" />
-				<include name="*.jar" />
-			</fileset>
-			<fileset dir=".">
-				<include name="LICENSE" />
-			</fileset>
-		</zip>
+	<target name="copyJar">
+		<copy file="../PswGenDesktop/lib/PswGenCore.jar" tofile="../PswGenDroid/libs/PswGenCore.jar"/>
 	</target>
 
 	<target name="cleanup">
-		<delete file="product/PswGenDesktop.jar" />
+		<delete file="../PswGenDesktop/lib/PswGenCore.jar" />
 		<delete file="product/PswGenDesktop.exe" />
 	</target>
 
