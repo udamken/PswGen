@@ -29,6 +29,9 @@ import java.util.Locale;
  */
 public class CoreConstants {
 
+	/** Die Version aller Teile von PswGen, ab der ein HashCode statt Verifizierungs-String benutzt wird */
+	public static final String NEWEST_FILE_FORMAT_VERSION = "1.7.8";
+
 	/** Die Version aller Teile von PswGen, ab der ein neues Dateiformat benutzt wird */
 	public static final String ADVANCED_FILE_FORMAT_VERSION = "1.7.4";
 

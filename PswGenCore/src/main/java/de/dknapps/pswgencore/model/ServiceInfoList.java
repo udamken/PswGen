@@ -39,8 +39,8 @@ public class ServiceInfoList {
 	/** Version von PswGen, mit der die Dienstedatei erstellt wurde */
 	private String version;
 
-	/** Verlüsselter String zur Verifizierung der eingegebenen Passphrase */
-	private String encryptedVerifier;
+	/** String zur Verifizierung der Passphrase, alt: verschlüsselter String, neu: services.hashCode() */
+	private String verifier;
 
 	/** Salz für die Erzeugung eines Schlüssels aus der Passphrase als Hex-String */
 	private String saltAsHexString;
@@ -162,7 +162,7 @@ public class ServiceInfoList {
 	 * und beim Befüllen der Map aus der Collection beim Lesen.
 	 */
 	public void encrypt(EncryptionHelper encryptionHelper) {
-		encryptedVerifier = encryptionHelper.encrypt(CoreConstants.APPLICATION_VERIFIER);
+		verifier = String.valueOf(services.hashCode()); // Zur Prüfung der Korrektheit nach dem Einlesen
 		encryptedServices = new ArrayList<ServiceInfo>();
 		if (services != null) {
 			for (ServiceInfo si : services.values()) {
@@ -188,14 +188,20 @@ public class ServiceInfoList {
 	 * und beim Befüllen der Map aus der Collection beim Lesen.
 	 */
 	public void decrypt(EncryptionHelper encryptionHelper) {
-		String decryptedVerifier = encryptionHelper.decrypt(encryptedVerifier);
-		if (!decryptedVerifier.equals(CoreConstants.APPLICATION_VERIFIER)) {
+		// TODO dkn Die alte Passphrase-Prüfung kann später entfallen, ein Verifizierungs-String ist unsicher
+		if (!isNewestFormat()
+				&& !encryptionHelper.decrypt(verifier).equals(CoreConstants.APPLICATION_VERIFIER)) {
 			throw new DomainException("PassphraseInvalidMsg");
 		}
 		if (encryptedServices != null) {
 			for (ServiceInfo serviceInfo : encryptedServices) {
 				putServiceInfo(decrypt(encryptionHelper, serviceInfo));
 			}
+		}
+		// Zur Überprüfung der Passphrase wird der hashCode() der Services-Map nach dem Entschlüsseln mit dem
+		// hashCode() verglichen, der vor dem Verschlüsseln ermittelt wurde.
+		if (isNewestFormat() && !verifier.equals(String.valueOf(services.hashCode()))) {
+			throw new DomainException("PassphraseInvalidMsg");
 		}
 	}
 
@@ -207,12 +213,21 @@ public class ServiceInfoList {
 	}
 
 	/**
+	 * Liefert true, wenn die Version gesetzt und größer oder gleich der neuesten Dateiformatsversion
+	 * (NEWEST_FILE_FORMAT_VERSION) ist und außerdem der Prüfstring auf einen nicht leeren Wert gesetzt ist.
+	 */
+	public boolean isNewestFormat() {
+		return version != null && version.compareTo(CoreConstants.NEWEST_FILE_FORMAT_VERSION) >= 0
+				&& !EmptyHelper.isEmpty(verifier);
+	}
+
+	/**
 	 * Liefert true, wenn die Version gesetzt und größer oder gleich der aktuellen Dateiformatsversion
 	 * (ADVANCED_FILE_FORMAT_VERSION) ist und außerdem der Prüfstring auf einen nicht leeren Wert gesetzt ist.
 	 */
 	public boolean isAdvancedFormat() {
 		return version != null && version.compareTo(CoreConstants.ADVANCED_FILE_FORMAT_VERSION) >= 0
-				&& !EmptyHelper.isEmpty(encryptedVerifier);
+				&& !EmptyHelper.isEmpty(verifier);
 	}
 
 	/**
@@ -222,7 +237,7 @@ public class ServiceInfoList {
 	 */
 	public boolean isUnsupportedFormat() {
 		return version == null || version.compareTo(CoreConstants.LOWEST_SUPPORTED_FILE_FORMAT_VERSION) < 0
-				|| EmptyHelper.isEmpty(encryptedVerifier);
+				|| EmptyHelper.isEmpty(verifier);
 	}
 
 	/**
@@ -244,7 +259,7 @@ public class ServiceInfoList {
 	 * @return the encryptedVerifier
 	 */
 	public String getEncryptedVerifier() {
-		return encryptedVerifier;
+		return verifier;
 	}
 
 	/**
@@ -252,7 +267,7 @@ public class ServiceInfoList {
 	 *            the encryptedVerifier to set
 	 */
 	public void setEncryptedVerifier(String verifier) {
-		this.encryptedVerifier = verifier;
+		this.verifier = verifier;
 	}
 
 	/**

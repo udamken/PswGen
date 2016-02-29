@@ -89,8 +89,47 @@ public class ServiceInfo {
 		return super.clone();
 	}
 
+	/**
+	 * Wird in PswGenDroid benutzt, um einen Dienst in der Liste anzuzeigen.
+	 */
 	public String toString() {
 		return serviceAbbreviation;
+	}
+
+	/**
+	 * Im EncryptionHelper wird der HashCode der Map aus ServiceInfo-Objekten verwendet, um die Passphrase zu
+	 * validieren, darum wird hier hashCode() benötigt.
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((additionalInfo == null) ? 0 : additionalInfo.hashCode());
+		result = prime * result + ((additionalLoginInfo == null) ? 0 : additionalLoginInfo.hashCode());
+		result = prime * result + capitalLettersCount;
+		result = prime * result + capitalLettersEndIndex;
+		result = prime * result + capitalLettersStartIndex;
+		result = prime * result + digitsCount;
+		result = prime * result + digitsEndIndex;
+		result = prime * result + digitsStartIndex;
+		result = prime * result + ((loginInfo == null) ? 0 : loginInfo.hashCode());
+		result = prime * result + ((loginUrl == null) ? 0 : loginUrl.hashCode());
+		result = prime * result + ((password == null) ? 0 : password.hashCode());
+		result = prime * result + ((passwordRepeated == null) ? 0 : passwordRepeated.hashCode());
+		result = prime * result + ((serviceAbbreviation == null) ? 0 : serviceAbbreviation.hashCode());
+		result = prime * result + smallLettersCount;
+		result = prime * result + smallLettersEndIndex;
+		result = prime * result + smallLettersStartIndex;
+		result = prime * result + ((specialCharacters == null) ? 0 : specialCharacters.hashCode());
+		result = prime * result + specialCharactersCount;
+		result = prime * result + specialCharactersEndIndex;
+		result = prime * result + specialCharactersStartIndex;
+		result = prime * result + totalCharacterCount;
+		result = prime * result + (useCapitalLetters ? 1231 : 1237);
+		result = prime * result + (useDigits ? 1231 : 1237);
+		result = prime * result + (useSmallLetters ? 1231 : 1237);
+		result = prime * result + (useSpecialCharacters ? 1231 : 1237);
+		return result;
 	}
 
 	/**
