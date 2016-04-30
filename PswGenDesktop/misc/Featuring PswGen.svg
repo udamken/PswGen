@@ -16,7 +16,7 @@
    version="1.1"
    inkscape:version="0.48.4 r9939"
    sodipodi:docname="Featuring PswGen.svg"
-   inkscape:export-filename="/home/uwe/Git/PswGen_vor_maven/misc/Featuring PswGen.png"
+   inkscape:export-filename="/home/uwe/Git/PswGen/PswGenDesktop/misc/Featuring PswGen.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90">
   <defs
@@ -158,13 +158,6 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      transform="translate(0,-100)">
-    <rect
-       style="fill:#ffff00;fill-opacity:1"
-       id="rect3287"
-       width="526.66663"
-       height="181.66667"
-       x="493.33331"
-       y="361.66666" />
     <rect
        style="fill:#0a246a;fill-opacity:1"
        id="rect3278"
