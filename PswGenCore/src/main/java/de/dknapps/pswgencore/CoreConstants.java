@@ -1,6 +1,6 @@
 /*******************************************************************************
- * PswGen - Manages your websites and repeatably generates passwords for them
- * PswGenDroid - Generates your passwords managed by PswGen on your mobile  
+ * PswGenDesktop - Manages your websites and repeatably generates passwords for them
+ * PswGenDroid - Generates your passwords managed by PswGenDesktop on your mobile  
  *
  *     Copyright (C) 2005-2016 Uwe Damken
  *
@@ -40,7 +40,7 @@ public class CoreConstants {
 
 	/** Verifizierungsstring zur Überprüfung der Passphrase */
 	// FIXME dkn Der Verifier entfällt zu Gunsten zweier Hashes (alt und aktuell)!
-	public static final String APPLICATION_VERIFIER = "PswGen - Manages your websites and repeatably generates passwords for them, Copy"
+	public static final String APPLICATION_VERIFIER = "PswGenDesktop - Manages your websites and repeatably generates passwords for them, Copy"
 			+ "right (C) Uwe Damken"; // String splitted "against" Eclipse Releng
 
 	/** Die Version aller Teile von PswGen */

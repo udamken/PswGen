@@ -1,6 +1,6 @@
 /*******************************************************************************
- * PswGen - Manages your websites and repeatably generates passwords for them
- * PswGenDroid - Generates your passwords managed by PswGen on your mobile  
+ * PswGenDesktop - Manages your websites and repeatably generates passwords for them
+ * PswGenDroid - Generates your passwords managed by PswGenDesktop on your mobile  
  *
  *     Copyright (C) 2005-2016 Uwe Damken
  *
