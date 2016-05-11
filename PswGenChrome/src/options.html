@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+
+	<link rel="stylesheet" href="bootstrap.min.css">
+	<style>
+		body {
+			min-width: 500px;
+		}
+
+		#container {
+			margin-top: 20px;
+		}
+	</style>
+
+	<script src="angular.min.js"></script>
+	<script src="pgc.js"></script>
+	<script src="options.js"></script>
+</head>
+<body ng-app="pgcApp" ng-cloak="true">
+	<div id="container" class="container">
+		<div ng-controller="optionsController" id="options">
+			<form>
+				<div class="form-group">
+					<label for="server">URL of the PswGenServer</label>
+					<input ng-model="server" type="text" id="server" class="form-control" placeholder="URL of the PswGenServer">
+					<span class="help-block">The URL the PswGenServer is running on.</span>
+				</div>
+				<div class="form-group">
+					<label for="token">Token to access the PswGenServer</label>
+					<input ng-model="token" type="text" id="token" class="form-control" placeholder="Token to access the PswGenServer">
+					<span class="help-block">The token that must be used in order to access the PswGenServer. It is provided on the server startup.</span>
+				</div>
+				<button ng-click="save()" type="button" class="btn btn-primary">Save</button>
+			</form>
+		</div>
+	</div>
+</body>
+</html>
