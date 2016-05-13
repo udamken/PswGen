@@ -29,7 +29,7 @@ angular.module('pgcApp').controller('searchController', ['$scope', '$http', 'opt
     });
 
     $scope.loadService = function(serviceName) {
-        $http.get(server + '/service?' + serviceName, {
+        $http.get(server + '/service?' + encodeURIComponent(serviceName), {
             headers : {
                 'X-TOKEN' : token
             }
