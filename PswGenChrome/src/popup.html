@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+
+	<link rel="stylesheet" href="bootstrap.min.css">
+	<style>
+		body {
+			min-width: 500px;
+		}
+
+		#container {
+			margin-top: 20px;
+		}
+
+		#search-panel {
+			padding: 20px;
+		}
+
+		#query {
+			margin-bottom: 10px;
+		}
+
+		#search-panel ul, #search-panel ul li {
+			border: none;
+		}
+		#search-panel ul li {
+			cursor: pointer;
+		}
+	</style>
+
+	<script src="angular.js"></script>
+	<script src="pgc.js"></script>
+	<script src="search.js"></script>
+</head>
+<body ng-app="pgcApp" ng-cloak="true">
+	<div id="container" class="container">
+		<div id="search-panel" class="panel panel-default">
+			<div ng-controller="searchController">
+				<form>
+					<div class="form-group">
+						<input ng-model="query.name" type="text" id="query" class="form-control" placeholder="Search for service …" autofocus="true">
+						<span id="query-help" class="help-block">Click on any item to the login information or the password automatically.</span>
+					</div>
+				</form>
+				<ul class="list-group row">
+					<li ng-repeat="serviceObj in services | filter : query" ng-click="loadService(serviceObj.name)" class="list-group-item col-xs-4">
+						{{ serviceObj.name }}
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
