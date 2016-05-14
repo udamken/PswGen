@@ -7,70 +7,71 @@ import com.google.gson.stream.JsonWriter;
 
 import de.dknapps.pswgencore.util.CommonJsonWriter;
 
+@SuppressWarnings("javadoc")
 public class CommonJsonWriterGsonImpl implements CommonJsonWriter {
 
-	private JsonWriter writer;
+	private final JsonWriter writer;
 
-	public CommonJsonWriterGsonImpl(OutputStreamWriter outputStreamWriter) {
-		writer = new JsonWriter(outputStreamWriter);
+	public CommonJsonWriterGsonImpl(final OutputStreamWriter outputStreamWriter) {
+		this.writer = new JsonWriter(outputStreamWriter);
 	}
 
 	@Override
 	public CommonJsonWriter beginArray() throws IOException {
-		writer.beginArray();
+		this.writer.beginArray();
 		return this;
 	}
 
 	@Override
 	public CommonJsonWriter beginObject() throws IOException {
-		writer.beginObject();
+		this.writer.beginObject();
 		return this;
 	}
 
 	@Override
 	public void close() throws IOException {
-		writer.close();
+		this.writer.close();
 	}
 
 	@Override
 	public CommonJsonWriter endArray() throws IOException {
-		writer.endArray();
+		this.writer.endArray();
 		return this;
 	}
 
 	@Override
 	public CommonJsonWriter endObject() throws IOException {
-		writer.endObject();
+		this.writer.endObject();
 		return this;
 	}
 
 	@Override
-	public CommonJsonWriter name(String name) throws IOException {
-		writer.name(name);
+	public CommonJsonWriter name(final String name) throws IOException {
+		this.writer.name(name);
 		return this;
 	}
 
 	@Override
-	public CommonJsonWriter value(boolean value) throws IOException {
-		writer.value(value);
+	public CommonJsonWriter value(final boolean value) throws IOException {
+		this.writer.value(value);
 		return this;
 	}
 
 	@Override
-	public CommonJsonWriter value(long value) throws IOException {
-		writer.value(value);
+	public CommonJsonWriter value(final long value) throws IOException {
+		this.writer.value(value);
 		return this;
 	}
 
 	@Override
-	public CommonJsonWriter value(String value) throws IOException {
-		writer.value(value);
+	public CommonJsonWriter value(final String value) throws IOException {
+		this.writer.value(value);
 		return this;
 	}
 
 	@Override
-	public void setIndent(String indent) throws IOException {
-		writer.setIndent(indent);
+	public void setIndent(final String indent) throws IOException {
+		this.writer.setIndent(indent);
 	}
 
 }

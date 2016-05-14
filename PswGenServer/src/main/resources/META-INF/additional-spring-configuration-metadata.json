@@ -1,0 +1,22 @@
+{
+	"properties": 
+	[
+		{
+			"name": "pswgenserver.passphrase",
+			"type": "java.lang.String",
+			"description": "The passphrase that is used to decrypting the services file."
+		},
+
+		{
+			"name": "pswgenserver.services",
+			"type": "java.lang.String",
+			"description": "The path of the services file. Must contain the protocol required to access that file."
+		},
+
+		{
+			"name": "pswgenserver.security-token",
+			"type": "java.lang.String",
+			"description": "The security token that is required to access any API-methods."
+		}
+	]
+}

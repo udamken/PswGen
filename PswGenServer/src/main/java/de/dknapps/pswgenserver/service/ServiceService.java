@@ -16,16 +16,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package de.dknapps.pswgenserver;
+package de.dknapps.pswgenserver.service;
+
+import java.util.List;
+
+import de.dknapps.pswgenserver.service.ServicesFileWatchService.ServicesFileChangeListener;
 
 /**
- * Contains constants of the PswGenServer.
+ * This service provides the access to all stored service and works as a facade to the underlying PswGen
+ * implementation (PswGenCore).
  * 
  */
-public class ServerConstants {
+public interface ServiceService extends ServicesFileChangeListener {
 	/**
-	 * The name of the server package to identify the server preferences.
+	 * Retrieves all available services without the password for each.
 	 * 
+	 * @return All available services without the password for each.
 	 */
-	public static final String SERVER_PACKAGE_NAME = ServerConstants.class.getPackage().getName();
+	List<Service> getAllServices();
+
+	/**
+	 * Retrieves the service with the password that has the given name.
+	 * 
+	 * @param name
+	 *            The name of the service to retrieve.
+	 * @return The service, if any. Otherwise <code>null</code>.
+	 */
+	Service getService(String name);
 }

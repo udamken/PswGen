@@ -8,77 +8,78 @@ import com.google.gson.stream.JsonToken;
 
 import de.dknapps.pswgencore.util.CommonJsonReader;
 
+@SuppressWarnings("javadoc")
 public class CommonJsonReaderGsonImpl implements CommonJsonReader {
 
-	private JsonReader reader;
+	private final JsonReader reader;
 
-	public CommonJsonReaderGsonImpl(InputStreamReader inputStreamReader) {
-		reader = new JsonReader(inputStreamReader);
+	public CommonJsonReaderGsonImpl(final InputStreamReader inputStreamReader) {
+		this.reader = new JsonReader(inputStreamReader);
 	}
 
 	@Override
 	public boolean peekReturnsEndObject() throws IOException {
-		return reader.peek() == JsonToken.END_OBJECT;
+		return this.reader.peek() == JsonToken.END_OBJECT;
 	}
 
 	@Override
 	public void beginArray() throws IOException {
-		reader.beginArray();
+		this.reader.beginArray();
 	}
 
 	@Override
 	public void beginObject() throws IOException {
-		reader.beginObject();
+		this.reader.beginObject();
 	}
 
 	@Override
 	public void close() throws IOException {
-		reader.close();
+		this.reader.close();
 	}
 
 	@Override
 	public void endArray() throws IOException {
-		reader.endArray();
+		this.reader.endArray();
 	}
 
 	@Override
 	public void endObject() throws IOException {
-		reader.endObject();
+		this.reader.endObject();
 	}
 
 	@Override
 	public boolean hasNext() throws IOException {
-		return reader.hasNext();
+		return this.reader.hasNext();
 	}
 
 	@Override
 	public int hashCode() {
-		return reader.hashCode();
+		return this.reader.hashCode();
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		return reader.equals(obj);
+	public boolean equals(final Object obj) {
+		return this.reader.equals(obj);
 	}
 
 	@Override
 	public boolean nextBoolean() throws IOException {
-		return reader.nextBoolean();
+		return this.reader.nextBoolean();
 	}
 
 	@Override
 	public int nextInt() throws IOException {
-		return reader.nextInt();
+		return this.reader.nextInt();
 	}
 
 	@Override
 	public String nextName() throws IOException {
-		return reader.nextName();
+		return this.reader.nextName();
 	}
 
 	@Override
 	public String nextString() throws IOException {
-		return reader.nextString();
+		return this.reader.nextString();
 	}
 
 }
