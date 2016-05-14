@@ -23,12 +23,13 @@
 	</properties>
 
 	<dependencies>
+		<!-- You must install PswGenCore into your local Maven repository by using 
+			'mvn install:install-file -Dpath=path/to/PswGenCore.jar -DgroupId=de.dknapps.pswgen 
+			-DartifactIdpswgen-core -Dversion=1.7.8 -Dpackaging=jar' -->
 		<dependency>
-			<groupId>de.dknapps</groupId>
+			<groupId>de.dknapps.pswgen</groupId>
 			<artifactId>pswgen-core</artifactId>
-			<version>0.0.0</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/lib/PswGenCore.jar</systemPath>
+			<version>1.7.8</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-cli</groupId>
