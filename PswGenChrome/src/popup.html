@@ -3,7 +3,8 @@
 <head>
 	<meta charset="UTF-8">
 
-	<link rel="stylesheet" href="bootstrap.min.css">
+	<link rel="stylesheet" href="lib/bootstrap.min.css">
+
 	<style>
 		body {
 			min-width: 500px;
@@ -27,9 +28,14 @@
 		#search-panel ul li {
 			cursor: pointer;
 		}
+		#search-panel ul li:focus {
+			z-index: 500;
+		}
 	</style>
 
-	<script src="angular.js"></script>
+	<script src="lib/jquery.min.js"></script>
+	<script src="lib/angular.min.js"></script>
+
 	<script src="pgc.js"></script>
 	<script src="search.js"></script>
 </head>
@@ -37,14 +43,14 @@
 	<div id="container" class="container">
 		<div id="search-panel" class="panel panel-default">
 			<div ng-controller="searchController">
-				<form>
+				<form ng-submit="loadService()">
 					<div class="form-group">
 						<input ng-model="query.name" type="text" id="query" class="form-control" placeholder="Search for service …" autofocus="true">
 						<span id="query-help" class="help-block">Click on any item to the login information or the password automatically.</span>
 					</div>
 				</form>
 				<ul class="list-group row">
-					<li ng-repeat="serviceObj in services | filter : query" ng-click="loadService(serviceObj.name)" class="list-group-item col-xs-4">
+					<li ng-repeat="(i, serviceObj) in services | filter : query" ng-click="loadService(serviceObj.name)" ng-keypress="(($event.which || $event.keyCode) === 13) && loadService(serviceObj.name)" id="service-{{ i }}" class="list-group-item col-xs-4" tabindex="{{ i }}" data-service="{{ serviceObj.name }}">
 						{{ serviceObj.name }}
 					</li>
 				</ul>

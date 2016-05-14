@@ -6,32 +6,31 @@ angular.module('pgcApp').controller('searchController', ['$scope', '$http', 'opt
         server = items.server;
         token = items.token;
 
-        $http.get(server + '/service-list', {
+        $http.get(server + '/api/service', {
             headers : {
-                'X-TOKEN' : token
+                'X-SECURITY-TOKEN' : token
             }
         }).then(function(response) {
-            $scope.services = [];
-            for (var i = 0; i < response.data.length; i++) {
-                $scope.services.push({
-                    name : response.data[i]
-                });
-            }
+            $scope.services = response.data;
         }, function(response) {
-            if (response.status === 403) {
+            if (response.status === 401) {
                 alert('Error - Invalid security token set!')
             } else if (response.status === 404) {
                 alert('Error - Invalid URL specified!')
             } else {
-                alert('Error');
+                alert('Error ' + response.status);
             }
         });
     });
 
     $scope.loadService = function(serviceName) {
-        $http.get(server + '/service?' + encodeURIComponent(serviceName), {
+        if (!serviceName) {
+            serviceName = $('#service-0').attr('data-service');
+        }
+
+        $http.get(server + '/api/service/' + encodeURIComponent(serviceName), {
             headers : {
-                'X-TOKEN' : token
+                'X-SECURITY-TOKEN' : token
             }
         }).then(function(response) {
             chrome.tabs.getSelected(null, function(tab) {
@@ -44,12 +43,12 @@ angular.module('pgcApp').controller('searchController', ['$scope', '$http', 'opt
             // Timeout to cause all messages to be executed before the pop-up gets closed.
             setTimeout(window.close, 0);
         }, function(response) {
-            if (response.status === 403) {
+            if (response.status === 401) {
                 alert('Error - Invalid security token set!')
             } else if (response.status === 404) {
                 alert('Error - Invalid URL specified!')
             } else {
-                alert('Error');
+                alert('Error ' + response.status);
             }
         });
     };

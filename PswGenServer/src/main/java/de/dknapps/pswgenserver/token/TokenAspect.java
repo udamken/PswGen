@@ -66,7 +66,8 @@ public class TokenAspect {
 			final HttpServletRequest request) throws Throwable {
 		if (request.getHeader(TokenAspect.HEADER_SECURITY_TOKEN) == null
 				|| !request.getHeader(TokenAspect.HEADER_SECURITY_TOKEN).equals(this.securityToken)) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Missing or got wrong security token!");
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+					.body("Missing or got wrong security token!");
 		}
 
 		return (ResponseEntity<?>) joinPoint.proceed();

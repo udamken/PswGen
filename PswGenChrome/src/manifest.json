@@ -7,6 +7,16 @@
 		"default_icon" : "icon38.png",
 		"default_popup" : "popup.html"
 	},
+	"commands" : {
+		"_execute_browser_action" : {
+			"suggested_key" : {
+				"windows" : "Ctrl+Shift+V",
+				"mac" : "Command+Shift+V",
+				"chromeos" : "Ctrl+Shift+V",
+				"linux" : "Ctrl+Shift+V"
+			}
+		}
+	},
 	"content_scripts" : [
 		{
 			"matches" : [

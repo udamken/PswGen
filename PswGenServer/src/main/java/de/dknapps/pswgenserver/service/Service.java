@@ -44,6 +44,11 @@ public class Service {
 	 */
 	private final String urlString;
 	/**
+	 * The login information (e.g. the username).
+	 * 
+	 */
+	private final String loginInfo;
+	/**
 	 * The password of the service.
 	 * 
 	 */
@@ -62,10 +67,12 @@ public class Service {
 	 *            The {@link #name} to set.
 	 * @param urlString
 	 *            {@link #urlString} to set. This is used to construct {@link #url} if it is a correct URL.
+	 * @param loginInfo
+	 *            The {@link #loginInfo} to set.
 	 * @param password
 	 *            The {@link #password} to set.
 	 */
-	public Service(final String name, final String urlString, final String password) {
+	public Service(final String name, final String urlString, final String loginInfo, final String password) {
 		this.name = name;
 		try {
 			this.url = new URL(urlString);
@@ -73,6 +80,7 @@ public class Service {
 			this.url = null;
 		}
 		this.urlString = urlString;
+		this.loginInfo = loginInfo;
 		this.password = password;
 	}
 
@@ -80,17 +88,19 @@ public class Service {
 	 * Constructor of Service.
 	 * 
 	 * <p>
-	 * This invokes {@link #Service(String, String, String)} with the provided parameters.
+	 * This invokes {@link #Service(String, String, String, String)} with the provided parameters.
 	 * </p>
 	 * 
 	 * @param name
-	 *            Is passed to {@link #Service(String, String, String)}.
+	 *            Is passed to {@link #Service(String, String, String, String)}.
+	 * @param loginInfo
+	 *            Is passed to {@link #Service(String, String, String, String)}.
 	 * @param urlString
-	 *            Is passed to {@link #Service(String, String, String)}.
+	 *            Is passed to {@link #Service(String, String, String, String)}.
 	 * @see de.dknapps.pswgenserver.service.Service#Service(java.lang.String, java.lang.String,
-	 *      java.lang.String)
+	 *      java.lang.String, java.lang.String)
 	 */
-	public Service(final String name, final String urlString) {
-		this(name, urlString, null);
+	public Service(final String name, final String loginInfo, final String urlString) {
+		this(name, urlString, loginInfo, null);
 	}
 }

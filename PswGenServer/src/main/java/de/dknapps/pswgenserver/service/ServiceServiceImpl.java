@@ -102,7 +102,8 @@ public class ServiceServiceImpl implements ServiceService {
 
 		final List<Service> result = new ArrayList<>();
 		for (final ServiceInfo service : this.serviceList.getServices()) {
-			result.add(new Service(service.getServiceAbbreviation(), service.getLoginUrl()));
+			result.add(new Service(service.getServiceAbbreviation(), service.getLoginUrl(),
+					service.getLoginInfo()));
 		}
 		return result;
 	}
@@ -121,7 +122,7 @@ public class ServiceServiceImpl implements ServiceService {
 		if (service == null) {
 			return null;
 		}
-		return new Service(service.getServiceAbbreviation(), service.getLoginUrl(),
+		return new Service(service.getServiceAbbreviation(), service.getLoginUrl(), service.getLoginInfo(),
 				PasswordFactory.getPassword(service, this.passphrase));
 	}
 }

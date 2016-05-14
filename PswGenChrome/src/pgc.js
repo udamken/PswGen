@@ -8,3 +8,18 @@ pgcApp.factory('options', function() {
         }, callback);
     };
 });
+
+pgcApp.directive('pgc-enter', function() {
+	return function($scope, element, attributes) {
+		console.log(element);
+		element.bind('keydown keypress', function(event) {
+			if ((event.which || element.keyCode) === 13) {
+				$scope.$apply(function() {
+					$scope.$eval(attributes.pgcEnter);
+				});
+
+				event.preventDefault();
+			}
+		});
+	};
+});
