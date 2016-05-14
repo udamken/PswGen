@@ -18,6 +18,9 @@
  *******************************************************************************/
 package de.dknapps.pswgenserver.token;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -41,12 +44,18 @@ public class TokenAspect {
 	 */
 	public static final String HEADER_SECURITY_TOKEN = "X-SECURITY-TOKEN";
 
+	private static final Map<String, String> ERROR_MESSAGE = new HashMap<>();
+
 	/**
 	 * The security token the value of the header {@value #HEADER_SECURITY_TOKEN} must have.
 	 * 
 	 */
 	@Value("${pswgenserver.security-token}")
 	private String securityToken;
+
+	static {
+		TokenAspect.ERROR_MESSAGE.put("msg", "Missing or got wrong security token!");
+	}
 
 	/**
 	 * The actual pointcut.
@@ -66,8 +75,7 @@ public class TokenAspect {
 			final HttpServletRequest request) throws Throwable {
 		if (request.getHeader(TokenAspect.HEADER_SECURITY_TOKEN) == null
 				|| !request.getHeader(TokenAspect.HEADER_SECURITY_TOKEN).equals(this.securityToken)) {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-					.body("Missing or got wrong security token!");
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(TokenAspect.ERROR_MESSAGE);
 		}
 
 		return (ResponseEntity<?>) joinPoint.proceed();

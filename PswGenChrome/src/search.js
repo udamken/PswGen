@@ -13,12 +13,14 @@ angular.module('pgcApp').controller('searchController', ['$scope', '$http', 'opt
         }).then(function(response) {
             $scope.services = response.data;
         }, function(response) {
+            console.error(response);
+
             if (response.status === 401) {
                 alert('Error - Invalid security token set!')
             } else if (response.status === 404) {
                 alert('Error - Invalid URL specified!')
             } else {
-                alert('Error ' + response.status);
+                alert('Error');
             }
         });
     });
@@ -43,12 +45,14 @@ angular.module('pgcApp').controller('searchController', ['$scope', '$http', 'opt
             // Timeout to cause all messages to be executed before the pop-up gets closed.
             setTimeout(window.close, 0);
         }, function(response) {
+            console.error(response);
+
             if (response.status === 401) {
                 alert('Error - Invalid security token set!')
             } else if (response.status === 404) {
                 alert('Error - Invalid URL specified!')
             } else {
-                alert('Error ' + response.status);
+                alert('Error');
             }
         });
     };
