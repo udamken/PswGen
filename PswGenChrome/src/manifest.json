@@ -4,7 +4,12 @@
 	"name" : "PswGenChrome",
 	"version" : "1.0.0",
 	"browser_action" : {
-		"default_icon" : "icon38.png",
+		"default_icon" : {
+			"16" : "icon/icon16.png",
+			"48" : "icon/icon48.png",
+			"128" : "icon/icon128.png",
+			"512" : "icon/icon512.png"
+		},
 		"default_popup" : "popup.html"
 	},
 	"commands" : {
@@ -27,9 +32,15 @@
 			]
 		}
 	],
+	"icons" : {
+		"16" : "icon/icon16.png",
+		"48" : "icon/icon48.png",
+		"128" : "icon/icon128.png",
+		"512" : "icon/icon512.png"
+	},
+	"options_page" : "options.html",
 	"permissions" : [
 		"storage",
 		"tabs"
-	],
-	"options_page" : "options.html"
+	]
 }
