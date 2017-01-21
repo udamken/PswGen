@@ -4,7 +4,7 @@
     PswGenDesktop - Manages your websites and repeatably generates passwords for them
     PswGenDroid - Generates your passwords managed by PswGenDesktop on your mobile  
    
-        Copyright (C) 2005-2016 Uwe Damken
+        Copyright (C) 2005-2017 Uwe Damken
    
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
     limitations under the License.
  -->
 
-<project name="Create PswGenCore.jar in PswGenDesktop/lib and PswGenDroid/libs" default="package" basedir=".">
+<project name="Create PswGenCore.jar in PswGenDesktop/lib and PswGenDroid/app/libs" default="package" basedir=".">
 
 	<target name="package" depends="loadVersion,compileNotSupported,createJar,copyJar">
 		<echo message="${pswgen.version} built successfully" />
@@ -54,7 +54,7 @@
 	</target>
 
 	<target name="copyJar">
-		<copy file="../PswGenDesktop/lib/PswGenCore.jar" tofile="../PswGenDroid/libs/PswGenCore.jar"/>
+		<copy file="../PswGenDesktop/lib/PswGenCore.jar" tofile="../PswGenDroid/app/libs/PswGenCore.jar"/>
 	</target>
 
 	<target name="cleanup">
