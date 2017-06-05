@@ -18,6 +18,23 @@
  *******************************************************************************/
 package de.dknapps.pswgendroid;
 
+import android.app.Activity;
+import android.app.DialogFragment;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.inputmethodservice.Keyboard;
+import android.inputmethodservice.KeyboardView;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Environment;
+import android.text.Editable;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -27,18 +44,6 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import android.app.Activity;
-import android.app.DialogFragment;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
-import android.net.Uri;
-import android.os.Bundle;
-import android.os.Environment;
-import android.view.View;
-import android.widget.EditText;
 import de.dknapps.pswgencore.CoreConstants;
 
 /**
@@ -75,7 +80,73 @@ public class StartupActivity extends Activity implements PassphraseDialog.Listen
 		IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
 		screenBroadcastReceiver = new ScreenBroadcastReceiver();
 		registerReceiver(screenBroadcastReceiver, filter);
-	}
+
+        // Create the Keyboard
+        Keyboard mKeyboard = new Keyboard(this, R.xml.hexkbd);
+
+        // Lookup the KeyboardView
+        final KeyboardView mKeyboardView = (KeyboardView) findViewById(R.id.keyboardview);
+        // Attach the keyboard to the view
+        mKeyboardView.setKeyboard(mKeyboard);
+        // Do not show the preview balloons
+        mKeyboardView.setPreviewEnabled(false);
+        // Install the key handler
+        mKeyboardView.setOnKeyboardActionListener(new KeyboardView.OnKeyboardActionListener() {
+            @Override public void onKey(int primaryCode, int[] keyCodes) {
+                // Get the EditText and its Editable
+                View focusCurrent = StartupActivity.this.getWindow().getCurrentFocus();
+                if( focusCurrent==null || focusCurrent.getClass()!=EditText.class ) return;
+                EditText edittext = (EditText) focusCurrent;
+                Editable editable = edittext.getText();
+                int start = edittext.getSelectionStart();
+                int CodeDelete   = -5; // Keyboard.KEYCODE_DELETE
+                int CodeCancel   = -3; // Keyboard.KEYCODE_CANCEL
+                // Handle key
+                if( primaryCode==CodeCancel ) {
+                    hideCustomKeyboard();
+                } else if( primaryCode==CodeDelete ) {
+                    if( editable!=null && start>0 ) editable.delete(start - 1, start);
+                } else {// Insert character
+                    editable.insert(start, Character.toString((char) primaryCode));
+                }
+            }
+
+            @Override public void onPress(int arg0) {
+            }
+
+            @Override public void onRelease(int primaryCode) {
+            }
+
+            @Override public void onText(CharSequence text) {
+            }
+
+            @Override public void swipeDown() {
+            }
+
+            @Override public void swipeLeft() {
+            }
+
+            @Override public void swipeRight() {
+            }
+
+            @Override public void swipeUp() {
+            }
+            public void hideCustomKeyboard() {
+                mKeyboardView.setVisibility(View.GONE);
+                mKeyboardView.setEnabled(false);
+            }
+
+            public void showCustomKeyboard( View v ) {
+                mKeyboardView.setVisibility(View.VISIBLE);
+                mKeyboardView.setEnabled(true);
+                if( v!=null ) ((InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(v.getWindowToken(), 0);
+            }
+
+            public boolean isCustomKeyboardVisible() {
+                return mKeyboardView.getVisibility() == View.VISIBLE;
+            }
+        });
+    }
 
 	@Override
 	protected void onDestroy() {

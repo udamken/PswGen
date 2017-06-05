@@ -73,6 +73,9 @@
 	<string name="title_activity_about">About PswGenDroid</string>
 	<string name="about_html_text_url">file:///android_asset/about.html</string>
 
+	<!-- PswGenInputMethodEditor -->
+	<string name="title_input_method_editor">PswGenIME</string>
+
 	<!-- DomainException -->
 	<string name="passphrase_invalid">Passphrase is invalid.</string>
 	<string name="total_character_count_exceeded">Character count with given end exceeds total character count.</string>
