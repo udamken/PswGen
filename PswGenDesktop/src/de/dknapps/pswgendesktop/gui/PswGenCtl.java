@@ -566,9 +566,9 @@ public class PswGenCtl extends BaseCtl {
 	 * Prüft die Eingabewerte der Passphrase, entschlüsselt die Services und gibt die Passphrase zurück oder
 	 * wirft eine Exception.
 	 */
-	private String validatePassphraseAndDecryptServices(final StartupDialog startupView) {
-		final String passphrase = startupView.getPassphrase();
-		final String passphraseRepeated = startupView.getPassphraseRepeated();
+	private String validatePassphraseAndDecryptServices(final StartupDialog startupDialog) {
+		final String passphrase = startupDialog.getPassphrase();
+		final String passphraseRepeated = startupDialog.getPassphraseRepeated();
 		if (EmptyHelper.isEmpty(passphrase)) {
 			throw new DomainException("PassphraseEmptyMsg");
 		}
@@ -589,10 +589,12 @@ public class PswGenCtl extends BaseCtl {
 	 * Prüft die Eingabewerte der alten Passphrase und gibt die alte Passphrase zurück oder wirft eine
 	 * Exception.
 	 */
-	private String validateOldPassphrase(final StartupDialog startupView) {
-		final String oldPassphrase = startupView.getOldPassphrase();
-		if (EmptyHelper.isEmpty(oldPassphrase)) {
-			throw new DomainException("OldPassphraseEmptyMsg");
+	private String validateOldPassphrase(final StartupDialog startupDialog) {
+		final String oldPassphrase = startupDialog.getOldPassphrase();
+		if (startupDialog.isContainsServiceWithOldPassphrase()) {
+			if (EmptyHelper.isEmpty(oldPassphrase)) {
+				throw new DomainException("OldPassphraseEmptyMsg");
+			}
 		}
 		return oldPassphrase;
 	}
