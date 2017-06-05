@@ -2,7 +2,7 @@
  * PswGenDesktop - Manages your websites and repeatably generates passwords for them
  * PswGenDroid - Generates your passwords managed by PswGenDesktop on your mobile  
  *
- *     Copyright (C) 2005-2016 Uwe Damken
+ *     Copyright (C) 2005-2017 Uwe Damken
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,6 +55,10 @@ public class StartupDialog extends BaseDialog {
 
 	private JCheckBox makePassphraseVisible;
 
+	private JPasswordField oldPassphrase;
+
+	private JButton buttonChangePassphrase;
+
 	/** Hey, it's me ... für die Listener */
 	private StartupDialog me = this;
 
@@ -103,6 +107,9 @@ public class StartupDialog extends BaseDialog {
 		passphrase = wf.getPasswordField("FieldPassphrase");
 		JLabel labelPassphraseRepeated = wf.getLabel("LabelPassphraseRepeated");
 		passphraseRepeated = wf.getPasswordField("FieldPassphraseRepeated");
+		JLabel labelOldPassphrase = wf.getLabel("LabelOldPassphrase");
+		labelOldPassphrase.setForeground(COLOR_INFLUENCE);
+		oldPassphrase = wf.getPasswordField("FieldOldPassphrase");
 		makePassphraseVisible = wf.getCheckBox("CheckBoxMakePasswordVisible");
 		makePassphraseVisible.addItemListener(new ItemListener() {
 
@@ -111,12 +118,21 @@ public class StartupDialog extends BaseDialog {
 				if (makePassphraseVisible.isSelected()) {
 					passphrase.setEchoChar((char) 0);
 					passphraseRepeated.setEchoChar((char) 0);
+					oldPassphrase.setEchoChar((char) 0);
 				} else {
 					passphrase.setEchoChar('*');
 					passphraseRepeated.setEchoChar('*');
+					oldPassphrase.setEchoChar('*');
 				}
 			}
 
+		});
+		buttonChangePassphrase = wf.getButton("ButtonChangePassphrase");
+		buttonChangePassphrase.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				((PswGenCtl) ctl).actionPerformedChangePassphrase(me);
+			}
 		});
 		JButton buttonOpenServices = wf.getButton("ButtonOpenServices");
 		buttonOpenServices.addActionListener(new ActionListener() {
@@ -136,7 +152,14 @@ public class StartupDialog extends BaseDialog {
 		panel.add(passphraseRepeated, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 1, 1));
 		// Widgets zufügen, nächste Zeile
 		row++;
+		panel.add(labelOldPassphrase, gbcf.getLabelConstraints(0, row));
+		panel.add(oldPassphrase, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 1, 1));
+		// Widgets zufügen, nächste Zeile
+		row++;
 		panel.add(makePassphraseVisible, gbcf.getFieldConstraints(1, row, 4, 1));
+		// Widgets zufügen, nächste Zeile
+		row++;
+		panel.add(buttonChangePassphrase, gbcf.getLabelConstraints(1, row));
 		// Widgets zufügen, nächste Zeile
 		row++;
 		panel.add(buttonOpenServices, gbcf.getLabelConstraints(1, row));
@@ -145,40 +168,49 @@ public class StartupDialog extends BaseDialog {
 	}
 
 	/**
-	 * @return Returns the passphrase.
-	 */
-	public String getPassphrase() {
-		return new String(passphrase.getPassword());
-	}
-
-	/**
-	 * @return Returns the passphraseRepeated.
-	 */
-	public String getPassphraseRepeated() {
-		return new String(passphraseRepeated.getPassword());
-	}
-
-	/**
-	 * @param passphrase
-	 *            The passphrase to set.
-	 */
-	public void setPassphrase(final String passphrase) {
-		this.passphrase.setText(passphrase);
-	}
-
-	/**
-	 * @param passphraseRepeated
-	 *            The passphraseRepeated to set.
-	 */
-	public void setPassphraseRepeated(final String passphraseRepeated) {
-		this.passphraseRepeated.setText(passphraseRepeated);
-	}
-
-	/**
 	 * Sperrt die wiederholte Passphrase-Eingabe.
 	 */
 	public void disablePassphraseRepeated() {
 		passphraseRepeated.setEnabled(false);
+	}
+
+	/**
+	 * Liefert true, wenn die Eingabe der alten Passphrase möglich ist.
+	 */
+	public boolean isContainsServiceWithOldPassphrase() {
+		return oldPassphrase.isEnabled();
+	}
+
+	/**
+	 * Sperrt oder ermöglicht die Eingabe der alten Passphrase und den Button zur Änderung der Passphrase.
+	 */
+	public void setContainsServiceWithOldPassphrase(boolean containsServicesWithOldPassphrase) {
+		oldPassphrase.setEnabled(containsServicesWithOldPassphrase);
+		buttonChangePassphrase.setEnabled(!containsServicesWithOldPassphrase);
+	}
+
+	public String getPassphrase() {
+		return new String(passphrase.getPassword());
+	}
+
+	public void setPassphrase(final String passphrase) {
+		this.passphrase.setText(passphrase);
+	}
+
+	public String getPassphraseRepeated() {
+		return new String(passphraseRepeated.getPassword());
+	}
+
+	public void setPassphraseRepeated(final String passphraseRepeated) {
+		this.passphraseRepeated.setText(passphraseRepeated);
+	}
+
+	public String getOldPassphrase() {
+		return new String(oldPassphrase.getPassword());
+	}
+
+	public void setOldPassphrase(final String oldPassphrase) {
+		this.oldPassphrase.setText(oldPassphrase);
 	}
 
 }

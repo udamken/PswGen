@@ -2,7 +2,7 @@
  * PswGenDesktop - Manages your websites and repeatably generates passwords for them
  * PswGenDroid - Generates your passwords managed by PswGenDesktop on your mobile  
  *
- *     Copyright (C) 2005-2016 Uwe Damken
+ *     Copyright (C) 2005-2017 Uwe Damken
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -193,6 +193,13 @@ public class FileHelper {
 		si.setPassword(reader.nextString());
 		checkJsonName(reader, "passwordRepeated");
 		si.setPasswordRepeated(reader.nextString());
+		if (reader.peekReturnsEndObject()) {
+			// useOldPassphrase ist optional und per Default false
+			si.setUseOldPassphrase(false);
+		} else {
+			checkJsonName(reader, "useOldPassphrase");
+			si.setUseOldPassphrase(reader.nextBoolean());
+		}
 		reader.endObject();
 		return si;
 	}
@@ -278,6 +285,7 @@ public class FileHelper {
 		writer.name("totalCharacterCount").value(si.getTotalCharacterCount());
 		writer.name("password").value(si.getPassword());
 		writer.name("passwordRepeated").value(si.getPasswordRepeated());
+		writer.name("useOldPassphrase").value(si.isUseOldPassphrase());
 		writer.endObject();
 	}
 

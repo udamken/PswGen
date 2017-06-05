@@ -2,7 +2,7 @@
  * PswGenDesktop - Manages your websites and repeatably generates passwords for them
  * PswGenDroid - Generates your passwords managed by PswGenDesktop on your mobile  
  *
- *     Copyright (C) 2005-2016 Uwe Damken
+ *     Copyright (C) 2005-2017 Uwe Damken
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -98,6 +98,7 @@ public class ServiceInfoList {
 		e.setTotalCharacterCount(d.getTotalCharacterCount());
 		e.setPassword(encryptionHelper.encrypt(d.getPassword()));
 		e.setPasswordRepeated(encryptionHelper.encrypt(d.getPasswordRepeated()));
+		e.setUseOldPassphrase(d.isUseOldPassphrase());
 		return e;
 	}
 
@@ -138,6 +139,7 @@ public class ServiceInfoList {
 		d.setTotalCharacterCount(e.getTotalCharacterCount());
 		d.setPassword(encryptionHelper.decrypt(e.getPassword()));
 		d.setPasswordRepeated(encryptionHelper.decrypt(e.getPasswordRepeated()));
+		d.setUseOldPassphrase(e.isUseOldPassphrase());
 		return d;
 	}
 
@@ -210,6 +212,18 @@ public class ServiceInfoList {
 	 */
 	public boolean isNew() {
 		return encryptedServices == null;
+	}
+
+	/**
+	 * Liefert true, wenn es mindestens einen Service gibt, bei dem isUseOldPassphrase() true liefert.
+	 */
+	public boolean containsServiceWithOldPassphrase() {
+		for (ServiceInfo si : encryptedServices) {
+			if (si.isUseOldPassphrase()) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**

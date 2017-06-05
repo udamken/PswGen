@@ -2,7 +2,7 @@
  * PswGenDesktop - Manages your websites and repeatably generates passwords for them
  * PswGenDroid - Generates your passwords managed by PswGenDesktop on your mobile  
  *
- *     Copyright (C) 2005-2016 Uwe Damken
+ *     Copyright (C) 2005-2017 Uwe Damken
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -78,6 +78,9 @@ public class MainView extends BaseView {
 	/** Farbe für Label-Elemente, deren Felder das generierte Passwort beeinflussen */
 	private static final Color COLOR_INFLUENCE = Color.BLUE;
 
+	/** Farbe für Label-Elemente, die eine Warnung anzeigen */
+	private static final Color COLOR_WARNING = Color.RED;
+
 	private StoredServicesTableModel tableModelStoredServices;
 
 	private JTextField serviceAbbreviationFilter;
@@ -143,6 +146,12 @@ public class MainView extends BaseView {
 	private JPasswordField passwordRepeated;
 
 	private JCheckBox makePasswordVisible;
+
+	private JLabel labelUseOldPassphrase;
+
+	private JButton buttonStoreService;
+
+	private JButton buttonUseNewPassphrase;
 
 	/** Hey, it's me ... für die Listener */
 	private MainView me = this;
@@ -227,7 +236,8 @@ public class MainView extends BaseView {
 		regexContainsErrors.setForeground(Color.RED);
 		tableModelStoredServices = new StoredServicesTableModel(((PswGenCtl) ctl).getServices().getServices(),
 				new String[] { ctl.getGuiText("LabelServiceAbbreviation"),
-						ctl.getGuiText("LabelAdditionalInfo"), ctl.getGuiText("LabelLoginUrl") });
+						ctl.getGuiText("LabelAdditionalInfo"), ctl.getGuiText("LabelUseOldPassphrase"),
+						ctl.getGuiText("LabelLoginUrl") });
 		tableStoredServices = wf.getTable("TableStoredServices", tableModelStoredServices);
 		tableStoredServices.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tableRowSorter = new TableRowSorter<StoredServicesTableModel>(tableModelStoredServices);
@@ -432,6 +442,8 @@ public class MainView extends BaseView {
 		specialCharactersStartIndex.getDocument().addDocumentListener(documentListener);
 		specialCharactersEndIndex = wf.getIntegerField("FieldSpecialCharactersEndIndex");
 		specialCharactersEndIndex.getDocument().addDocumentListener(documentListener);
+		labelUseOldPassphrase = wf.getLabel("LabelUseOldPassphrase");
+		labelUseOldPassphrase.setForeground(COLOR_WARNING);
 		JLabel labelTotalCharacterCount = wf.getLabel("LabelTotalCharacterCount");
 		labelTotalCharacterCount.setForeground(COLOR_INFLUENCE);
 		totalCharacterCount = wf.getIntegerField("FieldTotalCharacterCount");
@@ -473,11 +485,19 @@ public class MainView extends BaseView {
 			}
 
 		});
-		JButton buttonStoreService = wf.getButton("ButtonStoreService");
+		buttonStoreService = wf.getButton("ButtonStoreService");
 		buttonStoreService.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				((PswGenCtl) ctl).actionPerformedStoreService(me);
+			}
+		});
+		buttonUseNewPassphrase = wf.getButton("ButtonUseNewPassphrase");
+		buttonUseNewPassphrase.setForeground(COLOR_INFLUENCE);
+		buttonUseNewPassphrase.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				((PswGenCtl) ctl).actionPerformedUseNewPassphrase(me);
 			}
 		});
 		// Widgets zufügen, erste Zeile
@@ -541,6 +561,7 @@ public class MainView extends BaseView {
 				gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 1, 1));
 		panel.add(specialCharactersEndIndex,
 				gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 1, 1));
+		panel.add(labelUseOldPassphrase, gbcf.getLabelConstraints(6, row, 1, 1));
 		// Widgets zufügen, nächste Zeile
 		row++;
 		panel.add(labelTotalCharacterCount, gbcf.getLabelConstraints(0, row, 2, 1));
@@ -556,6 +577,7 @@ public class MainView extends BaseView {
 		panel.add(labelPasswordRepeated, gbcf.getLabelConstraints(0, row, 2, 1));
 		panel.add(passwordRepeated, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 4, 1));
 		panel.add(buttonStoreService, gbcf.getLabelConstraints(6, row));
+		panel.add(buttonUseNewPassphrase, gbcf.getLabelConstraints(6, row));
 		// Widgets zufügen, nächste Zeile
 		row++;
 		panel.add(makePasswordVisible, gbcf.getFieldConstraints(2, row, 4, 1));
@@ -982,6 +1004,10 @@ public class MainView extends BaseView {
 		this.specialCharacters.setText(specialCharacters);
 	}
 
+	public boolean getUseOldPassphrase() {
+		return labelUseOldPassphrase.isVisible();
+	}
+
 	/**
 	 * @return the dirty
 	 */
@@ -1017,5 +1043,11 @@ public class MainView extends BaseView {
 
 	private void showRegexErrorMessage(boolean show) {
 		showRegexErrorMessage(show, null);
+	}
+
+	public void setUseOldPassphrase(boolean useOldPassphrase) {
+		labelUseOldPassphrase.setVisible(useOldPassphrase);
+		buttonStoreService.setVisible(!useOldPassphrase);
+		buttonUseNewPassphrase.setVisible(useOldPassphrase);
 	}
 }

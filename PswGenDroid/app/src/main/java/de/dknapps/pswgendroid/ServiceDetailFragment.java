@@ -2,7 +2,7 @@
  * PswGenDesktop - Manages your websites and repeatably generates passwords for them
  * PswGenDroid - Generates your passwords managed by PswGenDesktop on your mobile  
  *
- *     Copyright (C) 2005-2016 Uwe Damken
+ *     Copyright (C) 2005-2017 Uwe Damken
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,6 +49,7 @@ public class ServiceDetailFragment extends Fragment {
 	private TextView textViewLoginUrl;
 	private TextView textViewLoginInfo;
 	private TextView textViewAdditionalLoginInfo;
+	private TextView textViewLabelUseOldPassphrase;
 
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the fragment (e.g. upon screen
@@ -88,6 +89,7 @@ public class ServiceDetailFragment extends Fragment {
 		textViewLoginUrl = ((TextView) rootView.findViewById(R.id.login_url));
 		textViewLoginInfo = ((TextView) rootView.findViewById(R.id.login_info));
 		textViewAdditionalLoginInfo = ((TextView) rootView.findViewById(R.id.additional_login_info));
+		textViewLabelUseOldPassphrase = ((TextView) rootView.findViewById(R.id.label_use_old_passphrase));
 
 		return rootView;
 	}
@@ -204,6 +206,7 @@ public class ServiceDetailFragment extends Fragment {
 			textViewLoginUrl.setText(currentServiceInfo.getLoginUrl());
 			textViewLoginInfo.setText(currentServiceInfo.getLoginInfo());
 			textViewAdditionalLoginInfo.setText(currentServiceInfo.getAdditionalLoginInfo());
+			textViewLabelUseOldPassphrase.setVisibility((currentServiceInfo.isUseOldPassphrase()) ? View.VISIBLE : View.INVISIBLE);
 		} else {
 			showEmptyCurrentServiceInfo();
 		}
@@ -237,7 +240,9 @@ public class ServiceDetailFragment extends Fragment {
 	 * die zu einer Fehlermeldung führt. Eine Eingabe hat also in jedem Fall Vorrang vor der Generierung.
 	 */
 	private String getValidatedOrGeneratedPassword() {
-		return PasswordFactory.getPassword(currentServiceInfo, PswGenAdapter.getValidatedPassphrase());
+		String passphrase = (currentServiceInfo.isUseOldPassphrase()) ? PswGenAdapter.getOldPassphrase() : PswGenAdapter
+				.getValidatedPassphrase();
+		return PasswordFactory.getPassword(currentServiceInfo, passphrase);
 	}
 
 	/**

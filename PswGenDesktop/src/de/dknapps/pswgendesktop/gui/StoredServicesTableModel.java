@@ -2,7 +2,7 @@
  * PswGenDesktop - Manages your websites and repeatably generates passwords for them
  * PswGenDroid - Generates your passwords managed by PswGenDesktop on your mobile  
  *
- *     Copyright (C) 2005-2016 Uwe Damken
+ *     Copyright (C) 2005-2017 Uwe Damken
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,9 @@ public class StoredServicesTableModel extends AbstractTableModel {
 
 	public static final int COL_ADDITIONAL_INFO = 1;
 
-	public static final int COL_LOGIN_URL = 2;
+	public static final int COL_USE_OLD_PASSPHRASE = 2;
+
+	public static final int COL_LOGIN_URL = 3;
 
 	private String[] columnNames;
 
@@ -71,6 +73,8 @@ public class StoredServicesTableModel extends AbstractTableModel {
 			return String.class;
 		} else if (c == COL_ADDITIONAL_INFO) {
 			return String.class;
+		} else if (c == COL_USE_OLD_PASSPHRASE) {
+			return String.class;
 		} else if (c == COL_LOGIN_URL) {
 			return String.class;
 		}
@@ -93,6 +97,8 @@ public class StoredServicesTableModel extends AbstractTableModel {
 			return si.getServiceAbbreviation();
 		} else if (columnIndex == COL_ADDITIONAL_INFO) {
 			return si.getAdditionalInfo();
+		} else if (columnIndex == COL_USE_OLD_PASSPHRASE) {
+			return si.isUseOldPassphrase() ? "X" : "";
 		} else if (columnIndex == COL_LOGIN_URL) {
 			return si.getLoginUrl();
 		}

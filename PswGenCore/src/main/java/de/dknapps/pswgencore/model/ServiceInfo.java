@@ -2,7 +2,7 @@
  * PswGenDesktop - Manages your websites and repeatably generates passwords for them
  * PswGenDroid - Generates your passwords managed by PswGenDesktop on your mobile  
  *
- *     Copyright (C) 2005-2016 Uwe Damken
+ *     Copyright (C) 2005-2017 Uwe Damken
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -77,6 +77,8 @@ public class ServiceInfo {
 
 	private String passwordRepeated;
 
+	private boolean useOldPassphrase;
+
 	public ServiceInfo() {
 	}
 
@@ -129,6 +131,7 @@ public class ServiceInfo {
 		result = prime * result + (useDigits ? 1231 : 1237);
 		result = prime * result + (useSmallLetters ? 1231 : 1237);
 		result = prime * result + (useSpecialCharacters ? 1231 : 1237);
+		// result ohne useOldPassphrase, so wird kein neues Dateiformat und kein Upgrade benötigt
 		return result;
 	}
 
@@ -328,19 +331,20 @@ public class ServiceInfo {
 		this.passwordRepeated = passwordRepeated;
 	}
 
-	/**
-	 * @return the specialCharacters
-	 */
 	public String getSpecialCharacters() {
 		return specialCharacters;
 	}
 
-	/**
-	 * @param specialCharacters
-	 *            the specialCharacters to set
-	 */
 	public void setSpecialCharacters(String specialCharacters) {
 		this.specialCharacters = specialCharacters;
+	}
+
+	public boolean isUseOldPassphrase() {
+		return useOldPassphrase;
+	}
+
+	public void setUseOldPassphrase(boolean useOldPassphrase) {
+		this.useOldPassphrase = useOldPassphrase;
 	}
 
 }

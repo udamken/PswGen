@@ -2,7 +2,7 @@
  * PswGenDesktop - Manages your websites and repeatably generates passwords for them
  * PswGenDroid - Generates your passwords managed by PswGenDesktop on your mobile  
  *
- *     Copyright (C) 2005-2016 Uwe Damken
+ *     Copyright (C) 2005-2017 Uwe Damken
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -59,6 +59,9 @@ public class PswGenCtl extends BaseCtl {
 
 	/** Die in der StartupView eingegebene Passphrase */
 	private String validatedPassphrase;
+
+	/** Die in der StartupView eingegebene alte Passphrase */
+	private String oldPassphrase;
 
 	/**
 	 * Erzeugt einen Controller.
@@ -159,6 +162,7 @@ public class PswGenCtl extends BaseCtl {
 		if (!services.isNew()) { // Keine neue Datei?
 			startupDialog.disablePassphraseRepeated(); // Passphrase nur 1x eingeben!
 		}
+		startupDialog.setContainsServiceWithOldPassphrase(services.containsServiceWithOldPassphrase());
 		addWindow(startupDialog);
 		startupDialog.pack();
 		startupDialog.setVisible(true);
@@ -167,7 +171,8 @@ public class PswGenCtl extends BaseCtl {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see de.dknapps.pswgendesktop.gui.base.BaseCtl#windowClosing(de.dknapps.pswgendesktop.gui.base.BaseView)
+	 * @see
+	 * de.dknapps.pswgendesktop.gui.base.BaseCtl#windowClosing(de.dknapps.pswgendesktop.gui.base.BaseView)
 	 */
 	@Override
 	public void windowClosing(BaseView view) {
@@ -187,12 +192,12 @@ public class PswGenCtl extends BaseCtl {
 	}
 
 	/**
-	 * Prüft die Passphrase, aktualisert den Verifizierungs- und Versions-String (besonders wichtig bei neuen
-	 * Dateien) und öffnet ggf. das Hauptfenster.
+	 * Prüft die Passphrase, entschlüsselt die Services und öffnet ggf. das Hauptfenster.
 	 */
 	public void actionPerformedOpenServices(final StartupDialog startupDialog) {
 		try {
 			validatedPassphrase = validatePassphraseAndDecryptServices(startupDialog);
+			oldPassphrase = validateOldPassphrase(startupDialog);
 			startupDialog.dispose();
 			MainView mainView = new MainView(this);
 			mainView.setTitle(servicesFile.getAbsolutePath() + " - " + DesktopConstants.APPLICATION_NAME + " "
@@ -202,6 +207,54 @@ public class PswGenCtl extends BaseCtl {
 			ensureAtLeastDefaultSpecialCharacters(mainView);
 			clearService(mainView); // Diensteinstellungen initialisieren (Tagesdatum)
 			mainView.setVisible(true);
+		} catch (Throwable t) {
+			handleThrowable(t);
+		} finally {
+			// Nichts mehr zu tun
+		}
+	}
+
+	/**
+	 * Prüft die Passphrase, entschlüsselt die Services und öffnet dann den Dialog zur Eingabe der neuen
+	 * Passphrase.
+	 */
+	public void actionPerformedChangePassphrase(final StartupDialog startupDialog) {
+		try {
+			validatedPassphrase = validatePassphraseAndDecryptServices(startupDialog);
+			startupDialog.dispose();
+			ChangePassphraseDialog changePassphraseDialog = new ChangePassphraseDialog(this);
+			changePassphraseDialog
+					.setTitle(DesktopConstants.APPLICATION_NAME + " " + CoreConstants.APPLICATION_VERSION);
+			addWindow(changePassphraseDialog);
+			changePassphraseDialog.pack();
+			changePassphraseDialog.setVisible(true);
+		} catch (Throwable t) {
+			handleThrowable(t);
+		} finally {
+			// Nichts mehr zu tun
+		}
+	}
+
+	/**
+	 * speichert sie ggf. unter einer neu einzugebenden Passphrase wieder ab und beendet die Anwendung
+	 * anschließend Speichert alle Dienste (mit der neuen Passphrase).
+	 */
+	public void actionPerformedStoreServices(final ChangePassphraseDialog changePassphraseDialog) {
+		try {
+			validatedPassphrase = validateNewPassphrase(changePassphraseDialog);
+			changePassphraseDialog.dispose();
+			// Services, bei denen das Passwort generiert wird, auf UseOldPassphrase setzen
+			for (ServiceInfo si : services.getServices()) {
+				if (EmptyHelper.isEmpty(si.getPassword())) {
+					si.setUseOldPassphrase(true); // Passwort ab sofort mit der alten Passphrase erzeugen
+				}
+			}
+			// Alte Datei zur Sicherheit durch Umbenennen aufbewahren
+			Files.move(servicesFile.toPath(), (new File(servicesFile.getPath() + ".rephrased")).toPath());
+			// Neu verschlüsselt speichern
+			saveServiceInfoList(validatedPassphrase);
+			// Von vorne neu beginnen
+			start();
 		} catch (Throwable t) {
 			handleThrowable(t);
 		} finally {
@@ -325,8 +378,7 @@ public class PswGenCtl extends BaseCtl {
 	/**
 	 * Öffnet den About-Dialog.
 	 */
-	public void actionPerformedOpenAbout(@SuppressWarnings("unused")
-	final MainView mainView) {
+	public void actionPerformedOpenAbout(@SuppressWarnings("unused") final MainView mainView) {
 		try {
 			AboutView aboutView = new AboutView(this);
 			addWindow(aboutView);
@@ -345,9 +397,7 @@ public class PswGenCtl extends BaseCtl {
 	public void actionPerformedCopyPassword(final MainView mainView) {
 		try {
 			mainView.setWaitCursor();
-			final String psw = getValidatedOrGeneratedPassword(mainView);
-			Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-			clipboard.setContents(new StringSelection(psw), null);
+			copyPassword(mainView);
 		} catch (Throwable t) {
 			handleThrowable(t);
 		} finally {
@@ -392,6 +442,27 @@ public class PswGenCtl extends BaseCtl {
 	}
 
 	/**
+	 * Generiert das Passwort und kopiert es in die Zwischenablage, dann wird AdditionalInfo mit dem
+	 * Tagesdatum gefüllt und der Dienst von der Verwendung der alten auf die Verwendung der neuen Passphrase
+	 * umgestellt.
+	 */
+	public void actionPerformedUseNewPassphrase(final MainView mainView) {
+		try {
+			mainView.setWaitCursor();
+			copyPassword(mainView);
+			ServiceInfo si = getServiceFromView(mainView);
+			resetAdditionalInfo(si);
+			si.setUseOldPassphrase(false);
+			putServiceToView(mainView, si);
+			mainView.setDirty(true);
+		} catch (Throwable t) {
+			handleThrowable(t);
+		} finally {
+			mainView.setDefaultCursor();
+		}
+	}
+
+	/**
 	 * 
 	 */
 	public void actionPerformedPasswordOk(PasswordDialog passwordDialog) {
@@ -403,8 +474,15 @@ public class PswGenCtl extends BaseCtl {
 	 */
 	private void clearService(final MainView mainView) {
 		ServiceInfo si = new ServiceInfo();
-		si.setAdditionalInfo(CoreConstants.DATE_FORMAT.format(new Date()));
+		resetAdditionalInfo(si);
 		putServiceToView(mainView, si);
+	}
+
+	/**
+	 * Stellt das Tagesdatum in das Feld AdditionalInfo.
+	 */
+	private void resetAdditionalInfo(ServiceInfo si) {
+		si.setAdditionalInfo(CoreConstants.DATE_FORMAT.format(new Date()));
 	}
 
 	/**
@@ -436,6 +514,7 @@ public class PswGenCtl extends BaseCtl {
 		si.setTotalCharacterCount(mainView.getTotalCharacterCount());
 		si.setPassword(mainView.getPassword());
 		si.setPasswordRepeated(mainView.getPasswordRepeated());
+		si.setUseOldPassphrase(mainView.getUseOldPassphrase());
 		return si;
 	}
 
@@ -469,6 +548,7 @@ public class PswGenCtl extends BaseCtl {
 		mainView.setTotalCharacterCount(si.getTotalCharacterCount());
 		mainView.setPassword(si.getPassword());
 		mainView.setPasswordRepeated(si.getPasswordRepeated());
+		mainView.setUseOldPassphrase(si.isUseOldPassphrase());
 		mainView.setDirty(false);
 	}
 
@@ -503,6 +583,35 @@ public class PswGenCtl extends BaseCtl {
 			services.decrypt(encryptionHelper); // Info-Collection entschlüsselt in Map stellen
 		}
 		return passphrase;
+	}
+
+	/**
+	 * Prüft die Eingabewerte der alten Passphrase und gibt die alte Passphrase zurück oder wirft eine
+	 * Exception.
+	 */
+	private String validateOldPassphrase(final StartupDialog startupView) {
+		final String oldPassphrase = startupView.getOldPassphrase();
+		if (EmptyHelper.isEmpty(oldPassphrase)) {
+			throw new DomainException("OldPassphraseEmptyMsg");
+		}
+		return oldPassphrase;
+	}
+
+	/**
+	 * Prüft die Eingabewerte der Passphrase, entschlüsselt die Services und gibt die Passphrase zurück oder
+	 * wirft eine Exception.
+	 */
+	private String validateNewPassphrase(final ChangePassphraseDialog changePassphraseDialog) {
+		final String newPassphrase = changePassphraseDialog.getNewPassphrase();
+		final String newPassphraseRepeated = changePassphraseDialog.getNewPassphraseRepeated();
+		if (EmptyHelper.isEmpty(newPassphrase)) {
+			throw new DomainException("NewPassphraseEmptyMsg");
+		}
+		// Prüfen, ob die neue Passphrase zweimal gleich eingegeben wurde
+		if (!newPassphrase.equals(newPassphraseRepeated)) { // Mismatch?
+			throw new DomainException("NewPassphraseMismatchMsg");
+		}
+		return newPassphrase;
 	}
 
 	/**
@@ -549,7 +658,9 @@ public class PswGenCtl extends BaseCtl {
 	 */
 	private String getValidatedOrGeneratedPassword(final MainView mainView) {
 		ensureAtLeastDefaultSpecialCharacters(mainView);
-		return PasswordFactory.getPassword(getServiceFromView(mainView), validatedPassphrase);
+		ServiceInfo si = getServiceFromView(mainView);
+		String passphrase = (si.isUseOldPassphrase()) ? oldPassphrase : validatedPassphrase;
+		return PasswordFactory.getPassword(si, passphrase);
 	}
 
 	/**
@@ -562,6 +673,15 @@ public class PswGenCtl extends BaseCtl {
 		final String prefixSpecialChars = getGuiText("PrefixSpecialChars");
 		return PasswordFactory.getPasswordExplanation(password, prefixLowercaseLetters,
 				prefixUppercaseLetters, prefixDigits, prefixSpecialChars);
+	}
+
+	/**
+	 * Generiert das Passwort und kopiert es in die Zwischenablage.
+	 */
+	private void copyPassword(final MainView mainView) {
+		final String psw = getValidatedOrGeneratedPassword(mainView);
+		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+		clipboard.setContents(new StringSelection(psw), null);
 	}
 
 	/**

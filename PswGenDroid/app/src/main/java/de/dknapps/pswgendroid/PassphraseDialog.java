@@ -2,7 +2,7 @@
  * PswGenDesktop - Manages your websites and repeatably generates passwords for them
  * PswGenDroid - Generates your passwords managed by PswGenDesktop on your mobile  
  *
- *     Copyright (C) 2005-2016 Uwe Damken
+ *     Copyright (C) 2005-2017 Uwe Damken
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -68,6 +68,9 @@ public class PassphraseDialog extends DialogFragment {
 	/** Die View für die Eingabe der Passphrase */
 	private EditText editTextPassphrase;
 
+	/** Die View für die Eingabe der alten Passphrase */
+	private EditText editTextOldPassphrase;
+
 	/** Die aktuelle Instanz, die beim Drücken von OK oder Abbrechen informiert wird. */
 	private Listener listener;
 
@@ -95,6 +98,7 @@ public class PassphraseDialog extends DialogFragment {
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		View view = inflater.inflate(R.layout.dialog_passphrase, null);
 		editTextPassphrase = (EditText) view.findViewById(R.id.passphrase);
+		editTextOldPassphrase = (EditText) view.findViewById(R.id.oldPassphrase);
 		final AlertDialog passphraseDialog = builder.setView(view) //
 				.setTitle(R.string.title_passphrase) //
 				.setPositiveButton(R.string.button_ok, null) // wird wegen der Prüfung unten überschrieben
@@ -120,7 +124,8 @@ public class PassphraseDialog extends DialogFragment {
 						try {
 							FileInputStream input = new FileInputStream(filepath);
 							String passphrase = editTextPassphrase.getText().toString();
-							PswGenAdapter.loadServiceInfoList(input, passphrase);
+							String oldPassphrase = editTextOldPassphrase.getText().toString();
+							PswGenAdapter.loadServiceInfoList(input, passphrase, oldPassphrase);
 							passphraseDialog.dismiss(); // Nur wenn alles okay ist, Dialog schließen ...
 							listener.onClickPassphraseDialogButtonPositive(); // ... und weitermelden
 						} catch (FileNotFoundException e) {

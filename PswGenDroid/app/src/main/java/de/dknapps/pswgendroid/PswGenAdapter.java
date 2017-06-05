@@ -2,7 +2,7 @@
  * PswGenDesktop - Manages your websites and repeatably generates passwords for them
  * PswGenDroid - Generates your passwords managed by PswGenDesktop on your mobile  
  *
- *     Copyright (C) 2005-2016 Uwe Damken
+ *     Copyright (C) 2005-2017 Uwe Damken
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,11 +53,14 @@ public class PswGenAdapter {
 	/** Überprüfte Passphrase für die Entschlüsselung und Passwortgenerierung */
 	private static String validatedPassphrase;
 
+	/** Eingegebene alte Passphrase für die Generierung von Passworten mit der alten Passphrase */
+	private static String oldPassphrase;
+
 	/**
-	 * Dienste aus der übergebenen Datei laden, die Pasphrase prüfen und für die weitere Benutzung
+	 * Dienste aus der übergebenen Datei laden, die Pasphrase prüfen und mit der alten Passphrase für die weitere Benutzung
 	 * aufbewahren.
 	 */
-	public static void loadServiceInfoList(FileInputStream in, String passphrase) {
+	public static void loadServiceInfoList(FileInputStream in, String passphrase, String oldPassphrase) {
 		FileHelper fileHelper = FileHelper.getInstance(new CommonJsonReaderWriterFactoryAndroidImpl());
 		services = fileHelper.loadServiceInfoList(in);
 		if (services == null) {
@@ -68,6 +71,7 @@ public class PswGenAdapter {
 		services.decrypt(encryptionHelper); // Info-Collection entschlüsselt in Map stellen
 		servicesAsList = new ArrayList<ServiceInfo>(services.getServices());
 		validatedPassphrase = passphrase;
+		oldPassphrase = oldPassphrase;
 	}
 
 	/**
@@ -112,6 +116,13 @@ public class PswGenAdapter {
 	 */
 	public static String getValidatedPassphrase() {
 		return validatedPassphrase;
+	}
+
+	/**
+	 * Liefert die alte Passphrase.
+	 */
+	public static String getOldPassphrase() {
+		return oldPassphrase;
 	}
 
 	/**

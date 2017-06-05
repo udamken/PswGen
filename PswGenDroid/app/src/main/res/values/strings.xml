@@ -3,7 +3,7 @@
     PswGenDesktop - Manages your websites and repeatably generates passwords for them
     PswGenDroid - Generates your passwords managed by PswGenDesktop on your mobile  
    
-        Copyright (C) 2005-2016 Uwe Damken
+        Copyright (C) 2005-2017 Uwe Damken
    
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -42,6 +42,7 @@
 	<!-- PassphraseDialog -->
 	<string name="title_passphrase">Open Service File</string>
 	<string name="hint_passphrase">Passphrase</string>
+	<string name="hint_oldPassphrase">Old Passphrase</string>
 
 	<!-- ServiceListActivity -->
 	<string name="title_service_list">Stored Services</string>
@@ -55,6 +56,7 @@
 	<string name="label_login_url">Website</string>
 	<string name="label_login_info">Login Information</string>
 	<string name="label_additional_login_info">Addt\'l Login Information</string>
+	<string name="label_use_old_passphrase">Uses old passphrase</string>
 	<string name="button_open_url">Open</string>
 	<string name="button_copy_login_info">Copy Login Information</string>
 	<string name="button_copy_password">Copy Password</string>
