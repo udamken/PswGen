@@ -27,6 +27,14 @@
 	<string name="button_cancel">Cancel</string>
 	<string name="button_ok">OK</string>
 
+	<!-- Tastatur zum Kopieren von Passworten ohne Verwendung der Zwischenablage -->
+	<string name="title_input_method_editor">PswGen Keyboard</string>
+	<string name="button_type_login_info">Login</string>
+	<string name="button_type_login_password">Psw</string>
+	<string name="button_clear_last_input">Clear</string>
+	<string name="button_cancel_input">Cancel</string>
+	<string name="button_input_done">Done</string>
+
 	<!-- StartupActiviy -->
 	<string name="title_startup">PswGenDroid</string>
 	<string name="label_filepath">Filepath</string>
@@ -57,7 +65,9 @@
 	<string name="label_login_info">Login Information</string>
 	<string name="label_additional_login_info">Addt\'l Login Information</string>
 	<string name="label_use_old_passphrase">Uses old passphrase</string>
-	<string name="button_open_url">Open</string>
+	<string name="button_open_and_provide">Open &amp; provide</string>
+	<string name="button_provide">Provide</string>
+	<string name="button_open_url">Open &amp; copy</string>
 	<string name="button_copy_login_info">Copy Login Information</string>
 	<string name="button_copy_password">Copy Password</string>
 	<string name="button_display_password">Display Password</string>

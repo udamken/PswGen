@@ -108,6 +108,14 @@ public class ServiceListActivity extends FragmentActivity
 	 * Eingehende On-Click-Events an das {@link ServiceDetailFragment} übergeben.
 	 */
 
+	public void onClickButtonOpenAndProvide(final View buttonOpenAndProvide) {
+		serviceDetailFragment.onClickButtonOpenAndProvide(this, buttonOpenAndProvide);
+	}
+
+	public void onClickButtonProvide(final View buttonProvide) {
+		serviceDetailFragment.onClickButtonProvide(this, buttonProvide);
+	}
+
 	public void onClickButtonOpenUrl(final View buttonOpenUrl) {
 		serviceDetailFragment.onClickButtonOpenUrl(this, buttonOpenUrl);
 	}
