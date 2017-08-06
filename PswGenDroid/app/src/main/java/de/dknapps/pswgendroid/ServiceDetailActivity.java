@@ -37,83 +37,92 @@ import android.view.View;
  */
 public class ServiceDetailActivity extends FragmentActivity implements PassphraseDialog.Listener {
 
-	/** Das eingebettete Fragment für die Detailanzeige eines Dienstes */
-	private ServiceDetailFragment serviceDetailFragment;
+    /**
+     * Das eingebettete Fragment für die Detailanzeige eines Dienstes
+     */
+    private ServiceDetailFragment serviceDetailFragment;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_service_detail);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_service_detail);
 
-		// Up-Button im Action Bar anzeigen
-		getActionBar().setDisplayHomeAsUpEnabled(true);
+        // Up-Button im Action Bar anzeigen
+        getActionBar().setDisplayHomeAsUpEnabled(true);
 
-		// Nur wenn der Fragment-Status von der vorherigen Aktivity-Konfiguration vermerkt wurde, z.B. beim
-		// Drehen des Bildschirm, ist savedInstanceState non-null. Dann wird das Fragment automatisch zu
-		// seinem Container hinzugefügt. Sonst müssen wir es manuell tun. Nähere Informationen dazu siehe
-		// http://developer.android.com/guide/components/fragments.html
-		if (savedInstanceState == null) {
-			// ServiceDetailFragment erzeugen und per Transaktion des FragmentManagers der Activity zuordnen
-			Bundle arguments = new Bundle();
-			String id = getIntent().getStringExtra(ServiceDetailFragment.ARG_ITEM_ID);
-			arguments.putString(ServiceDetailFragment.ARG_ITEM_ID, id);
-			serviceDetailFragment = new ServiceDetailFragment();
-			serviceDetailFragment.setArguments(arguments);
-			getSupportFragmentManager().beginTransaction()
-					.add(R.id.service_detail_container, serviceDetailFragment).commit();
-		}
-	}
+        // Nur wenn der Fragment-Status von der vorherigen Aktivity-Konfiguration vermerkt wurde, z.B. beim
+        // Drehen des Bildschirm, ist savedInstanceState non-null. Dann wird das Fragment automatisch zu
+        // seinem Container hinzugefügt. Sonst müssen wir es manuell tun. Nähere Informationen dazu siehe
+        // http://developer.android.com/guide/components/fragments.html
+        if (savedInstanceState == null) {
+            // ServiceDetailFragment erzeugen und per Transaktion des FragmentManagers der Activity zuordnen
+            Bundle arguments = new Bundle();
+            String id = getIntent().getStringExtra(ServiceDetailFragment.ARG_ITEM_ID);
+            arguments.putString(ServiceDetailFragment.ARG_ITEM_ID, id);
+            serviceDetailFragment = new ServiceDetailFragment();
+            serviceDetailFragment.setArguments(arguments);
+            getSupportFragmentManager().beginTransaction().add(R.id.service_detail_container, serviceDetailFragment).commit();
+        }
+    }
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		int id = item.getItemId();
-		if (id == android.R.id.home) {
-			// Dies ID repräsentiert den Home- oder Up-Button. Bei dieser Activity wird der Up-Button gezeigt.
-			// Mit NavUtils kann der Anwender in der Anwendungsstruktur eine Ebene nach oben navigieren. Mehr
-			// Details zum Navigation Pattern unter Android finden sich hier:
-			// http://developer.android.com/design/patterns/navigation.html#up-vs-back
-			NavUtils.navigateUpTo(this, new Intent(this, ServiceListActivity.class));
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            // Dies ID repräsentiert den Home- oder Up-Button. Bei dieser Activity wird der Up-Button gezeigt.
+            // Mit NavUtils kann der Anwender in der Anwendungsstruktur eine Ebene nach oben navigieren. Mehr
+            // Details zum Navigation Pattern unter Android finden sich hier:
+            // http://developer.android.com/design/patterns/navigation.html#up-vs-back
+            NavUtils.navigateUpTo(this, new Intent(this, ServiceListActivity.class));
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
-	/**
-	 * Eingehende On-Click-Events an das {@link ServiceDetailFragment} übergeben.
-	 */
+    /**
+     * Eingehende On-Click-Events an das {@link ServiceDetailFragment} übergeben.
+     */
 
-	public void onClickButtonOpenAndProvide(final View buttonOpenAndProvide) {
-		serviceDetailFragment.onClickButtonOpenAndProvide(this, buttonOpenAndProvide);
-	}
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (serviceDetailFragment != null) {
+            serviceDetailFragment.onWindowFocusChanged(hasFocus);
+        }
+    }
 
-	public void onClickButtonProvide(final View buttonProvide) {
-		serviceDetailFragment.onClickButtonProvide(this, buttonProvide);
-	}
+    public void onClickButtonOpenAndProvide(final View buttonOpenAndProvide) {
+        serviceDetailFragment.onClickButtonOpenAndProvide(this, buttonOpenAndProvide);
+    }
 
-	public void onClickButtonOpenUrl(final View buttonOpenUrl) {
-		serviceDetailFragment.onClickButtonOpenUrl(this, buttonOpenUrl);
-	}
+    public void onClickButtonProvide(final View buttonProvide) {
+        serviceDetailFragment.onClickButtonProvide(this, buttonProvide);
+    }
 
-	public void onClickButtonCopyLoginInfo(final View buttonOpenUrl) {
-		serviceDetailFragment.onClickButtonCopyLoginInfo(this, buttonOpenUrl);
-	}
+    public void onClickButtonOpenUrl(final View buttonOpenUrl) {
+        serviceDetailFragment.onClickButtonOpenUrl(this, buttonOpenUrl);
+    }
 
-	public void onClickButtonCopyPassword(final View buttonOpenUrl) {
-		serviceDetailFragment.onClickButtonCopyPassword(this, buttonOpenUrl);
-	}
+    public void onClickButtonCopyLoginInfo(final View buttonOpenUrl) {
+        serviceDetailFragment.onClickButtonCopyLoginInfo(this, buttonOpenUrl);
+    }
 
-	public void onClickButtonDisplayPassword(final View buttonOpenUrl) {
-		serviceDetailFragment.onClickButtonDisplayPassword(this, buttonOpenUrl);
-	}
+    public void onClickButtonCopyPassword(final View buttonOpenUrl) {
+        serviceDetailFragment.onClickButtonCopyPassword(this, buttonOpenUrl);
+    }
 
-	@Override
-	public void onClickPassphraseDialogButtonPositive() {
-		serviceDetailFragment.onClickPassphraseDialogButtonPositive();
-	}
+    public void onClickButtonDisplayPassword(final View buttonOpenUrl) {
+        serviceDetailFragment.onClickButtonDisplayPassword(this, buttonOpenUrl);
+    }
 
-	@Override
-	public void onClickPassphraseDialogButtonNegative() {
-		serviceDetailFragment.onClickPassphraseDialogButtonNegative();
-	}
+    @Override
+    public void onClickPassphraseDialogButtonPositive() {
+        serviceDetailFragment.onClickPassphraseDialogButtonPositive();
+    }
+
+    @Override
+    public void onClickPassphraseDialogButtonNegative() {
+        serviceDetailFragment.onClickPassphraseDialogButtonNegative();
+    }
 
 }

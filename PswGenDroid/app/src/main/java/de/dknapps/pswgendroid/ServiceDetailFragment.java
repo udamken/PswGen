@@ -47,17 +47,18 @@ public class ServiceDetailFragment extends Fragment {
      * Die für die Tastatur bereitgestellte Login-Information.
      */
     private static String providedLoginInfo = null;
-
     /**
      * Das für die Tastatur bereitgestellte Password.
      */
     private static String providedPassword = null;
-
+    /**
+     * State of picking an input method.
+     */
+    private InputMethodPickingState inputMethodPickingState = InputMethodPickingState.NONE;
     /**
      * Der aktuell in der Detailanzeige dargestellte Dienst
      */
     private ServiceInfo currentServiceInfo;
-
     /**
      * Felder in der Detailanzeige
      */
@@ -68,7 +69,6 @@ public class ServiceDetailFragment extends Fragment {
     private TextView textViewLoginInfo;
     private TextView textViewAdditionalLoginInfo;
     private TextView textViewLabelUseOldPassphrase;
-
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the fragment (e.g. upon screen
      * orientation changes).
@@ -220,22 +220,9 @@ public class ServiceDetailFragment extends Fragment {
      */
     public void onClickButtonOpenAndProvide(final Activity callingActivity, final View buttonOpenAndProvide) {
         try {
-            openUrl(currentServiceInfo.getLoginUrl());
+            inputMethodPickingState = InputMethodPickingState.INITIATING; // => Öffnen der URL in onWindowFocusChanged()
             provideLoginInfoAndPassword();
-        } catch (Exception e) {
-            PswGenAdapter.handleThrowable(callingActivity, e);
-        }
-    }
-
-    /**
-     * Lässt den Nutzer die Tastatur wechseln und stellt Login-Informationen und Passwort für die
-     * Tastatur bereit.
-     *
-     * FIXME dkn Die callingActivity kann durch getActivity() ersetzt werden.
-     */
-    public void onClickButtonProvide(final Activity callingActivity, final View buttonProvide) {
-        try {
-            provideLoginInfoAndPassword();
+            // Das Öffnen der URL erfolgt nach dem Schließen der Tastaturauswahl in onWindowFocusChanged()
         } catch (Exception e) {
             PswGenAdapter.handleThrowable(callingActivity, e);
         }
@@ -261,6 +248,34 @@ public class ServiceDetailFragment extends Fragment {
                 PswGenAdapter.getOldPassphrase() :
                 PswGenAdapter.getValidatedPassphrase();
         return PasswordFactory.getPassword(currentServiceInfo, passphrase);
+    }
+
+    /**
+     * Prüft beim Fokuswechsel, ob gerade die Tastaturauswahl aktiv ist, bzw. war und ruft danach das Öffnen einer URL auf. Ohne
+     * diesen Umstand wird manchmal die Tastaturauswahl geöffnet, aber vom gestarteten Browser sofort verdeckt. Die Idee ist
+     * dieser Antwort entnommen: https://stackoverflow.com/a/14069079/2532583
+     */
+    public void onWindowFocusChanged(boolean hasFocus) {
+        if (inputMethodPickingState == InputMethodPickingState.INITIATING) {
+            inputMethodPickingState = InputMethodPickingState.ONGOING;
+        } else if (inputMethodPickingState == InputMethodPickingState.ONGOING) {
+            inputMethodPickingState = InputMethodPickingState.NONE;
+            openUrl(currentServiceInfo.getLoginUrl());
+        }
+    }
+
+    /**
+     * Lässt den Nutzer die Tastatur wechseln und stellt Login-Informationen und Passwort für die
+     * Tastatur bereit.
+     *
+     * FIXME dkn Die callingActivity kann durch getActivity() ersetzt werden.
+     */
+    public void onClickButtonProvide(final Activity callingActivity, final View buttonProvide) {
+        try {
+            provideLoginInfoAndPassword();
+        } catch (Exception e) {
+            PswGenAdapter.handleThrowable(callingActivity, e);
+        }
     }
 
     /**
@@ -336,5 +351,7 @@ public class ServiceDetailFragment extends Fragment {
         Intent startupIntent = new Intent(getActivity(), StartupActivity.class);
         startActivity(startupIntent);
     }
+
+    private enum InputMethodPickingState {NONE, INITIATING, ONGOING}
 
 }

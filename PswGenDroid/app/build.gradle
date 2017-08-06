@@ -7,8 +7,8 @@ android {
         applicationId "de.dknapps.pswgendroid"
         minSdkVersion 19
         targetSdkVersion 19
-        versionCode 7
-        versionName "1.8.0"
+        versionCode 8
+        versionName "1.8.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

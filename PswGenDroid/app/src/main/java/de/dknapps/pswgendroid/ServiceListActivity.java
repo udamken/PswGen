@@ -43,119 +43,129 @@ import android.widget.SearchView;
  * zu bekommen.
  * </p>
  */
-public class ServiceListActivity extends FragmentActivity
-		implements ServiceListFragment.Listener, PassphraseDialog.Listener {
+public class ServiceListActivity extends FragmentActivity implements ServiceListFragment.Listener, PassphraseDialog.Listener {
 
-	/** Gibt an, ob Liste und Details gleichzeitig angezeigt werden (bei großen Bildschirmen) */
-	private boolean inTwoPaneMode;
+    /**
+     * Gibt an, ob Liste und Details gleichzeitig angezeigt werden (bei großen Bildschirmen)
+     */
+    private boolean inTwoPaneMode;
 
-	/** Das eingebettete Fragment für die Anzeige der Diensteliste */
-	private ServiceListFragment serviceListFragment;
+    /**
+     * Das eingebettete Fragment für die Anzeige der Diensteliste
+     */
+    private ServiceListFragment serviceListFragment;
 
-	/** Das eingebettete Fragment für die Detailanzeige eines Dienstes */
-	private ServiceDetailFragment serviceDetailFragment;
+    /**
+     * Das eingebettete Fragment für die Detailanzeige eines Dienstes
+     */
+    private ServiceDetailFragment serviceDetailFragment;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_service_list);
-		serviceListFragment = (ServiceListFragment) getSupportFragmentManager()
-				.findFragmentById(R.id.service_list);
-		if (findViewById(R.id.service_detail_container) != null) {
-			// Den Detail-Containter gibt es nur bei großen Bildschirmen (res/values-large,
-			// res/values-sw600dp), dann werden Liste und Details gleichzeitig angezeigt.
-			inTwoPaneMode = true;
-			// Bei gleichzeitiger Liste mit Details 'activate' auf den Listeneinträgen setzen.
-			serviceListFragment.setActivateOnItemClick(true);
-		}
-	}
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_service_list);
+        serviceListFragment = (ServiceListFragment) getSupportFragmentManager().findFragmentById(R.id.service_list);
+        if (findViewById(R.id.service_detail_container) != null) {
+            // Den Detail-Containter gibt es nur bei großen Bildschirmen (res/values-large,
+            // res/values-sw600dp), dann werden Liste und Details gleichzeitig angezeigt.
+            inTwoPaneMode = true;
+            // Bei gleichzeitiger Liste mit Details 'activate' auf den Listeneinträgen setzen.
+            serviceListFragment.setActivateOnItemClick(true);
+        }
+    }
 
-	/**
-	 * Callback method from {@link ServiceListFragment.Listener} indicating that the item with the given ID
-	 * was selected.
-	 */
-	@Override
-	public void onItemSelected(String id) {
-		if (inTwoPaneMode) {
-			// Bei gleichzeitiger Anzeige von Liste und Details die Details über eine
-			// Fragment-Manager-Transaktion einblenden.
-			Bundle arguments = new Bundle();
-			arguments.putString(ServiceDetailFragment.ARG_ITEM_ID, id);
-			serviceDetailFragment = new ServiceDetailFragment();
-			serviceDetailFragment.setArguments(arguments);
-			getSupportFragmentManager().beginTransaction()
-					.replace(R.id.service_detail_container, serviceDetailFragment).commit();
+    /**
+     * Callback method from {@link ServiceListFragment.Listener} indicating that the item with the given ID
+     * was selected.
+     */
+    @Override
+    public void onItemSelected(String id) {
+        if (inTwoPaneMode) {
+            // Bei gleichzeitiger Anzeige von Liste und Details die Details über eine
+            // Fragment-Manager-Transaktion einblenden.
+            Bundle arguments = new Bundle();
+            arguments.putString(ServiceDetailFragment.ARG_ITEM_ID, id);
+            serviceDetailFragment = new ServiceDetailFragment();
+            serviceDetailFragment.setArguments(arguments);
+            getSupportFragmentManager().beginTransaction().replace(R.id.service_detail_container, serviceDetailFragment).commit();
 
-		} else {
-			// Nur entweder Liste oder Details? Dann einfach die Detail-Activity starten.
-			Intent detailIntent = new Intent(this, ServiceDetailActivity.class);
-			detailIntent.putExtra(ServiceDetailFragment.ARG_ITEM_ID, id);
-			startActivity(detailIntent);
-		}
-	}
+        } else {
+            // Nur entweder Liste oder Details? Dann einfach die Detail-Activity starten.
+            Intent detailIntent = new Intent(this, ServiceDetailActivity.class);
+            detailIntent.putExtra(ServiceDetailFragment.ARG_ITEM_ID, id);
+            startActivity(detailIntent);
+        }
+    }
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.options_menu, menu);
-		MenuItem searchMenuItem = menu.findItem(R.id.search);
-		SearchView searchView = (SearchView) searchMenuItem.getActionView();
-		searchView.setOnQueryTextListener(serviceListFragment);
-		return true;
-	}
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.options_menu, menu);
+        MenuItem searchMenuItem = menu.findItem(R.id.search);
+        SearchView searchView = (SearchView) searchMenuItem.getActionView();
+        searchView.setOnQueryTextListener(serviceListFragment);
+        return true;
+    }
 
-	/**
-	 * Eingehende On-Click-Events an das {@link ServiceDetailFragment} übergeben.
-	 */
+    /**
+     * Eingehende On-Click-Events an das {@link ServiceDetailFragment} übergeben.
+     */
 
-	public void onClickButtonOpenAndProvide(final View buttonOpenAndProvide) {
-		serviceDetailFragment.onClickButtonOpenAndProvide(this, buttonOpenAndProvide);
-	}
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (serviceDetailFragment != null) {
+            serviceDetailFragment.onWindowFocusChanged(hasFocus);
+        }
+    }
 
-	public void onClickButtonProvide(final View buttonProvide) {
-		serviceDetailFragment.onClickButtonProvide(this, buttonProvide);
-	}
+    public void onClickButtonOpenAndProvide(final View buttonOpenAndProvide) {
+        serviceDetailFragment.onClickButtonOpenAndProvide(this, buttonOpenAndProvide);
+    }
 
-	public void onClickButtonOpenUrl(final View buttonOpenUrl) {
-		serviceDetailFragment.onClickButtonOpenUrl(this, buttonOpenUrl);
-	}
+    public void onClickButtonProvide(final View buttonProvide) {
+        serviceDetailFragment.onClickButtonProvide(this, buttonProvide);
+    }
 
-	public void onClickButtonCopyLoginInfo(final View buttonOpenUrl) {
-		serviceDetailFragment.onClickButtonCopyLoginInfo(this, buttonOpenUrl);
-	}
+    public void onClickButtonOpenUrl(final View buttonOpenUrl) {
+        serviceDetailFragment.onClickButtonOpenUrl(this, buttonOpenUrl);
+    }
 
-	public void onClickButtonCopyPassword(final View buttonOpenUrl) {
-		serviceDetailFragment.onClickButtonCopyPassword(this, buttonOpenUrl);
-	}
+    public void onClickButtonCopyLoginInfo(final View buttonOpenUrl) {
+        serviceDetailFragment.onClickButtonCopyLoginInfo(this, buttonOpenUrl);
+    }
 
-	public void onClickButtonDisplayPassword(final View buttonOpenUrl) {
-		serviceDetailFragment.onClickButtonDisplayPassword(this, buttonOpenUrl);
-	}
+    public void onClickButtonCopyPassword(final View buttonOpenUrl) {
+        serviceDetailFragment.onClickButtonCopyPassword(this, buttonOpenUrl);
+    }
 
-	/**
-	 * Eingehende On-Click-Events aus dem PassphraseDialog an das {@link ServiceListFragment} übergeben.
-	 */
+    public void onClickButtonDisplayPassword(final View buttonOpenUrl) {
+        serviceDetailFragment.onClickButtonDisplayPassword(this, buttonOpenUrl);
+    }
 
-	@Override
-	public void onClickPassphraseDialogButtonPositive() {
-		serviceListFragment.onClickPassphraseDialogButtonPositive();
-		if (areTwoPanesActive()) {
-			serviceDetailFragment.onClickPassphraseDialogButtonPositive();
-		}
-	}
+    /**
+     * Eingehende On-Click-Events aus dem PassphraseDialog an das {@link ServiceListFragment} übergeben.
+     */
 
-	/**
-	 * Liefert true, wenn sich die Anwendung im Two-Pane-Modus befindet *und* tatsächlich ein Dienst zur
-	 * Anzeige in den Details ausgewählt wurde.
-	 */
-	public boolean areTwoPanesActive() {
-		return inTwoPaneMode && serviceDetailFragment != null
-				&& serviceDetailFragment.hasCurrentServiceInfo();
-	}
+    @Override
+    public void onClickPassphraseDialogButtonPositive() {
+        serviceListFragment.onClickPassphraseDialogButtonPositive();
+        if (areTwoPanesActive()) {
+            serviceDetailFragment.onClickPassphraseDialogButtonPositive();
+        }
+    }
 
-	@Override
-	public void onClickPassphraseDialogButtonNegative() {
-		serviceListFragment.onClickPassphraseDialogButtonNegative();
-	}
+    /**
+     * Liefert true, wenn sich die Anwendung im Two-Pane-Modus befindet *und* tatsächlich ein Dienst zur
+     * Anzeige in den Details ausgewählt wurde.
+     */
+    public boolean areTwoPanesActive() {
+        return inTwoPaneMode && serviceDetailFragment != null && serviceDetailFragment.hasCurrentServiceInfo();
+    }
+
+    @Override
+    public void onClickPassphraseDialogButtonNegative() {
+        serviceListFragment.onClickPassphraseDialogButtonNegative();
+    }
 
 }
