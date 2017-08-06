@@ -39,8 +39,9 @@
 	<string name="title_startup">PswGenDroid</string>
 	<string name="label_filepath">Filepath</string>
 	<string name="button_open_services">Open</string>
+	<string name="button_open_ime_settings">Keyboard settings</string>
 	<string name="button_open_help">Help</string>
-	<string name="help_url">https://github.com/udamken/PswGenDroid/wiki</string>
+	<string name="help_url">http://dknapps.de/pswgen</string>
 	<string name="button_open_about">About PswGenDroid</string>
 
 	<!-- Einstellungen (ohne Preferences-Dialog) -->

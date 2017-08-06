@@ -102,8 +102,15 @@ public class StartupActivity extends Activity implements PassphraseDialog.Listen
 	}
 
 	/**
-	 * Öffnet die Hilfe-URL im Browser.
+	 * Öffnet die Einstellungen zum Aktivieren der Tastatur für das Kopieren von Anmeldeinformationen und Passwort.
 	 */
+	public void onClickButtonOpenImeSettings(final View buttonOpenImeSettings) {
+		startActivity(new Intent(android.provider.Settings.ACTION_INPUT_METHOD_SETTINGS));
+	}
+
+		/**
+         * Öffnet die Hilfe-URL im Browser.
+         */
 	public void onClickButtonOpenHelp(final View buttonOpenHelp) {
 		try {
 			Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.help_url)));

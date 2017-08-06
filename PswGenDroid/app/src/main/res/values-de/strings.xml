@@ -39,6 +39,7 @@
 	<string name="title_startup">PswGenDroid</string>
 	<string name="label_filepath">Dateipfad</string>
 	<string name="button_open_services">Öffnen</string>
+	<string name="button_open_ime_settings">Tastatureinstellungen</string>
 	<string name="button_open_help">Hilfe</string>
 	<string name="help_url">https://github.com/udamken/PswGenDroid/wiki</string>
 	<string name="button_open_about">Über PswGenDroid</string>

@@ -45,6 +45,13 @@
 	    android:text="@string/button_open_services"
 	    android:onClick="onClickButtonOpenServices" />
 	
+	<Button android:id="@+id/button_open_ime_settings"
+	    style="?android:attr/buttonStyle"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:text="@string/button_open_ime_settings"
+	    android:onClick="onClickButtonOpenImeSettings" />
+
 	<Button android:id="@+id/button_open_help"
 	    style="?android:attr/buttonStyle"
 	    android:layout_width="match_parent"
