@@ -57,7 +57,8 @@ public class PswGenInputMethodEditor extends InputMethodService implements Keybo
                 sendKeyEvents(ic, ServiceDetailFragment.getProvidedPassword());
                 break;
             case Keyboard.KEYCODE_DELETE:
-                ic.deleteSurroundingText(Integer.MAX_VALUE, Integer.MAX_VALUE);
+                getCurrentInputConnection().commitText("",1); // delete selected text
+                ic.deleteSurroundingText(Integer.MAX_VALUE, Integer.MAX_VALUE); // delete rest of the text
                 break;
             case Keyboard.KEYCODE_DONE:
                 ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER));
