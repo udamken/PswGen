@@ -18,9 +18,4 @@
  -->
 <input-method xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <subtype
-        android:imeSubtypeLocale="en_US"
-        android:imeSubtypeMode="keyboard"
-        android:label="string/subtype_en_US"/>
-
 </input-method>
