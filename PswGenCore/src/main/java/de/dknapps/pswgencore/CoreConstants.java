@@ -44,7 +44,7 @@ public class CoreConstants {
 			+ "right (C) Uwe Damken"; // String splitted "against" Eclipse Releng
 
 	/** Die Version aller Teile von PswGen */
-	public static final String APPLICATION_VERSION = "1.8.0";
+	public static final String APPLICATION_VERSION = "2.0.0";
 
 	/** Das Top-Level-Package von PswGenCore */
 	public static final String APPLICATION_PACKAGE_NAME = CoreConstants.class.getPackage().getName();

@@ -1,29 +1,46 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 27
     defaultConfig {
         applicationId "de.dknapps.pswgendroid"
-        minSdkVersion 19
-        targetSdkVersion 19
-        versionCode 8
-        versionName "1.8.1"
+        minSdkVersion 21
+        targetSdkVersion 27
+        versionCode 20000
+        versionName "2.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
             minifyEnabled false
+            useProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    // https://stackoverflow.com/a/37888400/2532583 looks like what I want but messes with en arrays.xml?!
+    // https://stackoverflow.com/a/32676398 is the bypass for not having all translations
+    lintOptions{
+        disable 'MissingTranslation'
+    }
+    // https://sites.google.com/a/android.com/tools/tech-docs/unit-testing-support#TOC-Method-...-not-mocked.-
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
+    defaultConfig {
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    compile 'com.android.support:appcompat-v7:25.1.0'
-    testCompile 'junit:junit:4.12'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    // Espresso
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-contrib:3.0.2'
+
+    // Support Libraries
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+
+    // JUnit
+    testImplementation 'junit:junit:4.12'
 }
