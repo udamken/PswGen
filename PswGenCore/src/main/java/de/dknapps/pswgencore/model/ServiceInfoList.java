@@ -2,7 +2,7 @@
  * PswGenDesktop - Manages your websites and repeatably generates passwords for them
  * PswGenDroid - Generates your passwords managed by PswGenDesktop on your mobile  
  *
- *     Copyright (C) 2005-2017 Uwe Damken
+ *     Copyright (C) 2005-2018 Uwe Damken
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -99,6 +99,8 @@ public class ServiceInfoList {
 		e.setPassword(encryptionHelper.encrypt(d.getPassword()));
 		e.setPasswordRepeated(encryptionHelper.encrypt(d.getPasswordRepeated()));
 		e.setUseOldPassphrase(d.isUseOldPassphrase());
+		e.setDeleted(d.isDeleted());
+		e.setTimeMillis(d.getTimeMillis());
 		return e;
 	}
 
@@ -140,6 +142,8 @@ public class ServiceInfoList {
 		d.setPassword(encryptionHelper.decrypt(e.getPassword()));
 		d.setPasswordRepeated(encryptionHelper.decrypt(e.getPasswordRepeated()));
 		d.setUseOldPassphrase(e.isUseOldPassphrase());
+		d.setDeleted(e.isDeleted());
+		d.setTimeMillis(e.getTimeMillis());
 		return d;
 	}
 
@@ -147,14 +151,25 @@ public class ServiceInfoList {
 	 * Löscht die Informationen zu einem Dienstekürzel.
 	 */
 	public ServiceInfo removeServiceInfo(final String serviceAbbreviation) {
-		return services.remove(serviceAbbreviation);
+		ServiceInfo si = getServiceInfo(serviceAbbreviation);
+		if (si != null) {
+			si.setDeleted(true);
+			si.resetTimeMillis();
+		}
+		return si;
 	}
 
 	/**
-	 * Liefert die Informationen zu allen Dienstekürzeln.
+	 * Liefert die Informationen zu allen Dienstekürzeln, ggf. auch mit den als gelöscht markierten Einträgen.
 	 */
-	public Collection<ServiceInfo> getServices() {
-		return services.values();
+	public Collection<ServiceInfo> getServices(boolean withDeletedEntries) {
+		Collection<ServiceInfo> result = new ArrayList<>();
+		for (ServiceInfo si : services.values()) {
+			if (withDeletedEntries || !si.isDeleted()) {
+				result.add(si);
+			}
+		}
+		return result;
 	}
 
 	/**
@@ -190,11 +205,6 @@ public class ServiceInfoList {
 	 * und beim Befüllen der Map aus der Collection beim Lesen.
 	 */
 	public void decrypt(EncryptionHelper encryptionHelper) {
-		// TODO dkn Die alte Passphrase-Prüfung kann später entfallen, ein Verifizierungs-String ist unsicher
-		if (!isNewestFormat()
-				&& !encryptionHelper.decrypt(verifier).equals(CoreConstants.APPLICATION_VERIFIER)) {
-			throw new DomainException("PassphraseInvalidMsg");
-		}
 		if (encryptedServices != null) {
 			for (ServiceInfo serviceInfo : encryptedServices) {
 				putServiceInfo(decrypt(encryptionHelper, serviceInfo));
@@ -205,13 +215,6 @@ public class ServiceInfoList {
 		if (isNewestFormat() && !verifier.equals(String.valueOf(services.hashCode()))) {
 			throw new DomainException("PassphraseInvalidMsg");
 		}
-	}
-
-	/**
-	 * Liefert true, wenn die geladene Datei keine Dienste enthält.
-	 */
-	public boolean isNew() {
-		return encryptedServices == null;
 	}
 
 	/**
@@ -252,6 +255,20 @@ public class ServiceInfoList {
 	public boolean isUnsupportedFormat() {
 		return version == null || version.compareTo(CoreConstants.LOWEST_SUPPORTED_FILE_FORMAT_VERSION) < 0
 				|| EmptyHelper.isEmpty(verifier);
+	}
+
+	/**
+	 * Arbeite die Dienste der anderen Liste in diese List unter Berücksichtigung von Löschkennzeichen und
+	 * Timestamp ein.
+	 */
+	public void merge(ServiceInfoList other) {
+		for (ServiceInfo otherSi : other.services.values()) {
+			ServiceInfo si = services.get(otherSi.getServiceAbbreviation());
+			if (si == null || si.olderThan(otherSi)) {
+				// Nicht vorhandenen Dienst ergänzen oder veralteten Dienst aktualisieren
+				services.put(otherSi.getServiceAbbreviation(), otherSi);
+			}
+		}
 	}
 
 	/**

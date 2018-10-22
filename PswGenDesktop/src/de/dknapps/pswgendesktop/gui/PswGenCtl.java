@@ -2,7 +2,7 @@
  * PswGenDesktop - Manages your websites and repeatably generates passwords for them
  * PswGenDroid - Generates your passwords managed by PswGenDesktop on your mobile  
  *
- *     Copyright (C) 2005-2017 Uwe Damken
+ *     Copyright (C) 2005-2018 Uwe Damken
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -57,6 +57,9 @@ public class PswGenCtl extends BaseCtl {
 	/** Der Dateiname zum Laden und Speichern der Diensteliste */
 	private File servicesFile;
 
+	/** Der Dateiname zum Laden der Diensteliste vom anderen Gerät */
+	private File otherServicesFile;
+
 	/** Die in der StartupView eingegebene Passphrase */
 	private String validatedPassphrase;
 
@@ -66,9 +69,10 @@ public class PswGenCtl extends BaseCtl {
 	/**
 	 * Erzeugt einen Controller.
 	 */
-	public PswGenCtl(final String givenServicesFilename) {
+	public PswGenCtl(final String servicesFilename, final String otherServicesFilename) {
 		super();
-		servicesFile = new File(givenServicesFilename);
+		servicesFile = new File(servicesFilename);
+		otherServicesFile = (otherServicesFilename == null) ? null : new File(otherServicesFilename);
 		setupLookAndFeel();
 	}
 
@@ -88,81 +92,80 @@ public class PswGenCtl extends BaseCtl {
 	 */
 	public void upgradeServiceInfoList(final String passphrase) throws IOException {
 		FileHelper fileHelper = FileHelper.getInstance(new CommonJsonReaderWriterFactoryGsonImpl());
-		services = fileHelper.loadServiceInfoList(servicesFile);
-		if (services == null || services.isNew()) {
-			String message = getGuiText("EmptyFileNotUpgradableMsg");
-			JOptionPane.showMessageDialog(null, message, DesktopConstants.APPLICATION_NAME,
-					JOptionPane.ERROR_MESSAGE);
-			LOGGER.log(Level.SEVERE, message);
-			System.exit(16);
-		} else if (services.isUnsupportedFormat()) {
-			String message = getGuiText("UnsupportedFileFormatMsg");
-			JOptionPane.showMessageDialog(null, message, DesktopConstants.APPLICATION_NAME,
-					JOptionPane.ERROR_MESSAGE);
-			LOGGER.log(Level.SEVERE, message);
-			System.exit(16);
-		} else if (services.isAdvancedFormat()) { // Schon im neuen Format? => nichts zu tun
-			String message = getGuiText("FileFormatAlreadyConvertedMsg");
-			JOptionPane.showMessageDialog(null, message, DesktopConstants.APPLICATION_NAME,
-					JOptionPane.ERROR_MESSAGE);
-			LOGGER.log(Level.SEVERE, message);
-			System.exit(16);
-		}
-		try {
-			// Geladene Services mit einem EncryptionHelper auf die bisherige Art entschlüsseln
-			EncryptionHelper encryptionHelper = new EncryptionHelper(passphrase.toCharArray(), null, null);
-			services.decrypt(encryptionHelper);
-		} catch (DomainException e) {
-			LOGGER.log(Level.SEVERE, CoreConstants.MSG_PASSPHRASE_INVALID + e);
-			System.exit(16);
-		}
+		services = fileHelper.loadServiceInfoList(servicesFile, null);
+		// FIXME dkn Diese Prüfungen nach PswGenCore verschoben, Upgrade automatisch
+		// if (services == null || services.isNew()) {
+		// String message = getGuiText("EmptyFileNotUpgradableMsg");
+		// JOptionPane.showMessageDialog(null, message, DesktopConstants.APPLICATION_NAME,
+		// JOptionPane.ERROR_MESSAGE);
+		// LOGGER.log(Level.SEVERE, message);
+		// System.exit(16);
+		// } else if (services.isUnsupportedFormat()) {
+		// String message = getGuiText("UnsupportedFileFormatMsg");
+		// JOptionPane.showMessageDialog(null, message, DesktopConstants.APPLICATION_NAME,
+		// JOptionPane.ERROR_MESSAGE);
+		// LOGGER.log(Level.SEVERE, message);
+		// System.exit(16);
+		// } else if (services.isAdvancedFormat()) { // Schon im neuen Format? => nichts zu tun
+		// String message = getGuiText("FileFormatAlreadyConvertedMsg");
+		// JOptionPane.showMessageDialog(null, message, DesktopConstants.APPLICATION_NAME,
+		// JOptionPane.ERROR_MESSAGE);
+		// LOGGER.log(Level.SEVERE, message);
+		// System.exit(16);
+		// } else if (services.isMerged() && !services.isUnsupportedMergedFormat()) {
+		// String message = getGuiText("MergeFileFormatMustBeConvertedMsg");
+		// JOptionPane.showMessageDialog(null, message, DesktopConstants.APPLICATION_NAME,
+		// JOptionPane.ERROR_MESSAGE);
+		// LOGGER.log(Level.SEVERE, message);
+		// System.exit(16);
+		// }
 		// Alte Datei zur Sicherheit durch Umbenennen aufbewahren
 		Files.move(servicesFile.toPath(), (new File(servicesFile.getPath() + ".upgraded")).toPath());
-		// Service in eine neue Datei mit neuer Verschlüsselungsart speichern
-		saveServiceInfoList(passphrase);
+		// Services in eine neue Datei im neuen Format (mit Timestamp je Service) speichern
+		fileHelper.saveServiceInfoList(servicesFile, services);
 		JOptionPane.showMessageDialog(null, getGuiText("FileFormatSuccessfullyConvertedMsg"),
 				DesktopConstants.APPLICATION_NAME, JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	/**
-	 * Lädt die Dienstedatei, fragt die Passphrase ab und öffnet das Hauptfenster. Die Anwendung endet nach
+	 * Fragt die aktuelle und ggf. alte Passphrase ab und öffnet das Hauptfenster. Die Anwendung endet nach
 	 * dieser Methode nicht, das Beenden geschieht über die Oberfläche.
 	 */
 	public void start() {
-		FileHelper fileHelper = FileHelper.getInstance(new CommonJsonReaderWriterFactoryGsonImpl());
-		services = fileHelper.loadServiceInfoList(servicesFile);
-		if (services == null) {
-			// Datei ist nicht (als JSON) lesbar
-			String message = getGuiText("UnknownFileFormatMsg");
-			JOptionPane.showMessageDialog(null, message, DesktopConstants.APPLICATION_NAME,
-					JOptionPane.ERROR_MESSAGE);
-			LOGGER.log(Level.SEVERE, message);
-			System.exit(20);
-		} else if (services.isNew()) {
-			// Ein frischer Anfang, beim Speichern wird eine neue Datei angelegt werden
-		} else if (services.isUnsupportedFormat()) {
-			// Dateiformat wird nicht mehr unterstützt und muss mit einer alten Version konvertiert werden
-			String message = getGuiText("UnsupportedFileFormatMsg");
-			JOptionPane.showMessageDialog(null, message, DesktopConstants.APPLICATION_NAME,
-					JOptionPane.ERROR_MESSAGE);
-			LOGGER.log(Level.SEVERE, message);
-			System.exit(16);
-		} else if (services.isAdvancedFormat()) {
-			// Datei hat das aktuelle Format, es ist nichts weiter zu tun
-		} else {
-			// Datei hat ein altes Format und muss erst mit -upgrade konvertiert werden
-			String message = getGuiText("FileFormatMustBeConvertedMsg");
-			JOptionPane.showMessageDialog(null, message, DesktopConstants.APPLICATION_NAME,
-					JOptionPane.ERROR_MESSAGE);
-			LOGGER.log(Level.SEVERE, message);
-			System.exit(16);
-		}
+		// FIXME dkn Diese Prüfungen nach PswGenCore verschoben, Upgrade automatisch
+		// if (services == null) {
+		// // Datei ist nicht (als JSON) lesbar
+		// String message = getGuiText("UnknownFileFormatMsg");
+		// JOptionPane.showMessageDialog(null, message, DesktopConstants.APPLICATION_NAME,
+		// JOptionPane.ERROR_MESSAGE);
+		// LOGGER.log(Level.SEVERE, message);
+		// System.exit(20);
+		// } else if (services.isUnsupportedFormat()) {
+		// // Dateiformat wird nicht mehr unterstützt und muss mit einer alten Version konvertiert werden
+		// String message = getGuiText("UnsupportedFileFormatMsg");
+		// JOptionPane.showMessageDialog(null, message, DesktopConstants.APPLICATION_NAME,
+		// JOptionPane.ERROR_MESSAGE);
+		// LOGGER.log(Level.SEVERE, message);
+		// System.exit(16);
+		// } else if (!services.isAdvancedFormat()) {
+		// // Datei hat ein altes Format und muss erst mit -upgrade konvertiert werden
+		// String message = getGuiText("FileFormatMustBeConvertedMsg");
+		// JOptionPane.showMessageDialog(null, message, DesktopConstants.APPLICATION_NAME,
+		// JOptionPane.ERROR_MESSAGE);
+		// LOGGER.log(Level.SEVERE, message);
+		// System.exit(16);
+		// } else if (services.isMerged() && services.isUnsupportedMergedFormat()) {
+		// String message = getGuiText("MergeFileFormatMustBeConvertedMsg");
+		// JOptionPane.showMessageDialog(null, message, DesktopConstants.APPLICATION_NAME,
+		// JOptionPane.ERROR_MESSAGE);
+		// LOGGER.log(Level.SEVERE, message);
+		// System.exit(16);
+		// }
 		StartupDialog startupDialog = new StartupDialog(this);
 		startupDialog.setTitle(DesktopConstants.APPLICATION_NAME + " " + CoreConstants.APPLICATION_VERSION);
-		if (!services.isNew()) { // Keine neue Datei?
+		if (servicesFile.exists()) { // Datei bereits vorhanden?
 			startupDialog.disablePassphraseRepeated(); // Passphrase nur 1x eingeben!
 		}
-		startupDialog.setContainsServiceWithOldPassphrase(services.containsServiceWithOldPassphrase());
 		addWindow(startupDialog);
 		startupDialog.pack();
 		startupDialog.setVisible(true);
@@ -196,7 +199,8 @@ public class PswGenCtl extends BaseCtl {
 	 */
 	public void actionPerformedOpenServices(final StartupDialog startupDialog) {
 		try {
-			validatedPassphrase = validatePassphraseAndDecryptServices(startupDialog);
+			validatedPassphrase = validatePassphrase(startupDialog);
+			loadServices();
 			oldPassphrase = validateOldPassphrase(startupDialog);
 			startupDialog.dispose();
 			MainView mainView = new MainView(this);
@@ -220,7 +224,8 @@ public class PswGenCtl extends BaseCtl {
 	 */
 	public void actionPerformedChangePassphrase(final StartupDialog startupDialog) {
 		try {
-			validatedPassphrase = validatePassphraseAndDecryptServices(startupDialog);
+			validatedPassphrase = validatePassphrase(startupDialog);
+			loadServices();
 			startupDialog.dispose();
 			ChangePassphraseDialog changePassphraseDialog = new ChangePassphraseDialog(this);
 			changePassphraseDialog
@@ -236,15 +241,16 @@ public class PswGenCtl extends BaseCtl {
 	}
 
 	/**
-	 * speichert sie ggf. unter einer neu einzugebenden Passphrase wieder ab und beendet die Anwendung
-	 * anschließend Speichert alle Dienste (mit der neuen Passphrase).
+	 * Speichert die Liste der Dienste ggf. unter einer neu einzugebenden Passphrase wieder ab und startet die
+	 * Anwendung anschließend praktisch neu.
 	 */
 	public void actionPerformedStoreServices(final ChangePassphraseDialog changePassphraseDialog) {
 		try {
+			// FIXME dkn Es darf kein Dienst mehr mit alten Passwort existieren, dass war vorher in der GUI
 			validatedPassphrase = validateNewPassphrase(changePassphraseDialog);
 			changePassphraseDialog.dispose();
 			// Services, bei denen das Passwort generiert wird, auf UseOldPassphrase setzen
-			for (ServiceInfo si : services.getServices()) {
+			for (ServiceInfo si : services.getServices(false)) {
 				if (EmptyHelper.isEmpty(si.getPassword())) {
 					si.setUseOldPassphrase(true); // Passwort ab sofort mit der alten Passphrase erzeugen
 				}
@@ -563,26 +569,32 @@ public class PswGenCtl extends BaseCtl {
 	}
 
 	/**
-	 * Prüft die Eingabewerte der Passphrase, entschlüsselt die Services und gibt die Passphrase zurück oder
-	 * wirft eine Exception.
+	 * Prüft die Eingabewerte der Passphrase und gibt die Passphrase zurück oder wirft eine Exception.
 	 */
-	private String validatePassphraseAndDecryptServices(final StartupDialog startupDialog) {
+	private String validatePassphrase(final StartupDialog startupDialog) {
 		final String passphrase = startupDialog.getPassphrase();
 		final String passphraseRepeated = startupDialog.getPassphraseRepeated();
 		if (EmptyHelper.isEmpty(passphrase)) {
 			throw new DomainException("PassphraseEmptyMsg");
 		}
-		if (services.isNew()) {
-			// Bei einer neuen Daten wird geprüft, ob die Passphrase zweimal gleich eingegeben wurde
+		if (!servicesFile.exists()) { // Datei (noch) nicht vorhanden?
+			// Bei einer neuen Datei wird geprüft, ob die Passphrase zweimal gleich eingegeben wurde
 			if (!passphrase.equals(passphraseRepeated)) { // Mismatch?
 				throw new DomainException("PassphraseMismatchMsg");
 			}
-		} else {
-			EncryptionHelper encryptionHelper = new EncryptionHelper(passphrase.toCharArray(),
-					services.getSaltAsHexString(), services.getInitializerAsHexString());
-			services.decrypt(encryptionHelper); // Info-Collection entschlüsselt in Map stellen
 		}
 		return passphrase;
+	}
+
+	/**
+	 * Lädt und entschlüsselt die Dienste.
+	 */
+	private void loadServices() {
+		FileHelper fileHelper = FileHelper.getInstance(new CommonJsonReaderWriterFactoryGsonImpl());
+		services = fileHelper.loadServiceInfoList(servicesFile, validatedPassphrase);
+		ServiceInfoList otherServices = fileHelper.loadServiceInfoList(otherServicesFile,
+				validatedPassphrase);
+		services.merge(otherServices);
 	}
 
 	/**
@@ -591,7 +603,7 @@ public class PswGenCtl extends BaseCtl {
 	 */
 	private String validateOldPassphrase(final StartupDialog startupDialog) {
 		final String oldPassphrase = startupDialog.getOldPassphrase();
-		if (startupDialog.isContainsServiceWithOldPassphrase()) {
+		if (services.containsServiceWithOldPassphrase()) {
 			if (EmptyHelper.isEmpty(oldPassphrase)) {
 				throw new DomainException("OldPassphraseEmptyMsg");
 			}
@@ -700,7 +712,10 @@ public class PswGenCtl extends BaseCtl {
 				return;
 			}
 		}
-		services.putServiceInfo(getServiceFromView(mainView));
+		ServiceInfo si = getServiceFromView(mainView);
+		si.setDeleted(false);
+		si.resetTimeMillis();
+		services.putServiceInfo(si);
 		saveServiceInfoList(validatedPassphrase);
 		mainView.setDirty(false);
 		mainView.updateStoredServices();

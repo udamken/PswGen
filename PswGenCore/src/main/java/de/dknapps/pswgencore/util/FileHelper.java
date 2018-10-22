@@ -70,38 +70,23 @@ public class FileHelper {
 	}
 
 	/**
-	 * Lädt alle Diensteinformationen.
+	 * Lädt die Liste aller Dienste aus der angegebenen Datei und entschlüsselt sie. Wenn die Datei (noch)
+	 * nicht existiert, wird eine leere Diensteliste zurückgegeben.
 	 */
-	public ServiceInfoList loadServiceInfoList(File servicesFile) {
+	public ServiceInfoList loadServiceInfoList(File servicesFile, String passphrase) {
 		ServiceInfoList services = null;
 		try {
 			if (servicesFile.exists()) {
 				FileInputStream in = new FileInputStream(servicesFile);
-				services = loadServiceInfoList(in);
+				services = readJsonStream(in);
+				EncryptionHelper encryptionHelper = new EncryptionHelper(passphrase.toCharArray(),
+						services.getSaltAsHexString(), services.getInitializerAsHexString());
+				services.decrypt(encryptionHelper); // Info-Collection entschlüsselt in Map stellen
 			} else {
 				services = new ServiceInfoList(); // später wird eine neue Datei erzeugt
 			}
 		} catch (IOException e) {
 			LOGGER.log(Level.WARNING, CoreConstants.MSG_EXCP_SERVICES, e);
-		}
-		return services;
-	}
-
-	/**
-	 * Lädt alle Diensteinformationen.
-	 */
-	public ServiceInfoList loadServiceInfoList(FileInputStream in) {
-		ServiceInfoList services = null;
-		try {
-			services = readJsonStream(in);
-		} catch (IOException e) {
-			LOGGER.log(Level.WARNING, CoreConstants.MSG_EXCP_SERVICES, e);
-		} finally {
-			try {
-				in.close();
-			} catch (IOException e) {
-				LOGGER.log(Level.WARNING, CoreConstants.MSG_EXCP_SERVICES, e);
-			}
 		}
 		return services;
 	}
@@ -117,13 +102,10 @@ public class FileHelper {
 			checkJsonName(reader, "verifier");
 			services.setEncryptedVerifier(reader.nextString());
 			addReadServices(services, reader);
-			if (!reader.peekReturnsEndObject()) {
-				// Erst ab 1.7.4 gibt es salt und initializer, daher ist beides optional
-				checkJsonName(reader, "salt");
-				services.setSaltAsHexString(reader.nextString());
-				checkJsonName(reader, "initializer");
-				services.setInitializerAsHexString(reader.nextString());
-			}
+			checkJsonName(reader, "salt");
+			services.setSaltAsHexString(reader.nextString());
+			checkJsonName(reader, "initializer");
+			services.setInitializerAsHexString(reader.nextString());
 			reader.endObject();
 		} finally {
 			reader.close();
@@ -194,11 +176,21 @@ public class FileHelper {
 		checkJsonName(reader, "passwordRepeated");
 		si.setPasswordRepeated(reader.nextString());
 		if (reader.peekReturnsEndObject()) {
-			// useOldPassphrase ist optional und per Default false
 			si.setUseOldPassphrase(false);
 		} else {
+			// Ab 1.8.0 optional ohne ein neues Dateiformat zu begründen
 			checkJsonName(reader, "useOldPassphrase");
 			si.setUseOldPassphrase(reader.nextBoolean());
+		}
+		if (reader.peekReturnsEndObject()) {
+			si.setDeleted(false);
+			si.resetTimeMillis();
+		} else {
+			// Erst ab 2.0.0 gibt es deleted und timeMillis, daher ist beides optional
+			checkJsonName(reader, "deleted");
+			si.setDeleted(reader.nextBoolean());
+			checkJsonName(reader, "timeMillis");
+			si.setTimeMillis(reader.nextString());
 		}
 		reader.endObject();
 		return si;
@@ -286,6 +278,8 @@ public class FileHelper {
 		writer.name("password").value(si.getPassword());
 		writer.name("passwordRepeated").value(si.getPasswordRepeated());
 		writer.name("useOldPassphrase").value(si.isUseOldPassphrase());
+		writer.name("deleted").value(si.isDeleted());
+		writer.name("timeMillis").value(si.getTimeMillis());
 		writer.endObject();
 	}
 

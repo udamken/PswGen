@@ -79,6 +79,10 @@ public class ServiceInfo {
 
 	private boolean useOldPassphrase;
 
+	private boolean deleted;
+
+	private String timeMillis;
+
 	public ServiceInfo() {
 	}
 
@@ -131,8 +135,22 @@ public class ServiceInfo {
 		result = prime * result + (useDigits ? 1231 : 1237);
 		result = prime * result + (useSmallLetters ? 1231 : 1237);
 		result = prime * result + (useSpecialCharacters ? 1231 : 1237);
-		// result ohne useOldPassphrase, so wird kein neues Dateiformat und kein Upgrade benötigt
+		// Ohne useOldPassphrase, deleted und timeMillis, um eine Migration des Hashcodes zu vermeiden
 		return result;
+	}
+
+	/**
+	 * Gibt true zurück, wenn der Timestamp für diese Diensteinformation älter ist als die der anderen.
+	 */
+	public boolean olderThan(ServiceInfo otherSi) {
+		return Long.parseLong(timeMillis) < Long.parseLong(otherSi.timeMillis);
+	}
+
+	/**
+	 * Setzt den Timestamp auf den aktuellen Systemwert.
+	 */
+	public void resetTimeMillis() {
+		this.timeMillis = String.valueOf(System.currentTimeMillis());
 	}
 
 	/**
@@ -345,6 +363,22 @@ public class ServiceInfo {
 
 	public void setUseOldPassphrase(boolean useOldPassphrase) {
 		this.useOldPassphrase = useOldPassphrase;
+	}
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
+
+	public String getTimeMillis() {
+		return timeMillis;
+	}
+
+	public void setTimeMillis(String timeMillis) {
+		this.timeMillis = timeMillis;
 	}
 
 }

@@ -174,21 +174,6 @@ public class StartupDialog extends BaseDialog {
 		passphraseRepeated.setEnabled(false);
 	}
 
-	/**
-	 * Liefert true, wenn die Eingabe der alten Passphrase möglich ist.
-	 */
-	public boolean isContainsServiceWithOldPassphrase() {
-		return oldPassphrase.isEnabled();
-	}
-
-	/**
-	 * Sperrt oder ermöglicht die Eingabe der alten Passphrase und den Button zur Änderung der Passphrase.
-	 */
-	public void setContainsServiceWithOldPassphrase(boolean containsServicesWithOldPassphrase) {
-		oldPassphrase.setEnabled(containsServicesWithOldPassphrase);
-		buttonChangePassphrase.setEnabled(!containsServicesWithOldPassphrase);
-	}
-
 	public String getPassphrase() {
 		return new String(passphrase.getPassword());
 	}

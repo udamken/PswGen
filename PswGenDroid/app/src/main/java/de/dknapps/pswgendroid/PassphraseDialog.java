@@ -18,6 +18,7 @@
  *******************************************************************************/
 package de.dknapps.pswgendroid;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.text.MessageFormat;
@@ -122,7 +123,7 @@ public class PassphraseDialog extends DialogFragment {
 								getString(R.string.preferences_filename), Context.MODE_PRIVATE);
 						String filepath = prefs.getString(getString(R.string.preference_filepath), null);
 						try {
-							FileInputStream input = new FileInputStream(filepath);
+							File input = new File(filepath);
 							String passphrase = editTextPassphrase.getText().toString();
 							String oldPassphrase = editTextOldPassphrase.getText().toString();
 							PswGenAdapter.loadServiceInfoList(input, passphrase, oldPassphrase);

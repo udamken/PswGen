@@ -26,7 +26,6 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
-import javax.crypto.spec.PBEParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import de.dknapps.pswgencore.CoreConstants;
@@ -114,10 +113,6 @@ public class EncryptionHelper {
 	public EncryptionHelper(final char[] passphrase, final String saltAsHexString,
 			final String initializerAsHexString) {
 		try {
-			if (saltAsHexString == null && initializerAsHexString == null) {
-				initAsPreviouEncryptionHelper(passphrase);
-				return;
-			}
 			salt = EncryptionHelper.toByteArray(saltAsHexString);
 			initializer = EncryptionHelper.toByteArray(initializerAsHexString);
 			KeySpec keySpec = new PBEKeySpec(passphrase, salt, KEY_ITERATION_COUNT, KEY_LENGTH);
@@ -132,19 +127,6 @@ public class EncryptionHelper {
 							+ e.getMessage(),
 					e);
 		}
-	}
-
-	/**
-	 * @deprecated Liefert einen EncryptionHelper für die bisherige Entschlüsselung
-	 */
-	public void initAsPreviouEncryptionHelper(final char[] passphrase) throws Exception {
-		PBEKeySpec keySpec = new PBEKeySpec(passphrase);
-		SecretKeyFactory secretKeyFactory = SecretKeyFactory.getInstance(PREVIOUS_ENCRYPTION_ALGORITHM);
-		SecretKey secretKey = secretKeyFactory.generateSecret(keySpec);
-		PBEParameterSpec pbeParamSpec = new PBEParameterSpec(PREVIOUS_ENCRYPTION_SALT,
-				PREVIOUS_KEY_ITERATION_COUNT);
-		cipher = Cipher.getInstance(PREVIOUS_ENCRYPTION_ALGORITHM);
-		cipher.init(Cipher.DECRYPT_MODE, secretKey, pbeParamSpec);
 	}
 
 	/**

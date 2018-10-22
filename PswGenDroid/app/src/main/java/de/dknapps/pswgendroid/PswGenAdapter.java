@@ -18,6 +18,7 @@
  *******************************************************************************/
 package de.dknapps.pswgendroid;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +61,7 @@ public class PswGenAdapter {
 	 * Dienste aus der übergebenen Datei laden, die Pasphrase prüfen und mit der alten Passphrase für die weitere Benutzung
 	 * aufbewahren.
 	 */
-	public static void loadServiceInfoList(FileInputStream in, String passphrase, String oldPassphrase) {
+	public static void loadServiceInfoList(File in, String passphrase, String oldPassphrase) {
 		FileHelper fileHelper = FileHelper.getInstance(new CommonJsonReaderWriterFactoryAndroidImpl());
 		services = fileHelper.loadServiceInfoList(in);
 		if (services == null) {

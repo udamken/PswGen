@@ -2,7 +2,7 @@
  * PswGenDesktop - Manages your websites and repeatably generates passwords for them
  * PswGenDroid - Generates your passwords managed by PswGenDesktop on your mobile  
  *
- *     Copyright (C) 2005-2017 Uwe Damken
+ *     Copyright (C) 2005-2018 Uwe Damken
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,19 +29,17 @@ import java.util.Locale;
  */
 public class CoreConstants {
 
-	/** Die Version aller Teile von PswGen, ab der ein HashCode statt Verifizierungs-String benutzt wird */
-	public static final String NEWEST_FILE_FORMAT_VERSION = "1.7.8";
+	/** Die Version von PswGen, ab der das neueste Dateiformat erzeugt wird (zum Mischen mehrerer Dateien) */
+	public static final String NEWEST_FILE_FORMAT_VERSION = "2.0.0";
 
-	/** Die Version aller Teile von PswGen, ab der ein neues Dateiformat benutzt wird */
-	public static final String ADVANCED_FILE_FORMAT_VERSION = "1.7.4";
+	/** Die Version von PswGen, ab der ein neues Dateiformat benutzt wird (zum Mischen mehrerer Dateien) */
+	public static final String ADVANCED_FILE_FORMAT_VERSION = "2.0.0";
 
-	/** Die Version aller Teile von PswGen, ab der das Dateiformat (mit Upgrade) unterstützt wird */
-	public static final String LOWEST_SUPPORTED_FILE_FORMAT_VERSION = "1.7.0";
+	/** Die älteste Version von PswGen, deren Dateiformat (mit Upgrade) unterstützt wird */
+	public static final String LOWEST_SUPPORTED_FILE_FORMAT_VERSION = "1.7.8";
 
-	/** Verifizierungsstring zur Überprüfung der Passphrase */
-	// FIXME dkn Der Verifier entfällt zu Gunsten zweier Hashes (alt und aktuell)!
-	public static final String APPLICATION_VERIFIER = "PswGenDesktop - Manages your websites and repeatably generates passwords for them, Copy"
-			+ "right (C) Uwe Damken"; // String splitted "against" Eclipse Releng
+	/** Die älteste Version von PswGen, deren Dateiformat beim Hinzumischen unterstützt wird */
+	public static final String LOWEST_SUPPORTED_MERGE_FILE_FORMAT_VERSION = "2.0.0";
 
 	/** Die Version aller Teile von PswGen */
 	public static final String APPLICATION_VERSION = "2.0.0";
