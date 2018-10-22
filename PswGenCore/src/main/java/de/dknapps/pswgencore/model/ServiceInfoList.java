@@ -23,9 +23,7 @@ import java.util.Collection;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import de.dknapps.pswgencore.CoreConstants;
 import de.dknapps.pswgencore.util.DomainException;
-import de.dknapps.pswgencore.util.EmptyHelper;
 import de.dknapps.pswgencore.util.EncryptionHelper;
 
 /**
@@ -212,7 +210,7 @@ public class ServiceInfoList {
 		}
 		// Zur Überprüfung der Passphrase wird der hashCode() der Services-Map nach dem Entschlüsseln mit dem
 		// hashCode() verglichen, der vor dem Verschlüsseln ermittelt wurde.
-		if (isNewestFormat() && !verifier.equals(String.valueOf(services.hashCode()))) {
+		if (!verifier.equals(String.valueOf(services.hashCode()))) {
 			throw new DomainException("PassphraseInvalidMsg");
 		}
 	}
@@ -227,34 +225,6 @@ public class ServiceInfoList {
 			}
 		}
 		return false;
-	}
-
-	/**
-	 * Liefert true, wenn die Version gesetzt und größer oder gleich der neuesten Dateiformatsversion
-	 * (NEWEST_FILE_FORMAT_VERSION) ist und außerdem der Prüfstring auf einen nicht leeren Wert gesetzt ist.
-	 */
-	public boolean isNewestFormat() {
-		return version != null && version.compareTo(CoreConstants.NEWEST_FILE_FORMAT_VERSION) >= 0
-				&& !EmptyHelper.isEmpty(verifier);
-	}
-
-	/**
-	 * Liefert true, wenn die Version gesetzt und größer oder gleich der aktuellen Dateiformatsversion
-	 * (ADVANCED_FILE_FORMAT_VERSION) ist und außerdem der Prüfstring auf einen nicht leeren Wert gesetzt ist.
-	 */
-	public boolean isAdvancedFormat() {
-		return version != null && version.compareTo(CoreConstants.ADVANCED_FILE_FORMAT_VERSION) >= 0
-				&& !EmptyHelper.isEmpty(verifier);
-	}
-
-	/**
-	 * Liefert true, wenn die Version leer oder kleiner als die niedrigste (ggf. mit Upgrade) unterstützte
-	 * Dateiformatsversion (LOWEST_SUPPORTED_FILE_FORMAT_VERSION) ist oder der Prüfstring fehlt, aber die
-	 * Datei nicht leer ist.
-	 */
-	public boolean isUnsupportedFormat() {
-		return version == null || version.compareTo(CoreConstants.LOWEST_SUPPORTED_FILE_FORMAT_VERSION) < 0
-				|| EmptyHelper.isEmpty(verifier);
 	}
 
 	/**

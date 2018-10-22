@@ -88,79 +88,10 @@ public class PswGenCtl extends BaseCtl {
 	}
 
 	/**
-	 * Datei lediglich in das neue Format konvertieren, dann endet die Anwendung.
-	 */
-	public void upgradeServiceInfoList(final String passphrase) throws IOException {
-		FileHelper fileHelper = FileHelper.getInstance(new CommonJsonReaderWriterFactoryGsonImpl());
-		services = fileHelper.loadServiceInfoList(servicesFile, null);
-		// FIXME dkn Diese Prüfungen nach PswGenCore verschoben, Upgrade automatisch
-		// if (services == null || services.isNew()) {
-		// String message = getGuiText("EmptyFileNotUpgradableMsg");
-		// JOptionPane.showMessageDialog(null, message, DesktopConstants.APPLICATION_NAME,
-		// JOptionPane.ERROR_MESSAGE);
-		// LOGGER.log(Level.SEVERE, message);
-		// System.exit(16);
-		// } else if (services.isUnsupportedFormat()) {
-		// String message = getGuiText("UnsupportedFileFormatMsg");
-		// JOptionPane.showMessageDialog(null, message, DesktopConstants.APPLICATION_NAME,
-		// JOptionPane.ERROR_MESSAGE);
-		// LOGGER.log(Level.SEVERE, message);
-		// System.exit(16);
-		// } else if (services.isAdvancedFormat()) { // Schon im neuen Format? => nichts zu tun
-		// String message = getGuiText("FileFormatAlreadyConvertedMsg");
-		// JOptionPane.showMessageDialog(null, message, DesktopConstants.APPLICATION_NAME,
-		// JOptionPane.ERROR_MESSAGE);
-		// LOGGER.log(Level.SEVERE, message);
-		// System.exit(16);
-		// } else if (services.isMerged() && !services.isUnsupportedMergedFormat()) {
-		// String message = getGuiText("MergeFileFormatMustBeConvertedMsg");
-		// JOptionPane.showMessageDialog(null, message, DesktopConstants.APPLICATION_NAME,
-		// JOptionPane.ERROR_MESSAGE);
-		// LOGGER.log(Level.SEVERE, message);
-		// System.exit(16);
-		// }
-		// Alte Datei zur Sicherheit durch Umbenennen aufbewahren
-		Files.move(servicesFile.toPath(), (new File(servicesFile.getPath() + ".upgraded")).toPath());
-		// Services in eine neue Datei im neuen Format (mit Timestamp je Service) speichern
-		fileHelper.saveServiceInfoList(servicesFile, services);
-		JOptionPane.showMessageDialog(null, getGuiText("FileFormatSuccessfullyConvertedMsg"),
-				DesktopConstants.APPLICATION_NAME, JOptionPane.INFORMATION_MESSAGE);
-	}
-
-	/**
 	 * Fragt die aktuelle und ggf. alte Passphrase ab und öffnet das Hauptfenster. Die Anwendung endet nach
 	 * dieser Methode nicht, das Beenden geschieht über die Oberfläche.
 	 */
 	public void start() {
-		// FIXME dkn Diese Prüfungen nach PswGenCore verschoben, Upgrade automatisch
-		// if (services == null) {
-		// // Datei ist nicht (als JSON) lesbar
-		// String message = getGuiText("UnknownFileFormatMsg");
-		// JOptionPane.showMessageDialog(null, message, DesktopConstants.APPLICATION_NAME,
-		// JOptionPane.ERROR_MESSAGE);
-		// LOGGER.log(Level.SEVERE, message);
-		// System.exit(20);
-		// } else if (services.isUnsupportedFormat()) {
-		// // Dateiformat wird nicht mehr unterstützt und muss mit einer alten Version konvertiert werden
-		// String message = getGuiText("UnsupportedFileFormatMsg");
-		// JOptionPane.showMessageDialog(null, message, DesktopConstants.APPLICATION_NAME,
-		// JOptionPane.ERROR_MESSAGE);
-		// LOGGER.log(Level.SEVERE, message);
-		// System.exit(16);
-		// } else if (!services.isAdvancedFormat()) {
-		// // Datei hat ein altes Format und muss erst mit -upgrade konvertiert werden
-		// String message = getGuiText("FileFormatMustBeConvertedMsg");
-		// JOptionPane.showMessageDialog(null, message, DesktopConstants.APPLICATION_NAME,
-		// JOptionPane.ERROR_MESSAGE);
-		// LOGGER.log(Level.SEVERE, message);
-		// System.exit(16);
-		// } else if (services.isMerged() && services.isUnsupportedMergedFormat()) {
-		// String message = getGuiText("MergeFileFormatMustBeConvertedMsg");
-		// JOptionPane.showMessageDialog(null, message, DesktopConstants.APPLICATION_NAME,
-		// JOptionPane.ERROR_MESSAGE);
-		// LOGGER.log(Level.SEVERE, message);
-		// System.exit(16);
-		// }
 		StartupDialog startupDialog = new StartupDialog(this);
 		startupDialog.setTitle(DesktopConstants.APPLICATION_NAME + " " + CoreConstants.APPLICATION_VERSION);
 		if (servicesFile.exists()) { // Datei bereits vorhanden?

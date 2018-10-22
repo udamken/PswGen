@@ -46,14 +46,9 @@ public class PswGenDesktop {
 		@SuppressWarnings("static-access")
 		Option other = OptionBuilder.withArgName("file").hasArg()
 				.withDescription("use given file to merge with services file").create("other");
-		@SuppressWarnings("static-access")
-		Option upgrade = OptionBuilder.withArgName("passphrase").hasArg()
-				.withDescription("converts and re-encrypts services to new format if not too old")
-				.create("upgrade");
 		options.addOption(help);
 		options.addOption(services);
 		options.addOption(other);
-		options.addOption(upgrade);
 		CommandLineParser parser = new GnuParser(); // GnuParser => mehrbuchstabige Optionen
 		CommandLine line = null;
 		try {
@@ -64,13 +59,6 @@ public class PswGenDesktop {
 		if (line == null || line.hasOption("help")) { // Hilfe ausgeben => nur das tun
 			HelpFormatter formatter = new HelpFormatter();
 			formatter.printHelp("pswgen", options);
-		} else if (line.hasOption("upgrade") && line.hasOption("other")) {
-			System.err.println("Options are mutually exclusive: other, update");
-		} else if (line.hasOption("upgrade")) { // Datei umformatieren => nur das tun
-			String servicesFilename = line.getOptionValue("services", CoreConstants.SERVICES_FILENAME);
-			String passphrase = line.getOptionValue("upgrade");
-			PswGenCtl ctl = new PswGenCtl(servicesFilename, null);
-			ctl.upgradeServiceInfoList(passphrase);
 		} else {
 			String servicesFilename = line.getOptionValue("services", CoreConstants.SERVICES_FILENAME);
 			String otherServicesFilename = line.getOptionValue("other");

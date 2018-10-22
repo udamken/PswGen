@@ -32,14 +32,8 @@ public class CoreConstants {
 	/** Die Version von PswGen, ab der das neueste Dateiformat erzeugt wird (zum Mischen mehrerer Dateien) */
 	public static final String NEWEST_FILE_FORMAT_VERSION = "2.0.0";
 
-	/** Die Version von PswGen, ab der ein neues Dateiformat benutzt wird (zum Mischen mehrerer Dateien) */
-	public static final String ADVANCED_FILE_FORMAT_VERSION = "2.0.0";
-
 	/** Die älteste Version von PswGen, deren Dateiformat (mit Upgrade) unterstützt wird */
 	public static final String LOWEST_SUPPORTED_FILE_FORMAT_VERSION = "1.7.8";
-
-	/** Die älteste Version von PswGen, deren Dateiformat beim Hinzumischen unterstützt wird */
-	public static final String LOWEST_SUPPORTED_MERGE_FILE_FORMAT_VERSION = "2.0.0";
 
 	/** Die Version aller Teile von PswGen */
 	public static final String APPLICATION_VERSION = "2.0.0";

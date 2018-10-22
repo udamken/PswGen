@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.nio.file.Files;
 import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -71,24 +72,45 @@ public class FileHelper {
 
 	/**
 	 * Lädt die Liste aller Dienste aus der angegebenen Datei und entschlüsselt sie. Wenn die Datei (noch)
-	 * nicht existiert, wird eine leere Diensteliste zurückgegeben.
+	 * nicht existiert, wird eine leere Diensteliste zurückgegeben. Wenn die Datei in einem nicht mehr
+	 * unterstützten Format vorliegt, wird eine DomainException geworfen. Bei einer älteren, aber noch
+	 * lesbaren Version, wird die alte Datei umbenannt und die Dienste werden im neuen Format gespeichert.
 	 */
 	public ServiceInfoList loadServiceInfoList(File servicesFile, String passphrase) {
-		ServiceInfoList services = null;
 		try {
-			if (servicesFile.exists()) {
-				FileInputStream in = new FileInputStream(servicesFile);
-				services = readJsonStream(in);
-				EncryptionHelper encryptionHelper = new EncryptionHelper(passphrase.toCharArray(),
-						services.getSaltAsHexString(), services.getInitializerAsHexString());
-				services.decrypt(encryptionHelper); // Info-Collection entschlüsselt in Map stellen
-			} else {
-				services = new ServiceInfoList(); // später wird eine neue Datei erzeugt
+
+			// Leere Diensteliste zurückgegeben, wenn die Datei (noch) nicht existiert
+			if (servicesFile == null || !servicesFile.exists()) {
+				return new ServiceInfoList();
 			}
+
+			// JSON-Inhalte aus er Datei einlesen, bei veralteten Versionen wird eine Exception geworfen
+			FileInputStream in = new FileInputStream(servicesFile);
+			ServiceInfoList services = readJsonStream(in);
+
+			// Datei konvertieren, wenn die Version nicht aktuell ist, aber noch untersützt wird
+			if (services.getVersion().compareTo(CoreConstants.NEWEST_FILE_FORMAT_VERSION) < 0) {
+
+				// Alte Datei zur Sicherheit durch Umbenennen aufbewahren
+				Files.move(servicesFile.toPath(), (new File(servicesFile.getPath() + ".upgraded")).toPath());
+
+				// Services in eine neue Datei im neuen Format (mit Timestamp je Service) speichern
+				saveServiceInfoList(servicesFile, services);
+
+				// Die frisch geschriebene Datei erneut einlesen und das Ergebnis davon zurückgeben
+				return loadServiceInfoList(servicesFile, passphrase);
+			}
+
+			// Zum Abschluss alles entschlüsselt von der Liste in eine Map übertragen
+			EncryptionHelper encryptionHelper = new EncryptionHelper(passphrase.toCharArray(),
+					services.getSaltAsHexString(), services.getInitializerAsHexString());
+			services.decrypt(encryptionHelper);
+			return services;
+
 		} catch (IOException e) {
 			LOGGER.log(Level.WARNING, CoreConstants.MSG_EXCP_SERVICES, e);
+			return null;
 		}
-		return services;
 	}
 
 	private ServiceInfoList readJsonStream(FileInputStream in) throws IOException {
@@ -99,9 +121,16 @@ public class FileHelper {
 			reader.beginObject();
 			checkJsonName(reader, "version");
 			services.setVersion(reader.nextString());
+
+			if (services.getVersion().compareTo(CoreConstants.LOWEST_SUPPORTED_FILE_FORMAT_VERSION) < 0) {
+				throw new DomainException("UnsupportedFileFormatMsg");
+			}
+
 			checkJsonName(reader, "verifier");
 			services.setEncryptedVerifier(reader.nextString());
+
 			addReadServices(services, reader);
+
 			checkJsonName(reader, "salt");
 			services.setSaltAsHexString(reader.nextString());
 			checkJsonName(reader, "initializer");
