@@ -4,7 +4,7 @@
     PswGenDesktop - Manages your websites and repeatably generates passwords for them
     PswGenDroid - Generates your passwords managed by PswGenDesktop on your mobile  
    
-        Copyright (C) 2005-2016 Uwe Damken
+        Copyright (C) 2005-2018 Uwe Damken
    
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -21,11 +21,7 @@
 
 <project name="Create PswGenDesktop.zip in product subdirectory" default="package" basedir=".">
 
-	<property name="launch4j.dir" location="/opt/launch4j" />
-
-	<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${launch4j.dir}/launch4j.jar:${launch4j.dir}/lib/xstream.jar" />
-
-	<target name="package" depends="loadVersion,compileNotSupported,createJar,createExe,createZip,cleanup">
+	<target name="package" depends="loadVersion,compileNotSupported,createJar,createZip,cleanup">
 		<echo message="${pswgen.version} built successfully" />
 	</target>
 
@@ -58,17 +54,15 @@
 		</jar>
 	</target>
 
-	<target name="createExe">
-		<launch4j configFile="launch4j.xml" />
-	</target>
-
 	<target name="createZip">
 		<zip destfile="product/PswGenDesktop_${pswgen.version}.zip">
 			<fileset dir="lib">
 				<include name="*.jar" />
 			</fileset>
+			<fileset dir="misc">
+				<include name="*.ico" />
+			</fileset>
 			<fileset dir="product">
-				<include name="*.exe" />
 				<include name="*.jar" />
 			</fileset>
 			<fileset dir=".">
@@ -79,7 +73,6 @@
 
 	<target name="cleanup">
 		<delete file="product/PswGenDesktop.jar" />
-		<delete file="product/PswGenDesktop.exe" />
 	</target>
 
 </project>
