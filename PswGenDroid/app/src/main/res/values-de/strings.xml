@@ -38,15 +38,12 @@
     <!-- StartupActiviy -->
 	<string name="title_startup">PswGenDroid</string>
 	<string name="label_filepath">Dateipfad</string>
+	<string name="label_other_filepath">Anderer Dateipfad</string>
 	<string name="button_open_services">Öffnen</string>
 	<string name="button_open_ime_settings">Tastatureinstellungen</string>
 	<string name="button_open_help">Hilfe</string>
 	<string name="help_url">https://github.com/udamken/PswGenDroid/wiki</string>
 	<string name="button_open_about">Über PswGenDroid</string>
-
-	<!-- Einstellungen (ohne Preferences-Dialog) -->
-	<string name="preferences_filename">preferences</string>
-	<string name="preference_filepath">filepath</string>
 
 	<!-- PassphraseDialog -->
 	<string name="title_passphrase">Dienstedatei öffnen</string>
@@ -101,8 +98,5 @@
 	<string name="OldPassphraseEmptyMsg">Die alte Passphrase ist leer.</string>
 	<string name="NewPassphraseEmptyMsg">Die neue Passphrase ist leer.</string>
 	<string name="PasswordMismatchMsg">Das Passwort weicht vom wiederholten Passwort ab.</string>
-
-	<!-- MessageFormat-Nachrichten -->
-	<string name="file_missing">&lt;{0}&gt; existiert nicht.</string>
 
 </resources>

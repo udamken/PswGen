@@ -61,7 +61,8 @@ public class PswGenDesktop {
 			formatter.printHelp("pswgen", options);
 		} else {
 			String servicesFilename = line.getOptionValue("services", CoreConstants.SERVICES_FILENAME);
-			String otherServicesFilename = line.getOptionValue("other");
+			String otherServicesFilename = line.getOptionValue("other",
+					CoreConstants.OTHER_SERVICES_FILENAME);
 			PswGenCtl ctl = new PswGenCtl(servicesFilename, otherServicesFilename);
 			ctl.start(); // Anwendung starten, PswGenCtl terminiert die VM
 		}

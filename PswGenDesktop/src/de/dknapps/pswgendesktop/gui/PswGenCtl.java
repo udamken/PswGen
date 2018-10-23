@@ -72,7 +72,7 @@ public class PswGenCtl extends BaseCtl {
 	public PswGenCtl(final String servicesFilename, final String otherServicesFilename) {
 		super();
 		servicesFile = new File(servicesFilename);
-		otherServicesFile = (otherServicesFilename == null) ? null : new File(otherServicesFilename);
+		otherServicesFile = new File(otherServicesFilename);
 		setupLookAndFeel();
 	}
 
@@ -522,10 +522,7 @@ public class PswGenCtl extends BaseCtl {
 	 */
 	private void loadServices() {
 		FileHelper fileHelper = FileHelper.getInstance(new CommonJsonReaderWriterFactoryGsonImpl());
-		services = fileHelper.loadServiceInfoList(servicesFile, validatedPassphrase);
-		ServiceInfoList otherServices = fileHelper.loadServiceInfoList(otherServicesFile,
-				validatedPassphrase);
-		services.merge(otherServices);
+		services = fileHelper.loadServiceInfoList(servicesFile, otherServicesFile, validatedPassphrase);
 	}
 
 	/**

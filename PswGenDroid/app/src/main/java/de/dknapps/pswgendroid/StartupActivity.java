@@ -39,6 +39,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
 import android.widget.EditText;
+
 import de.dknapps.pswgencore.CoreConstants;
 
 /**
@@ -49,103 +50,118 @@ import de.dknapps.pswgencore.CoreConstants;
  */
 public class StartupActivity extends Activity implements PassphraseDialog.Listener {
 
-	/** Der Logger dieser Anwendung */
-	private static final Logger LOGGER = Logger.getLogger(DroidConstants.LOGGER_NAME);
+    /**
+     * Der Logger dieser Anwendung
+     */
+    private static final Logger LOGGER = Logger.getLogger(DroidConstants.LOGGER_NAME);
 
-	/** Der BroadcastReceiver, der über SCREEN_OFF-Intents informiert wird */
-	private BroadcastReceiver screenBroadcastReceiver;
+    /**
+     * Der BroadcastReceiver, der über SCREEN_OFF-Intents informiert wird
+     */
+    private BroadcastReceiver screenBroadcastReceiver;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_startup);
-		EditText editFilepath = (EditText) findViewById(R.id.filepath);
-		// Das ist auf dem Samsung S4 mini /storage/emulated/0/Download
-		String defaultFilepath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator
-				+ "Download" + File.separator + CoreConstants.SERVICES_FILENAME;
-		SharedPreferences prefs = getSharedPreferences(getString(R.string.preferences_filename),
-				Context.MODE_PRIVATE);
-		String filepath = prefs.getString(getString(R.string.preference_filepath), defaultFilepath);
-		editFilepath.setText(filepath);
-		// Manche Intents, und so auch der SCREEN_OFF-Intent müssen im Code registriert werden, eine Angabe in
-		// AndroidManifest.xml wäre wirklungslos. Nähere Informationen dazu finden sich in folgenden Links:
-		// http://stackoverflow.com/questions/3651772/main-difference-between-manifest-and-programmatic-registering-of-broadcastreceiv
-		// http://thinkandroid.wordpress.com/2010/01/24/handling-screen-off-and-screen-on-intents/
-		// Außerdem wird die Information über diesen Intent auch nur während der Applikation benötigt!
-		IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
-		screenBroadcastReceiver = new ScreenBroadcastReceiver();
-		registerReceiver(screenBroadcastReceiver, filter);
-	}
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_startup);
 
-	@Override
-	protected void onDestroy() {
-		unregisterReceiver(screenBroadcastReceiver); // der Ordnung halber
-		super.onDestroy();
-	}
+        SharedPreferences prefs = getSharedPreferences(getString(R.string.preferences_filename), Context.MODE_PRIVATE);
 
-	/**
-	 * Fragt die Passphrase über einen Dialog ab, lädt die Dienste und verifiziert die Passphrase. Danach wird
-	 * onPassphraseDialogPositive() oder onPassphraseDialogNegative() aufgerufen.
-	 */
-	public void onClickButtonOpenServices(final View buttonOpenServices) {
-		EditText editFilepath = (EditText) findViewById(R.id.filepath);
-		String filepath = editFilepath.getText().toString();
-		// Dateipfad direkt speichern statt eines Einstellungsdialogs
-		SharedPreferences prefs = getSharedPreferences(getString(R.string.preferences_filename),
-				Context.MODE_PRIVATE);
-		SharedPreferences.Editor editor = prefs.edit();
-		editor.putString(getString(R.string.preference_filepath), filepath);
-		editor.commit();
-		// Dann den Dialog zur Passphrase-Eingabe öffnen
-		DialogFragment passphraseDialog = new PassphraseDialog();
-		passphraseDialog.show(getFragmentManager(), "passphrase_dialog");
-	}
+        EditText editFilepath = (EditText) findViewById(R.id.filepath);
+        // Das ist auf dem Samsung S4 mini /storage/emulated/0/Download
+        String defaultFilepath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator
+                + "Upload" + File.separator + CoreConstants.OTHER_SERVICES_FILENAME;
+        String filepath = prefs.getString(getString(R.string.preference_filepath), defaultFilepath);
+        editFilepath.setText(filepath);
 
-	/**
-	 * Öffnet die Einstellungen zum Aktivieren der Tastatur für das Kopieren von Anmeldeinformationen und Passwort.
-	 */
-	public void onClickButtonOpenImeSettings(final View buttonOpenImeSettings) {
-		startActivity(new Intent(android.provider.Settings.ACTION_INPUT_METHOD_SETTINGS));
-	}
+        EditText editOtherFilepath = (EditText) findViewById(R.id.otherFilepath);
+        // Das ist auf dem Samsung S4 mini /storage/emulated/0/Download
+        String defaultOtherFilepath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator
+                + "Download" + File.separator + CoreConstants.SERVICES_FILENAME;
+        String otherFilepath = prefs.getString(getString(R.string.preference_other_filepath), defaultOtherFilepath);
+        editOtherFilepath.setText(otherFilepath);
 
-		/**
-         * Öffnet die Hilfe-URL im Browser.
-         */
-	public void onClickButtonOpenHelp(final View buttonOpenHelp) {
-		try {
-			Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.help_url)));
-			startActivity(browserIntent);
-		} catch (Exception e) {
-			PswGenAdapter.handleThrowable(this, e);
-		}
-	}
+        // Manche Intents, und so auch der SCREEN_OFF-Intent müssen im Code registriert werden, eine Angabe in
+        // AndroidManifest.xml wäre wirklungslos. Nähere Informationen dazu finden sich in folgenden Links:
+        // http://stackoverflow.com/questions/3651772/main-difference-between-manifest-and-programmatic-registering-of-broadcastreceiv
+        // http://thinkandroid.wordpress.com/2010/01/24/handling-screen-off-and-screen-on-intents/
+        // Außerdem wird die Information über diesen Intent auch nur während der Applikation benötigt!
+        IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
+        screenBroadcastReceiver = new ScreenBroadcastReceiver();
+        registerReceiver(screenBroadcastReceiver, filter);
+    }
 
-	/**
-	 * Öffnet den About-Dialog.
-	 */
-	public void onClickButtonOpenAbout(final View buttonOpenAbout) {
-		try {
-			Intent aboutIntent = new Intent(this, AboutActivity.class);
-			startActivity(aboutIntent);
-		} catch (Exception e) {
-			PswGenAdapter.handleThrowable(this, e);
-		}
-	}
+    @Override
+    protected void onDestroy() {
+        unregisterReceiver(screenBroadcastReceiver); // der Ordnung halber
+        super.onDestroy();
+    }
 
-	/**
-	 * Nachdem die Diensteliste geladen wurden, zur Anzeige der Liste verzweigen.
-	 */
-	@Override
-	public void onClickPassphraseDialogButtonPositive() {
-		Intent listIntent = new Intent(this, ServiceListActivity.class);
-		startActivity(listIntent);
-	}
+    /**
+     * Fragt die Passphrase über einen Dialog ab, lädt die Dienste und verifiziert die Passphrase. Danach wird
+     * onPassphraseDialogPositive() oder onPassphraseDialogNegative() aufgerufen.
+     */
+    public void onClickButtonOpenServices(final View buttonOpenServices) {
+        EditText editFilepath = (EditText) findViewById(R.id.filepath);
+        EditText editOtherFilepath = (EditText) findViewById(R.id.otherFilepath);
+        String filepath = editFilepath.getText().toString();
+        String otherFilepath = editOtherFilepath.getText().toString();
+        // Dateipfade direkt speichern statt eines Einstellungsdialogs
+        SharedPreferences prefs = getSharedPreferences(getString(R.string.preferences_filename), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(getString(R.string.preference_filepath), filepath);
+        editor.putString(getString(R.string.preference_other_filepath), otherFilepath);
+        editor.commit();
+        // Dann den Dialog zur Passphrase-Eingabe öffnen
+        DialogFragment passphraseDialog = new PassphraseDialog();
+        passphraseDialog.show(getFragmentManager(), "passphrase_dialog");
+    }
 
-	/**
-	 * Wenn im PassphraseDialog Abbrechen gedrückt wurde, ist hier nichts mehr zu tun.
-	 */
-	@Override
-	public void onClickPassphraseDialogButtonNegative() {
-	}
+    /**
+     * Öffnet die Einstellungen zum Aktivieren der Tastatur für das Kopieren von Anmeldeinformationen und Passwort.
+     */
+    public void onClickButtonOpenImeSettings(final View buttonOpenImeSettings) {
+        startActivity(new Intent(android.provider.Settings.ACTION_INPUT_METHOD_SETTINGS));
+    }
+
+    /**
+     * Öffnet die Hilfe-URL im Browser.
+     */
+    public void onClickButtonOpenHelp(final View buttonOpenHelp) {
+        try {
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.help_url)));
+            startActivity(browserIntent);
+        } catch (Exception e) {
+            PswGenAdapter.handleThrowable(this, e);
+        }
+    }
+
+    /**
+     * Öffnet den About-Dialog.
+     */
+    public void onClickButtonOpenAbout(final View buttonOpenAbout) {
+        try {
+            Intent aboutIntent = new Intent(this, AboutActivity.class);
+            startActivity(aboutIntent);
+        } catch (Exception e) {
+            PswGenAdapter.handleThrowable(this, e);
+        }
+    }
+
+    /**
+     * Nachdem die Diensteliste geladen wurden, zur Anzeige der Liste verzweigen.
+     */
+    @Override
+    public void onClickPassphraseDialogButtonPositive() {
+        Intent listIntent = new Intent(this, ServiceListActivity.class);
+        startActivity(listIntent);
+    }
+
+    /**
+     * Wenn im PassphraseDialog Abbrechen gedrückt wurde, ist hier nichts mehr zu tun.
+     */
+    @Override
+    public void onClickPassphraseDialogButtonNegative() {
+    }
 
 }

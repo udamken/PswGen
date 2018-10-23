@@ -2,7 +2,7 @@
     PswGenDesktop - Manages your websites and repeatably generates passwords for them
     PswGenDroid - Generates your passwords managed by PswGenDesktop on your mobile  
    
-        Copyright (C) 2005-2016 Uwe Damken
+        Copyright (C) 2005-2018 Uwe Damken
    
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -21,8 +21,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    tools:context="${relativePackage}.${activityClass}" >
+    android:padding="16dp">
 
     <TextView android:id="@+id/label_filepath"
 	    style="?android:attr/textAppearanceMedium"
@@ -37,7 +36,21 @@
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
 	    android:inputType="textUri" />
-	
+
+	<TextView android:id="@+id/label_other_filepath"
+		style="?android:attr/textAppearanceMedium"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/label_other_filepath"
+		android:textIsSelectable="false"
+		android:labelFor="@+id/otherFilepath" />
+
+	<EditText android:id="@+id/otherFilepath"
+	    style="?android:attr/textAppearanceSmall"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:inputType="textUri" />
+
 	<Button android:id="@+id/button_open_services"
 	    style="?android:attr/buttonStyle"
 	    android:layout_width="match_parent"

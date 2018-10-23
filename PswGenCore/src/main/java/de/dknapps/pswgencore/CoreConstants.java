@@ -79,6 +79,9 @@ public class CoreConstants {
 	/** Der Default-Name für die Dienstedatei */
 	public static final String SERVICES_FILENAME = "services.json";
 
+	/** Der Default-Name für die andere Dienstedatei */
+	public static final String OTHER_SERVICES_FILENAME = "services-mobile.json";
+
 	/** Das Encoding für die Dienstedatei */
 	public static final String CHARSET_NAME = "UTF-8";
 

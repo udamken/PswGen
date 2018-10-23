@@ -69,12 +69,22 @@ public class FileHelper {
 	}
 
 	/**
+	 * Lädt eine gemischte Liste der Dienste aus beiden Dateien.
+	 */
+	public ServiceInfoList loadServiceInfoList(File servicesFile, File otherServicesFile, String passphrase) {
+		ServiceInfoList services = loadServiceInfoList(servicesFile, passphrase);
+		ServiceInfoList otherServices = loadServiceInfoList(otherServicesFile, passphrase);
+		services.merge(otherServices);
+		return services;
+	}
+
+	/**
 	 * Lädt die Liste aller Dienste aus der angegebenen Datei und entschlüsselt sie. Wenn die Datei (noch)
 	 * nicht existiert, wird eine leere Diensteliste zurückgegeben. Wenn die Datei in einem nicht mehr
 	 * unterstützten Format vorliegt, wird eine DomainException geworfen. Bei einer älteren, aber noch
 	 * lesbaren Version, wird die alte Datei umbenannt und die Dienste werden im neuen Format gespeichert.
 	 */
-	public ServiceInfoList loadServiceInfoList(File servicesFile, String passphrase) {
+	private ServiceInfoList loadServiceInfoList(File servicesFile, String passphrase) {
 		try {
 
 			// Leere Diensteliste zurückgegeben, wenn die Datei (noch) nicht existiert
@@ -84,7 +94,7 @@ public class FileHelper {
 
 			// JSON-Inhalte aus er Datei einlesen, bei veralteten Versionen wird eine Exception geworfen
 			FileInputStream in = new FileInputStream(servicesFile);
-			ServiceInfoList services = readJsonStream(in);
+			ServiceInfoList services = readJsonStream(in, servicesFile.lastModified());
 
 			// Datei konvertieren, wenn die Version nicht aktuell ist, aber noch untersützt wird
 			if (services.getVersion().compareTo(CoreConstants.NEWEST_FILE_FORMAT_VERSION) < 0) {
@@ -110,7 +120,7 @@ public class FileHelper {
 		}
 	}
 
-	private ServiceInfoList readJsonStream(FileInputStream in) throws IOException {
+	private ServiceInfoList readJsonStream(FileInputStream in, long lastModified) throws IOException {
 		ServiceInfoList services = new ServiceInfoList();
 		CommonJsonReader reader = commonJsonReaderWriterFactory
 				.getJsonReader(new InputStreamReader(in, CoreConstants.CHARSET_NAME));
@@ -126,7 +136,7 @@ public class FileHelper {
 			checkJsonName(reader, "verifier");
 			services.setEncryptedVerifier(reader.nextString());
 
-			addReadServices(services, reader);
+			addReadServices(services, reader, lastModified);
 
 			checkJsonName(reader, "salt");
 			services.setSaltAsHexString(reader.nextString());
@@ -139,16 +149,17 @@ public class FileHelper {
 		return services;
 	}
 
-	private void addReadServices(ServiceInfoList services, CommonJsonReader reader) throws IOException {
+	private void addReadServices(ServiceInfoList services, CommonJsonReader reader, long lastModified)
+			throws IOException {
 		checkJsonName(reader, "services");
 		reader.beginArray();
 		while (reader.hasNext()) {
-			services.addEncryptedService(readService(reader));
+			services.addEncryptedService(readService(reader, lastModified));
 		}
 		reader.endArray();
 	}
 
-	private ServiceInfo readService(CommonJsonReader reader) throws IOException {
+	private ServiceInfo readService(CommonJsonReader reader, long lastModified) throws IOException {
 		ServiceInfo si = new ServiceInfo();
 		reader.beginObject();
 		checkJsonName(reader, "serviceAbbreviation");
@@ -210,7 +221,7 @@ public class FileHelper {
 		}
 		if (reader.peekReturnsEndObject()) {
 			si.setDeleted(false);
-			si.resetTimeMillis();
+			si.setTimeMillis(String.valueOf(lastModified));
 		} else {
 			// Erst ab 2.0.0 gibt es deleted und timeMillis, daher ist beides optional
 			checkJsonName(reader, "deleted");

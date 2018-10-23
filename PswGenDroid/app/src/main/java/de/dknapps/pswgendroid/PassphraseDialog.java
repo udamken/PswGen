@@ -122,11 +122,13 @@ public class PassphraseDialog extends DialogFragment {
 						SharedPreferences prefs = getActivity().getSharedPreferences(
 								getString(R.string.preferences_filename), Context.MODE_PRIVATE);
 						String filepath = prefs.getString(getString(R.string.preference_filepath), null);
+						String otherFilepath = prefs.getString(getString(R.string.preference_other_filepath), null);
 						try {
-							File input = new File(filepath);
+							File servicesFile = new File(filepath);
+							File otherServicesFile = new File(otherFilepath);
 							String passphrase = editTextPassphrase.getText().toString();
 							String oldPassphrase = editTextOldPassphrase.getText().toString();
-							PswGenAdapter.loadServiceInfoList(input, passphrase, oldPassphrase);
+							PswGenAdapter.loadServiceInfoList(servicesFile, otherServicesFile, passphrase, oldPassphrase);
 							passphraseDialog.dismiss(); // Nur wenn alles okay ist, Dialog schließen ...
 							listener.onClickPassphraseDialogButtonPositive(); // ... und weitermelden
 						} catch (Exception e) {
