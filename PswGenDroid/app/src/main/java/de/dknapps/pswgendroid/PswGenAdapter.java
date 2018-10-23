@@ -63,14 +63,8 @@ public class PswGenAdapter {
 	 */
 	public static void loadServiceInfoList(File in, String passphrase, String oldPassphrase) {
 		FileHelper fileHelper = FileHelper.getInstance(new CommonJsonReaderWriterFactoryAndroidImpl());
-		services = fileHelper.loadServiceInfoList(in);
-		if (services == null) {
-			throw new DomainException("UnknownFileFormatMsg");
-		}
-		EncryptionHelper encryptionHelper = new EncryptionHelper(passphrase.toCharArray(),
-				services.getSaltAsHexString(), services.getInitializerAsHexString());
-		services.decrypt(encryptionHelper); // Info-Collection entschlüsselt in Map stellen
-		servicesAsList = new ArrayList<ServiceInfo>(services.getServices());
+		services = fileHelper.loadServiceInfoList(in, passphrase);
+		servicesAsList = new ArrayList<ServiceInfo>(services.getServices(false));
 		validatedPassphrase = passphrase;
 		oldPassphrase = oldPassphrase;
 	}

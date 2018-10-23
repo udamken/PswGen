@@ -129,9 +129,6 @@ public class PassphraseDialog extends DialogFragment {
 							PswGenAdapter.loadServiceInfoList(input, passphrase, oldPassphrase);
 							passphraseDialog.dismiss(); // Nur wenn alles okay ist, Dialog schließen ...
 							listener.onClickPassphraseDialogButtonPositive(); // ... und weitermelden
-						} catch (FileNotFoundException e) {
-							String msg = MessageFormat.format(getString(R.string.file_missing), filepath);
-							Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
 						} catch (Exception e) {
 							PswGenAdapter.handleThrowable(getActivity(), e);
 						}
