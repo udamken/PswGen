@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.nio.file.Files;
 import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -92,7 +91,7 @@ public class FileHelper {
 			if (services.getVersion().compareTo(CoreConstants.NEWEST_FILE_FORMAT_VERSION) < 0) {
 
 				// Alte Datei zur Sicherheit durch Umbenennen aufbewahren
-				Files.move(servicesFile.toPath(), (new File(servicesFile.getPath() + ".upgraded")).toPath());
+				servicesFile.renameTo(new File(servicesFile.getPath() + ".upgraded"));
 
 				// Services in eine neue Datei im neuen Format (mit Timestamp je Service) speichern
 				saveServiceInfoList(servicesFile, services);
