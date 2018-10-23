@@ -87,11 +87,20 @@
 	<string name="about_html_text_url">file:///android_asset/about.html</string>
 	
 	<!-- DomainException -->
-	<string name="passphrase_invalid">Die Passphrase ist ungültig.</string>
-	<string name="total_character_count_exceeded">Die Anzahl der zu verteilenden Zeichen bei einer Bis-Angabe überschreitet Gesamtlänge.</string>
-	<string name="invalid_character_count">Die Anzahl der zu verteilenden Zeichen überschreitet eine Von-/Bis-Angabe oder die Gesamtlänge.</string>
-	<string name="character_or_total_character_count_missing">Bitte geben Sie (genug) Zeichen zur Generierung und eine Gesamtlänge an.</string>
-	<string name="unknown_file_format">Das Dateiformat ist unbekannt und kann mit PswGenDroid nicht verwendet werden.</string>
+	<string name="PassphraseInvalidMsg">Die Passphrase ist ungültig.</string>
+	<string name="FileCouldNotBeOpenedMsg">Die Datei konnte nicht geöffnet werden (Berechtigungen?).</string>
+	<string name="UnsupportedFileFormatMsg">Das Dateiformat von PswGen &lt; 1.7.8 wird nicht mehr unterstützt:\n\nBitte nutzen Sie frühere Versionen zur Konvertierung.</string>
+	<string name="TotalCharacterCountExceededMsg">Die Anzahl der zu verteilenden Zeichen bei einer Bis-Angabe überschreitet Gesamtlänge.</string>
+	<string name="InvalidCharacterCountMsg">Die Anzahl der zu verteilenden Zeichen überschreitet eine Von-/Bis-Angabe oder die Gesamtlänge.</string>
+	<string name="CharacterOrTotalCharacterCountMissingMsg">Bitte geben Sie (genug) Zeichen zur Generierung und eine Gesamtlänge an.</string>
+	<string name="PassphraseMismatchMsg">Die Passphrase weicht von der wiederholten Passphrase ab.</string>
+	<string name="ServiceAbbreviationEmptyMsg">Das Dienstekürzel ist leer.</string>
+	<string name="ServiceAbbreviationMissingMsg">Das Dienstekürzel wurde bisher nicht vermerkt.</string>
+	<string name="PassphraseEmptyMsg">Die Passphrase ist leer.</string>
+	<string name="NewPassphraseMismatchMsg">Die neue Passphrase weicht von der wiederholten neuen Passphrase ab.</string>
+	<string name="OldPassphraseEmptyMsg">Die alte Passphrase ist leer.</string>
+	<string name="NewPassphraseEmptyMsg">Die neue Passphrase ist leer.</string>
+	<string name="PasswordMismatchMsg">Das Passwort weicht vom wiederholten Passwort ab.</string>
 
 	<!-- MessageFormat-Nachrichten -->
 	<string name="file_missing">&lt;{0}&gt; existiert nicht.</string>

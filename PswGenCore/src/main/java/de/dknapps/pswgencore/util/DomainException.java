@@ -36,4 +36,8 @@ public class DomainException extends RuntimeException {
 		super(arg0);
 	}
 
+	public DomainException(String message, Throwable cause) {
+		super(message, cause);
+	}
+
 }

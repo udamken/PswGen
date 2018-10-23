@@ -133,32 +133,6 @@ public class StartupActivity extends Activity implements PassphraseDialog.Listen
 	}
 
 	/**
-	 * Kopiert die per File angegebene Quelldatei in den übergebenen FileOutputStream.
-	 */
-	public static void copyFile(File sourceFile, FileOutputStream targetStream) throws IOException {
-		BufferedInputStream reader = new BufferedInputStream(new FileInputStream(sourceFile));
-		BufferedOutputStream writer = new BufferedOutputStream(targetStream);
-		try {
-			byte[] buff = new byte[8192];
-			int numChars;
-			while ((numChars = reader.read(buff, 0, buff.length)) != -1) {
-				writer.write(buff, 0, numChars);
-			}
-		} finally {
-			try {
-				if (reader != null) {
-					reader.close();
-				}
-				if (writer != null) {
-					writer.close();
-				}
-			} catch (IOException e) {
-				LOGGER.log(Level.WARNING, CoreConstants.MSG_EXCP_SERVICES, e);
-			}
-		}
-	}
-
-	/**
 	 * Nachdem die Diensteliste geladen wurden, zur Anzeige der Liste verzweigen.
 	 */
 	@Override

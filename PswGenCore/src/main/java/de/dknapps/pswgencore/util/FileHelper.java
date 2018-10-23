@@ -26,7 +26,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.Collection;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import de.dknapps.pswgencore.CoreConstants;
@@ -107,8 +106,7 @@ public class FileHelper {
 			return services;
 
 		} catch (IOException e) {
-			LOGGER.log(Level.WARNING, CoreConstants.MSG_EXCP_SERVICES, e);
-			return null;
+			throw new DomainException("FileCouldNotBeOpenedMsg", e);
 		}
 	}
 

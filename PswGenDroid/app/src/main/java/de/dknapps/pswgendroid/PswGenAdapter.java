@@ -140,15 +140,33 @@ public class PswGenAdapter {
 	public static String getDomainExceptionText(Context context, DomainException domainException) {
 		final String msg = domainException.getMessage();
 		if (msg.equals("PassphraseInvalidMsg")) {
-			return context.getString(R.string.passphrase_invalid);
+			return context.getString(R.string.PassphraseInvalidMsg);
+		} else if (msg.equals("FileCouldNotBeOpenedMsg")) {
+			return context.getString(R.string.FileCouldNotBeOpenedMsg);
+		} else if (msg.equals("UnsupportedFileFormatMsg")) {
+			return context.getString(R.string.UnsupportedFileFormatMsg);
 		} else if (msg.equals("TotalCharacterCountExceededMsg")) {
-			return context.getString(R.string.total_character_count_exceeded);
+			return context.getString(R.string.TotalCharacterCountExceededMsg);
 		} else if (msg.equals("InvalidCharacterCountMsg")) {
-			return context.getString(R.string.invalid_character_count);
+			return context.getString(R.string.InvalidCharacterCountMsg);
 		} else if (msg.equals("CharacterOrTotalCharacterCountMissingMsg")) {
-			return context.getString(R.string.character_or_total_character_count_missing);
-		} else if (msg.equals("UnknownFileFormatMsg")) {
-			return context.getString(R.string.unknown_file_format);
+			return context.getString(R.string.CharacterOrTotalCharacterCountMissingMsg);
+		} else if (msg.equals("PassphraseMismatchMsg")) {
+			return context.getString(R.string.PassphraseMismatchMsg);
+		} else if (msg.equals("ServiceAbbreviationEmptyMsg")) {
+			return context.getString(R.string.ServiceAbbreviationEmptyMsg);
+		} else if (msg.equals("ServiceAbbreviationMissingMsg")) {
+			return context.getString(R.string.ServiceAbbreviationMissingMsg);
+		} else if (msg.equals("PassphraseEmptyMsg")) {
+			return context.getString(R.string.PassphraseEmptyMsg);
+		} else if (msg.equals("NewPassphraseMismatchMsg")) {
+			return context.getString(R.string.NewPassphraseMismatchMsg);
+		} else if (msg.equals("OldPassphraseEmptyMsg")) {
+			return context.getString(R.string.OldPassphraseEmptyMsg);
+		} else if (msg.equals("NewPassphraseEmptyMsg")) {
+			return context.getString(R.string.NewPassphraseEmptyMsg);
+		} else if (msg.equals("PasswordMismatchMsg")) {
+			return context.getString(R.string.PasswordMismatchMsg);
 		}
 		return msg;
 	}

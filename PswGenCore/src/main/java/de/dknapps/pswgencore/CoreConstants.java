@@ -50,11 +50,7 @@ public class CoreConstants {
 
 	public static final String MSG_NO_WIDGET_INFO = "No WidgetInfo defined for <{0}>";
 
-	public static final String MSG_EXCP_SERVICES = "Exception occured while loading services:";
-
 	public static final String MSG_EXCP_LOOK_AND_FEEL = "LookAndFeel could not be set";
-
-	public static final String MSG_PASSPHRASE_INVALID = "Passphrase given as parameter to the upgrade option is not valid: ";
 
 	/** Für die generierten Passworte verwendbare Zeichen */
 

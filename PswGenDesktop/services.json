@@ -1,5 +1,5 @@
 {
-	"version": "2.0.0",
+	"version": "1.7.8",
 	"verifier": "466083843",
 	"services": [
 		{
@@ -27,10 +27,7 @@
 			"specialCharactersEndIndex": -2147483648,
 			"totalCharacterCount": -2147483648,
 			"password": "",
-			"passwordRepeated": "",
-			"useOldPassphrase": false,
-			"deleted": false,
-			"timeMillis": "1540139783090"
+			"passwordRepeated": ""
 		},
 		{
 			"serviceAbbreviation": "903346827415B91A6A51832074C15B47",
@@ -57,10 +54,7 @@
 			"specialCharactersEndIndex": -2147483648,
 			"totalCharacterCount": -2147483648,
 			"password": "",
-			"passwordRepeated": "",
-			"useOldPassphrase": false,
-			"deleted": false,
-			"timeMillis": "1540139783090"
+			"passwordRepeated": ""
 		},
 		{
 			"serviceAbbreviation": "72617F3CFF2E3B06D3F965774208BE02",
@@ -87,10 +81,7 @@
 			"specialCharactersEndIndex": -2147483648,
 			"totalCharacterCount": -2147483648,
 			"password": "",
-			"passwordRepeated": "",
-			"useOldPassphrase": false,
-			"deleted": false,
-			"timeMillis": "1540139783090"
+			"passwordRepeated": ""
 		},
 		{
 			"serviceAbbreviation": "B9506B5C72FFE6BDF078A07CA799B6AA",
@@ -117,10 +108,7 @@
 			"specialCharactersEndIndex": -2147483648,
 			"totalCharacterCount": 8,
 			"password": "",
-			"passwordRepeated": "",
-			"useOldPassphrase": false,
-			"deleted": false,
-			"timeMillis": "1540139783091"
+			"passwordRepeated": ""
 		},
 		{
 			"serviceAbbreviation": "DB8986FFBE4B342D4B6F99C4890D86A2",
@@ -147,10 +135,7 @@
 			"specialCharactersEndIndex": -2147483648,
 			"totalCharacterCount": -2147483648,
 			"password": "87AAC39FA7F2353E7864BA193D46FF55",
-			"passwordRepeated": "87AAC39FA7F2353E7864BA193D46FF55",
-			"useOldPassphrase": false,
-			"deleted": false,
-			"timeMillis": "1540139783091"
+			"passwordRepeated": "87AAC39FA7F2353E7864BA193D46FF55"
 		},
 		{
 			"serviceAbbreviation": "B7AE135E3679D4249DC7F71FC37215A8",
@@ -177,10 +162,7 @@
 			"specialCharactersEndIndex": -2147483648,
 			"totalCharacterCount": -2147483648,
 			"password": "",
-			"passwordRepeated": "",
-			"useOldPassphrase": false,
-			"deleted": false,
-			"timeMillis": "1540139783091"
+			"passwordRepeated": ""
 		},
 		{
 			"serviceAbbreviation": "4587360C2C41A86F4BBA3258E85FE18D",
@@ -207,10 +189,7 @@
 			"specialCharactersEndIndex": -2147483648,
 			"totalCharacterCount": -2147483648,
 			"password": "",
-			"passwordRepeated": "",
-			"useOldPassphrase": false,
-			"deleted": false,
-			"timeMillis": "1540139783091"
+			"passwordRepeated": ""
 		},
 		{
 			"serviceAbbreviation": "8BC5B00110012023D75137EAFC103520",
@@ -237,10 +216,7 @@
 			"specialCharactersEndIndex": -2147483648,
 			"totalCharacterCount": -2147483648,
 			"password": "",
-			"passwordRepeated": "",
-			"useOldPassphrase": false,
-			"deleted": false,
-			"timeMillis": "1540139783091"
+			"passwordRepeated": ""
 		},
 		{
 			"serviceAbbreviation": "02482F059E436ABD28930EA78B0BE89F",
@@ -267,10 +243,7 @@
 			"specialCharactersEndIndex": -2147483648,
 			"totalCharacterCount": -2147483648,
 			"password": "",
-			"passwordRepeated": "",
-			"useOldPassphrase": false,
-			"deleted": false,
-			"timeMillis": "1540139783091"
+			"passwordRepeated": ""
 		},
 		{
 			"serviceAbbreviation": "C05F5D00F861FF58BD968E5E54D31099",
@@ -297,10 +270,7 @@
 			"specialCharactersEndIndex": -2147483648,
 			"totalCharacterCount": -2147483648,
 			"password": "",
-			"passwordRepeated": "",
-			"useOldPassphrase": false,
-			"deleted": false,
-			"timeMillis": "1540139783092"
+			"passwordRepeated": ""
 		},
 		{
 			"serviceAbbreviation": "AA5622948C6705C5C019E47B22B278FF",
@@ -327,10 +297,7 @@
 			"specialCharactersEndIndex": -2147483648,
 			"totalCharacterCount": -2147483648,
 			"password": "",
-			"passwordRepeated": "",
-			"useOldPassphrase": false,
-			"deleted": false,
-			"timeMillis": "1540139783092"
+			"passwordRepeated": ""
 		}
 	],
 	"salt": "4D93D8A7720BF8170D69882B18E6FB0F",

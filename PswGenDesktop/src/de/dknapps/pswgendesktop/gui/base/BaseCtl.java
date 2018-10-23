@@ -2,7 +2,7 @@
  * PswGenDesktop - Manages your websites and repeatably generates passwords for them
  * PswGenDroid - Generates your passwords managed by PswGenDesktop on your mobile  
  *
- *     Copyright (C) 2005-2016 Uwe Damken
+ *     Copyright (C) 2005-2018 Uwe Damken
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -67,8 +67,8 @@ public class BaseCtl {
 		t.printStackTrace();
 		if (t instanceof DomainException) {
 			String msg = getGuiText(t.getMessage());
-			JOptionPane.showMessageDialog(null, msg, DesktopConstants.APPLICATION_NAME, JOptionPane.WARNING_MESSAGE);
-
+			JOptionPane.showMessageDialog(null, msg, DesktopConstants.APPLICATION_NAME,
+					JOptionPane.WARNING_MESSAGE);
 		} else {
 			JOptionPane.showMessageDialog(null, t.toString(), DesktopConstants.APPLICATION_NAME,
 					JOptionPane.ERROR_MESSAGE);

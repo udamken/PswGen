@@ -511,7 +511,7 @@ public class PswGenCtl extends BaseCtl {
 		if (!servicesFile.exists()) { // Datei (noch) nicht vorhanden?
 			// Bei einer neuen Datei wird geprüft, ob die Passphrase zweimal gleich eingegeben wurde
 			if (!passphrase.equals(passphraseRepeated)) { // Mismatch?
-				throw new DomainException("PassphraseMismatchMsg");
+				throw new DomainException("NewPassphraseMismatchMsg");
 			}
 		}
 		return passphrase;

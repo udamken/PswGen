@@ -87,11 +87,20 @@
 	<string name="about_html_text_url">file:///android_asset/about.html</string>
 
 	<!-- DomainException -->
-	<string name="passphrase_invalid">Passphrase is invalid.</string>
-	<string name="total_character_count_exceeded">Character count with given end exceeds total character count.</string>
-	<string name="invalid_character_count">Character count exceeds start/end or total character count.</string>
-	<string name="character_or_total_character_count_missing">Please specify (enough) characters and total character count to generate password.</string>
-	<string name="unknown_file_format">File format is unknown and not usable with PswGenDroid.</string>
+    <string name="PassphraseInvalidMsg">Passphrase is invalid.</string>
+	<string name="FileCouldNotBeOpenedMsg">File could not be opened (permissions?).</string>
+    <string name="UnsupportedFileFormatMsg">File format of PswGen &lt; 1.7.8 is no longer supported:\n\nPlease use earlier versions for a conversion.</string>
+	<string name="TotalCharacterCountExceededMsg">Character count with given end exceeds total character count.</string>
+    <string name="InvalidCharacterCountMsg">Character count exceeds start/end or total character count.</string>
+	<string name="CharacterOrTotalCharacterCountMissingMsg">Please specify (enough) characters and total character count to generate password.</string>
+    <string name="PassphraseMismatchMsg">Passphrase doesn\'t match repeated passphrase.</string>
+	<string name="ServiceAbbreviationEmptyMsg">Service abbreviation is empty.</string>
+    <string name="ServiceAbbreviationMissingMsg">Service abbreviation does not exist.</string>
+	<string name="PassphraseEmptyMsg">Passphrase is empty.</string>
+    <string name="NewPassphraseMismatchMsg">New passphrase doesn\'t match repeated new passphrase.</string>
+	<string name="OldPassphraseEmptyMsg">Old passphrase is empty.</string>
+    <string name="NewPassphraseEmptyMsg">New passphrase is empty.</string>
+	<string name="PasswordMismatchMsg">Password doesn\'t match repeated password.</string>
 
 	<!-- MessageFormat-Nachrichten -->
 	<string name="file_missing">&lt;{0}&gt; does not exist.</string>
