@@ -1,32 +1,13 @@
 package de.dknapps.pswgendroid;
 
-import java.util.Observable;
-
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
+import de.dknapps.pswgendroid.util.ObservableObject;
 
 public class ServiceMaintenanceViewModel extends ViewModel {
 
-    public class ObervableObject<T> extends Observable {
+    private ObservableObject<String> currentServiceAbbreviation = new ObservableObject<>();
 
-        T value = null;
-
-        public T getValue() {
-            return value;
-        }
-
-        public void setValue(T value) {
-            this.value = value;
-            setChanged();
-            notifyObservers();
-        }
-    }
-
-    private ObervableObject<String> currentServiceAbbreviation = new ObervableObject<>();
-
-    public ObervableObject<String> getCurrentServiceAbbreviation() {
+    public ObservableObject<String> getCurrentServiceAbbreviation() {
         return currentServiceAbbreviation;
     }
 

@@ -24,6 +24,8 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
+import de.dknapps.pswgendroid.util.ObjectObserver;
+import de.dknapps.pswgendroid.util.ObservableObject;
 
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -65,10 +67,10 @@ public class ServiceMaintenanceActivity extends FragmentActivity implements Pass
         }
 
         // Wenn über ServiceListFragment.onListItemClick() ein Dienstekürzel ausgewählt wurde, wird in die Detailansicht gewechselt.
-        viewModel.getCurrentServiceAbbreviation().addObserver(new Observer() {
+        viewModel.getCurrentServiceAbbreviation().addObjectObserver(new ObjectObserver<String>() {
 
             @Override
-            public void update(Observable o, Object arg) {
+            public void onChange(ObservableObject<String> observableObject, String newValue) {
                 onChangedCurrentServiceAbbreviation();
             }
 
