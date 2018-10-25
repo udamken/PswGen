@@ -21,11 +21,11 @@ package de.dknapps.pswgendroid;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.DialogFragment;
-import android.arch.lifecycle.ViewModelProviders;
+import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
+import androidx.fragment.app.ListFragment;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -71,7 +71,7 @@ public class ServiceListFragment extends ListFragment implements OnQueryTextList
         if (!PswGenAdapter.isServiceInfoListLoaded()) { // Zwischendurch SCREEN_OFF gewesen?
             setUpListAdapter(new ArrayList<ServiceInfo>()); // die Liste darf nicht mehr gezeigt werden
             DialogFragment passphraseDialog = new PassphraseDialog();
-            passphraseDialog.show(getActivity().getFragmentManager(), "passphrase_dialog");
+            passphraseDialog.show(getActivity().getSupportFragmentManager(), "passphrase_dialog");
         }
         super.onResume();
     }
