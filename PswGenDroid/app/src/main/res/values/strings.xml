@@ -58,8 +58,6 @@
 	<!-- ServiceListActivity -->
 	<string name="title_service_list">Stored Services</string>
 	<string name="search_title">Search Service</string>
-
-	<!-- ServiceDetailActivity -->
 	<string name="title_service_detail">Service Details</string>
 
 	<!-- ServiceDetailFragment -->

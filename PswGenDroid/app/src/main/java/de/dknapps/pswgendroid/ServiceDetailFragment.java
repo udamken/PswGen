@@ -20,13 +20,13 @@ package de.dknapps.pswgendroid;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.app.Fragment;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -107,13 +107,6 @@ public class ServiceDetailFragment extends Fragment {
     public void onResume() {
         if (!PswGenAdapter.isServiceInfoListLoaded()) { // Zwischendurch SCREEN_OFF gewesen?
             showEmptyCurrentServiceInfo(); // Anzeigefelder des Dienstes löschen
-            if (getActivity() instanceof ServiceDetailActivity) {
-                // Wenn die aufrufende Activity keine ServiceDetailActivity ist, dann ist es
-                // die ServiceListActivity und in dem Fall soll nur dort die Abfrage der
-                // Passphrase erfolgen, damit das nicht zweimal (hier und dort) geschieht
-                DialogFragment passphraseDialog = new PassphraseDialog();
-                passphraseDialog.show(getActivity().getFragmentManager(), "passphrase_dialog");
-            }
         } else {
             loadAndShowCurrentServiceInfo(); // Dienst gemäß des übergebenen Arguments laden
         }

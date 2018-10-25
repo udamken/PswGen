@@ -18,9 +18,9 @@
  *******************************************************************************/
 package de.dknapps.pswgendroid;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -29,37 +29,34 @@ import android.widget.SearchView;
 
 /**
  * <p>
- * Diese Activity stellt die Liste der Dienste dar. Auf Geräten mit größeren Bildschirmen wird die Liste neben
- * den Details eines Dienstes angezeigt. Bei kleinen Bildschirmen wird bei Auswahl eines Dienstes zur
- * Detailanzeige zur {@link ServiceDetailActivity} verzweigt.
- * </p>
- * <p>
- * Die Liste der Einträge wird letztlich im {@link ServiceListFragment} angzeigt, eingebunden in diese
- * Activity, und die Dienstdetails im {@link ServiceDetailFragment}, welches entweder in dieser Activity oder
- * in {@link ServiceDetailActivity} eingebunden ist.
+ * Diese Activity stellt in Fragments die Liste der Dienste {@link ServiceListFragment} oder die Detailansicht {@link ServiceDetailFragment} dar.
  * </p>
  * <p>
  * Diese Activity implementiert {@link ServiceListFragment.Listener}, um die Auswahl von Einträgen mitgeteilt
  * zu bekommen.
  * </p>
  */
-public class ServiceListActivity extends FragmentActivity implements ServiceListFragment.Listener, PassphraseDialog.Listener {
+public class ServiceListActivity extends Activity implements ServiceListFragment.Listener, PassphraseDialog.Listener {
 
     /**
      * Das eingebettete Fragment für die Anzeige der Diensteliste
      */
-    private ServiceListFragment serviceListFragment;
+    private ServiceListFragment serviceListFragment = new ServiceListFragment();
 
     /**
      * Das eingebettete Fragment für die Detailanzeige eines Dienstes
      */
-    private ServiceDetailFragment serviceDetailFragment;
+    private ServiceDetailFragment serviceDetailFragment = new ServiceDetailFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_service_list);
-        serviceListFragment = (ServiceListFragment) getSupportFragmentManager().findFragmentById(R.id.service_list);
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.service_list, serviceListFragment)
+                .commit();
+        getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     /**
@@ -68,12 +65,16 @@ public class ServiceListActivity extends FragmentActivity implements ServiceList
      */
     @Override
     public void onItemSelected(String id) {
-            // Nur entweder Liste oder Details? Dann einfach die Detail-Activity starten.
-            Intent detailIntent = new Intent(this, ServiceDetailActivity.class);
-            detailIntent.putExtra(ServiceDetailFragment.ARG_ITEM_ID, id);
-            startActivity(detailIntent);
+        Bundle arguments = new Bundle();
+        arguments.putString(ServiceDetailFragment.ARG_ITEM_ID, id);
+        serviceDetailFragment = new ServiceDetailFragment();
+        serviceDetailFragment.setArguments(arguments);
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.service_list, serviceDetailFragment)
+                .addToBackStack(null)
+                .commit();
         // Up-Button im Action Bar anzeigen
-        getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -83,6 +84,12 @@ public class ServiceListActivity extends FragmentActivity implements ServiceList
         MenuItem searchMenuItem = menu.findItem(R.id.search);
         SearchView searchView = (SearchView) searchMenuItem.getActionView();
         searchView.setOnQueryTextListener(serviceListFragment);
+        return true;
+    }
+
+    @Override
+    public boolean onNavigateUp() {
+        getFragmentManager().popBackStack();
         return true;
     }
 
