@@ -21,7 +21,7 @@ package de.dknapps.pswgendroid;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.fragment.app.DialogFragment;
+import android.app.DialogFragment;
 import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
@@ -62,6 +62,7 @@ public class ServiceListFragment extends ListFragment implements OnQueryTextList
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
         viewModel = ViewModelProviders.of(getActivity()).get(ServiceMaintenanceViewModel.class);
         setUpListAdapter(PswGenAdapter.getServicesAsList());
     }
@@ -71,7 +72,7 @@ public class ServiceListFragment extends ListFragment implements OnQueryTextList
         if (!PswGenAdapter.isServiceInfoListLoaded()) { // Zwischendurch SCREEN_OFF gewesen?
             setUpListAdapter(new ArrayList<ServiceInfo>()); // die Liste darf nicht mehr gezeigt werden
             DialogFragment passphraseDialog = new PassphraseDialog();
-            passphraseDialog.show(getActivity().getSupportFragmentManager(), "passphrase_dialog");
+            passphraseDialog.show(getActivity().getFragmentManager(), "passphrase_dialog");
         }
         super.onResume();
     }

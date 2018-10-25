@@ -18,15 +18,20 @@
  *******************************************************************************/
 package de.dknapps.pswgendroid;
 
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
+
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.SearchView;
+
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * <p>
@@ -35,13 +40,15 @@ import android.widget.SearchView;
  */
 public class ServiceMaintenanceActivity extends FragmentActivity implements PassphraseDialog.Listener {
 
+    ServiceMaintenanceViewModel viewModel = null;
+
     /**
      * Das eingebettete Fragment für die Anzeige der Diensteliste
      */
     private ServiceListFragment serviceListFragment = new ServiceListFragment();
 
     /**
-     * Das eingebettete Fragment für die Detailanzeige eines Dienstes
+     * Das eingebettete Fragment für die Detailansicht eines Dienstes
      */
     private ServiceDetailFragment serviceDetailFragment = new ServiceDetailFragment();
 
@@ -49,27 +56,29 @@ public class ServiceMaintenanceActivity extends FragmentActivity implements Pass
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_service_maintenance);
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.service_maintencance, serviceListFragment)
-                .commit();
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        ServiceMaintenanceViewModel viewModel = ViewModelProviders.of(this)
+                .get(ServiceMaintenanceViewModel.class);
+        if (getSupportFragmentManager().getFragments().isEmpty()) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.service_maintencance, serviceListFragment)
+                    .commitAllowingStateLoss();
+        }
 
-        ServiceMaintenanceViewModel model = ViewModelProviders.of(this).get(ServiceMaintenanceViewModel.class);
-        model.getCurrentServiceAbbreviation().observe(this, new Observer<String>() {
+        // Wenn über ServiceListFragment.onListItemClick() ein Dienstekürzel ausgewählt wurde, wird in die Detailansicht gewechselt.
+        viewModel.getCurrentServiceAbbreviation().addObserver(new Observer() {
+
             @Override
-            public void onChanged(@Nullable String serviceAbbreviation) {
+            public void update(Observable o, Object arg) {
                 onChangedCurrentServiceAbbreviation();
             }
+
         });
     }
 
     private void onChangedCurrentServiceAbbreviation() {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.service_maintencance, serviceDetailFragment)
-                .addToBackStack(null)
-                .commit();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.service_maintencance, serviceDetailFragment).addToBackStack(null)
+                .commitAllowingStateLoss();
     }
 
     @Override
