@@ -46,11 +46,6 @@ import android.widget.SearchView;
 public class ServiceListActivity extends FragmentActivity implements ServiceListFragment.Listener, PassphraseDialog.Listener {
 
     /**
-     * Gibt an, ob Liste und Details gleichzeitig angezeigt werden (bei großen Bildschirmen)
-     */
-    private boolean inTwoPaneMode;
-
-    /**
      * Das eingebettete Fragment für die Anzeige der Diensteliste
      */
     private ServiceListFragment serviceListFragment;
@@ -65,13 +60,6 @@ public class ServiceListActivity extends FragmentActivity implements ServiceList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_service_list);
         serviceListFragment = (ServiceListFragment) getSupportFragmentManager().findFragmentById(R.id.service_list);
-        if (findViewById(R.id.service_detail_container) != null) {
-            // Den Detail-Containter gibt es nur bei großen Bildschirmen (res/values-large,
-            // res/values-sw600dp), dann werden Liste und Details gleichzeitig angezeigt.
-            inTwoPaneMode = true;
-            // Bei gleichzeitiger Liste mit Details 'activate' auf den Listeneinträgen setzen.
-            serviceListFragment.setActivateOnItemClick(true);
-        }
     }
 
     /**
@@ -80,21 +68,12 @@ public class ServiceListActivity extends FragmentActivity implements ServiceList
      */
     @Override
     public void onItemSelected(String id) {
-        if (inTwoPaneMode) {
-            // Bei gleichzeitiger Anzeige von Liste und Details die Details über eine
-            // Fragment-Manager-Transaktion einblenden.
-            Bundle arguments = new Bundle();
-            arguments.putString(ServiceDetailFragment.ARG_ITEM_ID, id);
-            serviceDetailFragment = new ServiceDetailFragment();
-            serviceDetailFragment.setArguments(arguments);
-            getSupportFragmentManager().beginTransaction().replace(R.id.service_detail_container, serviceDetailFragment).commit();
-
-        } else {
             // Nur entweder Liste oder Details? Dann einfach die Detail-Activity starten.
             Intent detailIntent = new Intent(this, ServiceDetailActivity.class);
             detailIntent.putExtra(ServiceDetailFragment.ARG_ITEM_ID, id);
             startActivity(detailIntent);
-        }
+        // Up-Button im Action Bar anzeigen
+        getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -150,17 +129,6 @@ public class ServiceListActivity extends FragmentActivity implements ServiceList
     @Override
     public void onClickPassphraseDialogButtonPositive() {
         serviceListFragment.onClickPassphraseDialogButtonPositive();
-        if (areTwoPanesActive()) {
-            serviceDetailFragment.onClickPassphraseDialogButtonPositive();
-        }
-    }
-
-    /**
-     * Liefert true, wenn sich die Anwendung im Two-Pane-Modus befindet *und* tatsächlich ein Dienst zur
-     * Anzeige in den Details ausgewählt wurde.
-     */
-    public boolean areTwoPanesActive() {
-        return inTwoPaneMode && serviceDetailFragment != null && serviceDetailFragment.hasCurrentServiceInfo();
     }
 
     @Override
