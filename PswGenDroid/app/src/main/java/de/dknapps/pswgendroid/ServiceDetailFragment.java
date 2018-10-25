@@ -2,7 +2,7 @@
  * PswGenDesktop - Manages your websites and repeatably generates passwords for them
  * PswGenDroid - Generates your passwords managed by PswGenDesktop on your mobile  
  *
- *     Copyright (C) 2005-2017 Uwe Damken
+ *     Copyright (C) 2005-2018 Uwe Damken
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,14 +19,15 @@
 package de.dknapps.pswgendroid;
 
 import android.app.Activity;
-import android.app.DialogFragment;
-import android.app.Fragment;
+import android.support.v4.app.DialogFragment;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,10 +39,7 @@ import de.dknapps.pswgencore.util.PasswordFactory;
 
 public class ServiceDetailFragment extends Fragment {
 
-    /**
-     * Das Argument zur Übergabe des Dienstekürzels von der Liste zur Detailanzeige
-     */
-    public static final String ARG_ITEM_ID = "item_id";
+    private ServiceMaintenanceViewModel viewModel;
 
     /**
      * Die für die Tastatur bereitgestellte Login-Information.
@@ -69,6 +67,7 @@ public class ServiceDetailFragment extends Fragment {
     private TextView textViewLoginInfo;
     private TextView textViewAdditionalLoginInfo;
     private TextView textViewLabelUseOldPassphrase;
+
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the fragment (e.g. upon screen
      * orientation changes).
@@ -101,6 +100,7 @@ public class ServiceDetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        viewModel = ViewModelProviders.of(getActivity()).get(ServiceMaintenanceViewModel.class);
     }
 
     @Override
@@ -129,9 +129,7 @@ public class ServiceDetailFragment extends Fragment {
      * löscht die Anzeigefelder.
      */
     private void loadAndShowCurrentServiceInfo() {
-        if (getArguments().containsKey(ARG_ITEM_ID)) {
-            currentServiceInfo = PswGenAdapter.getServiceInfo(getArguments().getString(ARG_ITEM_ID));
-        }
+        currentServiceInfo = PswGenAdapter.getServiceInfo(viewModel.getCurrentServiceAbbreviation().getValue());
         showCurrentServiceInfo();
     }
 
@@ -169,20 +167,49 @@ public class ServiceDetailFragment extends Fragment {
         textViewAdditionalLoginInfo = ((TextView) rootView.findViewById(R.id.additional_login_info));
         textViewLabelUseOldPassphrase = ((TextView) rootView.findViewById(R.id.label_use_old_passphrase));
 
+        rootView.findViewById(R.id.button_open_and_provide).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                onClickButtonOpenAndProvide(v);
+            }
+        });
+        rootView.findViewById(R.id.button_provide).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                onClickButtonProvide(v);
+            }
+        });
+        rootView.findViewById(R.id.button_open_url).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                onClickButtonOpenUrl(v);
+            }
+        });
+        rootView.findViewById(R.id.button_copy_login_info).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                onClickButtonCopyLoginInfo(v);
+            }
+        });
+        rootView.findViewById(R.id.button_copy_password).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                onClickButtonCopyPassword(v);
+            }
+        });
+        rootView.findViewById(R.id.button_display_password).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                onClickButtonDisplayPassword(v);
+            }
+        });
+
         return rootView;
     }
 
     /**
      * Öffnet die Login-URL im Browser und kopiert die Login-Informationen in die Zwischenablage.
-     *
-     * FIXME dkn Die callingActivity kann durch getActivity() ersetzt werden.
      */
-    public void onClickButtonOpenUrl(final Activity callingActivity, final View buttonOpenUrl) {
+    public void onClickButtonOpenUrl(final View buttonOpenUrl) {
         try {
             openUrl(currentServiceInfo.getLoginUrl());
-            copyToClipboard(callingActivity, currentServiceInfo.getLoginInfo());
+            copyToClipboard(getActivity(), currentServiceInfo.getLoginInfo());
         } catch (Exception e) {
-            PswGenAdapter.handleThrowable(callingActivity, e);
+            PswGenAdapter.handleThrowable(getActivity(), e);
         }
     }
 
@@ -208,16 +235,14 @@ public class ServiceDetailFragment extends Fragment {
     /**
      * Öffnet die Login-URL im Browser, lässt den Nutzer die Tastatur wechseln und stellt Login-Informationen und Passwort für die
      * Tastatur bereit.
-     *
-     * FIXME dkn Die callingActivity kann durch getActivity() ersetzt werden.
      */
-    public void onClickButtonOpenAndProvide(final Activity callingActivity, final View buttonOpenAndProvide) {
+    public void onClickButtonOpenAndProvide(final View buttonOpenAndProvide) {
         try {
             inputMethodPickingState = InputMethodPickingState.INITIATING; // => Öffnen der URL in onWindowFocusChanged()
             provideLoginInfoAndPassword();
             // Das Öffnen der URL erfolgt nach dem Schließen der Tastaturauswahl in onWindowFocusChanged()
         } catch (Exception e) {
-            PswGenAdapter.handleThrowable(callingActivity, e);
+            PswGenAdapter.handleThrowable(getActivity(), e);
         }
     }
 
@@ -260,49 +285,41 @@ public class ServiceDetailFragment extends Fragment {
     /**
      * Lässt den Nutzer die Tastatur wechseln und stellt Login-Informationen und Passwort für die
      * Tastatur bereit.
-     *
-     * FIXME dkn Die callingActivity kann durch getActivity() ersetzt werden.
      */
-    public void onClickButtonProvide(final Activity callingActivity, final View buttonProvide) {
+    public void onClickButtonProvide(final View buttonProvide) {
         try {
             provideLoginInfoAndPassword();
         } catch (Exception e) {
-            PswGenAdapter.handleThrowable(callingActivity, e);
+            PswGenAdapter.handleThrowable(getActivity(), e);
         }
     }
 
     /**
      * Kopiert die Login-Informationen in die Zwischenablage.
-     *
-     * FIXME dkn Die callingActivity kann durch getActivity() ersetzt werden.
      */
-    public void onClickButtonCopyLoginInfo(final Activity callingActivity, final View buttonOpenUrl) {
+    public void onClickButtonCopyLoginInfo(final View buttonOpenUrl) {
         try {
-            copyToClipboard(callingActivity, currentServiceInfo.getLoginInfo());
+            copyToClipboard(getActivity(), currentServiceInfo.getLoginInfo());
         } catch (Exception e) {
-            PswGenAdapter.handleThrowable(callingActivity, e);
+            PswGenAdapter.handleThrowable(getActivity(), e);
         }
     }
 
     /**
      * Generiert das Passwort und kopiert es in die Zwischenablage.
-     *
-     * FIXME dkn Die callingActivity kann durch getActivity() ersetzt werden.
      */
-    public void onClickButtonCopyPassword(final Activity callingActivity, final View buttonOpenUrl) {
+    public void onClickButtonCopyPassword(final View buttonOpenUrl) {
         try {
-            copyToClipboard(callingActivity, getValidatedOrGeneratedPassword());
+            copyToClipboard(getActivity(), getValidatedOrGeneratedPassword());
         } catch (Exception e) {
-            PswGenAdapter.handleThrowable(callingActivity, e);
+            PswGenAdapter.handleThrowable(getActivity(), e);
         }
     }
 
     /**
      * Generiert das Passwort und zeigt es an.
-     *
-     * FIXME dkn Die callingActivity kann durch getActivity() ersetzt werden.
      */
-    public void onClickButtonDisplayPassword(final Activity callingActivity, final View buttonOpenUrl) {
+    public void onClickButtonDisplayPassword(final View buttonOpenUrl) {
         try {
             Bundle arguments = new Bundle();
             String password = getValidatedOrGeneratedPassword();
@@ -311,9 +328,9 @@ public class ServiceDetailFragment extends Fragment {
             arguments.putString(PasswordDialog.ARG_PASSWORD_EXPLANATION, passwordExplanation);
             DialogFragment passwordDialog = new PasswordDialog();
             passwordDialog.setArguments(arguments);
-            passwordDialog.show(getActivity().getFragmentManager(), "password_dialog");
+            passwordDialog.show(getActivity().getSupportFragmentManager(), "password_dialog");
         } catch (Exception e) {
-            PswGenAdapter.handleThrowable(callingActivity, e);
+            PswGenAdapter.handleThrowable(getActivity(), e);
         }
     }
 

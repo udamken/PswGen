@@ -2,7 +2,7 @@
  * PswGenDesktop - Manages your websites and repeatably generates passwords for them
  * PswGenDroid - Generates your passwords managed by PswGenDesktop on your mobile  
  *
- *     Copyright (C) 2005-2016 Uwe Damken
+ *     Copyright (C) 2005-2018 Uwe Damken
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,13 +18,7 @@
  *******************************************************************************/
 package de.dknapps.pswgendroid;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import android.app.Activity;
@@ -153,7 +147,7 @@ public class StartupActivity extends Activity implements PassphraseDialog.Listen
      */
     @Override
     public void onClickPassphraseDialogButtonPositive() {
-        Intent listIntent = new Intent(this, ServiceListActivity.class);
+        Intent listIntent = new Intent(this, ServiceMaintenanceActivity.class);
         startActivity(listIntent);
     }
 

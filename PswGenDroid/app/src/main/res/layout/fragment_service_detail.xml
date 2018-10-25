@@ -101,43 +101,37 @@
 		    style="?android:attr/buttonStyle"
 		    android:layout_width="match_parent"
 		    android:layout_height="wrap_content"
-		    android:text="@string/button_open_and_provide"
-		    android:onClick="onClickButtonOpenAndProvide" />
+		    android:text="@string/button_open_and_provide" />
 		
 		<Button android:id="@+id/button_provide"
 		    style="?android:attr/buttonStyle"
 		    android:layout_width="match_parent"
 		    android:layout_height="wrap_content"
-		    android:text="@string/button_provide"
-		    android:onClick="onClickButtonProvide" />
+		    android:text="@string/button_provide" />
 
 		<Button android:id="@+id/button_open_url"
 		    style="?android:attr/buttonStyle"
 		    android:layout_width="match_parent"
 		    android:layout_height="wrap_content"
-		    android:text="@string/button_open_url"
-		    android:onClick="onClickButtonOpenUrl" />
+		    android:text="@string/button_open_url" />
 
 		<Button android:id="@+id/button_copy_login_info"
 		    style="?android:attr/buttonStyle"
 		    android:layout_width="match_parent"
 		    android:layout_height="wrap_content"
-		    android:text="@string/button_copy_login_info"
-		    android:onClick="onClickButtonCopyLoginInfo" />
+		    android:text="@string/button_copy_login_info" />
 		
 		<Button android:id="@+id/button_copy_password"
 		    style="?android:attr/buttonStyle"
 		    android:layout_width="match_parent"
 		    android:layout_height="wrap_content"
-		    android:text="@string/button_copy_password"
-		    android:onClick="onClickButtonCopyPassword" />
+		    android:text="@string/button_copy_password" />
 		
 		<Button android:id="@+id/button_display_password"
 		    style="?android:attr/buttonStyle"
 		    android:layout_width="match_parent"
 		    android:layout_height="wrap_content"
-		    android:text="@string/button_display_password"
-		    android:onClick="onClickButtonDisplayPassword" />
+		    android:text="@string/button_display_password" />
 		
 	</LinearLayout>
 	

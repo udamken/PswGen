@@ -2,7 +2,7 @@
  * PswGenDesktop - Manages your websites and repeatably generates passwords for them
  * PswGenDroid - Generates your passwords managed by PswGenDesktop on your mobile  
  *
- *     Copyright (C) 2005-2016 Uwe Damken
+ *     Copyright (C) 2005-2018 Uwe Damken
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,8 +19,11 @@
 package de.dknapps.pswgendroid;
 
 import android.app.Activity;
-import android.content.Intent;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -31,12 +34,8 @@ import android.widget.SearchView;
  * <p>
  * Diese Activity stellt in Fragments die Liste der Dienste {@link ServiceListFragment} oder die Detailansicht {@link ServiceDetailFragment} dar.
  * </p>
- * <p>
- * Diese Activity implementiert {@link ServiceListFragment.Listener}, um die Auswahl von Einträgen mitgeteilt
- * zu bekommen.
- * </p>
  */
-public class ServiceListActivity extends Activity implements ServiceListFragment.Listener, PassphraseDialog.Listener {
+public class ServiceMaintenanceActivity extends FragmentActivity implements PassphraseDialog.Listener {
 
     /**
      * Das eingebettete Fragment für die Anzeige der Diensteliste
@@ -51,30 +50,28 @@ public class ServiceListActivity extends Activity implements ServiceListFragment
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_service_list);
-        getFragmentManager()
+        setContentView(R.layout.activity_service_maintenance);
+        getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.service_list, serviceListFragment)
+                .replace(R.id.service_maintencance, serviceListFragment)
                 .commit();
         getActionBar().setDisplayHomeAsUpEnabled(true);
+
+        ServiceMaintenanceViewModel model = ViewModelProviders.of(this).get(ServiceMaintenanceViewModel.class);
+        model.getCurrentServiceAbbreviation().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String serviceAbbreviation) {
+                onChangedCurrentServiceAbbreviation();
+            }
+        });
     }
 
-    /**
-     * Callback method from {@link ServiceListFragment.Listener} indicating that the item with the given ID
-     * was selected.
-     */
-    @Override
-    public void onItemSelected(String id) {
-        Bundle arguments = new Bundle();
-        arguments.putString(ServiceDetailFragment.ARG_ITEM_ID, id);
-        serviceDetailFragment = new ServiceDetailFragment();
-        serviceDetailFragment.setArguments(arguments);
-        getFragmentManager()
+    private void onChangedCurrentServiceAbbreviation() {
+        getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.service_list, serviceDetailFragment)
+                .replace(R.id.service_maintencance, serviceDetailFragment)
                 .addToBackStack(null)
                 .commit();
-        // Up-Button im Action Bar anzeigen
     }
 
     @Override
@@ -89,13 +86,9 @@ public class ServiceListActivity extends Activity implements ServiceListFragment
 
     @Override
     public boolean onNavigateUp() {
-        getFragmentManager().popBackStack();
+        getSupportFragmentManager().popBackStack();
         return true;
     }
-
-    /**
-     * Eingehende On-Click-Events an das {@link ServiceDetailFragment} übergeben.
-     */
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
@@ -103,30 +96,6 @@ public class ServiceListActivity extends Activity implements ServiceListFragment
         if (serviceDetailFragment != null) {
             serviceDetailFragment.onWindowFocusChanged(hasFocus);
         }
-    }
-
-    public void onClickButtonOpenAndProvide(final View buttonOpenAndProvide) {
-        serviceDetailFragment.onClickButtonOpenAndProvide(this, buttonOpenAndProvide);
-    }
-
-    public void onClickButtonProvide(final View buttonProvide) {
-        serviceDetailFragment.onClickButtonProvide(this, buttonProvide);
-    }
-
-    public void onClickButtonOpenUrl(final View buttonOpenUrl) {
-        serviceDetailFragment.onClickButtonOpenUrl(this, buttonOpenUrl);
-    }
-
-    public void onClickButtonCopyLoginInfo(final View buttonOpenUrl) {
-        serviceDetailFragment.onClickButtonCopyLoginInfo(this, buttonOpenUrl);
-    }
-
-    public void onClickButtonCopyPassword(final View buttonOpenUrl) {
-        serviceDetailFragment.onClickButtonCopyPassword(this, buttonOpenUrl);
-    }
-
-    public void onClickButtonDisplayPassword(final View buttonOpenUrl) {
-        serviceDetailFragment.onClickButtonDisplayPassword(this, buttonOpenUrl);
     }
 
     /**

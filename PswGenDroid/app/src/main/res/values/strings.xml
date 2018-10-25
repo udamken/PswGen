@@ -55,7 +55,7 @@
 	<string name="hint_passphrase">Passphrase</string>
 	<string name="hint_oldPassphrase">Old Passphrase</string>
 
-	<!-- ServiceListActivity -->
+	<!-- ServiceMaintenanceActivity -->
 	<string name="title_service_list">Stored Services</string>
 	<string name="search_title">Search Service</string>
 	<string name="title_service_detail">Service Details</string>

@@ -25,7 +25,7 @@
         </activity>
 
         <activity
-            android:name="de.dknapps.pswgendroid.ServiceListActivity"
+            android:name="de.dknapps.pswgendroid.ServiceMaintenanceActivity"
             android:label="@string/title_service_list"
             android:parentActivityName="de.dknapps.pswgendroid.StartupActivity" >
             <!-- Parent activity meta-data to support 4.0 and lower -->
