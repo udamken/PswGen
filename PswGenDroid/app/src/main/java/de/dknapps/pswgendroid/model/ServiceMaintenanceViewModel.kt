@@ -24,6 +24,10 @@ import de.dknapps.pswgencore.model.ServiceInfoList
 
 class ServiceMaintenanceViewModel : ViewModel() {
 
+    enum class InputMethodPickingState {
+        NONE, INITIATING, ONGOING
+    }
+
     /**
      * All services loaded from file.
      */
@@ -42,6 +46,11 @@ class ServiceMaintenanceViewModel : ViewModel() {
      * Entered passphrase to be used to generate passwords that are marked to use the old passphrase.
      */
     var oldPassphrase: String? = null
+
+    /**
+     * Currently selected service.
+     */
+    var currentServiceInfo: ServiceInfo? = null
 
     /**
      * True if services are loaded and passphrase is validated.

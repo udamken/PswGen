@@ -21,10 +21,15 @@ package de.dknapps.pswgendroid.ui
 import android.R.id.text1
 import android.R.layout.simple_list_item_activated_1
 import android.os.Bundle
+import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.ListView
 import androidx.lifecycle.ViewModelProviders
 import de.dknapps.pswgencore.model.ServiceInfo
+import de.dknapps.pswgendroid.event.OpenAboutClickedEvent
+import de.dknapps.pswgendroid.event.ServiceSelectedEvent
 import de.dknapps.pswgendroid.model.ServiceMaintenanceViewModel
+import org.greenrobot.eventbus.EventBus
 
 class ServiceListFragment : androidx.fragment.app.ListFragment() {
 
@@ -50,4 +55,12 @@ class ServiceListFragment : androidx.fragment.app.ListFragment() {
             simple_list_item_activated_1, text1, viewModel.services!!.getServices(false)
         )
     }
+
+    override fun onListItemClick(listView: ListView?, view: View?, position: Int, id: Long) {
+        super.onListItemClick(listView, view, position, id)
+        viewModel.currentServiceInfo = listAdapter.getItem(position)!! as ServiceInfo
+        EventBus.getDefault().post(ServiceSelectedEvent());
+    }
+
+
 }

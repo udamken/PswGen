@@ -27,6 +27,8 @@ import org.greenrobot.eventbus.ThreadMode
 import de.dknapps.pswgendroid.DroidConstants.Companion.TAG
 import de.dknapps.pswgendroid.R
 import de.dknapps.pswgendroid.event.ServiceListLoadedEvent
+import de.dknapps.pswgendroid.event.ServiceSelectedEvent
+import de.dknapps.pswgendroid.event.WindowFocusChangedEvent
 import org.greenrobot.eventbus.EventBus
 
 
@@ -75,6 +77,22 @@ class ServiceMaintenanceActivity : AppCompatActivity() {
             .replace(R.id.container, ServiceListFragment.newInstance())
             .addToBackStack(ServiceListFragment::class.java.name)
             .commit()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onServiceSelectedEvent(event: ServiceSelectedEvent) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.container, ServiceDetailFragment.newInstance())
+            .addToBackStack(ServiceDetailFragment::class.java.name)
+            .commit()
+    }
+
+    /**
+     * @see ServiceDetailFragment.onWindowFocusChanged what this is needed for.
+     */
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        EventBus.getDefault().post(WindowFocusChangedEvent());
     }
 
 }
