@@ -36,6 +36,8 @@ import de.dknapps.pswgencore.CoreConstants
 import de.dknapps.pswgencore.util.FileHelper
 import de.dknapps.pswgendroid.adapter.CommonJsonReaderWriterFactoryAndroidImpl
 import de.dknapps.pswgendroid.adapter.PswGenAdapter
+import de.dknapps.pswgendroid.event.OpenAboutClickedEvent
+import org.greenrobot.eventbus.EventBus
 
 class StartupFragment : androidx.fragment.app.Fragment() {
 
@@ -115,9 +117,7 @@ class StartupFragment : androidx.fragment.app.Fragment() {
      * Send event to switch to about fragment.
      */
     private fun onClickButtonOpenAbout() {
-        // TODO Use an About Fragment
-//            val aboutIntent = Intent(this, AboutActivity::class.java)
-//            startActivity(aboutIntent)
+        EventBus.getDefault().post(OpenAboutClickedEvent());
     }
 
 }

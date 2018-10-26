@@ -25,14 +25,29 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+
+    // PswGenCore library
+    implementation files('libs/PswGenCore.jar')
+
+    // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    // AndroidX fka Support Libraries
     implementation 'androidx.appcompat:appcompat:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
+
+    // EventBus
+    implementation 'org.greenrobot:eventbus:3.1.1'
+    apply plugin: 'kotlin-kapt' // https://stackoverflow.com/a/45963364
+
+    // JUnit
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.0'
+
+    // Espresso
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
+
     // Enable Kotlin Extensions
     apply plugin: 'kotlin-android-extensions'
-    implementation files('libs/PswGenCore.jar')
 }

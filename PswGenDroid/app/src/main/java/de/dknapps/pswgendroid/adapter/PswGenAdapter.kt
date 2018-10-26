@@ -21,17 +21,12 @@ package de.dknapps.pswgendroid.adapter
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
-import de.dknapps.pswgencore.model.ServiceInfo
 import de.dknapps.pswgencore.model.ServiceInfoList
 import de.dknapps.pswgencore.util.DomainException
 import de.dknapps.pswgencore.util.FileHelper
 import de.dknapps.pswgendroid.DroidConstants.Companion.TAG
 import de.dknapps.pswgendroid.R
-
 import java.io.File
-import java.util.ArrayList
-import java.util.logging.Level
-import java.util.logging.Logger
 
 /**
  * Class to adapt PswGenDroid to PswGenCore.

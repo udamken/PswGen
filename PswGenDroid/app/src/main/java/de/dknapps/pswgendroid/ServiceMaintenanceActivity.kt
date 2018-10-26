@@ -20,7 +20,15 @@ package de.dknapps.pswgendroid
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import de.dknapps.pswgendroid.event.OpenAboutClickedEvent
 import de.dknapps.pswgendroid.ui.startup.StartupFragment
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
+import de.dknapps.pswgendroid.DroidConstants.Companion.TAG
+import org.greenrobot.eventbus.EventBus
+
+
 
 class ServiceMaintenanceActivity : AppCompatActivity() {
 
@@ -41,6 +49,21 @@ class ServiceMaintenanceActivity : AppCompatActivity() {
         // TODO IME
         // TODO Service Edit
 
+    }
+
+    public override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    public override fun onStop() {
+        EventBus.getDefault().unregister(this)
+        super.onStop()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onOpenAboutClickedEvent(event: OpenAboutClickedEvent) {
+        Log.d(TAG, "open about clicked")
     }
 
 }
