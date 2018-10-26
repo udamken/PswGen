@@ -41,7 +41,6 @@ class ServiceMaintenanceActivity : AppCompatActivity() {
                 .commitNow()
         }
 
-        // TODO EventBus to switch to AboutFragment ...
         // TODO Ask for permissions
         // TODO Launcher Icon
         // TODO Service List
@@ -63,7 +62,10 @@ class ServiceMaintenanceActivity : AppCompatActivity() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onOpenAboutClickedEvent(event: OpenAboutClickedEvent) {
-        Log.d(TAG, "open about clicked")
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.container, AboutFragment.newInstance())
+            .addToBackStack(AboutFragment::class.java.name)
+            .commit()
     }
 
 }
