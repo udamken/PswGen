@@ -18,44 +18,36 @@
  ************************************************************************************/
 package de.dknapps.pswgendroid.ui
 
-import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
-import android.net.Uri
-import androidx.lifecycle.ViewModelProviders
+import android.R.id.text1
+import android.R.layout.simple_list_item_activated_1
 import android.os.Bundle
-import android.os.Environment
-import android.provider.Settings
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import de.dknapps.pswgendroid.R
-import kotlinx.android.synthetic.main.startup_fragment.*
-import java.io.File
-import de.dknapps.pswgencore.CoreConstants
-import de.dknapps.pswgencore.util.FileHelper
-import de.dknapps.pswgendroid.adapter.CommonJsonReaderWriterFactoryAndroidImpl
-import de.dknapps.pswgendroid.adapter.PswGenAdapter
-import de.dknapps.pswgendroid.event.OpenAboutClickedEvent
+import android.widget.ArrayAdapter
+import androidx.lifecycle.ViewModelProviders
+import de.dknapps.pswgencore.model.ServiceInfo
 import de.dknapps.pswgendroid.model.ServiceMaintenanceViewModel
-import kotlinx.android.synthetic.main.about_fragment.*
-import org.greenrobot.eventbus.EventBus
 
-class AboutFragment : androidx.fragment.app.Fragment() {
+class ServiceListFragment : androidx.fragment.app.ListFragment() {
 
     companion object {
-        fun newInstance() = AboutFragment()
+        fun newInstance() = ServiceListFragment()
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        return inflater.inflate(R.layout.about_fragment, container, false)
-    }
+    private lateinit var viewModel: ServiceMaintenanceViewModel
+
+//    override fun onCreateView(
+//        inflater: LayoutInflater, container: ViewGroup?,
+//        savedInstanceState: Bundle?
+//    ): View {
+//        return inflater.inflate(R.layout.about_fragment, container, false)
+//    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        aboutHtmlText.loadUrl(getString(R.string.about_html_text_url))
+        viewModel = ViewModelProviders.of(activity!!).get(ServiceMaintenanceViewModel::class.java)
+
+        listAdapter = ArrayAdapter<ServiceInfo>(
+            activity!!,
+            simple_list_item_activated_1, text1, viewModel.services!!.getServices(false)
+        )
     }
 }

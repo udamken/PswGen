@@ -37,18 +37,19 @@ import de.dknapps.pswgencore.util.FileHelper
 import de.dknapps.pswgendroid.adapter.CommonJsonReaderWriterFactoryAndroidImpl
 import de.dknapps.pswgendroid.adapter.PswGenAdapter
 import de.dknapps.pswgendroid.event.OpenAboutClickedEvent
+import de.dknapps.pswgendroid.event.ServiceListLoadedEvent
 import de.dknapps.pswgendroid.model.ServiceMaintenanceViewModel
 import org.greenrobot.eventbus.EventBus
 
 class StartupFragment : androidx.fragment.app.Fragment() {
-
-    lateinit var prefs: SharedPreferences
 
     companion object {
         fun newInstance() = StartupFragment()
     }
 
     private lateinit var viewModel: ServiceMaintenanceViewModel
+
+    private lateinit var prefs: SharedPreferences
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,8 +60,8 @@ class StartupFragment : androidx.fragment.app.Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(ServiceMaintenanceViewModel::class.java)
-        // TODO: Use the ViewModel
+        viewModel = ViewModelProviders.of(activity!!).get(ServiceMaintenanceViewModel::class.java)
+
         prefs = activity!!.getSharedPreferences(getString(R.string.preferences_filename), Context.MODE_PRIVATE)
 
         val defaultFilepath = (Environment.getExternalStorageDirectory().absolutePath + File.separator
@@ -87,13 +88,14 @@ class StartupFragment : androidx.fragment.app.Fragment() {
             val servicesFile = File(filepath.text.toString())
             val otherServicesFile = File(otherFilepath.text.toString())
             val fileHelper = FileHelper.getInstance(CommonJsonReaderWriterFactoryAndroidImpl())
-            PswGenAdapter.loadServiceInfoList(servicesFile, otherServicesFile, passphrase.text.toString())!!
+            viewModel.services = PswGenAdapter.loadServiceInfoList(servicesFile, otherServicesFile, passphrase.text.toString())!!
             viewModel.validatedPassphrase = passphrase.text.toString()
             viewModel.oldPassphrase = oldPassphrase.text.toString()
             val editor = prefs.edit()
             editor.putString(getString(R.string.preference_filepath), filepath.text.toString())
             editor.putString(getString(R.string.preference_other_filepath), otherFilepath.text.toString())
             editor.commit()
+            EventBus.getDefault().post(ServiceListLoadedEvent());
         } catch (e: Exception) {
             PswGenAdapter.handleThrowable(activity!!, e)
         }

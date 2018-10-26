@@ -26,6 +26,7 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import de.dknapps.pswgendroid.DroidConstants.Companion.TAG
 import de.dknapps.pswgendroid.R
+import de.dknapps.pswgendroid.event.ServiceListLoadedEvent
 import org.greenrobot.eventbus.EventBus
 
 
@@ -43,10 +44,10 @@ class ServiceMaintenanceActivity : AppCompatActivity() {
 
         // TODO Ask for permissions
         // TODO Launcher Icon
-        // TODO Service List
         // TODO Service Detail
         // TODO IME
         // TODO Service Edit
+        // TODO Up Button
 
     }
 
@@ -65,6 +66,14 @@ class ServiceMaintenanceActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.container, AboutFragment.newInstance())
             .addToBackStack(AboutFragment::class.java.name)
+            .commit()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onServiceListLoadedEvent(event: ServiceListLoadedEvent) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.container, ServiceListFragment.newInstance())
+            .addToBackStack(ServiceListFragment::class.java.name)
             .commit()
     }
 
