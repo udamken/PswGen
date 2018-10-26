@@ -58,7 +58,6 @@ class ServiceMaintenanceActivity : AppCompatActivity() {
         }, IntentFilter(Intent.ACTION_SCREEN_OFF))
 
         // TODO Ask for permissions
-        // TODO Launcher Icon
         // TODO Service Edit
         // TODO Up Button
         // TODO Search in service list
