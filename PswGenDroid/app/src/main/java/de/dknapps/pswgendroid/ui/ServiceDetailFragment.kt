@@ -74,7 +74,7 @@ class ServiceDetailFragment : androidx.fragment.app.Fragment() {
     /**
      * State of picking an input method.
      */
-    var inputMethodPickingState = NONE
+    private var inputMethodPickingState = NONE
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

@@ -18,19 +18,16 @@
  ************************************************************************************/
 package de.dknapps.pswgendroid.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import de.dknapps.pswgendroid.event.OpenAboutClickedEvent
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
-import de.dknapps.pswgendroid.DroidConstants.Companion.TAG
+import androidx.appcompat.app.AppCompatActivity
 import de.dknapps.pswgendroid.R
+import de.dknapps.pswgendroid.event.OpenAboutClickedEvent
 import de.dknapps.pswgendroid.event.ServiceListLoadedEvent
 import de.dknapps.pswgendroid.event.ServiceSelectedEvent
 import de.dknapps.pswgendroid.event.WindowFocusChangedEvent
 import org.greenrobot.eventbus.EventBus
-
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 
 class ServiceMaintenanceActivity : AppCompatActivity() {
@@ -46,8 +43,6 @@ class ServiceMaintenanceActivity : AppCompatActivity() {
 
         // TODO Ask for permissions
         // TODO Launcher Icon
-        // TODO Service Detail
-        // TODO IME
         // TODO Service Edit
         // TODO Up Button
 

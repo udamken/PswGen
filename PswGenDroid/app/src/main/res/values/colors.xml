@@ -18,6 +18,7 @@
     limitations under the License.
  -->
 <resources>
+
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
@@ -27,13 +28,6 @@
     <color name="dknapps_de_orange">#FF6600</color>
     <color name="dknapps_de_white">#FFFFFF</color>
     <color name="dknapps_de_yellow">#FFFF00</color>
-
-    <!--<color name="colorPrimary">@color/windowBackgroundDark</color>-->
-    <!--<color name="colorPrimaryDark">@android:color/holo_green_dark</color>-->
-    <!--<color name="navigationBarColor">@color/windowBackgroundDark</color>-->
-    <!--<color name="textColorPrimary">#ffff8888</color>-->
-    <!--<color name="windowBackground">@color/dknapps_de_blue</color>-->
-    <!--<color name="windowBackgroundDark">@color/dknapps_de_blue_dark</color>-->
 
     <color name="accentColor">@color/dknapps_de_orange</color>
     <color name="backgroundColor">@color/dknapps_de_blue</color>
