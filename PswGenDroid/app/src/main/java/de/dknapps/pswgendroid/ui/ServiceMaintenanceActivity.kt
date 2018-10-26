@@ -60,7 +60,6 @@ class ServiceMaintenanceActivity : AppCompatActivity() {
         // TODO Ask for permissions
         // TODO Service Edit
         // TODO Up Button
-        // TODO Search in service list
 
     }
 

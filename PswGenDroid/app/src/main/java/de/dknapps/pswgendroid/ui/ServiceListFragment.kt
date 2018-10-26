@@ -21,22 +21,51 @@ package de.dknapps.pswgendroid.ui
 import android.R.id.text1
 import android.R.layout.simple_list_item_activated_1
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.ListView
+import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.ListFragment
 import androidx.lifecycle.ViewModelProviders
 import de.dknapps.pswgencore.model.ServiceInfo
+import de.dknapps.pswgendroid.R
 import de.dknapps.pswgendroid.event.ServiceSelectedEvent
 import de.dknapps.pswgendroid.model.ServiceMaintenanceViewModel
 import org.greenrobot.eventbus.EventBus
 
-class ServiceListFragment : androidx.fragment.app.ListFragment() {
+class ServiceListFragment : ListFragment() {
 
     companion object {
         fun newInstance() = ServiceListFragment()
     }
 
     private lateinit var viewModel: ServiceMaintenanceViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater!!.inflate(R.menu.options_menu, menu)
+        val searchMenuItem = menu!!.findItem(R.id.search)
+        val searchView = searchMenuItem.actionView as SearchView
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false // action not handled, call default mechanism
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                (listAdapter!! as ArrayAdapter<ServiceInfo>).filter.filter(newText)
+                return true // action handled, no more to do
+            }
+
+        })
+    }
 
 //    override fun onCreateView(
 //        inflater: LayoutInflater, container: ViewGroup?,
@@ -69,6 +98,5 @@ class ServiceListFragment : androidx.fragment.app.ListFragment() {
         viewModel.currentServiceInfo = listAdapter.getItem(position)!! as ServiceInfo
         EventBus.getDefault().post(ServiceSelectedEvent());
     }
-
 
 }
