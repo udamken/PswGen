@@ -48,14 +48,25 @@ class ServiceDetailFragment : androidx.fragment.app.Fragment() {
         /**
          * Login information provided to the keyboard.
          */
-        private var providedLoginInfo: String? = null
+        var providedLoginInfo: String? = null
+            private set
 
         /**
          * Password provided to the keyboard.
          */
-        private var providedPassword: String? = null
+        var providedPassword: String? = null
+            private set
 
         fun newInstance() = ServiceDetailFragment()
+
+        /**
+         * Reset provide login information and password to null.
+         */
+        fun resetProvidedLoginInformationPassword() {
+            providedLoginInfo = null
+            providedPassword = null
+        }
+
     }
 
     private lateinit var viewModel: ServiceMaintenanceViewModel

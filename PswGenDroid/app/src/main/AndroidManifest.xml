@@ -41,6 +41,20 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <!-- Input Method Editor Service to provide a virtual keyboard -->
+        <service
+                android:name="de.dknapps.pswgendroid.ime.PswGenInputMethodEditor"
+                android:label="@string/title_input_method_editor"
+                android:permission="android.permission.BIND_INPUT_METHOD">
+            <intent-filter>
+                <action android:name="android.view.InputMethod"/>
+            </intent-filter>
+            <meta-data
+                    android:name="android.view.im"
+                    android:resource="@xml/method"/>
+        </service>
+
     </application>
 
 </manifest>
