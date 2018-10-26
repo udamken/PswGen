@@ -18,28 +18,47 @@
  ************************************************************************************/
 package de.dknapps.pswgendroid.ui
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProviders
 import de.dknapps.pswgendroid.R
 import de.dknapps.pswgendroid.event.OpenAboutClickedEvent
 import de.dknapps.pswgendroid.event.ServiceListLoadedEvent
 import de.dknapps.pswgendroid.event.ServiceSelectedEvent
 import de.dknapps.pswgendroid.event.WindowFocusChangedEvent
+import de.dknapps.pswgendroid.model.ServiceMaintenanceViewModel
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-
 class ServiceMaintenanceActivity : AppCompatActivity() {
+
+    private lateinit var viewModel: ServiceMaintenanceViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        viewModel = ViewModelProviders.of(this).get(ServiceMaintenanceViewModel::class.java)
+
         setContentView(R.layout.service_maintenance_activity)
+
+        // If this is the first call the startup fragment should be opened
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.container, StartupFragment.newInstance())
                 .commitNow()
         }
+
+        // Get informed when screen got locked to "unload" the services and to return to startup fragment
+        // for security reasons. ServiceListFragment and ServiceDetailFragment implement the return.
+        registerReceiver(object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                viewModel.resetModel()
+            }
+        }, IntentFilter(Intent.ACTION_SCREEN_OFF))
 
         // TODO Ask for permissions
         // TODO Launcher Icon

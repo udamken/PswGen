@@ -101,16 +101,20 @@ class ServiceDetailFragment : androidx.fragment.app.Fragment() {
     }
 
     override fun onResume() {
-        with(viewModel) {
-            serviceAbbreviation.text = currentServiceInfo?.serviceAbbreviation
-            additionalInfo.text = currentServiceInfo?.additionalInfo
-            loginUrl.text = currentServiceInfo?.loginUrl
-            loginInfo.text = currentServiceInfo?.loginInfo
-            additionalLoginInfo.text = currentServiceInfo?.additionalLoginInfo
-            labelUseOldPassphrase.visibility =
-                    if (currentServiceInfo != null && currentServiceInfo!!.isUseOldPassphrase) View.VISIBLE else View.INVISIBLE
-        }
         super.onResume()
+        // When the screen gets locked services are unloaded. Therefore we return to previous fragment
+        // if there is currently no service selected (probably because of screen lock).
+        if (viewModel.currentServiceInfo == null) {
+            activity!!.supportFragmentManager.popBackStack()
+        } else with(viewModel) {
+            serviceAbbreviation.text = currentServiceInfo!!.serviceAbbreviation
+            additionalInfo.text = currentServiceInfo!!.additionalInfo
+            loginUrl.text = currentServiceInfo!!.loginUrl
+            loginInfo.text = currentServiceInfo!!.loginInfo
+            additionalLoginInfo.text = currentServiceInfo!!.additionalLoginInfo
+            labelUseOldPassphrase.visibility =
+                    if (currentServiceInfo!!.isUseOldPassphrase) View.VISIBLE else View.INVISIBLE
+        }
     }
 
     public override fun onStop() {

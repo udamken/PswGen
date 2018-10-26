@@ -22,24 +22,24 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.os.Environment
 import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import de.dknapps.pswgendroid.R
-import kotlinx.android.synthetic.main.startup_fragment.*
-import java.io.File
+import androidx.lifecycle.ViewModelProviders
 import de.dknapps.pswgencore.CoreConstants
 import de.dknapps.pswgencore.util.FileHelper
+import de.dknapps.pswgendroid.R
 import de.dknapps.pswgendroid.adapter.CommonJsonReaderWriterFactoryAndroidImpl
 import de.dknapps.pswgendroid.adapter.PswGenAdapter
 import de.dknapps.pswgendroid.event.OpenAboutClickedEvent
 import de.dknapps.pswgendroid.event.ServiceListLoadedEvent
 import de.dknapps.pswgendroid.model.ServiceMaintenanceViewModel
+import kotlinx.android.synthetic.main.startup_fragment.*
 import org.greenrobot.eventbus.EventBus
+import java.io.File
 
 class StartupFragment : androidx.fragment.app.Fragment() {
 
@@ -72,12 +72,18 @@ class StartupFragment : androidx.fragment.app.Fragment() {
                 + "Download" + File.separator + CoreConstants.SERVICES_FILENAME) // something like /storage/emulated/0/Download
         otherFilepath.setText(prefs.getString(getString(R.string.preference_other_filepath), defaultOtherFilepath))
 
-        // TODO Add SCREEN_OFF Broadcast Receiver
-
         buttonOpenServices.setOnClickListener { onClickButtonOpenServices() }
         buttonOpenImeSettings.setOnClickListener { onClickButtonOpenImeSettings() }
         buttonOpenHelp.setOnClickListener { onClickButtonOpenHelp() }
         buttonOpenAbout.setOnClickListener { onClickButtonOpenAbout() }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Passphrases are deleted for security reasons otherwise screen lock leads to "unloading" the services
+        // and returns to startup fragment but the passphrase would still be there which were not very helpful.
+        passphrase.setText(null)
+        oldPassphrase.setText(null)
     }
 
     /**

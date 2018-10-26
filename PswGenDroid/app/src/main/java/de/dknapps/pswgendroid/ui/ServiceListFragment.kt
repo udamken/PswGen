@@ -26,7 +26,6 @@ import android.widget.ArrayAdapter
 import android.widget.ListView
 import androidx.lifecycle.ViewModelProviders
 import de.dknapps.pswgencore.model.ServiceInfo
-import de.dknapps.pswgendroid.event.OpenAboutClickedEvent
 import de.dknapps.pswgendroid.event.ServiceSelectedEvent
 import de.dknapps.pswgendroid.model.ServiceMaintenanceViewModel
 import org.greenrobot.eventbus.EventBus
@@ -49,11 +48,20 @@ class ServiceListFragment : androidx.fragment.app.ListFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(activity!!).get(ServiceMaintenanceViewModel::class.java)
+    }
 
-        listAdapter = ArrayAdapter<ServiceInfo>(
-            activity!!,
-            simple_list_item_activated_1, text1, viewModel.services!!.getServices(false)
-        )
+    override fun onResume() {
+        super.onResume()
+        // When the screen gets locked services are unloaded. Therefore we return to previous fragment
+        // if there are currently no service loaded (probably because of screen lock).
+        if (viewModel.services == null) {
+            activity!!.supportFragmentManager.popBackStack()
+        } else {
+            listAdapter = ArrayAdapter<ServiceInfo>(
+                activity!!,
+                simple_list_item_activated_1, text1, viewModel.services!!.getServices(false)
+            )
+        }
     }
 
     override fun onListItemClick(listView: ListView?, view: View?, position: Int, id: Long) {

@@ -29,15 +29,6 @@ class ServiceMaintenanceViewModel : ViewModel() {
     }
 
     /**
-     * All services loaded from file.
-     */
-    var services: ServiceInfoList? = null
-
-    // TODO What's this for?
-//    var servicesAsList: List<ServiceInfo>? = null
-//        private set
-
-    /**
      * Validated passphrase (filled after encryption of the file) to be used to generate passwords.
      */
     var validatedPassphrase: String? = null
@@ -48,15 +39,29 @@ class ServiceMaintenanceViewModel : ViewModel() {
     var oldPassphrase: String? = null
 
     /**
+     * All services loaded from file.
+     */
+    var services: ServiceInfoList? = null
+
+    /**
      * Currently selected service.
      */
     var currentServiceInfo: ServiceInfo? = null
 
-    /**
-     * True if services are loaded and passphrase is validated.
-     */
-    // TODO What's this for?
-//    val isServiceInfoListLoaded: Boolean
-//        get() = services != null && servicesAsList != null && validatedPassphrase != null
+    init {
+        resetModel()
+    }
+
+    override fun onCleared() {
+        resetModel()
+        super.onCleared()
+    }
+
+    fun resetModel() {
+        validatedPassphrase = null
+        oldPassphrase = null
+        services = null
+        currentServiceInfo = null
+    }
 
 }
