@@ -48,6 +48,16 @@ class ServiceMaintenanceViewModel : ViewModel() {
      */
     var currentServiceInfo: ServiceInfo? = null
 
+    /**
+     * Entered or generated password from currently selected service.
+     */
+    var password: String? = null
+
+    /**
+     * Readable explanation to the password from currently selected service.
+     */
+    var passwordExplanation: String? = null
+
     init {
         resetModel()
     }
@@ -62,6 +72,8 @@ class ServiceMaintenanceViewModel : ViewModel() {
         oldPassphrase = null
         services = null
         currentServiceInfo = null
+        password = null
+        passwordExplanation = null
     }
 
 }

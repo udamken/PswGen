@@ -33,6 +33,7 @@ import androidx.lifecycle.ViewModelProviders
 import de.dknapps.pswgencore.util.PasswordFactory
 import de.dknapps.pswgendroid.R
 import de.dknapps.pswgendroid.adapter.PswGenAdapter
+import de.dknapps.pswgendroid.event.DisplayPasswordClickedEvent
 import de.dknapps.pswgendroid.event.WindowFocusChangedEvent
 import de.dknapps.pswgendroid.model.ServiceMaintenanceViewModel
 import de.dknapps.pswgendroid.model.ServiceMaintenanceViewModel.InputMethodPickingState.*
@@ -204,16 +205,10 @@ class ServiceDetailFragment : androidx.fragment.app.Fragment() {
      * Display entered or generated password with an explanation.
      */
     private fun onClickButtonDisplayPassword() {
-        // TODO Display password as fragment?
         try {
-            val arguments = Bundle()
-            val password = getValidatedOrGeneratedPassword()
-            val passwordExplanation = getPasswordExplanation(password)
-//            arguments.putString(PasswordDialog.ARG_PASSWORD, password)
-//            arguments.putString(PasswordDialog.ARG_PASSWORD_EXPLANATION, passwordExplanation)
-//            val passwordDialog = PasswordDialog()
-//            passwordDialog.setArguments(arguments)
-//            passwordDialog.show(activity!!.supportFragmentManager, "password_dialog")
+            viewModel.password = getValidatedOrGeneratedPassword()
+            viewModel.passwordExplanation = getPasswordExplanation(viewModel.password!!)
+            EventBus.getDefault().post(DisplayPasswordClickedEvent());
         } catch (e: Exception) {
             PswGenAdapter.handleThrowable(activity!!, e)
         }

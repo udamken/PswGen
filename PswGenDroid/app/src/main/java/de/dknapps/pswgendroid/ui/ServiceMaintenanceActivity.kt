@@ -26,10 +26,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import de.dknapps.pswgendroid.R
-import de.dknapps.pswgendroid.event.OpenAboutClickedEvent
-import de.dknapps.pswgendroid.event.ServiceListLoadedEvent
-import de.dknapps.pswgendroid.event.ServiceSelectedEvent
-import de.dknapps.pswgendroid.event.WindowFocusChangedEvent
+import de.dknapps.pswgendroid.event.*
 import de.dknapps.pswgendroid.model.ServiceMaintenanceViewModel
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -64,6 +61,7 @@ class ServiceMaintenanceActivity : AppCompatActivity() {
         // TODO Launcher Icon
         // TODO Service Edit
         // TODO Up Button
+        // TODO Search in service list
 
     }
 
@@ -98,6 +96,14 @@ class ServiceMaintenanceActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.container, ServiceDetailFragment.newInstance())
             .addToBackStack(ServiceDetailFragment::class.java.name)
+            .commit()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onDisplayPasswordClickedEvent(event: DisplayPasswordClickedEvent) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.container, DisplayPasswordFragment.newInstance())
+            .addToBackStack(DisplayPasswordFragment::class.java.name)
             .commit()
     }
 

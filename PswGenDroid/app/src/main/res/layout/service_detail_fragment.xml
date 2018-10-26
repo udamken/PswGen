@@ -36,6 +36,7 @@
                   style="?android:attr/textAppearanceLarge"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
+                  android:paddingBottom="4dp"
                   android:textIsSelectable="true" />
 
         <TextView android:id="@+id/labelAdditionalInfo"
@@ -49,6 +50,7 @@
                   style="?android:attr/textAppearanceSmall"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
+                  android:paddingBottom="4dp"
                   android:textIsSelectable="true" />
 
         <TextView android:id="@+id/labelLoginUrl"
@@ -62,6 +64,7 @@
                   style="?android:attr/textAppearanceSmall"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
+                  android:paddingBottom="4dp"
                   android:textIsSelectable="true" />
 
         <TextView android:id="@+id/labelLoginInfo"
@@ -75,6 +78,7 @@
                   style="?android:attr/textAppearanceSmall"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
+                  android:paddingBottom="4dp"
                   android:textIsSelectable="true" />
 
         <TextView android:id="@+id/labelAdditionalLoginInfo"
