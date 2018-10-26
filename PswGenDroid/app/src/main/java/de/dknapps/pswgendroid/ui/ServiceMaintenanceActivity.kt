@@ -16,16 +16,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  ************************************************************************************/
-package de.dknapps.pswgendroid
+package de.dknapps.pswgendroid.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import de.dknapps.pswgendroid.event.OpenAboutClickedEvent
-import de.dknapps.pswgendroid.ui.startup.StartupFragment
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import de.dknapps.pswgendroid.DroidConstants.Companion.TAG
+import de.dknapps.pswgendroid.R
 import org.greenrobot.eventbus.EventBus
 
 

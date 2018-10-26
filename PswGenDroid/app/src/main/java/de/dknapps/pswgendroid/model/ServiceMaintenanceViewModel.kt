@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  ************************************************************************************/
-package de.dknapps.pswgendroid.ui.startup
+package de.dknapps.pswgendroid.model
 
 import androidx.lifecycle.ViewModel
 import de.dknapps.pswgencore.model.ServiceInfo

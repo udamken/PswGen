@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  ************************************************************************************/
-package de.dknapps.pswgendroid.ui.startup
+package de.dknapps.pswgendroid.ui
 
 import android.content.Context
 import android.content.Intent
@@ -37,6 +37,7 @@ import de.dknapps.pswgencore.util.FileHelper
 import de.dknapps.pswgendroid.adapter.CommonJsonReaderWriterFactoryAndroidImpl
 import de.dknapps.pswgendroid.adapter.PswGenAdapter
 import de.dknapps.pswgendroid.event.OpenAboutClickedEvent
+import de.dknapps.pswgendroid.model.ServiceMaintenanceViewModel
 import org.greenrobot.eventbus.EventBus
 
 class StartupFragment : androidx.fragment.app.Fragment() {
