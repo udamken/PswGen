@@ -1,108 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
     PswGenDesktop - Manages your websites and repeatably generates passwords for them
-    PswGenDroid - Generates your passwords managed by PswGenDesktop on your mobile  
-   
-        Copyright (C) 2005-2017 Uwe Damken
-   
+    PswGenDroid - Generates your passwords managed by PswGenDesktop on your mobile
+
+        Copyright (C) 2005-2018 Uwe Damken
+
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
     You may obtain a copy of the License at
-   
+
         http://www.apache.org/licenses/LICENSE-2.0
-   
+
     Unless required by applicable law or agreed to in writing, software
     distributed under the License is distributed on an "AS IS" BASIS,
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
  -->
-
 <resources>
 
-	<!-- AndroidManifest -->
-	<string name="app_name">PswGenDroid</string>
+    <!-- AndroidManifest -->
+    <string name="app_name">PswGenDroid</string>
 
-	<!-- Allgemeines -->
-	<string name="button_cancel">Cancel</string>
-	<string name="button_ok">OK</string>
+    <!-- Keyboard to copy passwords without clipboard -->
+    <string name="title_input_method_editor">PswGen Keyboard</string>
+    <string name="button_type_login_info">Login</string>
+    <string name="button_type_login_password">Psw</string>
+    <string name="button_clear_last_input">Clear</string>
+    <string name="button_cancel_input">Cancel</string>
+    <string name="button_input_done">Done</string>
 
-	<!-- Tastatur zum Kopieren von Passworten ohne Verwendung der Zwischenablage -->
-	<string name="title_input_method_editor">PswGen Keyboard</string>
-	<string name="button_type_login_info">Login</string>
-	<string name="button_type_login_password">Psw</string>
-	<string name="button_clear_last_input">Clear</string>
-	<string name="button_cancel_input">Cancel</string>
-	<string name="button_input_done">Done</string>
+    <!-- StartupFragment -->
+    <string name="title_startup">PswGenDroid</string>
+    <string name="title_passphrase">Open Service File</string>
+    <string name="label_passphrase">Passphrase</string>
+    <string name="label_old_passphrase">Old Passphrase</string>
+    <string name="label_filepath">Filepath</string>
+    <string name="label_other_filepath">Other Filepath</string>
+    <string name="button_open_services">Open</string>
+    <string name="button_open_ime_settings">Keyboard settings</string>
+    <string name="button_open_help">Help</string>
+    <string name="help_url">http://dknapps.de/pswgen</string>
+    <string name="button_open_about">About PswGenDroid</string>
 
-	<!-- StartupActiviy -->
-	<string name="title_startup">PswGenDroid</string>
-	<string name="label_filepath">Filepath</string>
-	<string name="label_other_filepath">Other Filepath</string>
-	<string name="button_open_services">Open</string>
-	<string name="button_open_ime_settings">Keyboard settings</string>
-	<string name="button_open_help">Help</string>
-	<string name="help_url">http://dknapps.de/pswgen</string>
-	<string name="button_open_about">About PswGenDroid</string>
+    <!-- Settings (without using a preferences dialog) -->
+    <string name="preferences_filename" translatable="false">preferences</string>
+    <string name="preference_filepath" translatable="false">filepath</string>
+    <string name="preference_other_filepath" translatable="false">other_filepath</string>
 
-	<!-- Einstellungen (ohne Preferences-Dialog) -->
-	<string name="preferences_filename" translatable="false">preferences</string>
-	<string name="preference_filepath" translatable="false">filepath</string>
-	<string name="preference_other_filepath" translatable="false">other_filepath</string>
+    <!-- ServiceListFragment -->
+    <string name="title_service_list">Stored Services</string>
+    <string name="search_title">Search Service</string>
+    <string name="title_service_detail">Service Details</string>
 
-	<!-- PassphraseDialog -->
-	<string name="title_passphrase">Open Service File</string>
-	<string name="hint_passphrase">Passphrase</string>
-	<string name="hint_oldPassphrase">Old Passphrase</string>
+    <!-- ServiceDetailFragment -->
+    <string name="label_additional_info">Addt\'l Information</string>
+    <string name="label_login_url">Website</string>
+    <string name="label_login_info">Login Information</string>
+    <string name="label_additional_login_info">Addt\'l Login Information</string>
+    <string name="label_use_old_passphrase">Uses old passphrase</string>
+    <string name="button_open_and_provide">Open &amp; provide</string>
+    <string name="button_provide">Provide</string>
+    <string name="button_open_url">Open &amp; copy</string>
+    <string name="button_copy_login_info">Copy Login Information</string>
+    <string name="button_copy_password">Copy Password</string>
+    <string name="button_display_password">Display Password</string>
 
-	<!-- ServiceMaintenanceActivity -->
-	<string name="title_service_list">Stored Services</string>
-	<string name="search_title">Search Service</string>
-	<string name="title_service_detail">Service Details</string>
+    <!-- PasswordDialog -->
+    <string name="title_password">Password</string>
+    <string name="label_password">Password</string>
+    <string name="label_password_explanation">Explanation</string>
+    <string name="prefix_lowercase_letters"></string>
+    <string name="prefix_uppercase_letters">Capital</string>
+    <string name="prefix_digits">Digit</string>
+    <string name="prefix_special_chars"></string>
 
-	<!-- ServiceDetailFragment -->
-	<string name="label_additional_info">Addt\'l Information</string>
-	<string name="label_login_url">Website</string>
-	<string name="label_login_info">Login Information</string>
-	<string name="label_additional_login_info">Addt\'l Login Information</string>
-	<string name="label_use_old_passphrase">Uses old passphrase</string>
-	<string name="button_open_and_provide">Open &amp; provide</string>
-	<string name="button_provide">Provide</string>
-	<string name="button_open_url">Open &amp; copy</string>
-	<string name="button_copy_login_info">Copy Login Information</string>
-	<string name="button_copy_password">Copy Password</string>
-	<string name="button_display_password">Display Password</string>
+    <!-- AboutFragment -->
+    <string name="title_activity_about">About PswGenDroid</string>
+    <string name="about_html_text_url">file:///android_asset/about.html</string>
 
-	<!-- PasswordDialog -->
-	<string name="title_password">Password</string>
-	<string name="label_password">Password</string>
-	<string name="label_password_explanation">Explanation</string>
-	<string name="prefix_lowercase_letters"></string>
-	<string name="prefix_uppercase_letters">Capital</string>
-	<string name="prefix_digits">Digit</string>
-	<string name="prefix_special_chars"></string>
-
-	<!-- AboutActivity -->
-	<string name="title_activity_about">About PswGenDroid</string>
-	<string name="about_html_text_url">file:///android_asset/about.html</string>
-
-	<!-- DomainException -->
+    <!-- DomainException -->
     <string name="PassphraseInvalidMsg">Passphrase is invalid.</string>
-	<string name="FileCouldNotBeOpenedMsg">File could not be opened (permissions?).</string>
+    <string name="FileCouldNotBeOpenedMsg">File could not be opened (permissions?).</string>
     <string name="UnsupportedFileFormatMsg">File format of PswGen &lt; 1.7.8 is no longer supported:\n\nPlease use earlier versions for a conversion.</string>
-	<string name="TotalCharacterCountExceededMsg">Character count with given end exceeds total character count.</string>
+    <string name="TotalCharacterCountExceededMsg">Character count with given end exceeds total character count.</string>
     <string name="InvalidCharacterCountMsg">Character count exceeds start/end or total character count.</string>
-	<string name="CharacterOrTotalCharacterCountMissingMsg">Please specify (enough) characters and total character count to generate password.</string>
+    <string name="CharacterOrTotalCharacterCountMissingMsg">Please specify (enough) characters and total character count to generate password.</string>
     <string name="PassphraseMismatchMsg">Passphrase doesn\'t match repeated passphrase.</string>
-	<string name="ServiceAbbreviationEmptyMsg">Service abbreviation is empty.</string>
+    <string name="ServiceAbbreviationEmptyMsg">Service abbreviation is empty.</string>
     <string name="ServiceAbbreviationMissingMsg">Service abbreviation does not exist.</string>
-	<string name="PassphraseEmptyMsg">Passphrase is empty.</string>
+    <string name="PassphraseEmptyMsg">Passphrase is empty.</string>
     <string name="NewPassphraseMismatchMsg">New passphrase doesn\'t match repeated new passphrase.</string>
-	<string name="OldPassphraseEmptyMsg">Old passphrase is empty.</string>
+    <string name="OldPassphraseEmptyMsg">Old passphrase is empty.</string>
     <string name="NewPassphraseEmptyMsg">New passphrase is empty.</string>
-	<string name="PasswordMismatchMsg">Password doesn\'t match repeated password.</string>
+    <string name="PasswordMismatchMsg">Password doesn\'t match repeated password.</string>
 
-	<!-- MessageFormat-Nachrichten -->
-	<string name="file_missing">&lt;{0}&gt; does not exist.</string>
+    <!-- MessageFormat-Nachrichten -->
+    <string name="file_missing">&lt;{0}&gt; does not exist.</string>
 
 </resources>
