@@ -19,6 +19,7 @@
 package de.dknapps.pswgendesktop.gui;
 
 import java.util.Collection;
+import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
@@ -45,7 +46,7 @@ public class StoredServicesTableModel extends AbstractTableModel {
 
 	ServiceInfo[] services;
 
-	public StoredServicesTableModel(Collection<ServiceInfo> services, String[] columnNames) {
+	public StoredServicesTableModel(List<ServiceInfo> services, String[] columnNames) {
 		super();
 		this.columnNames = columnNames;
 		setData(services);

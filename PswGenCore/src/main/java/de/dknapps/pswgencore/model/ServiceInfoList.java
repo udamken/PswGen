@@ -20,6 +20,7 @@ package de.dknapps.pswgencore.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -160,8 +161,8 @@ public class ServiceInfoList {
 	/**
 	 * Liefert die Informationen zu allen Dienstekürzeln, ggf. auch mit den als gelöscht markierten Einträgen.
 	 */
-	public Collection<ServiceInfo> getServices(boolean withDeletedEntries) {
-		Collection<ServiceInfo> result = new ArrayList<>();
+	public List<ServiceInfo> getServices(boolean withDeletedEntries) {
+		List<ServiceInfo> result = new ArrayList<>();
 		for (ServiceInfo si : services.values()) {
 			if (withDeletedEntries || !si.isDeleted()) {
 				result.add(si);
