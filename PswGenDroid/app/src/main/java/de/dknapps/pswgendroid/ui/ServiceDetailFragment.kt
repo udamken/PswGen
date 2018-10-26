@@ -29,6 +29,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import de.dknapps.pswgencore.util.PasswordFactory
 import de.dknapps.pswgendroid.R
@@ -86,6 +87,7 @@ class ServiceDetailFragment : androidx.fragment.app.Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        (activity!! as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         viewModel = ViewModelProviders.of(activity!!).get(ServiceMaintenanceViewModel::class.java)
 
         buttonOpenAndProvide.setOnClickListener { onClickButtonOpenAndProvide() }

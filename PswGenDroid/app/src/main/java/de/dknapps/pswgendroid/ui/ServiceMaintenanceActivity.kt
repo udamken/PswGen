@@ -59,7 +59,6 @@ class ServiceMaintenanceActivity : AppCompatActivity() {
 
         // TODO Ask for permissions
         // TODO Service Edit
-        // TODO Up Button
 
     }
 
@@ -71,6 +70,11 @@ class ServiceMaintenanceActivity : AppCompatActivity() {
     public override fun onStop() {
         EventBus.getDefault().unregister(this)
         super.onStop()
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        supportFragmentManager.popBackStack()
+        return true
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

@@ -26,6 +26,7 @@ import android.view.MenuInflater
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.ListView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.ListFragment
 import androidx.lifecycle.ViewModelProviders
@@ -76,6 +77,7 @@ class ServiceListFragment : ListFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        (activity!! as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         viewModel = ViewModelProviders.of(activity!!).get(ServiceMaintenanceViewModel::class.java)
     }
 

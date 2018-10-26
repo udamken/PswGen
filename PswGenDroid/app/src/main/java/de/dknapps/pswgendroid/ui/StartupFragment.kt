@@ -28,6 +28,7 @@ import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import de.dknapps.pswgencore.CoreConstants
 import de.dknapps.pswgencore.util.FileHelper
@@ -60,6 +61,7 @@ class StartupFragment : androidx.fragment.app.Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        (activity!! as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(false)
         viewModel = ViewModelProviders.of(activity!!).get(ServiceMaintenanceViewModel::class.java)
 
         prefs = activity!!.getSharedPreferences(getString(R.string.preferences_filename), Context.MODE_PRIVATE)

@@ -18,28 +18,13 @@
  ************************************************************************************/
 package de.dknapps.pswgendroid.ui
 
-import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
-import android.net.Uri
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.os.Environment
-import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import de.dknapps.pswgendroid.R
-import kotlinx.android.synthetic.main.startup_fragment.*
-import java.io.File
-import de.dknapps.pswgencore.CoreConstants
-import de.dknapps.pswgencore.util.FileHelper
-import de.dknapps.pswgendroid.adapter.CommonJsonReaderWriterFactoryAndroidImpl
-import de.dknapps.pswgendroid.adapter.PswGenAdapter
-import de.dknapps.pswgendroid.event.OpenAboutClickedEvent
-import de.dknapps.pswgendroid.model.ServiceMaintenanceViewModel
 import kotlinx.android.synthetic.main.about_fragment.*
-import org.greenrobot.eventbus.EventBus
 
 class AboutFragment : androidx.fragment.app.Fragment() {
 
@@ -56,6 +41,7 @@ class AboutFragment : androidx.fragment.app.Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        (activity!! as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         aboutHtmlText.loadUrl(getString(R.string.about_html_text_url))
     }
 }
