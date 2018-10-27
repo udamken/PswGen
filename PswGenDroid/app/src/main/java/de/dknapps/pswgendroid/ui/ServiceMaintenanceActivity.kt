@@ -58,7 +58,7 @@ class ServiceMaintenanceActivity : AppCompatActivity() {
         }, IntentFilter(Intent.ACTION_SCREEN_OFF))
 
         // TODO Ask for permissions
-        // TODO Service Edit
+        // TODO EditServiceFragment button functionality
 
     }
 
@@ -106,6 +106,14 @@ class ServiceMaintenanceActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.container, DisplayPasswordFragment.newInstance())
             .addToBackStack(DisplayPasswordFragment::class.java.name)
+            .commit()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEditServiceClickedEvent(event: EditServiceClickedEvent) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.container, EditServiceFragment.newInstance())
+            .addToBackStack(EditServiceFragment::class.java.name)
             .commit()
     }
 

@@ -50,6 +50,7 @@
     <string name="title_service_detail">Dienst Details</string>
 
     <!-- ServiceDetailFragment -->
+    <string name="label_service_abbreviation">Dienstekürzel</string>
     <string name="label_additional_info">Zusatzinfos</string>
     <string name="label_login_url">Internetseite</string>
     <string name="label_login_info">Anmeldeinfos</string>
@@ -70,6 +71,13 @@
     <string name="prefix_uppercase_letters">Groß</string>
     <string name="prefix_digits">Ziffer</string>
     <string name="prefix_special_chars"></string>
+    <string name="button_edit_service">Bearbeiten</string>
+    <string name="button_use_new_passphrase">Passphrase wechseln</string>
+
+    <!-- EditServiceFragment -->
+    <string name="button_clear_service">Leeren</string>
+    <string name="button_remove_service">Entfernen</string>
+    <string name="button_store_service">Speichern</string>
 
     <!-- AboutFragment -->
     <string name="title_activity_about">Über PswGenDroid</string>

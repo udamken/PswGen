@@ -26,13 +26,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import de.dknapps.pswgencore.model.ServiceInfo
 import de.dknapps.pswgendroid.R
+import de.dknapps.pswgendroid.adapter.PswGenAdapter
 import de.dknapps.pswgendroid.model.ServiceMaintenanceViewModel
-import kotlinx.android.synthetic.main.display_password_fragment.*
+import kotlinx.android.synthetic.main.edit_service_fragment.*
 
-class DisplayPasswordFragment : androidx.fragment.app.Fragment() {
+class EditServiceFragment : androidx.fragment.app.Fragment() {
 
     companion object {
-        fun newInstance() = DisplayPasswordFragment()
+
+        fun newInstance() = EditServiceFragment()
+
     }
 
     private lateinit var viewModel: ServiceMaintenanceViewModel
@@ -41,35 +44,73 @@ class DisplayPasswordFragment : androidx.fragment.app.Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.display_password_fragment, container, false)
+        return inflater.inflate(R.layout.edit_service_fragment, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         (activity!! as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         viewModel = ViewModelProviders.of(activity!!).get(ServiceMaintenanceViewModel::class.java)
+
+        buttonClearService.setOnClickListener { onClickButtonClearService() }
+        buttonRemoveService.setOnClickListener { onClickButtonRemoveService() }
+        buttonStoreService.setOnClickListener { onClickButtonStoreService() }
     }
 
     override fun onResume() {
         super.onResume()
         // When the screen gets locked services are unloaded. Therefore we return to previous fragment
-        // if there is currently no password available (probably because of screen lock).
-        if (viewModel.password == null) {
+        // if there is currently no service selected (probably because of screen lock).
+        if (viewModel.currentServiceInfo == null) {
             activity!!.supportFragmentManager.popBackStack()
         } else {
             putServiceToView(viewModel.currentServiceInfo!!)
-            password.text = viewModel.password!!
-            passwordExplanation.text = viewModel.passwordExplanation!!
         }
+    }
+
+    /**
+     * Clear all fields of the currently edited service.
+     */
+    private fun onClickButtonClearService() {
+        try {
+        } catch (e: Exception) {
+            PswGenAdapter.handleThrowable(activity!!, e)
+        }
+
+    }
+
+    /**
+     * Remove service with edited service abbreviation from list and store all services to file.
+     */
+    private fun onClickButtonRemoveService() {
+        try {
+        } catch (e: Exception) {
+            PswGenAdapter.handleThrowable(activity!!, e)
+        }
+
+    }
+
+    /**
+     * Add edited service to list or replace it and store all services to file.
+     */
+    private fun onClickButtonStoreService() {
+        try {
+        } catch (e: Exception) {
+            PswGenAdapter.handleThrowable(activity!!, e)
+        }
+
     }
 
     /**
      * Copy values to be displayed into UI (method name identical with PswGenDesktop).
      */
     private fun putServiceToView(si: ServiceInfo) {
-        serviceAbbreviation.text = si.serviceAbbreviation
-        loginInfo.text = si.loginInfo
-        password.text = si.additionalLoginInfo
+        serviceAbbreviation.setText(si.serviceAbbreviation)
+        additionalInfo.setText(si.additionalInfo)
+        loginUrl.setText(si.loginUrl)
+        loginInfo.setText(si.loginInfo)
+        additionalLoginInfo.setText(si.additionalLoginInfo)
+        labelUseOldPassphrase.visibility = if (si.isUseOldPassphrase) View.VISIBLE else View.INVISIBLE
     }
 
 }

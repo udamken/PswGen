@@ -31,10 +31,12 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
+import de.dknapps.pswgencore.model.ServiceInfo
 import de.dknapps.pswgencore.util.PasswordFactory
 import de.dknapps.pswgendroid.R
 import de.dknapps.pswgendroid.adapter.PswGenAdapter
 import de.dknapps.pswgendroid.event.DisplayPasswordClickedEvent
+import de.dknapps.pswgendroid.event.EditServiceClickedEvent
 import de.dknapps.pswgendroid.event.WindowFocusChangedEvent
 import de.dknapps.pswgendroid.model.ServiceMaintenanceViewModel
 import de.dknapps.pswgendroid.model.ServiceMaintenanceViewModel.InputMethodPickingState.*
@@ -96,6 +98,7 @@ class ServiceDetailFragment : androidx.fragment.app.Fragment() {
         buttonCopyLoginInfo.setOnClickListener { onClickButtonCopyLoginInfo() }
         buttonCopyPassword.setOnClickListener { onClickButtonCopyPassword() }
         buttonDisplayPassword.setOnClickListener { onClickButtonDisplayPassword() }
+        buttonEditService.setOnClickListener { onClickButtonEditService() }
     }
 
     public override fun onStart() {
@@ -109,14 +112,8 @@ class ServiceDetailFragment : androidx.fragment.app.Fragment() {
         // if there is currently no service selected (probably because of screen lock).
         if (viewModel.currentServiceInfo == null) {
             activity!!.supportFragmentManager.popBackStack()
-        } else with(viewModel) {
-            serviceAbbreviation.text = currentServiceInfo!!.serviceAbbreviation
-            additionalInfo.text = currentServiceInfo!!.additionalInfo
-            loginUrl.text = currentServiceInfo!!.loginUrl
-            loginInfo.text = currentServiceInfo!!.loginInfo
-            additionalLoginInfo.text = currentServiceInfo!!.additionalLoginInfo
-            labelUseOldPassphrase.visibility =
-                    if (currentServiceInfo!!.isUseOldPassphrase) View.VISIBLE else View.INVISIBLE
+        } else {
+            putServiceToView(viewModel.currentServiceInfo!!)
         }
     }
 
@@ -169,7 +166,7 @@ class ServiceDetailFragment : androidx.fragment.app.Fragment() {
     /**
      * Open login url in browser and copy login information into the clipboard.
      */
-    fun onClickButtonOpenUrl() {
+    private fun onClickButtonOpenUrl() {
         try {
             openUrl(viewModel.currentServiceInfo!!.loginUrl)
             copyToClipboard(activity!!, viewModel.currentServiceInfo!!.loginInfo)
@@ -200,7 +197,18 @@ class ServiceDetailFragment : androidx.fragment.app.Fragment() {
         } catch (e: Exception) {
             PswGenAdapter.handleThrowable(activity!!, e)
         }
+    }
 
+    /**
+     * Copy values to be displayed into UI (method name identical with PswGenDesktop).
+     */
+    private fun putServiceToView(si: ServiceInfo) {
+        serviceAbbreviation.text = si.serviceAbbreviation
+        additionalInfo.text = si.additionalInfo
+        loginUrl.text = si.loginUrl
+        loginInfo.text = si.loginInfo
+        additionalLoginInfo.text = si.additionalLoginInfo
+        labelUseOldPassphrase.visibility = if (si.isUseOldPassphrase) View.VISIBLE else View.INVISIBLE
     }
 
     /**
@@ -214,6 +222,13 @@ class ServiceDetailFragment : androidx.fragment.app.Fragment() {
         } catch (e: Exception) {
             PswGenAdapter.handleThrowable(activity!!, e)
         }
+    }
+
+    /**
+     * Edit currently selected service by deep copying the entry.
+     */
+    private fun onClickButtonEditService() {
+        EventBus.getDefault().post(EditServiceClickedEvent());
     }
 
     /**

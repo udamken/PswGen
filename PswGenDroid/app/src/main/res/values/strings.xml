@@ -49,6 +49,7 @@
     <string name="title_service_detail">Service Details</string>
 
     <!-- ServiceDetailFragment -->
+    <string name="label_service_abbreviation">Service Abbreviation</string>
     <string name="label_additional_info">Addt\'l Information</string>
     <string name="label_login_url">Website</string>
     <string name="label_login_info">Login Information</string>
@@ -60,6 +61,13 @@
     <string name="button_copy_login_info">Copy Login Information</string>
     <string name="button_copy_password">Copy Password</string>
     <string name="button_display_password">Display Password</string>
+    <string name="button_edit_service">Edit</string>
+
+    <!-- EditServiceFragment -->
+    <string name="button_clear_service">Clear</string>
+    <string name="button_remove_service">Remove</string>
+    <string name="button_store_service">Save</string>
+    <string name="button_use_new_passphrase">Switch Passphrase</string>
 
     <!-- DisplayPasswordFragment -->
     <string name="title_password">Password</string>

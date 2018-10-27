@@ -40,8 +40,38 @@
                   android:textIsSelectable="false"
                   android:labelFor="@+id/serviceAbbreviation"/>
 
-        <TextView android:id="@+id/serviceAbbreviation"
+        <EditText android:id="@+id/serviceAbbreviation"
                   style="?android:attr/textAppearanceLarge"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:paddingBottom="4dp"
+                  android:textIsSelectable="true"/>
+
+        <TextView android:id="@+id/labelAdditionalInfo"
+                  style="?android:attr/textAppearanceMedium"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:text="@string/label_additional_info"
+                  android:textIsSelectable="false"
+                  android:labelFor="@+id/additionalInfo"/>
+
+        <EditText android:id="@+id/additionalInfo"
+                  style="?android:attr/textAppearanceSmall"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:paddingBottom="4dp"
+                  android:textIsSelectable="true"/>
+
+        <TextView android:id="@+id/labelLoginUrl"
+                  style="?android:attr/textAppearanceMedium"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:text="@string/label_login_url"
+                  android:textIsSelectable="false"
+                  android:labelFor="@+id/loginUrl"/>
+
+        <EditText android:id="@+id/loginUrl"
+                  style="?android:attr/textAppearanceSmall"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:paddingBottom="4dp"
@@ -55,41 +85,61 @@
                   android:textIsSelectable="false"
                   android:labelFor="@+id/loginInfo"/>
 
-        <TextView android:id="@+id/loginInfo"
+        <EditText android:id="@+id/loginInfo"
                   style="?android:attr/textAppearanceSmall"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:paddingBottom="4dp"
                   android:textIsSelectable="true"/>
 
-        <TextView android:id="@+id/labelPassword"
+        <TextView android:id="@+id/labelAdditionalLoginInfo"
                   style="?android:attr/textAppearanceMedium"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
-                  android:text="@string/label_password"
+                  android:text="@string/label_additional_login_info"
                   android:textIsSelectable="false"
-                  android:labelFor="@+id/password"/>
+                  android:labelFor="@+id/additionalLoginInfo"/>
 
-        <TextView android:id="@+id/password"
+        <EditText android:id="@+id/additionalLoginInfo"
                   style="?android:attr/textAppearanceSmall"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
-                  android:paddingBottom="4dp"
-                  android:textIsSelectable="true"/>
+                  android:textIsSelectable="true"
+                  android:labelFor="@+id/passphrase"/>
 
-        <TextView android:id="@+id/labelPasswordExplanation"
-                  style="?android:attr/textAppearanceMedium"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:text="@string/label_password_explanation"
-                  android:textIsSelectable="false"
-                  android:labelFor="@+id/passwordExplanation"/>
+        <TextView
+                android:id="@+id/labelUseOldPassphrase"
+                style="?android:attr/textAppearanceMedium"
+                android:textColor="@android:color/holo_red_dark"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:text="@string/label_use_old_passphrase"
+                android:textIsSelectable="false"/>
 
-        <TextView android:id="@+id/passwordExplanation"
-                  style="?android:attr/textAppearanceSmall"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:textIsSelectable="true"/>
+        <Button android:id="@+id/buttonClearService"
+                style="?android:attr/buttonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/button_clear_service"/>
+
+        <Button android:id="@+id/buttonRemoveService"
+                style="?android:attr/buttonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/button_remove_service"/>
+
+        <Button android:id="@+id/buttonStoreService"
+                style="?android:attr/buttonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/button_store_service"/>
+
+        <Button android:id="@+id/buttonUseNewPassphrase"
+                style="?android:attr/buttonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/button_use_new_passphrase"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
