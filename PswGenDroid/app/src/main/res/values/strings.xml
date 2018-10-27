@@ -43,11 +43,6 @@
     <string name="help_url">http://dknapps.de/pswgen</string>
     <string name="button_open_about">About PswGenDroid</string>
 
-    <!-- Settings (without using a preferences dialog) -->
-    <string name="preferences_filename" translatable="false">preferences</string>
-    <string name="preference_filepath" translatable="false">filepath</string>
-    <string name="preference_other_filepath" translatable="false">other_filepath</string>
-
     <!-- ServiceListFragment -->
     <string name="title_service_list">Stored Services</string>
     <string name="search_title">Search Service</string>
@@ -66,11 +61,11 @@
     <string name="button_copy_password">Copy Password</string>
     <string name="button_display_password">Display Password</string>
 
-    <!-- PasswordDialog -->
+    <!-- DisplayPasswordFragment -->
     <string name="title_password">Password</string>
     <string name="label_password">Password</string>
     <string name="label_password_explanation">Explanation</string>
-    <string name="prefix_lowercase_letters"></string>
+    <string name="prefix_lowercase_letters">Small</string>
     <string name="prefix_uppercase_letters">Capital</string>
     <string name="prefix_digits">Digit</string>
     <string name="prefix_special_chars"></string>
@@ -95,7 +90,9 @@
     <string name="NewPassphraseEmptyMsg">New passphrase is empty.</string>
     <string name="PasswordMismatchMsg">Password doesn\'t match repeated password.</string>
 
-    <!-- MessageFormat-Nachrichten -->
-    <string name="file_missing">&lt;{0}&gt; does not exist.</string>
+    <!-- Settings (without using a preferences dialog) -->
+    <string name="preferences_filename" translatable="false">preferences</string>
+    <string name="preference_filepath" translatable="false">filepath</string>
+    <string name="preference_other_filepath" translatable="false">other_filepath</string>
 
 </resources>
