@@ -73,6 +73,10 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
      */
     private fun onClickButtonClearService() {
         try {
+            if (cancelOnDirty()) { // cancel action?
+                return
+            }
+            clearService()
         } catch (e: Exception) {
             PswGenAdapter.handleThrowable(activity!!, e)
         }
@@ -127,5 +131,35 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
         // last update is set not set from the view but from outside
         return si
     }
+
+    /**
+     * Returns true if the action should be cancelled or false if changes should be stored or discarded.
+     */
+    private fun cancelOnDirty(): Boolean {
+        // TODO Implement cancelOnDirty ... supportNavigateUp must check back stack edit service fragment
+//        if (mainView.isDirty()) {
+//            val chosenOption = JOptionPane.showConfirmDialog(
+//                mainView,
+//                mainView.getServiceAbbreviation() + getGuiText("SaveChangesMsg"),
+//                DesktopConstants.APPLICATION_NAME, JOptionPane.YES_NO_CANCEL_OPTION
+//            )
+//            if (chosenOption == JOptionPane.YES_OPTION) { // Geänderte Werte speichern?
+//                storeService(mainView)
+//            } else if (chosenOption == JOptionPane.CANCEL_OPTION || chosenOption == JOptionPane.CLOSED_OPTION) {
+//                return true
+//            }
+//        }
+        return false
+    }
+
+    /**
+     * Clear service fields and reset additional info to the current date.
+     */
+    private fun clearService() {
+        val si = ServiceInfo()
+        si.resetAdditionalInfo()
+        putServiceToView(si)
+    }
+
 
 }
