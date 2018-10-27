@@ -58,6 +58,11 @@ class ServiceMaintenanceViewModel : ViewModel() {
      */
     var passwordExplanation: String? = null
 
+    /**
+     * Currently edited service.
+     */
+    var editedServiceInfo: ServiceInfo? = null
+
     init {
         resetModel()
     }

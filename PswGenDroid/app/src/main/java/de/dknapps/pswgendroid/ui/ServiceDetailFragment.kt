@@ -216,6 +216,7 @@ class ServiceDetailFragment : androidx.fragment.app.Fragment() {
      * Edit currently selected service by deep copying the entry.
      */
     private fun onClickButtonEditService() {
+        viewModel.editedServiceInfo = viewModel.currentServiceInfo?.clone() as ServiceInfo?
         EventBus.getDefault().post(EditServiceClickedEvent());
     }
 

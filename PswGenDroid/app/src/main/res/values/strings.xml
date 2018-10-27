@@ -99,6 +99,14 @@
     <string name="NewPassphraseEmptyMsg">New passphrase is empty.</string>
     <string name="PasswordMismatchMsg">Password doesn\'t match repeated password.</string>
 
+    <!-- AlertDialog -->
+    <string name="RemoveServiceMsg">: Remove service?</string>
+    <string name="OverwriteServiceMsg">: Overwrite service?</string>
+    <string name="SaveChangesMsg">: Save changes?</string>
+    <string name="yes">Yes</string> <!-- android.R.string.yes=OK :-( -->
+    <string name="no">No</string> <!-- android.R.string.no=CANCEL :-( -->
+    <string name="cancel">Cancel</string> <!-- android.R.string.cancel=CANCEL -->
+
     <!-- Settings (without using a preferences dialog) -->
     <string name="preferences_filename" translatable="false">preferences</string>
     <string name="preference_filepath" translatable="false">filepath</string>

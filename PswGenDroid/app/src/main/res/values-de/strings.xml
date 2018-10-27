@@ -109,4 +109,12 @@
     <string name="NewPassphraseEmptyMsg">Die neue Passphrase ist leer.</string>
     <string name="PasswordMismatchMsg">Das Passwort weicht vom wiederholten Passwort ab.</string>
 
+    <!-- AlertDialog -->
+    <string name="RemoveServiceMsg">: Dienst entfernen?</string>
+    <string name="OverwriteServiceMsg">: Dienst überschreiben?</string>
+    <string name="SaveChangesMsg">: Änderungen speichern?</string>
+    <string name="yes">Ja</string> <!-- android.R.string.yes=OK :-( -->
+    <string name="no">Nein</string> <!-- android.R.string.no=ABBRECHEN :-( -->
+    <string name="cancel">Abbrechen</string> <!-- android.R.string.cancel=ABBRECHEN -->
+
 </resources>

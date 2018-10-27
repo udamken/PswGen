@@ -22,13 +22,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import de.dknapps.pswgencore.model.ServiceInfo
+import de.dknapps.pswgencore.util.DomainException
 import de.dknapps.pswgendroid.R
 import de.dknapps.pswgendroid.adapter.PswGenAdapter
 import de.dknapps.pswgendroid.model.ServiceMaintenanceViewModel
 import kotlinx.android.synthetic.main.edit_service_fragment.*
+
 
 class EditServiceFragment : androidx.fragment.app.Fragment() {
 
@@ -61,11 +64,16 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
         super.onResume()
         // When the screen gets locked services are unloaded. Therefore we return to previous fragment
         // if there is currently no service selected (probably because of screen lock).
-        if (viewModel.currentServiceInfo == null) {
+        if (viewModel.editedServiceInfo == null) {
             activity!!.supportFragmentManager.popBackStack()
         } else {
-            putServiceToView(viewModel.currentServiceInfo!!)
+            putServiceToView(viewModel.editedServiceInfo!!)
         }
+    }
+
+    override fun onPause() {
+        viewModel.editedServiceInfo = getServiceFromView()
+        super.onPause()
     }
 
     /**
@@ -88,10 +96,26 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
      */
     private fun onClickButtonRemoveService() {
         try {
+            val abbreviation = serviceAbbreviation.text.toString()
+            validateServiceAbbreviation(abbreviation)
+            AlertDialog.Builder(activity!!) //
+                .setTitle(R.string.app_name) //
+                .setMessage("$abbreviation${getText(R.string.RemoveServiceMsg)}") //
+                .setPositiveButton(R.string.yes) { _, _ ->
+                    try {
+                        val si = viewModel.services!!.removeServiceInfo(abbreviation)
+                        // TODO saveServiceInfoList(validatedPassphrase)
+                        // TODO Do I have to update the service list display?
+                        clearService()
+                    } catch (e: Exception) {
+                        PswGenAdapter.handleThrowable(activity!!, e)
+                    }
+                } //
+                .setNegativeButton(R.string.no, null) //
+                .show()
         } catch (e: Exception) {
             PswGenAdapter.handleThrowable(activity!!, e)
         }
-
     }
 
     /**
@@ -159,6 +183,15 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
         val si = ServiceInfo()
         si.resetAdditionalInfo()
         putServiceToView(si)
+    }
+
+    /**
+     * Throws a domain exception if the given abbreviation is empty.
+     */
+    private fun validateServiceAbbreviation(abbreviaton: String) {
+        if (abbreviaton.isEmpty()) {
+            throw DomainException("ServiceAbbreviationEmptyMsg")
+        }
     }
 
 
