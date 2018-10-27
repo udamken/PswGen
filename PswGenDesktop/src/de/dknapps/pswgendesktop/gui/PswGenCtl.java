@@ -37,7 +37,6 @@ import de.dknapps.pswgencore.model.ServiceInfo;
 import de.dknapps.pswgencore.model.ServiceInfoList;
 import de.dknapps.pswgencore.util.DomainException;
 import de.dknapps.pswgencore.util.EmptyHelper;
-import de.dknapps.pswgencore.util.EncryptionHelper;
 import de.dknapps.pswgencore.util.FileHelper;
 import de.dknapps.pswgencore.util.PasswordFactory;
 import de.dknapps.pswgendesktop.DesktopConstants;
@@ -645,11 +644,7 @@ public class PswGenCtl extends BaseCtl {
 	 */
 	private void saveServiceInfoList(final String passphrase) throws IOException {
 		FileHelper fileHelper = FileHelper.getInstance(new CommonJsonReaderWriterFactoryGsonImpl());
-		EncryptionHelper encryptionHelper = new EncryptionHelper(passphrase.toCharArray());
-		services.setSaltAsHexString(encryptionHelper.getSaltAsHexString());
-		services.setInitializerAsHexString(encryptionHelper.getInitializerAsHexString());
-		services.encrypt(encryptionHelper);
-		fileHelper.saveServiceInfoList(servicesFile, services);
+		fileHelper.saveServiceInfoList(servicesFile, services, passphrase);
 	}
 
 	/**

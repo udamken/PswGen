@@ -245,9 +245,21 @@ public class FileHelper {
 	}
 
 	/**
+	 * Verschlüsselt und speichert alle Diensteinformationen.
+	 */
+	public void saveServiceInfoList(File servicesFile, ServiceInfoList services, String passphrase)
+			throws IOException {
+		EncryptionHelper encryptionHelper = new EncryptionHelper(passphrase.toCharArray());
+		services.setSaltAsHexString(encryptionHelper.getSaltAsHexString());
+		services.setInitializerAsHexString(encryptionHelper.getInitializerAsHexString());
+		services.encrypt(encryptionHelper);
+		saveServiceInfoList(servicesFile, services);
+	}
+
+	/**
 	 * Speichert alle Diensteinformationen.
 	 */
-	public void saveServiceInfoList(File servicesFile, ServiceInfoList services) throws IOException {
+	private void saveServiceInfoList(File servicesFile, ServiceInfoList services) throws IOException {
 		FileOutputStream out = new FileOutputStream(servicesFile);
 		writeJsonStream(out, services);
 		out.close();
