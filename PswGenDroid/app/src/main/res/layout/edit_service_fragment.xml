@@ -60,7 +60,7 @@
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:paddingBottom="4dp"
-                  android:textIsSelectable="true"/>
+                  android:inputType="text"/>
 
         <TextView android:id="@+id/labelLoginUrl"
                   style="?android:attr/textAppearanceMedium"
@@ -75,7 +75,7 @@
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:paddingBottom="4dp"
-                  android:textIsSelectable="true"/>
+                  android:inputType="text"/>
 
         <TextView android:id="@+id/labelLoginInfo"
                   style="?android:attr/textAppearanceMedium"
@@ -90,7 +90,7 @@
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:paddingBottom="4dp"
-                  android:textIsSelectable="true"/>
+                  android:inputType="text"/>
 
         <TextView android:id="@+id/labelAdditionalLoginInfo"
                   style="?android:attr/textAppearanceMedium"
@@ -105,7 +105,7 @@
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:paddingBottom="4dp"
-                  android:textIsSelectable="true"/>
+                  android:inputType="text"/>
 
         <TextView
                 android:id="@+id/labelUseOldPassphrase"
@@ -129,7 +129,7 @@
                   style="?android:attr/textAppearanceSmall"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
-                  android:textIsSelectable="true"
+                  android:inputType="text"
                   android:paddingBottom="10dp"/>
 
         <Button android:id="@+id/buttonClearService"

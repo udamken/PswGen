@@ -31,9 +31,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import de.dknapps.pswgencore.CoreConstants
-import de.dknapps.pswgencore.util.FileHelper
 import de.dknapps.pswgendroid.R
-import de.dknapps.pswgendroid.adapter.CommonJsonReaderWriterFactoryAndroidImpl
 import de.dknapps.pswgendroid.adapter.PswGenAdapter
 import de.dknapps.pswgendroid.event.OpenAboutClickedEvent
 import de.dknapps.pswgendroid.event.ServiceListLoadedEvent
@@ -93,10 +91,13 @@ class StartupFragment : androidx.fragment.app.Fragment() {
      */
     private fun onClickButtonOpenServices() {
         try {
-            val servicesFile = File(filepath.text.toString())
+            viewModel.servicesFile = File(filepath.text.toString())
             val otherServicesFile = File(otherFilepath.text.toString())
-            val fileHelper = FileHelper.getInstance(CommonJsonReaderWriterFactoryAndroidImpl())
-            viewModel.services = PswGenAdapter.loadServiceInfoList(servicesFile, otherServicesFile, passphrase.text.toString())!!
+            viewModel.services = PswGenAdapter.loadServiceInfoList(
+                viewModel.servicesFile!!,
+                otherServicesFile,
+                passphrase.text.toString()
+            )!!
             viewModel.validatedPassphrase = passphrase.text.toString()
             viewModel.oldPassphrase = oldPassphrase.text.toString()
             val editor = prefs.edit()

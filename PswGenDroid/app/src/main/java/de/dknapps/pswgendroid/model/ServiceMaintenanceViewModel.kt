@@ -21,6 +21,7 @@ package de.dknapps.pswgendroid.model
 import androidx.lifecycle.ViewModel
 import de.dknapps.pswgencore.model.ServiceInfo
 import de.dknapps.pswgencore.model.ServiceInfoList
+import java.io.File
 
 class ServiceMaintenanceViewModel : ViewModel() {
 
@@ -37,6 +38,11 @@ class ServiceMaintenanceViewModel : ViewModel() {
      * Entered passphrase to be used to generate passwords that are marked to use the old passphrase.
      */
     var oldPassphrase: String? = null
+
+    /**
+     * File to write the list of services to
+     */
+    var servicesFile: File? = null
 
     /**
      * All services loaded from file.

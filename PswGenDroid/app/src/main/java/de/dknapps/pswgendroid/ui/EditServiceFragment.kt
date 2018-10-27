@@ -29,8 +29,10 @@ import de.dknapps.pswgencore.model.ServiceInfo
 import de.dknapps.pswgencore.util.DomainException
 import de.dknapps.pswgendroid.R
 import de.dknapps.pswgendroid.adapter.PswGenAdapter
+import de.dknapps.pswgendroid.event.ServiceDeletedEvent
 import de.dknapps.pswgendroid.model.ServiceMaintenanceViewModel
 import kotlinx.android.synthetic.main.edit_service_fragment.*
+import org.greenrobot.eventbus.EventBus
 
 
 class EditServiceFragment : androidx.fragment.app.Fragment() {
@@ -88,7 +90,6 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
         } catch (e: Exception) {
             PswGenAdapter.handleThrowable(activity!!, e)
         }
-
     }
 
     /**
@@ -103,10 +104,13 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
                 .setMessage("$abbreviation${getText(R.string.RemoveServiceMsg)}") //
                 .setPositiveButton(R.string.yes) { _, _ ->
                     try {
-                        val si = viewModel.services!!.removeServiceInfo(abbreviation)
-                        // TODO saveServiceInfoList(validatedPassphrase)
-                        // TODO Do I have to update the service list display?
-                        clearService()
+                        viewModel.services!!.removeServiceInfo(abbreviation)
+                        PswGenAdapter.saveServiceInfoList(
+                            viewModel.servicesFile!!,
+                            viewModel.services!!,
+                            viewModel.validatedPassphrase!!
+                        )
+                        EventBus.getDefault().post(ServiceDeletedEvent());
                     } catch (e: Exception) {
                         PswGenAdapter.handleThrowable(activity!!, e)
                     }
@@ -126,7 +130,6 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
         } catch (e: Exception) {
             PswGenAdapter.handleThrowable(activity!!, e)
         }
-
     }
 
     /**
@@ -193,6 +196,5 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
             throw DomainException("ServiceAbbreviationEmptyMsg")
         }
     }
-
 
 }

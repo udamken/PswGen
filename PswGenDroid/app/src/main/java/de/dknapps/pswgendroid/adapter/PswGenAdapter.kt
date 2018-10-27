@@ -42,6 +42,14 @@ object PswGenAdapter {
     }
 
     /**
+     * Save encrypted list of services into the file.
+     */
+    fun saveServiceInfoList(servicesFile: File, services: ServiceInfoList, passphrase: String) {
+        val fileHelper = FileHelper.getInstance(CommonJsonReaderWriterFactoryAndroidImpl())
+        fileHelper.saveServiceInfoList(servicesFile, services, passphrase)
+    }
+
+    /**
      * Bring out a toast after translating a domain exception to messages text.
      */
     fun handleThrowable(context: Context, t: Throwable) {
