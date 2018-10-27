@@ -55,6 +55,7 @@
 
 	<target name="copyJar">
 		<copy file="../PswGenDesktop/lib/PswGenCore.jar" tofile="../PswGenDroid/app/libs/PswGenCore.jar"/>
+		<copy file="../PswGenDesktop/lib/PswGenCore.jar" tofile="../../PswGen2/PswGenDroid/app/libs/PswGenCore.jar"/>
 	</target>
 
 	<target name="cleanup">

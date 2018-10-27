@@ -76,6 +76,9 @@ public class CoreConstants {
 	public static final DateFormat DATE_FORMAT = (Locale.getDefault().getLanguage().equals("de")
 			&& Locale.getDefault().getCountry().equals("DE")) ? DATE_FORMAT_de_DE : DATE_FORMAT_NON_GERMAN;
 
+	/** Das für alle Teile von PswGen verwendete Timestampformat */
+	public static final DateFormat TIMESTAMP_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+
 	/** Der Default-Name für die Dienstedatei */
 	public static final String SERVICES_FILENAME = "services.json";
 

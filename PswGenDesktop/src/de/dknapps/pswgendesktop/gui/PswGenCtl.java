@@ -26,7 +26,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -388,7 +387,7 @@ public class PswGenCtl extends BaseCtl {
 			mainView.setWaitCursor();
 			copyPassword(mainView);
 			ServiceInfo si = getServiceFromView(mainView);
-			resetAdditionalInfo(si);
+			si.resetAdditionalInfo();
 			si.setUseOldPassphrase(false);
 			putServiceToView(mainView, si);
 			mainView.setDirty(true);
@@ -411,15 +410,8 @@ public class PswGenCtl extends BaseCtl {
 	 */
 	private void clearService(final MainView mainView) {
 		ServiceInfo si = new ServiceInfo();
-		resetAdditionalInfo(si);
+		si.resetAdditionalInfo();
 		putServiceToView(mainView, si);
-	}
-
-	/**
-	 * Stellt das Tagesdatum in das Feld AdditionalInfo.
-	 */
-	private void resetAdditionalInfo(ServiceInfo si) {
-		si.setAdditionalInfo(CoreConstants.DATE_FORMAT.format(new Date()));
 	}
 
 	/**
@@ -452,6 +444,7 @@ public class PswGenCtl extends BaseCtl {
 		si.setPassword(mainView.getPassword());
 		si.setPasswordRepeated(mainView.getPasswordRepeated());
 		si.setUseOldPassphrase(mainView.getUseOldPassphrase());
+		// last update is set not set from the view but from outside
 		return si;
 	}
 
@@ -486,6 +479,7 @@ public class PswGenCtl extends BaseCtl {
 		mainView.setPassword(si.getPassword());
 		mainView.setPasswordRepeated(si.getPasswordRepeated());
 		mainView.setUseOldPassphrase(si.isUseOldPassphrase());
+		mainView.setLastUpdate(si.getLastUpdate());
 		mainView.setDirty(false);
 	}
 
@@ -647,6 +641,7 @@ public class PswGenCtl extends BaseCtl {
 		saveServiceInfoList(validatedPassphrase);
 		mainView.setDirty(false);
 		mainView.updateStoredServices();
+		putServiceToView(mainView, si); // update timestamp
 	}
 
 	/**

@@ -2,7 +2,7 @@
  * PswGenDesktop - Manages your websites and repeatably generates passwords for them
  * PswGenDroid - Generates your passwords managed by PswGenDesktop on your mobile  
  *
- *     Copyright (C) 2005-2017 Uwe Damken
+ *     Copyright (C) 2005-2018 Uwe Damken
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -152,6 +152,8 @@ public class MainView extends BaseView {
 	private JButton buttonStoreService;
 
 	private JButton buttonUseNewPassphrase;
+
+	private JLabel lastUpdate;
 
 	/** Hey, it's me ... für die Listener */
 	private MainView me = this;
@@ -501,6 +503,8 @@ public class MainView extends BaseView {
 				((PswGenCtl) ctl).actionPerformedUseNewPassphrase(me);
 			}
 		});
+		JLabel labelLastUpdate = wf.getLabel("LabelLastUpdate");
+		lastUpdate = wf.getLabel("LabelLastUpdate");
 		// Widgets zufügen, erste Zeile
 		int row = 0;
 		panel.add(labelServiceAbbreviation, gbcf.getLabelConstraints(0, row, 2, 1));
@@ -582,6 +586,15 @@ public class MainView extends BaseView {
 		// Widgets zufügen, nächste Zeile
 		row++;
 		panel.add(makePasswordVisible, gbcf.getFieldConstraints(2, row, 4, 1));
+		// Widgets zufügen, nächste Zeile
+		row++;
+		GridBagConstraints emptyLineConstraints = gbcf.getLabelConstraints(0, row, 2, 1);
+		emptyLineConstraints.weighty = 0.1;
+		panel.add(new JLabel(""), emptyLineConstraints);
+		// Widgets zufügen, nächste Zeile
+		row++;
+		panel.add(labelLastUpdate, gbcf.getLabelConstraints(0, row, 2, 1));
+		panel.add(lastUpdate, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 4, 1));
 		// Panel zurückgeben
 		return panel;
 	}
@@ -1009,6 +1022,14 @@ public class MainView extends BaseView {
 		return labelUseOldPassphrase.isVisible();
 	}
 
+	public String getLastUpdate() {
+		return lastUpdate.getText();
+	}
+
+	public void setLastUpdate(final String lastUpdate) {
+		this.lastUpdate.setText(lastUpdate);
+	}
+
 	/**
 	 * @return the dirty
 	 */
@@ -1051,4 +1072,5 @@ public class MainView extends BaseView {
 		buttonStoreService.setVisible(!useOldPassphrase);
 		buttonUseNewPassphrase.setVisible(useOldPassphrase);
 	}
+
 }

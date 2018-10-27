@@ -2,7 +2,7 @@
  * PswGenDesktop - Manages your websites and repeatably generates passwords for them
  * PswGenDroid - Generates your passwords managed by PswGenDesktop on your mobile  
  *
- *     Copyright (C) 2005-2017 Uwe Damken
+ *     Copyright (C) 2005-2018 Uwe Damken
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,9 @@
  *******************************************************************************/
 package de.dknapps.pswgencore.model;
 
+import java.util.Date;
+
+import de.dknapps.pswgencore.CoreConstants;
 import de.dknapps.pswgencore.util.EmptyHelper;
 
 /**
@@ -151,6 +154,21 @@ public class ServiceInfo {
 	 */
 	public void resetTimeMillis() {
 		this.timeMillis = String.valueOf(System.currentTimeMillis());
+	}
+
+	/**
+	 * Liefert den Timestamp in formatierter Form.
+	 */
+	public String getLastUpdate() {
+		return (timeMillis == null) ? "-/-"
+				: CoreConstants.TIMESTAMP_FORMAT.format(new Date(Long.parseLong(timeMillis)));
+	}
+
+	/**
+	 * Setzt das Feld AdditionalInfo auf das aktuelle Tagesdatum.
+	 */
+	public void resetAdditionalInfo() {
+		this.additionalInfo = CoreConstants.DATE_FORMAT.format(new Date());
 	}
 
 	/**
