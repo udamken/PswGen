@@ -63,8 +63,8 @@ public class ServiceInfoList {
 	/**
 	 * Ein Dienstekürzel und die zugehörigen Informationen zufügen.
 	 */
-	public ServiceInfo putServiceInfo(final ServiceInfo si) {
-		return services.put(si.getServiceAbbreviation(), si);
+	public void putServiceInfo(final ServiceInfo si) {
+		services.put(si.getServiceAbbreviation(), si);
 	}
 
 	/**
@@ -107,7 +107,8 @@ public class ServiceInfoList {
 	 * Liefert die Informationen zu einem Dienstekürzel.
 	 */
 	public ServiceInfo getServiceInfo(final String serviceAbbreviation) {
-		return services.get(serviceAbbreviation);
+		ServiceInfo si = services.get(serviceAbbreviation);
+		return (si == null || si.isDeleted()) ? null : si;
 	}
 
 	/**
@@ -160,9 +161,16 @@ public class ServiceInfoList {
 	}
 
 	/**
+	 * Liefert die Informationen zu allen Dienstekürzeln, die nicht als gelöscht markiert sind.
+	 */
+	public List<ServiceInfo> getServices() {
+		return getServices(false);
+	}
+
+	/**
 	 * Liefert die Informationen zu allen Dienstekürzeln, ggf. auch mit den als gelöscht markierten Einträgen.
 	 */
-	public List<ServiceInfo> getServices(boolean withDeletedEntries) {
+	protected List<ServiceInfo> getServices(boolean withDeletedEntries) {
 		List<ServiceInfo> result = new ArrayList<>();
 		for (ServiceInfo si : services.values()) {
 			if (withDeletedEntries || !si.isDeleted()) {

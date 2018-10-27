@@ -179,7 +179,7 @@ public class PswGenCtl extends BaseCtl {
 			validatedPassphrase = validateNewPassphrase(changePassphraseDialog);
 			changePassphraseDialog.dispose();
 			// Services, bei denen das Passwort generiert wird, auf UseOldPassphrase setzen
-			for (ServiceInfo si : services.getServices(false)) {
+			for (ServiceInfo si : services.getServices()) {
 				if (EmptyHelper.isEmpty(si.getPassword())) {
 					si.setUseOldPassphrase(true); // Passwort ab sofort mit der alten Passphrase erzeugen
 				}
@@ -619,12 +619,12 @@ public class PswGenCtl extends BaseCtl {
 	 * Werte des Dienstes in die Liste übernehmen und die gesamte Liste speichern.
 	 */
 	private void storeService(final MainView mainView) throws IOException {
-		String serviceAbbreviation = mainView.getServiceAbbreviation();
-		validateServiceAbbreviation(serviceAbbreviation);
-		if (services.getServiceInfo(serviceAbbreviation) != null) { // Ist der Dienst bereits vermerkt?
+		String abbreviation = mainView.getServiceAbbreviation();
+		validateServiceAbbreviation(abbreviation);
+		if (services.getServiceInfo(abbreviation) != null) { // Ist der Dienst bereits vermerkt?
 			int chosenOption = JOptionPane.showConfirmDialog(mainView,
-					serviceAbbreviation + getGuiText("OverwriteServiceMsg"),
-					DesktopConstants.APPLICATION_NAME, JOptionPane.YES_NO_OPTION);
+					abbreviation + getGuiText("OverwriteServiceMsg"), DesktopConstants.APPLICATION_NAME,
+					JOptionPane.YES_NO_OPTION);
 			if (chosenOption == JOptionPane.NO_OPTION) { // Dienst nicht überschreiben? => fertig
 				return;
 			}
