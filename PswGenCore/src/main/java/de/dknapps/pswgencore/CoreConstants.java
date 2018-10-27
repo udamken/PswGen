@@ -20,7 +20,6 @@ package de.dknapps.pswgencore;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Locale;
 
 /**
  * <p>
@@ -66,15 +65,11 @@ public class CoreConstants {
 
 	public static final String SPECIAL_CHARS = ",.;:!$&()=?+-*/#";
 
-	/** Das für alle Teile von PswGen verwendete Datumsformat bei deutscher Spracheinstellung */
-	private static final DateFormat DATE_FORMAT_de_DE = new SimpleDateFormat("dd.MM.yyyy");
-
-	/** Das für alle Teile von PswGen verwendete Datumsformat bei nicht-deutscher Spracheinstellung */
-	private static final DateFormat DATE_FORMAT_NON_GERMAN = DateFormat.getDateInstance(DateFormat.SHORT);
+	/** Zum Sortieren verwendetes Alternativformat für das Datum in den Zusatzinformationen */
+	public static final DateFormat DATE_FORMAT_de_DE = new SimpleDateFormat("dd.MM.yyyy");
 
 	/** Das für alle Teile von PswGen verwendete Datumsformat */
-	public static final DateFormat DATE_FORMAT = (Locale.getDefault().getLanguage().equals("de")
-			&& Locale.getDefault().getCountry().equals("DE")) ? DATE_FORMAT_de_DE : DATE_FORMAT_NON_GERMAN;
+	public static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");;
 
 	/** Das für alle Teile von PswGen verwendete Timestampformat */
 	public static final DateFormat TIMESTAMP_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");

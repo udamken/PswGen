@@ -249,8 +249,8 @@ public class MainView extends BaseView {
 			@Override
 			public int compare(String leftString, String rightString) {
 				try {
-					Date leftDate = CoreConstants.DATE_FORMAT.parse(leftString);
-					Date rightDate = CoreConstants.DATE_FORMAT.parse(rightString);
+					Date leftDate = CoreConstants.DATE_FORMAT_de_DE.parse(leftString);
+					Date rightDate = CoreConstants.DATE_FORMAT_de_DE.parse(rightString);
 					return leftDate.compareTo(rightDate);
 				} catch (ParseException e) {
 					return leftString.compareTo(rightString);
