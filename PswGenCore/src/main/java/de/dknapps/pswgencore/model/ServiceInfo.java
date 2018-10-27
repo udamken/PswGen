@@ -28,7 +28,7 @@ import de.dknapps.pswgencore.util.EmptyHelper;
  * Hält die Informationen für ein Dienstekürzel, die zum Generieren eines Passworts notwendig sind.
  * </p>
  */
-public class ServiceInfo {
+public class ServiceInfo implements Cloneable {
 
 	private String serviceAbbreviation;
 
@@ -94,8 +94,8 @@ public class ServiceInfo {
 	}
 
 	@Override
-	protected Object clone() throws CloneNotSupportedException {
-		return super.clone();
+	public Object clone() throws CloneNotSupportedException {
+		return super.clone(); // only primitives or immutables so shallow copy is fine
 	}
 
 	/**
