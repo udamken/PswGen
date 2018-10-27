@@ -257,7 +257,7 @@ public class PswGenCtl extends BaseCtl {
 				} else {
 					saveServiceInfoList(validatedPassphrase);
 					mainView.updateStoredServices();
-					putServiceToView(mainView, new ServiceInfo());
+					clearService(mainView);
 				}
 			}
 		} catch (Throwable t) {
