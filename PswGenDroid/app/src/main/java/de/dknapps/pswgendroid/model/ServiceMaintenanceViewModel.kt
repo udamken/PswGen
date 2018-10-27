@@ -50,9 +50,13 @@ class ServiceMaintenanceViewModel : ViewModel() {
     var services: ServiceInfoList? = null
 
     /**
+     * Currently selected abbreviation of a service.
+     */
+    var currentServiceAbbreviation: String? = null
+    /**
      * Currently selected service.
      */
-    var currentServiceInfo: ServiceInfo? = null
+    lateinit var currentServiceInfo: ServiceInfo
 
     /**
      * Entered or generated password from currently selected service.
@@ -78,11 +82,17 @@ class ServiceMaintenanceViewModel : ViewModel() {
         super.onCleared()
     }
 
+    fun retrieveService(): Boolean {
+        val si = services?.getServiceInfo(currentServiceAbbreviation) ?: return false
+        currentServiceInfo = si
+        return true
+    }
+
     fun resetModel() {
         validatedPassphrase = null
         oldPassphrase = null
         services = null
-        currentServiceInfo = null
+        currentServiceAbbreviation = null
         password = null
         passwordExplanation = null
     }

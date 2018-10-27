@@ -101,7 +101,7 @@ class ServiceDetailFragment : androidx.fragment.app.Fragment() {
         buttonEditService.setOnClickListener { onClickButtonEditService() }
     }
 
-    public override fun onStart() {
+    override fun onStart() {
         super.onStart()
         EventBus.getDefault().register(this)
     }
@@ -110,14 +110,14 @@ class ServiceDetailFragment : androidx.fragment.app.Fragment() {
         super.onResume()
         // When the screen gets locked services are unloaded. Therefore we return to previous fragment
         // if there is currently no service selected (probably because of screen lock).
-        if (viewModel.currentServiceInfo == null) {
+        if (!viewModel.retrieveService()) {
             activity!!.supportFragmentManager.popBackStack()
         } else {
-            putServiceToView(viewModel.currentServiceInfo!!)
+            putServiceToView(viewModel.currentServiceInfo)
         }
     }
 
-    public override fun onStop() {
+    override fun onStop() {
         EventBus.getDefault().unregister(this)
         super.onStop()
     }
@@ -133,7 +133,7 @@ class ServiceDetailFragment : androidx.fragment.app.Fragment() {
             inputMethodPickingState = ONGOING
         } else if (inputMethodPickingState == ONGOING) {
             inputMethodPickingState = NONE
-            openUrl(viewModel.currentServiceInfo!!.loginUrl)
+            openUrl(viewModel.currentServiceInfo.loginUrl)
         }
     }
 
@@ -168,8 +168,8 @@ class ServiceDetailFragment : androidx.fragment.app.Fragment() {
      */
     private fun onClickButtonOpenUrl() {
         try {
-            openUrl(viewModel.currentServiceInfo!!.loginUrl)
-            copyToClipboard(activity!!, viewModel.currentServiceInfo!!.loginInfo)
+            openUrl(viewModel.currentServiceInfo.loginUrl)
+            copyToClipboard(activity!!, viewModel.currentServiceInfo.loginInfo)
         } catch (e: Exception) {
             PswGenAdapter.handleThrowable(activity!!, e)
         }
@@ -181,7 +181,7 @@ class ServiceDetailFragment : androidx.fragment.app.Fragment() {
      */
     private fun onClickButtonCopyLoginInfo() {
         try {
-            copyToClipboard(activity!!, viewModel.currentServiceInfo!!.loginInfo)
+            copyToClipboard(activity!!, viewModel.currentServiceInfo.loginInfo)
         } catch (e: Exception) {
             PswGenAdapter.handleThrowable(activity!!, e)
         }
@@ -206,7 +206,7 @@ class ServiceDetailFragment : androidx.fragment.app.Fragment() {
         try {
             viewModel.password = getValidatedOrGeneratedPassword()
             viewModel.passwordExplanation = getPasswordExplanation(viewModel.password!!)
-            EventBus.getDefault().post(DisplayPasswordClickedEvent());
+            EventBus.getDefault().post(DisplayPasswordClickedEvent())
         } catch (e: Exception) {
             PswGenAdapter.handleThrowable(activity!!, e)
         }
@@ -216,8 +216,8 @@ class ServiceDetailFragment : androidx.fragment.app.Fragment() {
      * Edit currently selected service by deep copying the entry.
      */
     private fun onClickButtonEditService() {
-        viewModel.editedServiceInfo = viewModel.currentServiceInfo?.clone() as ServiceInfo?
-        EventBus.getDefault().post(EditServiceClickedEvent());
+        viewModel.editedServiceInfo = viewModel.currentServiceInfo.clone() as ServiceInfo?
+        EventBus.getDefault().post(EditServiceClickedEvent())
     }
 
     /**
@@ -240,7 +240,7 @@ class ServiceDetailFragment : androidx.fragment.app.Fragment() {
     private fun provideLoginInfoAndPassword() {
         val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.showInputMethodPicker()
-        providedLoginInfo = viewModel.currentServiceInfo!!.getLoginInfo()
+        providedLoginInfo = viewModel.currentServiceInfo.loginInfo
         providedPassword = getValidatedOrGeneratedPassword()
     }
 
@@ -249,7 +249,7 @@ class ServiceDetailFragment : androidx.fragment.app.Fragment() {
      * an exception is thrown. An entered password has a higher priority than a generated password.
      */
     private fun getValidatedOrGeneratedPassword(): String {
-        val passphrase = if (viewModel.currentServiceInfo!!.isUseOldPassphrase)
+        val passphrase = if (viewModel.currentServiceInfo.isUseOldPassphrase)
             viewModel.oldPassphrase
         else
             viewModel.validatedPassphrase
@@ -261,11 +261,11 @@ class ServiceDetailFragment : androidx.fragment.app.Fragment() {
      * Open url in browser.
      */
     private fun openUrl(loginUrl: String) {
-        var loginUrl = loginUrl
-        if (!loginUrl.startsWith("http://") && !loginUrl.startsWith("https://")) {
-            loginUrl = "http://$loginUrl"
+        var url = loginUrl
+        if (!url.startsWith("http://") && !url.startsWith("https://")) {
+            url = "http://$url"
         }
-        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(loginUrl))
+        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
         startActivity(browserIntent)
     }
 

@@ -97,14 +97,14 @@ class StartupFragment : androidx.fragment.app.Fragment() {
                 viewModel.servicesFile!!,
                 otherServicesFile,
                 passphrase.text.toString()
-            )!!
+            )
             viewModel.validatedPassphrase = passphrase.text.toString()
             viewModel.oldPassphrase = oldPassphrase.text.toString()
             val editor = prefs.edit()
             editor.putString(getString(R.string.preference_filepath), filepath.text.toString())
             editor.putString(getString(R.string.preference_other_filepath), otherFilepath.text.toString())
-            editor.commit()
-            EventBus.getDefault().post(ServiceListLoadedEvent());
+            editor.apply()
+            EventBus.getDefault().post(ServiceListLoadedEvent())
         } catch (e: Exception) {
             PswGenAdapter.handleThrowable(activity!!, e)
         }
@@ -129,7 +129,7 @@ class StartupFragment : androidx.fragment.app.Fragment() {
      * Send event to switch to about fragment.
      */
     private fun onClickButtonOpenAbout() {
-        EventBus.getDefault().post(OpenAboutClickedEvent());
+        EventBus.getDefault().post(OpenAboutClickedEvent())
     }
 
 }

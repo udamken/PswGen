@@ -29,11 +29,8 @@ import de.dknapps.pswgencore.model.ServiceInfo
 import de.dknapps.pswgencore.util.DomainException
 import de.dknapps.pswgendroid.R
 import de.dknapps.pswgendroid.adapter.PswGenAdapter
-import de.dknapps.pswgendroid.event.ServiceDeletedEvent
-import de.dknapps.pswgendroid.event.ServiceStoredEvent
 import de.dknapps.pswgendroid.model.ServiceMaintenanceViewModel
 import kotlinx.android.synthetic.main.edit_service_fragment.*
-import org.greenrobot.eventbus.EventBus
 
 
 class EditServiceFragment : androidx.fragment.app.Fragment() {
@@ -111,7 +108,7 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
                             viewModel.services!!,
                             viewModel.validatedPassphrase!!
                         )
-                        EventBus.getDefault().post(ServiceDeletedEvent());
+                        clearService()
                     } catch (e: Exception) {
                         PswGenAdapter.handleThrowable(activity!!, e)
                     }
@@ -161,7 +158,6 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
                 viewModel.services!!,
                 viewModel.validatedPassphrase!!
             )
-            EventBus.getDefault().post(ServiceStoredEvent());
         } catch (e: Exception) {
             PswGenAdapter.handleThrowable(activity!!, e)
         }
@@ -177,7 +173,7 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
         loginInfo.setText(si.loginInfo)
         additionalLoginInfo.setText(si.additionalLoginInfo)
         labelUseOldPassphrase.visibility = if (si.isUseOldPassphrase) View.VISIBLE else View.INVISIBLE
-        lastUpdate.setText(si.lastUpdate)
+        lastUpdate.text = si.lastUpdate
     }
 
     /**
@@ -226,8 +222,8 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
     /**
      * Throws a domain exception if the given abbreviation is empty.
      */
-    private fun validateServiceAbbreviation(abbreviaton: String) {
-        if (abbreviaton.isEmpty()) {
+    private fun validateServiceAbbreviation(abbreviation: String) {
+        if (abbreviation.isEmpty()) {
             throw DomainException("ServiceAbbreviationEmptyMsg")
         }
     }

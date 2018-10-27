@@ -120,26 +120,12 @@ class ServiceMaintenanceActivity : AppCompatActivity() {
             .commit()
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onServiceDeletedEvent(event: ServiceDeletedEvent) {
-        // This event is triggered from edit service fragment, so we have to go back twice to the service list
-        onSupportNavigateUp()
-        onSupportNavigateUp()
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onServiceStoredEvent(event: ServiceStoredEvent) {
-        // This event is triggered from edit service fragment, so we have to go back twice to the service list
-        onSupportNavigateUp()
-        onSupportNavigateUp()
-    }
-
     /**
      * @see ServiceDetailFragment.onWindowFocusChanged what this is needed for.
      */
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
-        EventBus.getDefault().post(WindowFocusChangedEvent());
+        EventBus.getDefault().post(WindowFocusChangedEvent())
     }
 
 }

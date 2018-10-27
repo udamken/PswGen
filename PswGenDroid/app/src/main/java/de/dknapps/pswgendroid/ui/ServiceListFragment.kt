@@ -61,6 +61,7 @@ class ServiceListFragment : ListFragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
+                @Suppress("UNCHECKED_CAST")
                 (listAdapter!! as ArrayAdapter<ServiceInfo>).filter.filter(newText)
                 return true // action handled, no more to do
             }
@@ -90,15 +91,15 @@ class ServiceListFragment : ListFragment() {
         } else {
             listAdapter = ArrayAdapter<ServiceInfo>(
                 activity!!,
-                simple_list_item_activated_1, text1, viewModel.services!!.getServices(false)
+                simple_list_item_activated_1, text1, viewModel.services!!.services
             )
         }
     }
 
     override fun onListItemClick(listView: ListView?, view: View?, position: Int, id: Long) {
         super.onListItemClick(listView, view, position, id)
-        viewModel.currentServiceInfo = listAdapter.getItem(position)!! as ServiceInfo
-        EventBus.getDefault().post(ServiceSelectedEvent());
+        viewModel.currentServiceAbbreviation = (listAdapter.getItem(position)!! as ServiceInfo).serviceAbbreviation
+        EventBus.getDefault().post(ServiceSelectedEvent())
     }
 
 }
