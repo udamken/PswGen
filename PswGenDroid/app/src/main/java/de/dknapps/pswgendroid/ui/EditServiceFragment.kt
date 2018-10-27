@@ -158,6 +158,7 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
                 viewModel.services!!,
                 viewModel.validatedPassphrase!!
             )
+            putServiceToView(si) // update timestamp
         } catch (e: Exception) {
             PswGenAdapter.handleThrowable(activity!!, e)
         }

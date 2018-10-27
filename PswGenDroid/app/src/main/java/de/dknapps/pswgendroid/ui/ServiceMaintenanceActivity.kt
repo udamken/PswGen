@@ -57,7 +57,6 @@ class ServiceMaintenanceActivity : AppCompatActivity() {
             }
         }, IntentFilter(Intent.ACTION_SCREEN_OFF))
 
-        // TODO EditServiceFragment button functionality
         // FIXME See PswGenDesktop
         // TODO Ask for permissions
         // TODO Dirty handling for editing (check backstack for edit fragment)
