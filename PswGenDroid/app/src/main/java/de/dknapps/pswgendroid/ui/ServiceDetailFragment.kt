@@ -200,18 +200,6 @@ class ServiceDetailFragment : androidx.fragment.app.Fragment() {
     }
 
     /**
-     * Copy values to be displayed into UI (method name identical with PswGenDesktop).
-     */
-    private fun putServiceToView(si: ServiceInfo) {
-        serviceAbbreviation.text = si.serviceAbbreviation
-        additionalInfo.text = si.additionalInfo
-        loginUrl.text = si.loginUrl
-        loginInfo.text = si.loginInfo
-        additionalLoginInfo.text = si.additionalLoginInfo
-        labelUseOldPassphrase.visibility = if (si.isUseOldPassphrase) View.VISIBLE else View.INVISIBLE
-    }
-
-    /**
      * Display entered or generated password with an explanation.
      */
     private fun onClickButtonDisplayPassword() {
@@ -229,6 +217,20 @@ class ServiceDetailFragment : androidx.fragment.app.Fragment() {
      */
     private fun onClickButtonEditService() {
         EventBus.getDefault().post(EditServiceClickedEvent());
+    }
+
+    /**
+     * Copy values to be displayed into UI (method name identical with PswGenDesktop).
+     */
+    private fun putServiceToView(si: ServiceInfo) {
+        serviceAbbreviation.text = si.serviceAbbreviation
+        additionalInfo.text = si.additionalInfo
+        loginUrl.text = si.loginUrl
+        loginInfo.text = si.loginInfo
+        additionalLoginInfo.text = si.additionalLoginInfo
+        labelUseOldPassphrase.visibility = if (si.isUseOldPassphrase) View.VISIBLE else View.INVISIBLE
+        lastUpdate.text = si.lastUpdate
+
     }
 
     /**

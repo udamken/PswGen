@@ -55,6 +55,7 @@
     <string name="label_login_info">Login Information</string>
     <string name="label_additional_login_info">Addt\'l Login Information</string>
     <string name="label_use_old_passphrase">Uses old passphrase</string>
+    <string name="label_last_update">Last update</string>
     <string name="button_open_and_provide">Open &amp; provide</string>
     <string name="button_provide">Provide</string>
     <string name="button_open_url">Open &amp; copy</string>

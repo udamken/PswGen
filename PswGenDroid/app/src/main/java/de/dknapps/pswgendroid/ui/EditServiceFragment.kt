@@ -111,6 +111,21 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
         loginInfo.setText(si.loginInfo)
         additionalLoginInfo.setText(si.additionalLoginInfo)
         labelUseOldPassphrase.visibility = if (si.isUseOldPassphrase) View.VISIBLE else View.INVISIBLE
+        lastUpdate.setText(si.lastUpdate)
+    }
+
+    /**
+     * Return service with values from UI (method name identical with PswGenDesktop).
+     */
+    private fun getServiceFromView(): ServiceInfo {
+        val si = ServiceInfo(serviceAbbreviation.text.toString())
+        si.additionalInfo = additionalInfo.text.toString()
+        si.loginUrl = loginUrl.text.toString()
+        si.loginInfo = loginInfo.text.toString()
+        si.additionalLoginInfo = additionalLoginInfo.text.toString()
+        si.isUseOldPassphrase = labelUseOldPassphrase.visibility == View.VISIBLE
+        // last update is set not set from the view but from outside
+        return si
     }
 
 }

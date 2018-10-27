@@ -105,7 +105,7 @@
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:textIsSelectable="true"
-                  android:labelFor="@+id/passphrase"/>
+                  android:paddingBottom="4dp"/>
 
         <TextView
                 android:id="@+id/labelUseOldPassphrase"
@@ -113,9 +113,24 @@
                 android:textColor="@android:color/holo_red_dark"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="10dp"
+                android:paddingBottom="4dp"
                 android:text="@string/label_use_old_passphrase"
                 android:textIsSelectable="false"/>
+
+        <TextView android:id="@+id/labelLastUpdate"
+                  style="?android:attr/textAppearanceMedium"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:text="@string/label_last_update"
+                  android:textIsSelectable="false"
+                  android:labelFor="@+id/lastUpdate"/>
+
+        <TextView android:id="@+id/lastUpdate"
+                  style="?android:attr/textAppearanceSmall"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:textIsSelectable="true"
+                  android:paddingBottom="10dp"/>
 
         <Button android:id="@+id/buttonOpenAndProvide"
                 style="?android:attr/buttonStyle"

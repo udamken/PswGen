@@ -59,6 +59,8 @@ class ServiceMaintenanceActivity : AppCompatActivity() {
 
         // TODO Ask for permissions
         // TODO EditServiceFragment button functionality
+        // TODO Dirty handling for editing (check backstack for edit fragment)
+        // TODO Add validation for oldPassphrase with a new verifier := verifier * oldPassphrase.hashCode
 
     }
 
