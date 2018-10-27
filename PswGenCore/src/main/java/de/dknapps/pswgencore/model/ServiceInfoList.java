@@ -147,15 +147,16 @@ public class ServiceInfoList {
 	}
 
 	/**
-	 * Löscht die Informationen zu einem Dienstekürzel.
+	 * Wenn es keinen Dienst mit dem Dienstekürzel gibt, wird eine Exception geworfen. Anderenfalls wird der
+	 * Dienst als gelöscht markiert und dadurch beim getServices(false) nicht mehr mitgeliefert.
 	 */
-	public ServiceInfo removeServiceInfo(final String serviceAbbreviation) {
+	public void removeServiceInfo(final String serviceAbbreviation) {
 		ServiceInfo si = getServiceInfo(serviceAbbreviation);
-		if (si != null) {
-			si.setDeleted(true);
-			si.resetTimeMillis();
+		if (si == null) {
+			throw new DomainException("ServiceAbbreviationMissingMsg");
 		}
-		return si;
+		si.setDeleted(true);
+		si.resetTimeMillis();
 	}
 
 	/**

@@ -245,20 +245,16 @@ public class PswGenCtl extends BaseCtl {
 	public void actionPerformedRemoveService(final MainView mainView) {
 		try {
 			mainView.setWaitCursor();
-			String serviceAbbreviation = mainView.getServiceAbbreviation();
+			String abbreviation = mainView.getServiceAbbreviation();
+			validateServiceAbbreviation(abbreviation);
 			int chosenOption = JOptionPane.showConfirmDialog(mainView,
-					serviceAbbreviation + getGuiText("RemoveServiceMsg"), DesktopConstants.APPLICATION_NAME,
+					abbreviation + getGuiText("RemoveServiceMsg"), DesktopConstants.APPLICATION_NAME,
 					JOptionPane.YES_NO_OPTION);
 			if (chosenOption == JOptionPane.YES_OPTION) { // Dienst löschen?
-				validateServiceAbbreviation(serviceAbbreviation);
-				ServiceInfo si = services.removeServiceInfo(serviceAbbreviation);
-				if (si == null) { // Dienst gar nicht vorhanden?
-					throw new DomainException("ServiceAbbreviationMissingMsg");
-				} else {
-					saveServiceInfoList(validatedPassphrase);
-					mainView.updateStoredServices();
-					clearService(mainView);
-				}
+				services.removeServiceInfo(abbreviation);
+				saveServiceInfoList(validatedPassphrase);
+				mainView.updateStoredServices();
+				clearService(mainView);
 			}
 		} catch (Throwable t) {
 			handleThrowable(t);
