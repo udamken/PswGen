@@ -30,6 +30,7 @@ import de.dknapps.pswgencore.util.DomainException
 import de.dknapps.pswgendroid.R
 import de.dknapps.pswgendroid.adapter.PswGenAdapter
 import de.dknapps.pswgendroid.event.ServiceDeletedEvent
+import de.dknapps.pswgendroid.event.ServiceStoredEvent
 import de.dknapps.pswgendroid.model.ServiceMaintenanceViewModel
 import kotlinx.android.synthetic.main.edit_service_fragment.*
 import org.greenrobot.eventbus.EventBus
@@ -127,6 +128,40 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
      */
     private fun onClickButtonStoreService() {
         try {
+            val abbreviation = serviceAbbreviation.text.toString()
+            validateServiceAbbreviation(abbreviation)
+            if (viewModel.services!!.getServiceInfo(abbreviation) != null) { // service does exist?
+                AlertDialog.Builder(activity!!) //
+                    .setTitle(R.string.app_name) //
+                    .setMessage("$abbreviation${getText(R.string.OverwriteServiceMsg)}") //
+                    .setPositiveButton(R.string.yes) { _, _ ->
+                        storeServiceAnyway()
+                    } //
+                    .setNegativeButton(R.string.no, null) //
+                    .show()
+            } else {
+                storeServiceAnyway()
+            }
+        } catch (e: Exception) {
+            PswGenAdapter.handleThrowable(activity!!, e)
+        }
+    }
+
+    /**
+     * Get service from view and store it regardless whether it already exists or not.
+     */
+    private fun storeServiceAnyway() {
+        try {
+            val si = getServiceFromView()
+            si.isDeleted = false
+            si.resetTimeMillis()
+            viewModel.services!!.putServiceInfo(si)
+            PswGenAdapter.saveServiceInfoList(
+                viewModel.servicesFile!!,
+                viewModel.services!!,
+                viewModel.validatedPassphrase!!
+            )
+            EventBus.getDefault().post(ServiceStoredEvent());
         } catch (e: Exception) {
             PswGenAdapter.handleThrowable(activity!!, e)
         }

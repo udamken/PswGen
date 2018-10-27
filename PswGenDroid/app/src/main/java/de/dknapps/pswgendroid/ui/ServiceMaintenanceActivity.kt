@@ -57,8 +57,9 @@ class ServiceMaintenanceActivity : AppCompatActivity() {
             }
         }, IntentFilter(Intent.ACTION_SCREEN_OFF))
 
-        // TODO Ask for permissions
         // TODO EditServiceFragment button functionality
+        // FIXME See PswGenDesktop
+        // TODO Ask for permissions
         // TODO Dirty handling for editing (check backstack for edit fragment)
         // TODO Add validation for oldPassphrase with a new verifier := verifier * oldPassphrase.hashCode
 
@@ -121,6 +122,13 @@ class ServiceMaintenanceActivity : AppCompatActivity() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onServiceDeletedEvent(event: ServiceDeletedEvent) {
+        // This event is triggered from edit service fragment, so we have to go back twice to the service list
+        onSupportNavigateUp()
+        onSupportNavigateUp()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onServiceStoredEvent(event: ServiceStoredEvent) {
         // This event is triggered from edit service fragment, so we have to go back twice to the service list
         onSupportNavigateUp()
         onSupportNavigateUp()
