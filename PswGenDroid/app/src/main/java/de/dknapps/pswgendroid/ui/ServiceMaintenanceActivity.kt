@@ -76,7 +76,7 @@ class ServiceMaintenanceActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        if (viewModel.isDirty) {
+        return if (viewModel.isDirty) {
             AlertDialog.Builder(this) //
                 .setTitle(R.string.app_name) //
                 .setMessage(R.string.DiscardChangesMsg) //
@@ -86,10 +86,10 @@ class ServiceMaintenanceActivity : AppCompatActivity() {
                 } //
                 .setNegativeButton(android.R.string.cancel, null) //
                 .show()
-            return false
+            false
         } else {
             supportFragmentManager.popBackStack()
-            return true
+            true
         }
     }
 

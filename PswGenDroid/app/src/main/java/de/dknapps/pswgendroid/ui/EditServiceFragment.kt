@@ -60,13 +60,7 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
 
     }
 
-    private val dirtyOnClickListener = object : View.OnClickListener {
-
-        override fun onClick(v: View?) {
-            viewModel.isDirty = true
-        }
-
-    }
+    private val dirtyOnClickListener = View.OnClickListener { viewModel.isDirty = true }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

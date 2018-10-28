@@ -82,8 +82,8 @@ class StartupFragment : androidx.fragment.app.Fragment() {
         super.onResume()
         // Passphrases are deleted for security reasons otherwise screen lock leads to "unloading" the services
         // and returns to startup fragment but the passphrase would still be there which were not very helpful.
-        passphrase.setText(null)
-        oldPassphrase.setText(null)
+        passphrase.setText("")
+        oldPassphrase.setText("")
     }
 
     /**
