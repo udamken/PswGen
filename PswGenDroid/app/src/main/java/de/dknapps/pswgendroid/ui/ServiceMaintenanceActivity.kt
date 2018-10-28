@@ -59,6 +59,7 @@ class ServiceMaintenanceActivity : AppCompatActivity() {
         }, IntentFilter(Intent.ACTION_SCREEN_OFF))
 
         // TODO Ask for permissions
+        // TODO Show file information also in PswGenDesktop
         // FIXME Rethink rephrasing with two files ... see also PswGenDesktop
         // TODO Add validation for oldPassphrase with a new verifier := verifier * oldPassphrase.hashCode
         // TODO With this validation for oldPassphrase test use new passphrase

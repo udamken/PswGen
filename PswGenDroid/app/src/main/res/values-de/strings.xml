@@ -41,6 +41,9 @@
     <string name="button_open_help">Hilfe</string>
     <string name="help_url">https://github.com/udamken/PswGenDroid/wiki</string>
     <string name="button_open_about">Über PswGenDroid</string>
+    <string name="msg_file_cannot_be_found">Datei nicht gefunden (Berechtigungen?)</string>
+    <string name="msg_file_cannot_be_read">Datei ist nicht lesbar (Berechtigungen?)</string>
+    <string name="msg_file_last_modified">Datei zuletzt geändert: %1$s</string>
 
     <!-- ServiceListFragment -->
     <string name="title_service_list">Gespeicherte Dienste</string>

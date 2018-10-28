@@ -43,6 +43,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPassword"
+        android:paddingBottom="4dp"
         />
 
     <TextView
@@ -61,6 +62,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPassword"
+        android:paddingBottom="4dp"
         />
 
     <TextView
@@ -78,7 +80,17 @@
         style="?android:attr/textAppearanceSmall"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textUri"
+        android:inputType="text"
+        />
+
+    <TextView
+        android:id="@+id/filepathInfo"
+        style="?android:attr/textAppearanceSmall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/dknapps_de_orange"
+        android:textIsSelectable="false"
+        android:paddingBottom="4dp"
         />
 
     <TextView
@@ -96,7 +108,17 @@
         style="?android:attr/textAppearanceSmall"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textUri"
+        android:inputType="text"
+        />
+
+    <TextView
+        android:id="@+id/otherFilepathInfo"
+        style="?android:attr/textAppearanceSmall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/dknapps_de_orange"
+        android:textIsSelectable="false"
+        android:paddingBottom="10dp"
         />
 
     <Button

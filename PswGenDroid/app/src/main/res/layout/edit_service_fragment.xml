@@ -445,7 +445,7 @@
             android:layout_height="wrap_content"
             android:paddingBottom="4dp"
             android:text="@string/label_use_old_passphrase"
-            android:textColor="@android:color/holo_red_dark"
+            android:textColor="@color/dknapps_de_orange"
             android:textIsSelectable="false"
             />
 

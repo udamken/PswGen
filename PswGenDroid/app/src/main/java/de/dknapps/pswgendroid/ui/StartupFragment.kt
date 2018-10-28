@@ -18,6 +18,7 @@
  ************************************************************************************/
 package de.dknapps.pswgendroid.ui
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -32,10 +33,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import de.dknapps.pswgencore.CoreConstants
 import de.dknapps.pswgendroid.R
+import de.dknapps.pswgendroid.R.string.msg_file_last_modified
 import de.dknapps.pswgendroid.adapter.PswGenAdapter
 import de.dknapps.pswgendroid.event.OpenAboutClickedEvent
 import de.dknapps.pswgendroid.event.ServiceListLoadedEvent
 import de.dknapps.pswgendroid.model.ServiceMaintenanceViewModel
+import de.dknapps.pswgendroid.util.TextChangedListener
 import kotlinx.android.synthetic.main.startup_fragment.*
 import org.greenrobot.eventbus.EventBus
 import java.io.File
@@ -50,9 +53,17 @@ class StartupFragment : androidx.fragment.app.Fragment() {
 
     private lateinit var prefs: SharedPreferences
 
+    private val filepathTextChangedListener = TextChangedListener {
+        filepathInfo.text = deriveInfo(it.toString())
+    }
+
+    private val otherFilepathTextChangedListener = TextChangedListener {
+        otherFilepathInfo.text = deriveInfo(it.toString())
+    }
+
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View {
         return inflater.inflate(R.layout.startup_fragment, container, false)
     }
@@ -84,6 +95,19 @@ class StartupFragment : androidx.fragment.app.Fragment() {
         // and returns to startup fragment but the passphrase would still be there which were not very helpful.
         passphrase.setText("")
         oldPassphrase.setText("")
+
+        filepath.addTextChangedListener(filepathTextChangedListener)
+        otherFilepath.addTextChangedListener(otherFilepathTextChangedListener)
+
+        // update because of possible outside changes
+        filepathTextChangedListener.onTextChanged(filepath.text.toString())
+        otherFilepathTextChangedListener.onTextChanged(otherFilepath.text.toString())
+    }
+
+    override fun onPause() {
+        filepath.removeTextChangedListener(filepathTextChangedListener)
+        otherFilepath.removeTextChangedListener(otherFilepathTextChangedListener)
+        super.onPause()
     }
 
     /**
@@ -94,9 +118,9 @@ class StartupFragment : androidx.fragment.app.Fragment() {
             viewModel.servicesFile = File(filepath.text.toString())
             val otherServicesFile = File(otherFilepath.text.toString())
             viewModel.services = PswGenAdapter.loadServiceInfoList(
-                viewModel.servicesFile!!,
-                otherServicesFile,
-                passphrase.text.toString()
+                    viewModel.servicesFile!!,
+                    otherServicesFile,
+                    passphrase.text.toString()
             )
             viewModel.validatedPassphrase = passphrase.text.toString()
             viewModel.oldPassphrase = oldPassphrase.text.toString()
@@ -130,6 +154,21 @@ class StartupFragment : androidx.fragment.app.Fragment() {
      */
     private fun onClickButtonOpenAbout() {
         EventBus.getDefault().post(OpenAboutClickedEvent())
+    }
+
+    /**
+     * Returns displayable information about the file specified by the given filepath.
+     */
+    @SuppressLint("StringFormatInvalid")
+    private fun deriveInfo(filePath: String): String {
+        val file = File(filePath)
+        return if (!file.exists()) {
+            getString(R.string.msg_file_cannot_be_found)
+        } else if (!file.canRead()) {
+            getString(R.string.msg_file_cannot_be_read)
+        } else {
+            getString(msg_file_last_modified, CoreConstants.TIMESTAMP_FORMAT.format(file.lastModified()))
+        }
     }
 
 }

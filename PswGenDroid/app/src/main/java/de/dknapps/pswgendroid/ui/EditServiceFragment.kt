@@ -19,8 +19,6 @@
 package de.dknapps.pswgendroid.ui
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,6 +33,7 @@ import de.dknapps.pswgencore.util.EmptyHelper
 import de.dknapps.pswgendroid.R
 import de.dknapps.pswgendroid.adapter.PswGenAdapter
 import de.dknapps.pswgendroid.model.ServiceMaintenanceViewModel
+import de.dknapps.pswgendroid.util.TextChangedListener
 import kotlinx.android.synthetic.main.edit_service_fragment.*
 
 
@@ -48,17 +47,7 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
 
     private lateinit var viewModel: ServiceMaintenanceViewModel
 
-    private val dirtyTextChangedListener = object : TextWatcher {
-
-        override fun afterTextChanged(s: Editable?) {
-            viewModel.isDirty = true
-        }
-
-        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
-    }
+    private val dirtyTextChangedListener = TextChangedListener { viewModel.isDirty = true }
 
     private val dirtyOnClickListener = View.OnClickListener { viewModel.isDirty = true }
 
