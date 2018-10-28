@@ -72,6 +72,7 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
         buttonClearService.setOnClickListener { onClickButtonClearService() }
         buttonRemoveService.setOnClickListener { onClickButtonRemoveService() }
         buttonStoreService.setOnClickListener { onClickButtonStoreService() }
+        buttonUseNewPassphrase.setOnClickListener { onClickButtonUseNewPassphrase() }
     }
 
     override fun onResume() {
@@ -155,6 +156,16 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
     }
 
     /**
+     * Fill additional info with current date and change service to no longer use the old passphrase.
+     */
+    private fun onClickButtonUseNewPassphrase() {
+        val si = getServiceFromView()
+        si.resetAdditionalInfo()
+        si.isUseOldPassphrase = false
+        putServiceToView(si)
+    }
+
+    /**
      * Add a listener to all fields that sets a dirty tag if the content was changed.
      */
     private fun addAllDirtyListener() {
@@ -227,7 +238,15 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
         loginUrl.setText(si.loginUrl)
         loginInfo.setText(si.loginInfo)
         additionalLoginInfo.setText(si.additionalLoginInfo)
-        labelUseOldPassphrase.visibility = if (si.isUseOldPassphrase) View.VISIBLE else View.INVISIBLE
+        if (si.isUseOldPassphrase) {
+            labelUseOldPassphrase.visibility = View.VISIBLE
+            buttonStoreService.visibility = View.INVISIBLE
+            buttonUseNewPassphrase.visibility = View.VISIBLE
+        } else {
+            labelUseOldPassphrase.visibility = View.INVISIBLE
+            buttonStoreService.visibility = View.VISIBLE
+            buttonUseNewPassphrase.visibility = View.INVISIBLE
+        }
         lastUpdate.text = si.lastUpdate
     }
 
