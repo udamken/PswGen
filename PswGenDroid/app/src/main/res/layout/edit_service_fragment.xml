@@ -107,6 +107,198 @@
                   android:paddingBottom="4dp"
                   android:inputType="textMultiLine"/>
 
+        <CheckBox android:id="@+id/useSmallLetters"
+                  style="?android:attr/textAppearanceMedium"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:hint="@string/checkbox_use_small_letters"/>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingLeft="40dp"
+                android:paddingBottom="4dp">
+
+            <TextView
+                    android:id="@+id/labelSmallLettersCountStartEnd"
+                    style="?android:attr/textAppearanceSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_count_start_end"
+                    android:textIsSelectable="false"/>
+
+            <EditText android:id="@+id/smallLettersCount"
+                      style="?android:attr/textAppearanceSmall"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:inputType="number"/>
+
+            <EditText android:id="@+id/smallLettersStartIndex"
+                      style="?android:attr/textAppearanceSmall"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:inputType="number"/>
+
+            <EditText android:id="@+id/smallLettersEndIndex"
+                      style="?android:attr/textAppearanceSmall"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:inputType="number"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <CheckBox android:id="@+id/useCapitalLetters"
+                  style="?android:attr/textAppearanceMedium"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:hint="@string/checkbox_use_capital_letters"/>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingLeft="40dp"
+                android:paddingBottom="4dp">
+
+            <TextView
+                    android:id="@+id/labelCaptialLettersCountStartEnd"
+                    style="?android:attr/textAppearanceSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_count_start_end"
+                    android:textIsSelectable="false"/>
+
+            <EditText android:id="@+id/capitalLettersCount"
+                      style="?android:attr/textAppearanceSmall"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:inputType="number"/>
+
+            <EditText android:id="@+id/capitalLettersStartIndex"
+                      style="?android:attr/textAppearanceSmall"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:inputType="number"/>
+
+            <EditText android:id="@+id/capitalLettersEndIndex"
+                      style="?android:attr/textAppearanceSmall"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:inputType="number"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <CheckBox android:id="@+id/useDigits"
+                  style="?android:attr/textAppearanceMedium"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:hint="@string/checkbox_use_digits"/>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingLeft="40dp"
+                android:paddingBottom="4dp">
+
+            <TextView
+                    android:id="@+id/labelDigitsCountStartEnd"
+                    style="?android:attr/textAppearanceSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_count_start_end"
+                    android:textIsSelectable="false"/>
+
+            <EditText android:id="@+id/digitsCount"
+                      style="?android:attr/textAppearanceSmall"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:inputType="number"/>
+
+            <EditText android:id="@+id/digitsStartIndex"
+                      style="?android:attr/textAppearanceSmall"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:inputType="number"/>
+
+            <EditText android:id="@+id/digitsEndIndex"
+                      style="?android:attr/textAppearanceSmall"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:inputType="number"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingBottom="4dp">
+
+            <CheckBox android:id="@+id/useSpecialCharacters"
+                      style="?android:attr/textAppearanceMedium"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:hint="@string/checkbox_use_special_characters"/>
+
+            <EditText android:id="@+id/specialCharacters"
+                      style="?android:attr/textAppearanceMedium"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="999"
+                      android:inputType="text"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingLeft="40dp"
+                android:paddingBottom="4dp">
+
+            <TextView
+                    android:id="@+id/labelSpecialCharactersCountStartEnd"
+                    style="?android:attr/textAppearanceSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_count_start_end"
+                    android:textIsSelectable="false"/>
+
+            <EditText android:id="@+id/specialCharactersCount"
+                      style="?android:attr/textAppearanceSmall"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:inputType="number"/>
+
+            <EditText android:id="@+id/specialCharactersStartIndex"
+                      style="?android:attr/textAppearanceSmall"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:inputType="number"/>
+
+            <EditText android:id="@+id/specialCharactersEndIndex"
+                      style="?android:attr/textAppearanceSmall"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:inputType="number"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
         <TextView
                 android:id="@+id/labelUseOldPassphrase"
                 style="?android:attr/textAppearanceMedium"

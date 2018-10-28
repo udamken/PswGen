@@ -27,8 +27,11 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
+import de.dknapps.pswgencore.CoreConstants
 import de.dknapps.pswgencore.model.ServiceInfo
+import de.dknapps.pswgencore.util.ConverterHelper
 import de.dknapps.pswgencore.util.DomainException
+import de.dknapps.pswgencore.util.EmptyHelper
 import de.dknapps.pswgendroid.R
 import de.dknapps.pswgendroid.adapter.PswGenAdapter
 import de.dknapps.pswgendroid.model.ServiceMaintenanceViewModel
@@ -45,7 +48,7 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
 
     private lateinit var viewModel: ServiceMaintenanceViewModel
 
-    private val dirtyListener = object : TextWatcher {
+    private val dirtyTextChangedListener = object : TextWatcher {
 
         override fun afterTextChanged(s: Editable?) {
             viewModel.isDirty = true
@@ -54,6 +57,14 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+    }
+
+    private val dirtyOnClickListener = object : View.OnClickListener {
+
+        override fun onClick(v: View?) {
+            viewModel.isDirty = true
+        }
 
     }
 
@@ -169,11 +180,29 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
      * Add a listener to all fields that sets a dirty tag if the content was changed.
      */
     private fun addAllDirtyListener() {
-        serviceAbbreviation.addTextChangedListener(dirtyListener)
-        additionalInfo.addTextChangedListener(dirtyListener)
-        loginUrl.addTextChangedListener(dirtyListener)
-        loginInfo.addTextChangedListener(dirtyListener)
-        additionalLoginInfo.addTextChangedListener(dirtyListener)
+        serviceAbbreviation.addTextChangedListener(dirtyTextChangedListener)
+        additionalInfo.addTextChangedListener(dirtyTextChangedListener)
+        loginUrl.addTextChangedListener(dirtyTextChangedListener)
+        loginInfo.addTextChangedListener(dirtyTextChangedListener)
+        additionalLoginInfo.addTextChangedListener(dirtyTextChangedListener)
+        useSmallLetters.setOnClickListener(dirtyOnClickListener)
+        smallLettersCount.addTextChangedListener(dirtyTextChangedListener)
+        smallLettersStartIndex.addTextChangedListener(dirtyTextChangedListener)
+        smallLettersEndIndex.addTextChangedListener(dirtyTextChangedListener)
+        useCapitalLetters.setOnClickListener(dirtyOnClickListener)
+        capitalLettersCount.addTextChangedListener(dirtyTextChangedListener)
+        capitalLettersStartIndex.addTextChangedListener(dirtyTextChangedListener)
+        capitalLettersEndIndex.addTextChangedListener(dirtyTextChangedListener)
+        useDigits.setOnClickListener(dirtyOnClickListener)
+        digitsCount.addTextChangedListener(dirtyTextChangedListener)
+        digitsStartIndex.addTextChangedListener(dirtyTextChangedListener)
+        digitsEndIndex.addTextChangedListener(dirtyTextChangedListener)
+        useSpecialCharacters.setOnClickListener(dirtyOnClickListener)
+        specialCharacters.addTextChangedListener(dirtyTextChangedListener)
+        specialCharactersCount.addTextChangedListener(dirtyTextChangedListener)
+        specialCharactersStartIndex.addTextChangedListener(dirtyTextChangedListener)
+        specialCharactersEndIndex.addTextChangedListener(dirtyTextChangedListener)
+        // TODO Add all fields
         // useOldPassphrase: dirty tag is set in onClickButtonUseNewPassphrase()
         // lastUpdate: no dirty tag to be set, is read-only
     }
@@ -182,11 +211,29 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
      * Remove the listener that sets a dirty tag if the content was changed from all fields.
      */
     private fun removeAllDirtyListener() {
-        serviceAbbreviation.removeTextChangedListener(dirtyListener)
-        additionalInfo.removeTextChangedListener(dirtyListener)
-        loginUrl.removeTextChangedListener(dirtyListener)
-        loginInfo.removeTextChangedListener(dirtyListener)
-        additionalLoginInfo.removeTextChangedListener(dirtyListener)
+        serviceAbbreviation.removeTextChangedListener(dirtyTextChangedListener)
+        additionalInfo.removeTextChangedListener(dirtyTextChangedListener)
+        loginUrl.removeTextChangedListener(dirtyTextChangedListener)
+        loginInfo.removeTextChangedListener(dirtyTextChangedListener)
+        additionalLoginInfo.removeTextChangedListener(dirtyTextChangedListener)
+        useSmallLetters.setOnClickListener(null)
+        smallLettersCount.removeTextChangedListener(dirtyTextChangedListener)
+        smallLettersStartIndex.removeTextChangedListener(dirtyTextChangedListener)
+        smallLettersEndIndex.setOnClickListener(null)
+        useCapitalLetters.setOnClickListener(dirtyOnClickListener)
+        capitalLettersCount.removeTextChangedListener(dirtyTextChangedListener)
+        capitalLettersStartIndex.removeTextChangedListener(dirtyTextChangedListener)
+        capitalLettersEndIndex.removeTextChangedListener(dirtyTextChangedListener)
+        useDigits.setOnClickListener(dirtyOnClickListener)
+        digitsCount.removeTextChangedListener(dirtyTextChangedListener)
+        digitsStartIndex.removeTextChangedListener(dirtyTextChangedListener)
+        digitsEndIndex.removeTextChangedListener(dirtyTextChangedListener)
+        useSpecialCharacters.setOnClickListener(dirtyOnClickListener)
+        specialCharacters.removeTextChangedListener(dirtyTextChangedListener)
+        specialCharactersCount.removeTextChangedListener(dirtyTextChangedListener)
+        specialCharactersStartIndex.removeTextChangedListener(dirtyTextChangedListener)
+        specialCharactersEndIndex.removeTextChangedListener(dirtyTextChangedListener)
+        // TODO Add all fields
         // useOldPassphrase: dirty tag is set in onClickButtonUseNewPassphrase()
         // lastUpdate: no dirty tag to be set, is read-only
     }
@@ -238,6 +285,24 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
         loginUrl.setText(si.loginUrl)
         loginInfo.setText(si.loginInfo)
         additionalLoginInfo.setText(si.additionalLoginInfo)
+        useSmallLetters.isChecked = si.isUseSmallLetters
+        smallLettersCount.setText(ConverterHelper.toString(si.smallLettersCount))
+        smallLettersStartIndex.setText(ConverterHelper.toString(si.smallLettersStartIndex))
+        smallLettersEndIndex.setText(ConverterHelper.toString(si.smallLettersEndIndex))
+        useCapitalLetters.isChecked = si.isUseCapitalLetters
+        capitalLettersCount.setText(ConverterHelper.toString(si.capitalLettersCount))
+        capitalLettersStartIndex.setText(ConverterHelper.toString(si.capitalLettersStartIndex))
+        capitalLettersEndIndex.setText(ConverterHelper.toString(si.capitalLettersEndIndex))
+        useDigits.isChecked = si.isUseDigits
+        digitsCount.setText(ConverterHelper.toString(si.digitsCount))
+        digitsStartIndex.setText(ConverterHelper.toString(si.digitsStartIndex))
+        digitsEndIndex.setText(ConverterHelper.toString(si.digitsEndIndex))
+        useSpecialCharacters.isChecked = si.isUseSpecialCharacters
+        specialCharacters.setText(si.specialCharacters)
+        ensureAtLeastDefaultSpecialCharacters()
+        specialCharactersCount.setText(ConverterHelper.toString(si.specialCharactersCount))
+        specialCharactersStartIndex.setText(ConverterHelper.toString(si.specialCharactersStartIndex))
+        specialCharactersEndIndex.setText(ConverterHelper.toString(si.specialCharactersEndIndex))
         if (si.isUseOldPassphrase) {
             labelUseOldPassphrase.visibility = View.VISIBLE
             buttonStoreService.visibility = View.INVISIBLE
@@ -259,9 +324,36 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
         si.loginUrl = loginUrl.text.toString()
         si.loginInfo = loginInfo.text.toString()
         si.additionalLoginInfo = additionalLoginInfo.text.toString()
+        si.isUseSmallLetters = useSmallLetters.isChecked
+        si.smallLettersCount = ConverterHelper.toInt(smallLettersCount.text.toString())
+        si.smallLettersStartIndex = ConverterHelper.toInt(smallLettersStartIndex.text.toString())
+        si.smallLettersEndIndex = ConverterHelper.toInt(smallLettersEndIndex.text.toString())
+        si.isUseCapitalLetters = useCapitalLetters.isChecked
+        si.capitalLettersCount = ConverterHelper.toInt(capitalLettersCount.text.toString())
+        si.capitalLettersStartIndex = ConverterHelper.toInt(capitalLettersStartIndex.text.toString())
+        si.capitalLettersEndIndex = ConverterHelper.toInt(capitalLettersEndIndex.text.toString())
+        si.isUseDigits = useDigits.isChecked
+        si.digitsCount = ConverterHelper.toInt(digitsCount.text.toString())
+        si.digitsStartIndex = ConverterHelper.toInt(digitsStartIndex.text.toString())
+        si.digitsEndIndex = ConverterHelper.toInt(digitsEndIndex.text.toString())
+        si.isUseSpecialCharacters = useSpecialCharacters.isChecked
+        ensureAtLeastDefaultSpecialCharacters()
+        si.specialCharacters = specialCharacters.text.toString()
+        si.specialCharactersCount = ConverterHelper.toInt(specialCharactersCount.text.toString())
+        si.specialCharactersStartIndex = ConverterHelper.toInt(specialCharactersStartIndex.text.toString())
+        si.specialCharactersEndIndex = ConverterHelper.toInt(specialCharactersEndIndex.text.toString())
         si.isUseOldPassphrase = labelUseOldPassphrase.visibility == View.VISIBLE
         // last update is set not set from the view but from outside
         return si
+    }
+
+    /**
+     * Ensure special characters don't fall empty by setting a default set of special characters if needed.
+     */
+    private fun ensureAtLeastDefaultSpecialCharacters() {
+        if (EmptyHelper.isEmpty(specialCharacters.text.toString())) {
+            specialCharacters.setText(CoreConstants.SPECIAL_CHARS)
+        }
     }
 
     /**

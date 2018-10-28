@@ -55,6 +55,12 @@
     <string name="label_login_url">Internetseite</string>
     <string name="label_login_info">Anmeldeinfos</string>
     <string name="label_additional_login_info">Weitere Infos</string>
+    <string name="label_count_start_end">Anz./Von/Bis:</string>
+    <string name="checkbox_use_small_letters">Kleinbuchstaben</string>
+    <string name="checkbox_use_capital_letters">Großbuchstaben</string>
+    <string name="checkbox_use_digits">Ziffern</string>
+    <string name="checkbox_use_special_characters"></string>
+
     <string name="label_use_old_passphrase">Nutzt alte Passphrase</string>
     <string name="label_last_update">Zuletzt geändert</string>
     <string name="button_open_and_provide">Öffnen &amp; bereitstellen</string>
