@@ -137,7 +137,6 @@ public class PswGenCtl extends BaseCtl {
 					+ CoreConstants.APPLICATION_VERSION);
 			addWindow(mainView);
 			mainView.pack();
-			ensureAtLeastDefaultSpecialCharacters(mainView);
 			clearService(mainView); // Diensteinstellungen initialisieren (Tagesdatum)
 			mainView.setVisible(true);
 		} catch (Throwable t) {
