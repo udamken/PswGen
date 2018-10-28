@@ -416,20 +416,21 @@ public class PswGenCtl extends BaseCtl {
 		si.setLoginInfo(mainView.getLoginInfo());
 		si.setAdditionalLoginInfo(mainView.getAdditionalLoginInfo());
 		si.setUseSmallLetters(mainView.getUseSmallLetters());
-		si.setUseCapitalLetters(mainView.getUseCapitalLetters());
-		si.setUseDigits(mainView.getUseDigits());
-		si.setUseSpecialCharacters(mainView.getUseSpecialCharacters());
-		si.setSpecialCharacters(mainView.getSpecialCharacters());
 		si.setSmallLettersCount(mainView.getSmallLettersCount());
 		si.setSmallLettersStartIndex(mainView.getSmallLettersStartIndex());
 		si.setSmallLettersEndIndex(mainView.getSmallLettersEndIndex());
+		si.setUseCapitalLetters(mainView.getUseCapitalLetters());
 		si.setCapitalLettersCount(mainView.getCapitalLettersCount());
 		si.setCapitalLettersStartIndex(mainView.getCapitalLettersStartIndex());
 		si.setCapitalLettersEndIndex(mainView.getCapitalLettersEndIndex());
+		si.setUseDigits(mainView.getUseDigits());
 		si.setDigitsCount(mainView.getDigitsCount());
-		si.setSpecialCharactersCount(mainView.getSpecialCharactersCount());
 		si.setDigitsStartIndex(mainView.getDigitsStartIndex());
 		si.setDigitsEndIndex(mainView.getDigitsEndIndex());
+		si.setUseSpecialCharacters(mainView.getUseSpecialCharacters());
+		si.setSpecialCharactersCount(mainView.getSpecialCharactersCount());
+		ensureAtLeastDefaultSpecialCharacters(mainView);
+		si.setSpecialCharacters(mainView.getSpecialCharacters());
 		si.setSpecialCharactersStartIndex(mainView.getSpecialCharactersStartIndex());
 		si.setSpecialCharactersEndIndex(mainView.getSpecialCharactersEndIndex());
 		si.setTotalCharacterCount(mainView.getTotalCharacterCount());
@@ -450,21 +451,21 @@ public class PswGenCtl extends BaseCtl {
 		mainView.setLoginInfo(si.getLoginInfo());
 		mainView.setAdditionalLoginInfo(si.getAdditionalLoginInfo());
 		mainView.setUseSmallLetters(si.isUseSmallLetters());
-		mainView.setUseCapitalLetters(si.isUseCapitalLetters());
-		mainView.setUseDigits(si.isUseDigits());
-		mainView.setUseSpecialCharacters(si.isUseSpecialCharacters());
-		mainView.setSpecialCharacters(si.getSpecialCharacters());
-		ensureAtLeastDefaultSpecialCharacters(mainView);
 		mainView.setSmallLettersCount(si.getSmallLettersCount());
 		mainView.setSmallLettersStartIndex(si.getSmallLettersStartIndex());
 		mainView.setSmallLettersEndIndex(si.getSmallLettersEndIndex());
+		mainView.setUseCapitalLetters(si.isUseCapitalLetters());
 		mainView.setCapitalLettersCount(si.getCapitalLettersCount());
 		mainView.setCapitalLettersStartIndex(si.getCapitalLettersStartIndex());
 		mainView.setCapitalLettersEndIndex(si.getCapitalLettersEndIndex());
+		mainView.setUseDigits(si.isUseDigits());
 		mainView.setDigitsCount(si.getDigitsCount());
-		mainView.setSpecialCharactersCount(si.getSpecialCharactersCount());
 		mainView.setDigitsStartIndex(si.getDigitsStartIndex());
 		mainView.setDigitsEndIndex(si.getDigitsEndIndex());
+		mainView.setUseSpecialCharacters(si.isUseSpecialCharacters());
+		mainView.setSpecialCharacters(si.getSpecialCharacters());
+		ensureAtLeastDefaultSpecialCharacters(mainView);
+		mainView.setSpecialCharactersCount(si.getSpecialCharactersCount());
 		mainView.setSpecialCharactersStartIndex(si.getSpecialCharactersStartIndex());
 		mainView.setSpecialCharactersEndIndex(si.getSpecialCharactersEndIndex());
 		mainView.setTotalCharacterCount(si.getTotalCharacterCount());
@@ -579,7 +580,6 @@ public class PswGenCtl extends BaseCtl {
 	 * die zu einer Fehlermeldung führt. Eine Eingabe hat also in jedem Fall Vorrang vor der Generierung.
 	 */
 	private String getValidatedOrGeneratedPassword(final MainView mainView) {
-		ensureAtLeastDefaultSpecialCharacters(mainView);
 		ServiceInfo si = getServiceFromView(mainView);
 		String passphrase = (si.isUseOldPassphrase()) ? oldPassphrase : validatedPassphrase;
 		return PasswordFactory.getPassword(si, passphrase);
