@@ -248,8 +248,8 @@ public class PswGenCtl extends BaseCtl {
 			validateServiceAbbreviation(abbreviation);
 			int chosenOption = JOptionPane.showConfirmDialog(mainView,
 					abbreviation + getGuiText("RemoveServiceMsg"), DesktopConstants.APPLICATION_NAME,
-					JOptionPane.YES_NO_OPTION);
-			if (chosenOption == JOptionPane.YES_OPTION) { // Dienst löschen?
+					JOptionPane.OK_CANCEL_OPTION);
+			if (chosenOption == JOptionPane.OK_OPTION) { // Dienst löschen?
 				services.removeServiceInfo(abbreviation);
 				saveServiceInfoList(validatedPassphrase);
 				mainView.updateStoredServices();
@@ -560,15 +560,9 @@ public class PswGenCtl extends BaseCtl {
 	 */
 	private boolean cancelOnDirty(final MainView mainView) throws IOException {
 		if (mainView.isDirty()) {
-			int chosenOption = JOptionPane.showConfirmDialog(mainView,
-					mainView.getServiceAbbreviation() + getGuiText("SaveChangesMsg"),
-					DesktopConstants.APPLICATION_NAME, JOptionPane.YES_NO_CANCEL_OPTION);
-			if (chosenOption == JOptionPane.YES_OPTION) { // Geänderte Werte speichern?
-				storeService(mainView);
-			} else if (chosenOption == JOptionPane.CANCEL_OPTION
-					|| chosenOption == JOptionPane.CLOSED_OPTION) {
-				return true;
-			}
+			int chosenOption = JOptionPane.showConfirmDialog(mainView, getGuiText("DiscardChangesMsg"),
+					DesktopConstants.APPLICATION_NAME, JOptionPane.OK_CANCEL_OPTION);
+			return chosenOption != JOptionPane.OK_OPTION;
 		}
 		return false;
 	}
@@ -624,8 +618,8 @@ public class PswGenCtl extends BaseCtl {
 		if (services.getServiceInfo(abbreviation) != null) { // Ist der Dienst bereits vermerkt?
 			int chosenOption = JOptionPane.showConfirmDialog(mainView,
 					abbreviation + getGuiText("OverwriteServiceMsg"), DesktopConstants.APPLICATION_NAME,
-					JOptionPane.YES_NO_OPTION);
-			if (chosenOption == JOptionPane.NO_OPTION) { // Dienst nicht überschreiben? => fertig
+					JOptionPane.OK_CANCEL_OPTION);
+			if (chosenOption != JOptionPane.OK_OPTION) { // Dienst nicht überschreiben? => fertig
 				return;
 			}
 		}

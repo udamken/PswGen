@@ -236,8 +236,7 @@ public class MainView extends BaseView {
 		});
 		regexContainsErrors = wf.getLabel("LabelRegexContainsErrors");
 		regexContainsErrors.setForeground(Color.RED);
-		tableModelStoredServices = new StoredServicesTableModel(
-				((PswGenCtl) ctl).getServices().getServices(false),
+		tableModelStoredServices = new StoredServicesTableModel(((PswGenCtl) ctl).getServices().getServices(),
 				new String[] { ctl.getGuiText("LabelServiceAbbreviation"),
 						ctl.getGuiText("LabelAdditionalInfo"), ctl.getGuiText("LabelUseOldPassphrase"),
 						ctl.getGuiText("LabelLoginUrl") });
@@ -677,7 +676,7 @@ public class MainView extends BaseView {
 	 * Aktualisiert die Tabelle mit den gespeicherten Diensten und zeigt sie neu an.
 	 */
 	public void updateStoredServices() {
-		tableModelStoredServices.setData(((PswGenCtl) ctl).getServices().getServices(false));
+		tableModelStoredServices.setData(((PswGenCtl) ctl).getServices().getServices());
 	}
 
 	/**
