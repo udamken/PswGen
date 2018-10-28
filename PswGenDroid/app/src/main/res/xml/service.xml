@@ -17,17 +17,37 @@
     limitations under the License.
  -->
 <Keyboard xmlns:android="http://schemas.android.com/apk/res/android"
-          android:keyWidth="20%p"
-          android:horizontalGap="5px"
-          android:verticalGap="0px"
-          android:keyHeight="60dp">
+    android:horizontalGap="5px"
+    android:keyWidth="20%p"
+    android:keyHeight="60dp"
+    android:verticalGap="0px"
+    >
 
     <Row android:rowEdgeFlags="bottom">
-        <Key android:codes="49" android:keyLabel="@string/button_type_login_info" android:keyEdgeFlags="left"/>
-        <Key android:codes="50" android:keyLabel="@string/button_type_login_password"/>
-        <Key android:codes="-5" android:keyLabel="@string/button_clear_last_input" android:isRepeatable="true"/>
-        <Key android:codes="-3" android:keyLabel="@string/button_cancel_input" android:isRepeatable="true"/>
-        <Key android:codes="-4" android:keyLabel="@string/button_input_done" android:keyEdgeFlags="right"/>
+        <Key
+            android:codes="49"
+            android:keyEdgeFlags="left"
+            android:keyLabel="@string/button_type_login_info"
+            />
+        <Key
+            android:codes="50"
+            android:keyLabel="@string/button_type_login_password"
+            />
+        <Key
+            android:codes="-5"
+            android:isRepeatable="true"
+            android:keyLabel="@string/button_clear_last_input"
+            />
+        <Key
+            android:codes="-3"
+            android:isRepeatable="true"
+            android:keyLabel="@string/button_cancel_input"
+            />
+        <Key
+            android:codes="-4"
+            android:keyEdgeFlags="right"
+            android:keyLabel="@string/button_input_done"
+            />
     </Row>
 
 </Keyboard>

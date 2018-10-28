@@ -16,12 +16,12 @@
     See the License for the specific language governing permissions and
     limitations under the License.
  -->
-<android.inputmethodservice.KeyboardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.inputmethodservice.KeyboardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/keyboard"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_alignParentBottom="true"
     android:keyPreviewLayout="@layout/preview"
     android:keyBackground="@color/backgroundColor"
-    android:keyTextColor="@color/dknapps_de_orange"/>
+    android:keyTextColor="@color/dknapps_de_orange"
+    />

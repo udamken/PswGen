@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <!--
     PswGenDesktop - Manages your websites and repeatably generates passwords for them
     PswGenDroid - Generates your passwords managed by PswGenDesktop on your mobile  
@@ -17,7 +16,6 @@
     See the License for the specific language governing permissions and
     limitations under the License.
  -->
-
 <resources>
 
     <!-- AndroidManifest -->
@@ -60,7 +58,7 @@
     <string name="checkbox_use_capital_letters">Großbuchstaben</string>
     <string name="checkbox_use_digits">Ziffern</string>
     <string name="checkbox_use_special_characters"></string>
-
+    <string name="label_total_character_count">Gesamtlänge des Passworts</string>
     <string name="label_use_old_passphrase">Nutzt alte Passphrase</string>
     <string name="label_last_update">Zuletzt geändert</string>
     <string name="button_open_and_provide">Öffnen &amp; bereitstellen</string>

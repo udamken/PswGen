@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <!--
     PswGenDesktop - Manages your websites and repeatably generates passwords for them
     PswGenDroid - Generates your passwords managed by PswGenDesktop on your mobile
@@ -59,7 +58,7 @@
     <string name="checkbox_use_capital_letters">Capital Letters</string>
     <string name="checkbox_use_digits">Digits</string>
     <string name="checkbox_use_special_characters"></string>
-
+    <string name="label_total_character_count">Total Character Count</string>
     <string name="label_use_old_passphrase">Uses old passphrase</string>
     <string name="label_last_update">Last update</string>
     <string name="button_open_and_provide">Open &amp; provide</string>

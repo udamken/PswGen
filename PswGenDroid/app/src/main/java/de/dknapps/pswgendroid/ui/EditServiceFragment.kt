@@ -196,6 +196,7 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
         specialCharactersCount.addTextChangedListener(dirtyTextChangedListener)
         specialCharactersStartIndex.addTextChangedListener(dirtyTextChangedListener)
         specialCharactersEndIndex.addTextChangedListener(dirtyTextChangedListener)
+        totalCharacterCount.addTextChangedListener(dirtyTextChangedListener)
         // TODO Add all fields
         // useOldPassphrase: dirty tag is set in onClickButtonUseNewPassphrase()
         // lastUpdate: no dirty tag to be set, is read-only
@@ -227,6 +228,7 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
         specialCharactersCount.removeTextChangedListener(dirtyTextChangedListener)
         specialCharactersStartIndex.removeTextChangedListener(dirtyTextChangedListener)
         specialCharactersEndIndex.removeTextChangedListener(dirtyTextChangedListener)
+        totalCharacterCount.removeTextChangedListener(dirtyTextChangedListener)
         // TODO Add all fields
         // useOldPassphrase: dirty tag is set in onClickButtonUseNewPassphrase()
         // lastUpdate: no dirty tag to be set, is read-only
@@ -297,6 +299,7 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
         specialCharactersCount.setText(ConverterHelper.toString(si.specialCharactersCount))
         specialCharactersStartIndex.setText(ConverterHelper.toString(si.specialCharactersStartIndex))
         specialCharactersEndIndex.setText(ConverterHelper.toString(si.specialCharactersEndIndex))
+        totalCharacterCount.setText(ConverterHelper.toString(si.totalCharacterCount))
         if (si.isUseOldPassphrase) {
             labelUseOldPassphrase.visibility = View.VISIBLE
             buttonStoreService.visibility = View.INVISIBLE
@@ -336,6 +339,7 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
         si.specialCharactersCount = ConverterHelper.toInt(specialCharactersCount.text.toString())
         si.specialCharactersStartIndex = ConverterHelper.toInt(specialCharactersStartIndex.text.toString())
         si.specialCharactersEndIndex = ConverterHelper.toInt(specialCharactersEndIndex.text.toString())
+        si.totalCharacterCount = ConverterHelper.toInt(totalCharacterCount.text.toString())
         si.isUseOldPassphrase = labelUseOldPassphrase.visibility == View.VISIBLE
         // last update is set not set from the view but from outside
         return si
