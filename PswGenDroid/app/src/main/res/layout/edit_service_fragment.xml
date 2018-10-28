@@ -401,6 +401,44 @@
             />
 
         <TextView
+            android:id="@+id/labelPassword"
+            style="?android:attr/textAppearanceMedium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:labelFor="@+id/password"
+            android:text="@string/label_password"
+            android:textIsSelectable="false"
+            />
+
+        <EditText
+            android:id="@+id/password"
+            style="?android:attr/textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:paddingBottom="4dp"
+            />
+
+        <TextView
+            android:id="@+id/labelPasswordRepeated"
+            style="?android:attr/textAppearanceMedium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:labelFor="@+id/passwordRepeated"
+            android:text="@string/label_password_repeated"
+            android:textIsSelectable="false"
+            />
+
+        <EditText
+            android:id="@+id/passwordRepeated"
+            style="?android:attr/textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:paddingBottom="4dp"
+            />
+
+        <TextView
             android:id="@+id/labelUseOldPassphrase"
             style="?android:attr/textAppearanceMedium"
             android:layout_width="match_parent"

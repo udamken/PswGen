@@ -57,8 +57,11 @@
     <string name="checkbox_use_small_letters">Small Letters</string>
     <string name="checkbox_use_capital_letters">Capital Letters</string>
     <string name="checkbox_use_digits">Digits</string>
+    <!--suppress CheckTagEmptyBody -->
     <string name="checkbox_use_special_characters"></string>
     <string name="label_total_character_count">Total Character Count</string>
+    <!--<string name="label_password">Passwort</string> see DisplayPasswordFragment -->
+    <string name="label_password_repeated">Password (repeated)</string>
     <string name="label_use_old_passphrase">Uses old passphrase</string>
     <string name="label_last_update">Last update</string>
     <string name="button_open_and_provide">Open &amp; provide</string>
@@ -82,6 +85,7 @@
     <string name="prefix_lowercase_letters">Small</string>
     <string name="prefix_uppercase_letters">Capital</string>
     <string name="prefix_digits">Digit</string>
+    <!--suppress CheckTagEmptyBody -->
     <string name="prefix_special_chars"></string>
 
     <!-- AboutFragment -->
