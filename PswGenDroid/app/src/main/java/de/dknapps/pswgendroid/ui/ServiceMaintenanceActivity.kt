@@ -23,6 +23,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import de.dknapps.pswgendroid.R
@@ -58,8 +59,8 @@ class ServiceMaintenanceActivity : AppCompatActivity() {
         }, IntentFilter(Intent.ACTION_SCREEN_OFF))
 
         // FIXME See PswGenDesktop
+        // TODO Use new passphrase
         // TODO Ask for permissions
-        // TODO Dirty handling for editing (check backstack for edit fragment)
         // TODO Add validation for oldPassphrase with a new verifier := verifier * oldPassphrase.hashCode
 
     }
@@ -75,8 +76,21 @@ class ServiceMaintenanceActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        supportFragmentManager.popBackStack()
-        return true
+        if (viewModel.isDirty) {
+            AlertDialog.Builder(this) //
+                .setTitle(R.string.app_name) //
+                .setMessage(R.string.DiscardChangesMsg) //
+                .setPositiveButton(android.R.string.ok) { _, _ ->
+                    viewModel.isDirty = false
+                    supportFragmentManager.popBackStack()
+                } //
+                .setNegativeButton(android.R.string.cancel, null) //
+                .show()
+            return false
+        } else {
+            supportFragmentManager.popBackStack()
+            return true
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

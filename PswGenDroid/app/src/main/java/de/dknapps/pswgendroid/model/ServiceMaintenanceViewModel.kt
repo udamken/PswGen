@@ -73,6 +73,11 @@ class ServiceMaintenanceViewModel : ViewModel() {
      */
     var editedServiceInfo: ServiceInfo? = null
 
+    /**
+     * Dirty tag - has the currently edited service been changed?
+     */
+    var isDirty = false
+
     init {
         resetModel()
     }

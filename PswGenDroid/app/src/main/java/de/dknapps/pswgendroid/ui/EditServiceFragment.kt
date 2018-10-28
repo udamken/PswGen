@@ -19,6 +19,8 @@
 package de.dknapps.pswgendroid.ui
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,6 +44,18 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
     }
 
     private lateinit var viewModel: ServiceMaintenanceViewModel
+
+    private val dirtyListener = object : TextWatcher {
+
+        override fun afterTextChanged(s: Editable?) {
+            viewModel.isDirty = true
+        }
+
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -68,10 +82,12 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
             activity!!.supportFragmentManager.popBackStack()
         } else {
             putServiceToView(viewModel.editedServiceInfo!!)
+            addAllDirtyListener()
         }
     }
 
     override fun onPause() {
+        removeAllDirtyListener()
         viewModel.editedServiceInfo = getServiceFromView()
         super.onPause()
     }
@@ -80,13 +96,17 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
      * Clear all fields of the currently edited service.
      */
     private fun onClickButtonClearService() {
-        try {
-            if (cancelOnDirty()) { // cancel action?
-                return
-            }
+        if (viewModel.isDirty) {
+            AlertDialog.Builder(activity!!) //
+                .setTitle(R.string.app_name) //
+                .setMessage(R.string.DiscardChangesMsg) //
+                .setPositiveButton(android.R.string.ok) { _, _ ->
+                    clearService()
+                } //
+                .setNegativeButton(android.R.string.cancel, null) //
+                .show()
+        } else {
             clearService()
-        } catch (e: Exception) {
-            PswGenAdapter.handleThrowable(activity!!, e)
         }
     }
 
@@ -100,20 +120,10 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
             AlertDialog.Builder(activity!!) //
                 .setTitle(R.string.app_name) //
                 .setMessage("$abbreviation${getText(R.string.RemoveServiceMsg)}") //
-                .setPositiveButton(R.string.yes) { _, _ ->
-                    try {
-                        viewModel.services!!.removeServiceInfo(abbreviation)
-                        PswGenAdapter.saveServiceInfoList(
-                            viewModel.servicesFile!!,
-                            viewModel.services!!,
-                            viewModel.validatedPassphrase!!
-                        )
-                        clearService()
-                    } catch (e: Exception) {
-                        PswGenAdapter.handleThrowable(activity!!, e)
-                    }
+                .setPositiveButton(android.R.string.ok) { _, _ ->
+                    removeServiceAnyway(abbreviation)
                 } //
-                .setNegativeButton(R.string.no, null) //
+                .setNegativeButton(android.R.string.cancel, null) //
                 .show()
         } catch (e: Exception) {
             PswGenAdapter.handleThrowable(activity!!, e)
@@ -131,14 +141,57 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
                 AlertDialog.Builder(activity!!) //
                     .setTitle(R.string.app_name) //
                     .setMessage("$abbreviation${getText(R.string.OverwriteServiceMsg)}") //
-                    .setPositiveButton(R.string.yes) { _, _ ->
+                    .setPositiveButton(android.R.string.yes) { _, _ ->
                         storeServiceAnyway()
                     } //
-                    .setNegativeButton(R.string.no, null) //
+                    .setNegativeButton(android.R.string.no, null) //
                     .show()
             } else {
                 storeServiceAnyway()
             }
+        } catch (e: Exception) {
+            PswGenAdapter.handleThrowable(activity!!, e)
+        }
+    }
+
+    /**
+     * Add a listener to all fields that sets a dirty tag if the content was changed.
+     */
+    private fun addAllDirtyListener() {
+        serviceAbbreviation.addTextChangedListener(dirtyListener)
+        additionalInfo.addTextChangedListener(dirtyListener)
+        loginUrl.addTextChangedListener(dirtyListener)
+        loginInfo.addTextChangedListener(dirtyListener)
+        additionalLoginInfo.addTextChangedListener(dirtyListener)
+        // useOldPassphrase: dirty tag is set in onClickButtonUseNewPassphrase()
+        // lastUpdate: no dirty tag to be set, is read-only
+    }
+
+    /**
+     * Remove the listener that sets a dirty tag if the content was changed from all fields.
+     */
+    private fun removeAllDirtyListener() {
+        serviceAbbreviation.removeTextChangedListener(dirtyListener)
+        additionalInfo.removeTextChangedListener(dirtyListener)
+        loginUrl.removeTextChangedListener(dirtyListener)
+        loginInfo.removeTextChangedListener(dirtyListener)
+        additionalLoginInfo.removeTextChangedListener(dirtyListener)
+        // useOldPassphrase: dirty tag is set in onClickButtonUseNewPassphrase()
+        // lastUpdate: no dirty tag to be set, is read-only
+    }
+
+    /**
+     * Remove service from (by marking it as deleted) regardless whether it exists or not.
+     */
+    private fun removeServiceAnyway(abbreviation: String) {
+        try {
+            viewModel.services!!.removeServiceInfo(abbreviation)
+            PswGenAdapter.saveServiceInfoList(
+                viewModel.servicesFile!!,
+                viewModel.services!!,
+                viewModel.validatedPassphrase!!
+            )
+            clearService()
         } catch (e: Exception) {
             PswGenAdapter.handleThrowable(activity!!, e)
         }
@@ -159,6 +212,7 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
                 viewModel.validatedPassphrase!!
             )
             putServiceToView(si) // update timestamp
+            viewModel.isDirty = false
         } catch (e: Exception) {
             PswGenAdapter.handleThrowable(activity!!, e)
         }
@@ -192,32 +246,13 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
     }
 
     /**
-     * Returns true if the action should be cancelled or false if changes should be stored or discarded.
-     */
-    private fun cancelOnDirty(): Boolean {
-        // TODO Implement cancelOnDirty ... supportNavigateUp must check back stack edit service fragment
-//        if (mainView.isDirty()) {
-//            val chosenOption = JOptionPane.showConfirmDialog(
-//                mainView,
-//                mainView.getServiceAbbreviation() + getGuiText("SaveChangesMsg"),
-//                DesktopConstants.APPLICATION_NAME, JOptionPane.YES_NO_CANCEL_OPTION
-//            )
-//            if (chosenOption == JOptionPane.YES_OPTION) { // Geänderte Werte speichern?
-//                storeService(mainView)
-//            } else if (chosenOption == JOptionPane.CANCEL_OPTION || chosenOption == JOptionPane.CLOSED_OPTION) {
-//                return true
-//            }
-//        }
-        return false
-    }
-
-    /**
      * Clear service fields and reset additional info to the current date.
      */
     private fun clearService() {
         val si = ServiceInfo()
         si.resetAdditionalInfo()
         putServiceToView(si)
+        viewModel.isDirty = false
     }
 
     /**
