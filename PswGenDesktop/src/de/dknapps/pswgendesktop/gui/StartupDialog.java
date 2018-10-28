@@ -128,12 +128,16 @@ public class StartupDialog extends BaseDialog {
 
 		});
 		buttonChangePassphrase = wf.getButton("ButtonChangePassphrase");
-		buttonChangePassphrase.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				((PswGenCtl) ctl).actionPerformedChangePassphrase(me);
-			}
-		});
+		// FIXME Rethink rephrasing with two files ...
+		// ... probably rephrase first file
+		// ... try to load second file with current passphrase first, on failure with old passphrase
+		buttonChangePassphrase.setEnabled(false);
+		// buttonChangePassphrase.addActionListener(new ActionListener() {
+		// @Override
+		// public void actionPerformed(ActionEvent e) {
+		// ((PswGenCtl) ctl).actionPerformedChangePassphrase(me);
+		// }
+		// });
 		JButton buttonOpenServices = wf.getButton("ButtonOpenServices");
 		buttonOpenServices.addActionListener(new ActionListener() {
 			@Override

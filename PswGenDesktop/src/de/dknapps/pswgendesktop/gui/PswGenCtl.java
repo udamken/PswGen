@@ -373,14 +373,12 @@ public class PswGenCtl extends BaseCtl {
 	}
 
 	/**
-	 * Generiert das Passwort und kopiert es in die Zwischenablage, dann wird AdditionalInfo mit dem
-	 * Tagesdatum gefüllt und der Dienst von der Verwendung der alten auf die Verwendung der neuen Passphrase
-	 * umgestellt.
+	 * Füllt AdditionalInfo mit dem Tagesdatum und stellt den Dienst von der Verwendung der alten auf die
+	 * Verwendung der neuen Passphrase um.
 	 */
 	public void actionPerformedUseNewPassphrase(final MainView mainView) {
 		try {
 			mainView.setWaitCursor();
-			copyPassword(mainView);
 			ServiceInfo si = getServiceFromView(mainView);
 			si.resetAdditionalInfo();
 			si.setUseOldPassphrase(false);
