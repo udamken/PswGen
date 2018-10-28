@@ -92,6 +92,10 @@ public class PswGenCtl extends BaseCtl {
 	public void start() {
 		StartupDialog startupDialog = new StartupDialog(this);
 		startupDialog.setTitle(DesktopConstants.APPLICATION_NAME + " " + CoreConstants.APPLICATION_VERSION);
+		startupDialog.setFilepath(servicesFile.getAbsolutePath());
+		startupDialog.setFilepathInfo(deriveInfo(servicesFile));
+		startupDialog.setOtherFilepath(otherServicesFile.getAbsolutePath());
+		startupDialog.setOtherFilepathInfo(deriveInfo(otherServicesFile));
 		if (servicesFile.exists()) { // Datei bereits vorhanden?
 			startupDialog.disablePassphraseRepeated(); // Passphrase nur 1x eingeben!
 		}
@@ -395,6 +399,20 @@ public class PswGenCtl extends BaseCtl {
 	 */
 	public void actionPerformedPasswordOk(PasswordDialog passwordDialog) {
 		passwordDialog.dispose();
+	}
+
+	/**
+	 * Returns displayable information about the file specified by the given filepath.
+	 */
+	private String deriveInfo(File file) {
+		if (!file.exists()) {
+			return getGuiText("msg_file_cannot_be_found");
+		} else if (!file.canRead()) {
+			return getGuiText("msg_file_cannot_be_read");
+		} else {
+			return getGuiText("msg_file_last_modified") + " "
+					+ CoreConstants.TIMESTAMP_FORMAT.format(file.lastModified());
+		}
 	}
 
 	/**
