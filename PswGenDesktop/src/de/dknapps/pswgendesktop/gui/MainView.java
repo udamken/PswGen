@@ -129,11 +129,11 @@ public class MainView extends BaseView {
 
 	private DbcIntegerField digitsCount;
 
-	private DbcIntegerField specialCharactersCount;
-
 	private DbcIntegerField digitsStartIndex;
 
 	private DbcIntegerField digitsEndIndex;
+
+	private DbcIntegerField specialCharactersCount;
 
 	private DbcIntegerField specialCharactersStartIndex;
 
