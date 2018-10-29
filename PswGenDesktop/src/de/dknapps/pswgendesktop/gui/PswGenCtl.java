@@ -26,7 +26,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -38,7 +37,6 @@ import de.dknapps.pswgencore.model.ServiceInfo;
 import de.dknapps.pswgencore.model.ServiceInfoList;
 import de.dknapps.pswgencore.util.DomainException;
 import de.dknapps.pswgencore.util.EmptyHelper;
-import de.dknapps.pswgencore.util.EncryptionHelper;
 import de.dknapps.pswgencore.util.FileHelper;
 import de.dknapps.pswgencore.util.PasswordFactory;
 import de.dknapps.pswgendesktop.DesktopConstants;
@@ -94,6 +92,10 @@ public class PswGenCtl extends BaseCtl {
 	public void start() {
 		StartupDialog startupDialog = new StartupDialog(this);
 		startupDialog.setTitle(DesktopConstants.APPLICATION_NAME + " " + CoreConstants.APPLICATION_VERSION);
+		startupDialog.setFilepath(servicesFile.getAbsolutePath());
+		startupDialog.setFilepathInfo(deriveInfo(servicesFile));
+		startupDialog.setOtherFilepath(otherServicesFile.getAbsolutePath());
+		startupDialog.setOtherFilepathInfo(deriveInfo(otherServicesFile));
 		if (servicesFile.exists()) { // Datei bereits vorhanden?
 			startupDialog.disablePassphraseRepeated(); // Passphrase nur 1x eingeben!
 		}
@@ -139,7 +141,6 @@ public class PswGenCtl extends BaseCtl {
 					+ CoreConstants.APPLICATION_VERSION);
 			addWindow(mainView);
 			mainView.pack();
-			ensureAtLeastDefaultSpecialCharacters(mainView);
 			clearService(mainView); // Diensteinstellungen initialisieren (Tagesdatum)
 			mainView.setVisible(true);
 		} catch (Throwable t) {
@@ -181,7 +182,7 @@ public class PswGenCtl extends BaseCtl {
 			validatedPassphrase = validateNewPassphrase(changePassphraseDialog);
 			changePassphraseDialog.dispose();
 			// Services, bei denen das Passwort generiert wird, auf UseOldPassphrase setzen
-			for (ServiceInfo si : services.getServices(false)) {
+			for (ServiceInfo si : services.getServices()) {
 				if (EmptyHelper.isEmpty(si.getPassword())) {
 					si.setUseOldPassphrase(true); // Passwort ab sofort mit der alten Passphrase erzeugen
 				}
@@ -246,20 +247,16 @@ public class PswGenCtl extends BaseCtl {
 	public void actionPerformedRemoveService(final MainView mainView) {
 		try {
 			mainView.setWaitCursor();
-			String serviceAbbreviation = mainView.getServiceAbbreviation();
+			String abbreviation = mainView.getServiceAbbreviation();
+			validateServiceAbbreviation(abbreviation);
 			int chosenOption = JOptionPane.showConfirmDialog(mainView,
-					serviceAbbreviation + getGuiText("RemoveServiceMsg"), DesktopConstants.APPLICATION_NAME,
-					JOptionPane.YES_NO_OPTION);
-			if (chosenOption == JOptionPane.YES_OPTION) { // Dienst löschen?
-				validateServiceAbbreviation(serviceAbbreviation);
-				ServiceInfo si = services.removeServiceInfo(serviceAbbreviation);
-				if (si == null) { // Dienst gar nicht vorhanden?
-					throw new DomainException("ServiceAbbreviationMissingMsg");
-				} else {
-					saveServiceInfoList(validatedPassphrase);
-					mainView.updateStoredServices();
-					putServiceToView(mainView, new ServiceInfo());
-				}
+					abbreviation + getGuiText("RemoveServiceMsg"), DesktopConstants.APPLICATION_NAME,
+					JOptionPane.OK_CANCEL_OPTION);
+			if (chosenOption == JOptionPane.OK_OPTION) { // Dienst löschen?
+				services.removeServiceInfo(abbreviation);
+				saveServiceInfoList(validatedPassphrase);
+				mainView.updateStoredServices();
+				clearService(mainView);
 			}
 		} catch (Throwable t) {
 			handleThrowable(t);
@@ -379,16 +376,14 @@ public class PswGenCtl extends BaseCtl {
 	}
 
 	/**
-	 * Generiert das Passwort und kopiert es in die Zwischenablage, dann wird AdditionalInfo mit dem
-	 * Tagesdatum gefüllt und der Dienst von der Verwendung der alten auf die Verwendung der neuen Passphrase
-	 * umgestellt.
+	 * Füllt AdditionalInfo mit dem Tagesdatum und stellt den Dienst von der Verwendung der alten auf die
+	 * Verwendung der neuen Passphrase um.
 	 */
 	public void actionPerformedUseNewPassphrase(final MainView mainView) {
 		try {
 			mainView.setWaitCursor();
-			copyPassword(mainView);
 			ServiceInfo si = getServiceFromView(mainView);
-			resetAdditionalInfo(si);
+			si.resetAdditionalInfo();
 			si.setUseOldPassphrase(false);
 			putServiceToView(mainView, si);
 			mainView.setDirty(true);
@@ -407,19 +402,26 @@ public class PswGenCtl extends BaseCtl {
 	}
 
 	/**
+	 * Returns displayable information about the file specified by the given filepath.
+	 */
+	private String deriveInfo(File file) {
+		if (!file.exists()) {
+			return getGuiText("msg_file_cannot_be_found");
+		} else if (!file.canRead()) {
+			return getGuiText("msg_file_cannot_be_read");
+		} else {
+			return getGuiText("msg_file_last_modified") + " "
+					+ CoreConstants.TIMESTAMP_FORMAT.format(file.lastModified());
+		}
+	}
+
+	/**
 	 * Leert die Einstellungen für das Dienstekürzel, in AdditionalInfo kommt das Tagesdatum.
 	 */
 	private void clearService(final MainView mainView) {
 		ServiceInfo si = new ServiceInfo();
-		resetAdditionalInfo(si);
+		si.resetAdditionalInfo();
 		putServiceToView(mainView, si);
-	}
-
-	/**
-	 * Stellt das Tagesdatum in das Feld AdditionalInfo.
-	 */
-	private void resetAdditionalInfo(ServiceInfo si) {
-		si.setAdditionalInfo(CoreConstants.DATE_FORMAT.format(new Date()));
 	}
 
 	/**
@@ -432,26 +434,28 @@ public class PswGenCtl extends BaseCtl {
 		si.setLoginInfo(mainView.getLoginInfo());
 		si.setAdditionalLoginInfo(mainView.getAdditionalLoginInfo());
 		si.setUseSmallLetters(mainView.getUseSmallLetters());
-		si.setUseCapitalLetters(mainView.getUseCapitalLetters());
-		si.setUseDigits(mainView.getUseDigits());
-		si.setUseSpecialCharacters(mainView.getUseSpecialCharacters());
-		si.setSpecialCharacters(mainView.getSpecialCharacters());
 		si.setSmallLettersCount(mainView.getSmallLettersCount());
 		si.setSmallLettersStartIndex(mainView.getSmallLettersStartIndex());
 		si.setSmallLettersEndIndex(mainView.getSmallLettersEndIndex());
+		si.setUseCapitalLetters(mainView.getUseCapitalLetters());
 		si.setCapitalLettersCount(mainView.getCapitalLettersCount());
 		si.setCapitalLettersStartIndex(mainView.getCapitalLettersStartIndex());
 		si.setCapitalLettersEndIndex(mainView.getCapitalLettersEndIndex());
+		si.setUseDigits(mainView.getUseDigits());
 		si.setDigitsCount(mainView.getDigitsCount());
-		si.setSpecialCharactersCount(mainView.getSpecialCharactersCount());
 		si.setDigitsStartIndex(mainView.getDigitsStartIndex());
 		si.setDigitsEndIndex(mainView.getDigitsEndIndex());
+		si.setUseSpecialCharacters(mainView.getUseSpecialCharacters());
+		si.setSpecialCharactersCount(mainView.getSpecialCharactersCount());
+		ensureAtLeastDefaultSpecialCharacters(mainView);
+		si.setSpecialCharacters(mainView.getSpecialCharacters());
 		si.setSpecialCharactersStartIndex(mainView.getSpecialCharactersStartIndex());
 		si.setSpecialCharactersEndIndex(mainView.getSpecialCharactersEndIndex());
 		si.setTotalCharacterCount(mainView.getTotalCharacterCount());
 		si.setPassword(mainView.getPassword());
 		si.setPasswordRepeated(mainView.getPasswordRepeated());
 		si.setUseOldPassphrase(mainView.getUseOldPassphrase());
+		// last update is set not set from the view but from outside
 		return si;
 	}
 
@@ -465,27 +469,28 @@ public class PswGenCtl extends BaseCtl {
 		mainView.setLoginInfo(si.getLoginInfo());
 		mainView.setAdditionalLoginInfo(si.getAdditionalLoginInfo());
 		mainView.setUseSmallLetters(si.isUseSmallLetters());
-		mainView.setUseCapitalLetters(si.isUseCapitalLetters());
-		mainView.setUseDigits(si.isUseDigits());
-		mainView.setUseSpecialCharacters(si.isUseSpecialCharacters());
-		mainView.setSpecialCharacters(si.getSpecialCharacters());
-		ensureAtLeastDefaultSpecialCharacters(mainView);
 		mainView.setSmallLettersCount(si.getSmallLettersCount());
 		mainView.setSmallLettersStartIndex(si.getSmallLettersStartIndex());
 		mainView.setSmallLettersEndIndex(si.getSmallLettersEndIndex());
+		mainView.setUseCapitalLetters(si.isUseCapitalLetters());
 		mainView.setCapitalLettersCount(si.getCapitalLettersCount());
 		mainView.setCapitalLettersStartIndex(si.getCapitalLettersStartIndex());
 		mainView.setCapitalLettersEndIndex(si.getCapitalLettersEndIndex());
+		mainView.setUseDigits(si.isUseDigits());
 		mainView.setDigitsCount(si.getDigitsCount());
-		mainView.setSpecialCharactersCount(si.getSpecialCharactersCount());
 		mainView.setDigitsStartIndex(si.getDigitsStartIndex());
 		mainView.setDigitsEndIndex(si.getDigitsEndIndex());
+		mainView.setUseSpecialCharacters(si.isUseSpecialCharacters());
+		mainView.setSpecialCharacters(si.getSpecialCharacters());
+		ensureAtLeastDefaultSpecialCharacters(mainView);
+		mainView.setSpecialCharactersCount(si.getSpecialCharactersCount());
 		mainView.setSpecialCharactersStartIndex(si.getSpecialCharactersStartIndex());
 		mainView.setSpecialCharactersEndIndex(si.getSpecialCharactersEndIndex());
 		mainView.setTotalCharacterCount(si.getTotalCharacterCount());
 		mainView.setPassword(si.getPassword());
 		mainView.setPasswordRepeated(si.getPasswordRepeated());
 		mainView.setUseOldPassphrase(si.isUseOldPassphrase());
+		mainView.setLastUpdate(si.getLastUpdate());
 		mainView.setDirty(false);
 	}
 
@@ -571,15 +576,9 @@ public class PswGenCtl extends BaseCtl {
 	 */
 	private boolean cancelOnDirty(final MainView mainView) throws IOException {
 		if (mainView.isDirty()) {
-			int chosenOption = JOptionPane.showConfirmDialog(mainView,
-					mainView.getServiceAbbreviation() + getGuiText("SaveChangesMsg"),
-					DesktopConstants.APPLICATION_NAME, JOptionPane.YES_NO_CANCEL_OPTION);
-			if (chosenOption == JOptionPane.YES_OPTION) { // Geänderte Werte speichern?
-				storeService(mainView);
-			} else if (chosenOption == JOptionPane.CANCEL_OPTION
-					|| chosenOption == JOptionPane.CLOSED_OPTION) {
-				return true;
-			}
+			int chosenOption = JOptionPane.showConfirmDialog(mainView, getGuiText("DiscardChangesMsg"),
+					DesktopConstants.APPLICATION_NAME, JOptionPane.OK_CANCEL_OPTION);
+			return chosenOption != JOptionPane.OK_OPTION;
 		}
 		return false;
 	}
@@ -599,7 +598,6 @@ public class PswGenCtl extends BaseCtl {
 	 * die zu einer Fehlermeldung führt. Eine Eingabe hat also in jedem Fall Vorrang vor der Generierung.
 	 */
 	private String getValidatedOrGeneratedPassword(final MainView mainView) {
-		ensureAtLeastDefaultSpecialCharacters(mainView);
 		ServiceInfo si = getServiceFromView(mainView);
 		String passphrase = (si.isUseOldPassphrase()) ? oldPassphrase : validatedPassphrase;
 		return PasswordFactory.getPassword(si, passphrase);
@@ -630,13 +628,13 @@ public class PswGenCtl extends BaseCtl {
 	 * Werte des Dienstes in die Liste übernehmen und die gesamte Liste speichern.
 	 */
 	private void storeService(final MainView mainView) throws IOException {
-		String serviceAbbreviation = mainView.getServiceAbbreviation();
-		validateServiceAbbreviation(serviceAbbreviation);
-		if (services.getServiceInfo(serviceAbbreviation) != null) { // Ist der Dienst bereits vermerkt?
+		String abbreviation = mainView.getServiceAbbreviation();
+		validateServiceAbbreviation(abbreviation);
+		if (services.getServiceInfo(abbreviation) != null) { // Ist der Dienst bereits vermerkt?
 			int chosenOption = JOptionPane.showConfirmDialog(mainView,
-					serviceAbbreviation + getGuiText("OverwriteServiceMsg"),
-					DesktopConstants.APPLICATION_NAME, JOptionPane.YES_NO_OPTION);
-			if (chosenOption == JOptionPane.NO_OPTION) { // Dienst nicht überschreiben? => fertig
+					abbreviation + getGuiText("OverwriteServiceMsg"), DesktopConstants.APPLICATION_NAME,
+					JOptionPane.OK_CANCEL_OPTION);
+			if (chosenOption != JOptionPane.OK_OPTION) { // Dienst nicht überschreiben? => fertig
 				return;
 			}
 		}
@@ -647,6 +645,7 @@ public class PswGenCtl extends BaseCtl {
 		saveServiceInfoList(validatedPassphrase);
 		mainView.setDirty(false);
 		mainView.updateStoredServices();
+		putServiceToView(mainView, si); // update timestamp
 	}
 
 	/**
@@ -654,11 +653,7 @@ public class PswGenCtl extends BaseCtl {
 	 */
 	private void saveServiceInfoList(final String passphrase) throws IOException {
 		FileHelper fileHelper = FileHelper.getInstance(new CommonJsonReaderWriterFactoryGsonImpl());
-		EncryptionHelper encryptionHelper = new EncryptionHelper(passphrase.toCharArray());
-		services.setSaltAsHexString(encryptionHelper.getSaltAsHexString());
-		services.setInitializerAsHexString(encryptionHelper.getInitializerAsHexString());
-		services.encrypt(encryptionHelper);
-		fileHelper.saveServiceInfoList(servicesFile, services);
+		fileHelper.saveServiceInfoList(servicesFile, services, passphrase);
 	}
 
 	/**

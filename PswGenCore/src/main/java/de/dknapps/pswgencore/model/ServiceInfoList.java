@@ -20,6 +20,7 @@ package de.dknapps.pswgencore.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -62,8 +63,8 @@ public class ServiceInfoList {
 	/**
 	 * Ein Dienstekürzel und die zugehörigen Informationen zufügen.
 	 */
-	public ServiceInfo putServiceInfo(final ServiceInfo si) {
-		return services.put(si.getServiceAbbreviation(), si);
+	public void putServiceInfo(final ServiceInfo si) {
+		services.put(si.getServiceAbbreviation(), si);
 	}
 
 	/**
@@ -106,7 +107,8 @@ public class ServiceInfoList {
 	 * Liefert die Informationen zu einem Dienstekürzel.
 	 */
 	public ServiceInfo getServiceInfo(final String serviceAbbreviation) {
-		return services.get(serviceAbbreviation);
+		ServiceInfo si = services.get(serviceAbbreviation);
+		return (si == null || si.isDeleted()) ? null : si;
 	}
 
 	/**
@@ -146,22 +148,30 @@ public class ServiceInfoList {
 	}
 
 	/**
-	 * Löscht die Informationen zu einem Dienstekürzel.
+	 * Wenn es keinen Dienst mit dem Dienstekürzel gibt, wird eine Exception geworfen. Anderenfalls wird der
+	 * Dienst als gelöscht markiert und dadurch beim getServices(false) nicht mehr mitgeliefert.
 	 */
-	public ServiceInfo removeServiceInfo(final String serviceAbbreviation) {
+	public void removeServiceInfo(final String serviceAbbreviation) {
 		ServiceInfo si = getServiceInfo(serviceAbbreviation);
-		if (si != null) {
-			si.setDeleted(true);
-			si.resetTimeMillis();
+		if (si == null) {
+			throw new DomainException("ServiceAbbreviationMissingMsg");
 		}
-		return si;
+		si.setDeleted(true);
+		si.resetTimeMillis();
+	}
+
+	/**
+	 * Liefert die Informationen zu allen Dienstekürzeln, die nicht als gelöscht markiert sind.
+	 */
+	public List<ServiceInfo> getServices() {
+		return getServices(false);
 	}
 
 	/**
 	 * Liefert die Informationen zu allen Dienstekürzeln, ggf. auch mit den als gelöscht markierten Einträgen.
 	 */
-	public Collection<ServiceInfo> getServices(boolean withDeletedEntries) {
-		Collection<ServiceInfo> result = new ArrayList<>();
+	protected List<ServiceInfo> getServices(boolean withDeletedEntries) {
+		List<ServiceInfo> result = new ArrayList<>();
 		for (ServiceInfo si : services.values()) {
 			if (withDeletedEntries || !si.isDeleted()) {
 				result.add(si);

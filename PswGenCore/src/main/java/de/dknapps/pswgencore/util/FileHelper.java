@@ -2,7 +2,7 @@
  * PswGenDesktop - Manages your websites and repeatably generates passwords for them
  * PswGenDroid - Generates your passwords managed by PswGenDesktop on your mobile  
  *
- *     Copyright (C) 2005-2017 Uwe Damken
+ *     Copyright (C) 2005-2018 Uwe Damken
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -245,9 +245,21 @@ public class FileHelper {
 	}
 
 	/**
+	 * Verschlüsselt und speichert alle Diensteinformationen.
+	 */
+	public void saveServiceInfoList(File servicesFile, ServiceInfoList services, String passphrase)
+			throws IOException {
+		EncryptionHelper encryptionHelper = new EncryptionHelper(passphrase.toCharArray());
+		services.setSaltAsHexString(encryptionHelper.getSaltAsHexString());
+		services.setInitializerAsHexString(encryptionHelper.getInitializerAsHexString());
+		services.encrypt(encryptionHelper);
+		saveServiceInfoList(servicesFile, services);
+	}
+
+	/**
 	 * Speichert alle Diensteinformationen.
 	 */
-	public void saveServiceInfoList(File servicesFile, ServiceInfoList services) throws IOException {
+	private void saveServiceInfoList(File servicesFile, ServiceInfoList services) throws IOException {
 		FileOutputStream out = new FileOutputStream(servicesFile);
 		writeJsonStream(out, services);
 		out.close();

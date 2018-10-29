@@ -30,6 +30,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 
 import de.dknapps.pswgendesktop.gui.base.BaseCtl;
 import de.dknapps.pswgendesktop.gui.base.BaseDialog;
@@ -58,6 +59,14 @@ public class StartupDialog extends BaseDialog {
 	private JPasswordField oldPassphrase;
 
 	private JButton buttonChangePassphrase;
+
+	private JTextField filepath;
+
+	private JLabel filepathInfo;
+
+	private JTextField otherFilepath;
+
+	private JLabel otherFilepathInfo;
 
 	/** Hey, it's me ... für die Listener */
 	private StartupDialog me = this;
@@ -94,7 +103,7 @@ public class StartupDialog extends BaseDialog {
 	}
 
 	/**
-	 * Panel zum "Passphrase" anlegen
+	 * Panel zu "Passphrase" anlegen
 	 */
 	private JPanel createPanelPassphrase() {
 		// Fabriken holen
@@ -128,12 +137,24 @@ public class StartupDialog extends BaseDialog {
 
 		});
 		buttonChangePassphrase = wf.getButton("ButtonChangePassphrase");
-		buttonChangePassphrase.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				((PswGenCtl) ctl).actionPerformedChangePassphrase(me);
-			}
-		});
+		// FIXME Rethink rephrasing with two files ...
+		// ... probably rephrase first file
+		// ... try to load second file with current passphrase first, on failure with old passphrase
+		buttonChangePassphrase.setEnabled(false);
+		// buttonChangePassphrase.addActionListener(new ActionListener() {
+		// @Override
+		// public void actionPerformed(ActionEvent e) {
+		// ((PswGenCtl) ctl).actionPerformedChangePassphrase(me);
+		// }
+		// });
+		JLabel labelFilepath = wf.getLabel("LabelFilepath");
+		filepath = wf.getTextField("FieldFilepath");
+		filepath.setEnabled(false);
+		filepathInfo = wf.getLabel("LabelFilepathInfo");
+		JLabel labelOtherFilepath = wf.getLabel("LabelOtherFilepath");
+		otherFilepath = wf.getTextField("FieldOtherFilepath");
+		otherFilepath.setEnabled(false);
+		otherFilepathInfo = wf.getLabel("LabelOtherFilepathInfo");
 		JButton buttonOpenServices = wf.getButton("ButtonOpenServices");
 		buttonOpenServices.addActionListener(new ActionListener() {
 			@Override
@@ -160,6 +181,20 @@ public class StartupDialog extends BaseDialog {
 		// Widgets zufügen, nächste Zeile
 		row++;
 		panel.add(buttonChangePassphrase, gbcf.getLabelConstraints(1, row));
+		// Widgets zufügen, nächste Zeile
+		row++;
+		panel.add(labelFilepath, gbcf.getLabelConstraints(0, row));
+		panel.add(filepath, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 1, 1));
+		// Widgets zufügen, nächste Zeile
+		row++;
+		panel.add(filepathInfo, gbcf.getFieldConstraints(1, row, 1, 1));
+		// Widgets zufügen, nächste Zeile
+		row++;
+		panel.add(labelOtherFilepath, gbcf.getLabelConstraints(0, row));
+		panel.add(otherFilepath, gbcf.getFieldConstraints(GridBagConstraints.RELATIVE, row, 1, 1));
+		// Widgets zufügen, nächste Zeile
+		row++;
+		panel.add(otherFilepathInfo, gbcf.getFieldConstraints(1, row, 1, 1));
 		// Widgets zufügen, nächste Zeile
 		row++;
 		panel.add(buttonOpenServices, gbcf.getLabelConstraints(1, row));
@@ -196,6 +231,38 @@ public class StartupDialog extends BaseDialog {
 
 	public void setOldPassphrase(final String oldPassphrase) {
 		this.oldPassphrase.setText(oldPassphrase);
+	}
+
+	public String getFilepath() {
+		return new String(filepath.getText());
+	}
+
+	public void setFilepath(final String filepath) {
+		this.filepath.setText(filepath);
+	}
+
+	public String getFilepathInfo() {
+		return new String(filepathInfo.getText());
+	}
+
+	public void setFilepathInfo(final String filepathInfo) {
+		this.filepathInfo.setText(filepathInfo);
+	}
+
+	public String getOtherFilepath() {
+		return new String(otherFilepath.getText());
+	}
+
+	public void setOtherFilepath(final String otherFilepath) {
+		this.otherFilepath.setText(otherFilepath);
+	}
+
+	public String getOtherFilepathInfo() {
+		return new String(otherFilepathInfo.getText());
+	}
+
+	public void setOtherFilepathInfo(final String otherFilepathInfo) {
+		this.otherFilepathInfo.setText(otherFilepathInfo);
 	}
 
 }
