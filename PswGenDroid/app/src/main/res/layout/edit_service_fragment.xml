@@ -49,7 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
-            android:paddingBottom="4dp"
+            android:layout_marginBottom="4dp"
             />
 
         <TextView
@@ -68,7 +68,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
-            android:paddingBottom="4dp"
+            android:layout_marginBottom="4dp"
             />
 
         <TextView
@@ -87,7 +87,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textUri"
-            android:paddingBottom="4dp"
+            android:layout_marginBottom="4dp"
             />
 
         <TextView
@@ -106,7 +106,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
-            android:paddingBottom="4dp"
+            android:layout_marginBottom="4dp"
             />
 
         <TextView
@@ -125,7 +125,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textMultiLine"
-            android:paddingBottom="4dp"
+            android:layout_marginBottom="4dp"
             />
 
         <CheckBox
@@ -142,7 +142,7 @@
             android:orientation="horizontal"
             android:paddingStart="40dp"
             android:paddingEnd="0dp"
-            android:paddingBottom="4dp"
+            android:layout_marginBottom="4dp"
             >
 
             <TextView
@@ -200,7 +200,7 @@
             android:orientation="horizontal"
             android:paddingStart="40dp"
             android:paddingEnd="0dp"
-            android:paddingBottom="4dp"
+            android:layout_marginBottom="4dp"
             >
 
             <TextView
@@ -259,7 +259,7 @@
             android:orientation="horizontal"
             android:paddingStart="40dp"
             android:paddingEnd="0dp"
-            android:paddingBottom="4dp"
+            android:layout_marginBottom="4dp"
             >
 
             <TextView
@@ -307,7 +307,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:paddingBottom="4dp"
+            android:layout_marginBottom="4dp"
             >
 
             <CheckBox
@@ -337,7 +337,7 @@
             android:orientation="horizontal"
             android:paddingStart="40dp"
             android:paddingEnd="0dp"
-            android:paddingBottom="4dp"
+            android:layout_marginBottom="4dp"
             >
 
             <TextView
@@ -397,7 +397,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="number"
-            android:paddingBottom="4dp"
+            android:layout_marginBottom="4dp"
             />
 
         <TextView
@@ -416,7 +416,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
-            android:paddingBottom="4dp"
+            android:layout_marginBottom="4dp"
             />
 
         <TextView
@@ -435,7 +435,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
-            android:paddingBottom="4dp"
+            android:layout_marginBottom="4dp"
             />
 
         <TextView
@@ -443,7 +443,7 @@
             style="?android:attr/textAppearanceMedium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="4dp"
+            android:layout_marginBottom="4dp"
             android:text="@string/label_use_old_passphrase"
             android:textColor="@color/dknapps_de_orange"
             android:textIsSelectable="false"
@@ -464,7 +464,7 @@
             style="?android:attr/textAppearanceSmall"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="10dp"
+            android:layout_marginBottom="10dp"
             />
 
         <Button
