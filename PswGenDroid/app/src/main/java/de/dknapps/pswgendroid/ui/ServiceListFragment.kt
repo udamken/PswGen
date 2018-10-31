@@ -78,8 +78,8 @@ class ServiceListFragment : ListFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        (activity!! as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        viewModel = ViewModelProviders.of(activity!!).get(ServiceMaintenanceViewModel::class.java)
+        (requireActivity() as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        viewModel = ViewModelProviders.of(requireActivity()).get(ServiceMaintenanceViewModel::class.java)
     }
 
     override fun onResume() {
@@ -87,10 +87,10 @@ class ServiceListFragment : ListFragment() {
         // When the screen gets locked services are unloaded. Therefore we return to previous fragment
         // if there are currently no service loaded (probably because of screen lock).
         if (viewModel.services == null) {
-            activity!!.supportFragmentManager.popBackStack()
+            requireActivity().supportFragmentManager.popBackStack()
         } else {
             listAdapter = ArrayAdapter<ServiceInfo>(
-                activity!!,
+                requireActivity(),
                 simple_list_item_activated_1, text1, viewModel.services!!.services
             )
         }

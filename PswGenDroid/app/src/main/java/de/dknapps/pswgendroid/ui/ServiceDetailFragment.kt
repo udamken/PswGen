@@ -89,8 +89,8 @@ class ServiceDetailFragment : androidx.fragment.app.Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        (activity!! as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        viewModel = ViewModelProviders.of(activity!!).get(ServiceMaintenanceViewModel::class.java)
+        (requireActivity() as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        viewModel = ViewModelProviders.of(requireActivity()).get(ServiceMaintenanceViewModel::class.java)
 
         buttonOpenAndProvide.setOnClickListener { onClickButtonOpenAndProvide() }
         buttonProvide.setOnClickListener { onClickButtonProvide() }
@@ -111,7 +111,7 @@ class ServiceDetailFragment : androidx.fragment.app.Fragment() {
         // When the screen gets locked services are unloaded. Therefore we return to previous fragment
         // if there is currently no service selected (probably because of screen lock).
         if (!viewModel.retrieveService()) {
-            activity!!.supportFragmentManager.popBackStack()
+            requireActivity().supportFragmentManager.popBackStack()
         } else {
             putServiceToView(viewModel.currentServiceInfo)
         }
@@ -146,7 +146,7 @@ class ServiceDetailFragment : androidx.fragment.app.Fragment() {
             provideLoginInfoAndPassword()
             // url will be opened in onWindowFocusChanged() after the keyboard has been chosen
         } catch (e: Exception) {
-            PswGenAdapter.handleThrowable(activity!!, e)
+            PswGenAdapter.handleThrowable(requireActivity(), e)
         }
 
     }
@@ -158,7 +158,7 @@ class ServiceDetailFragment : androidx.fragment.app.Fragment() {
         try {
             provideLoginInfoAndPassword()
         } catch (e: Exception) {
-            PswGenAdapter.handleThrowable(activity!!, e)
+            PswGenAdapter.handleThrowable(requireActivity(), e)
         }
 
     }
@@ -169,9 +169,9 @@ class ServiceDetailFragment : androidx.fragment.app.Fragment() {
     private fun onClickButtonOpenUrl() {
         try {
             openUrl(viewModel.currentServiceInfo.loginUrl)
-            copyToClipboard(activity!!, viewModel.currentServiceInfo.loginInfo)
+            copyToClipboard(requireActivity(), viewModel.currentServiceInfo.loginInfo)
         } catch (e: Exception) {
-            PswGenAdapter.handleThrowable(activity!!, e)
+            PswGenAdapter.handleThrowable(requireActivity(), e)
         }
 
     }
@@ -181,9 +181,9 @@ class ServiceDetailFragment : androidx.fragment.app.Fragment() {
      */
     private fun onClickButtonCopyLoginInfo() {
         try {
-            copyToClipboard(activity!!, viewModel.currentServiceInfo.loginInfo)
+            copyToClipboard(requireActivity(), viewModel.currentServiceInfo.loginInfo)
         } catch (e: Exception) {
-            PswGenAdapter.handleThrowable(activity!!, e)
+            PswGenAdapter.handleThrowable(requireActivity(), e)
         }
 
     }
@@ -193,9 +193,9 @@ class ServiceDetailFragment : androidx.fragment.app.Fragment() {
      */
     private fun onClickButtonCopyPassword() {
         try {
-            copyToClipboard(activity!!, getValidatedOrGeneratedPassword())
+            copyToClipboard(requireActivity(), getValidatedOrGeneratedPassword())
         } catch (e: Exception) {
-            PswGenAdapter.handleThrowable(activity!!, e)
+            PswGenAdapter.handleThrowable(requireActivity(), e)
         }
     }
 
@@ -208,7 +208,7 @@ class ServiceDetailFragment : androidx.fragment.app.Fragment() {
             viewModel.passwordExplanation = getPasswordExplanation(viewModel.password!!)
             EventBus.getDefault().post(DisplayPasswordClickedEvent())
         } catch (e: Exception) {
-            PswGenAdapter.handleThrowable(activity!!, e)
+            PswGenAdapter.handleThrowable(requireActivity(), e)
         }
     }
 
@@ -238,7 +238,7 @@ class ServiceDetailFragment : androidx.fragment.app.Fragment() {
      * Let user choose the keyboard and provide login information and entered or generated password to it.
      */
     private fun provideLoginInfoAndPassword() {
-        val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.showInputMethodPicker()
         providedLoginInfo = viewModel.currentServiceInfo.loginInfo
         providedPassword = getValidatedOrGeneratedPassword()

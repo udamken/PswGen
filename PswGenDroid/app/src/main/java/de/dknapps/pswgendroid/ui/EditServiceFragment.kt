@@ -60,8 +60,8 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        (activity!! as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        viewModel = ViewModelProviders.of(activity!!).get(ServiceMaintenanceViewModel::class.java)
+        (requireActivity() as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        viewModel = ViewModelProviders.of(requireActivity()).get(ServiceMaintenanceViewModel::class.java)
 
         buttonClearService.setOnClickListener { onClickButtonClearService() }
         buttonRemoveService.setOnClickListener { onClickButtonRemoveService() }
@@ -74,7 +74,7 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
         // When the screen gets locked services are unloaded. Therefore we return to previous fragment
         // if there is currently no service selected (probably because of screen lock).
         if (viewModel.editedServiceInfo == null) {
-            activity!!.supportFragmentManager.popBackStack()
+            requireActivity().supportFragmentManager.popBackStack()
         } else {
             putServiceToView(viewModel.editedServiceInfo!!)
             addAllDirtyListener()
@@ -92,7 +92,7 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
      */
     private fun onClickButtonClearService() {
         if (viewModel.isDirty) {
-            AlertDialog.Builder(activity!!) //
+            AlertDialog.Builder(requireActivity()) //
                 .setTitle(R.string.app_name) //
                 .setMessage(R.string.DiscardChangesMsg) //
                 .setPositiveButton(android.R.string.ok) { _, _ ->
@@ -112,7 +112,7 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
         try {
             val abbreviation = serviceAbbreviation.text.toString()
             validateServiceAbbreviation(abbreviation)
-            AlertDialog.Builder(activity!!) //
+            AlertDialog.Builder(requireActivity()) //
                 .setTitle(R.string.app_name) //
                 .setMessage("$abbreviation${getText(R.string.RemoveServiceMsg)}") //
                 .setPositiveButton(android.R.string.ok) { _, _ ->
@@ -121,7 +121,7 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
                 .setNegativeButton(android.R.string.cancel, null) //
                 .show()
         } catch (e: Exception) {
-            PswGenAdapter.handleThrowable(activity!!, e)
+            PswGenAdapter.handleThrowable(requireActivity(), e)
         }
     }
 
@@ -133,7 +133,7 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
             val abbreviation = serviceAbbreviation.text.toString()
             validateServiceAbbreviation(abbreviation)
             if (viewModel.services!!.getServiceInfo(abbreviation) != null) { // service does exist?
-                AlertDialog.Builder(activity!!) //
+                AlertDialog.Builder(requireActivity()) //
                     .setTitle(R.string.app_name) //
                     .setMessage("$abbreviation${getText(R.string.OverwriteServiceMsg)}") //
                     .setPositiveButton(android.R.string.yes) { _, _ ->
@@ -145,7 +145,7 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
                 storeServiceAnyway()
             }
         } catch (e: Exception) {
-            PswGenAdapter.handleThrowable(activity!!, e)
+            PswGenAdapter.handleThrowable(requireActivity(), e)
         }
     }
 
@@ -238,7 +238,7 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
             )
             clearService()
         } catch (e: Exception) {
-            PswGenAdapter.handleThrowable(activity!!, e)
+            PswGenAdapter.handleThrowable(requireActivity(), e)
         }
     }
 
@@ -259,7 +259,7 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
             putServiceToView(si) // update timestamp
             viewModel.isDirty = false
         } catch (e: Exception) {
-            PswGenAdapter.handleThrowable(activity!!, e)
+            PswGenAdapter.handleThrowable(requireActivity(), e)
         }
     }
 

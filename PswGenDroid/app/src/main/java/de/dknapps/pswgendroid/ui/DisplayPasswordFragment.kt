@@ -46,8 +46,8 @@ class DisplayPasswordFragment : androidx.fragment.app.Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        (activity!! as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        viewModel = ViewModelProviders.of(activity!!).get(ServiceMaintenanceViewModel::class.java)
+        (requireActivity() as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        viewModel = ViewModelProviders.of(requireActivity()).get(ServiceMaintenanceViewModel::class.java)
     }
 
     override fun onResume() {
@@ -55,7 +55,7 @@ class DisplayPasswordFragment : androidx.fragment.app.Fragment() {
         // When the screen gets locked services are unloaded. Therefore we return to previous fragment
         // if there is currently no service or no password available (probably because of screen lock).
         if (!viewModel.retrieveService() || viewModel.password == null) {
-            activity!!.supportFragmentManager.popBackStack()
+            requireActivity().supportFragmentManager.popBackStack()
         } else {
             putServiceToView(viewModel.currentServiceInfo)
             password.text = viewModel.password!!

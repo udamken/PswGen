@@ -70,10 +70,10 @@ class StartupFragment : androidx.fragment.app.Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        (activity!! as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(false)
-        viewModel = ViewModelProviders.of(activity!!).get(ServiceMaintenanceViewModel::class.java)
+        (requireActivity() as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(false)
+        viewModel = ViewModelProviders.of(requireActivity()).get(ServiceMaintenanceViewModel::class.java)
 
-        prefs = activity!!.getSharedPreferences(getString(R.string.preferences_filename), Context.MODE_PRIVATE)
+        prefs = requireActivity().getSharedPreferences(getString(R.string.preferences_filename), Context.MODE_PRIVATE)
 
         val defaultFilepath = (Environment.getExternalStorageDirectory().absolutePath + File.separator
                 + "Upload" + File.separator + CoreConstants.OTHER_SERVICES_FILENAME) // something like /storage/emulated/0/Download
@@ -130,7 +130,7 @@ class StartupFragment : androidx.fragment.app.Fragment() {
             editor.apply()
             EventBus.getDefault().post(ServiceListLoadedEvent())
         } catch (e: Exception) {
-            PswGenAdapter.handleThrowable(activity!!, e)
+            PswGenAdapter.handleThrowable(requireActivity(), e)
         }
     }
 
