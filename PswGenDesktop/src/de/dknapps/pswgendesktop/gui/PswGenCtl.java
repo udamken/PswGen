@@ -46,9 +46,6 @@ import de.dknapps.pswgendesktop.util.CommonJsonReaderWriterFactoryGsonImpl;
 
 public class PswGenCtl extends BaseCtl {
 
-	/** Der Logger dieser Anwendung */
-	private static final Logger LOGGER = Logger.getLogger(DesktopConstants.LOGGER_NAME);
-
 	/** Alle Informationen zu Dienstekürzeln */
 	private ServiceInfoList services = new ServiceInfoList();
 
@@ -81,7 +78,7 @@ public class PswGenCtl extends BaseCtl {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
-			LOGGER.log(Level.WARNING, CoreConstants.MSG_EXCP_LOOK_AND_FEEL, e);
+			Logger.getGlobal().log(Level.WARNING, CoreConstants.MSG_EXCP_LOOK_AND_FEEL, e);
 		}
 	}
 
@@ -120,8 +117,8 @@ public class PswGenCtl extends BaseCtl {
 				}
 			}
 			super.windowClosing(view);
-		} catch (Throwable t) {
-			handleThrowable(t);
+		} catch (Exception e) {
+			handleException(e);
 		} finally {
 			// Nichts mehr zu tun
 		}
@@ -143,8 +140,8 @@ public class PswGenCtl extends BaseCtl {
 			mainView.pack();
 			clearService(mainView); // Diensteinstellungen initialisieren (Tagesdatum)
 			mainView.setVisible(true);
-		} catch (Throwable t) {
-			handleThrowable(t);
+		} catch (Exception e) {
+			handleException(e);
 		} finally {
 			// Nichts mehr zu tun
 		}
@@ -165,8 +162,8 @@ public class PswGenCtl extends BaseCtl {
 			addWindow(changePassphraseDialog);
 			changePassphraseDialog.pack();
 			changePassphraseDialog.setVisible(true);
-		} catch (Throwable t) {
-			handleThrowable(t);
+		} catch (Exception e) {
+			handleException(e);
 		} finally {
 			// Nichts mehr zu tun
 		}
@@ -193,8 +190,8 @@ public class PswGenCtl extends BaseCtl {
 			saveServiceInfoList(validatedPassphrase);
 			// Von vorne neu beginnen
 			start();
-		} catch (Throwable t) {
-			handleThrowable(t);
+		} catch (Exception e) {
+			handleException(e);
 		} finally {
 			// Nichts mehr zu tun
 		}
@@ -216,8 +213,8 @@ public class PswGenCtl extends BaseCtl {
 			} else {
 				putServiceToView(mainView, si);
 			}
-		} catch (Throwable t) {
-			handleThrowable(t);
+		} catch (Exception e) {
+			handleException(e);
 		} finally {
 			mainView.setDefaultCursor();
 		}
@@ -233,8 +230,8 @@ public class PswGenCtl extends BaseCtl {
 			}
 			mainView.setWaitCursor();
 			clearService(mainView);
-		} catch (Throwable t) {
-			handleThrowable(t);
+		} catch (Exception e) {
+			handleException(e);
 		} finally {
 			mainView.setDefaultCursor();
 		}
@@ -258,8 +255,8 @@ public class PswGenCtl extends BaseCtl {
 				mainView.updateStoredServices();
 				clearService(mainView);
 			}
-		} catch (Throwable t) {
-			handleThrowable(t);
+		} catch (Exception e) {
+			handleException(e);
 		} finally {
 			mainView.setDefaultCursor();
 		}
@@ -274,8 +271,8 @@ public class PswGenCtl extends BaseCtl {
 			final String loginUrl = mainView.getLoginUrl();
 			Desktop.getDesktop().browse(new URI(loginUrl));
 			copyLoginInfo(mainView);
-		} catch (Throwable t) {
-			handleThrowable(t);
+		} catch (Exception e) {
+			handleException(e);
 		} finally {
 			mainView.setDefaultCursor();
 		}
@@ -288,8 +285,8 @@ public class PswGenCtl extends BaseCtl {
 		try {
 			mainView.setWaitCursor();
 			copyLoginInfo(mainView);
-		} catch (Throwable t) {
-			handleThrowable(t);
+		} catch (Exception e) {
+			handleException(e);
 		} finally {
 			mainView.setDefaultCursor();
 		}
@@ -302,8 +299,8 @@ public class PswGenCtl extends BaseCtl {
 		try {
 			mainView.setWaitCursor();
 			Desktop.getDesktop().browse(new URI(getGuiText("HelpUrl")));
-		} catch (Throwable t) {
-			handleThrowable(t);
+		} catch (Exception e) {
+			handleException(e);
 		} finally {
 			mainView.setDefaultCursor();
 		}
@@ -318,10 +315,8 @@ public class PswGenCtl extends BaseCtl {
 			addWindow(aboutView);
 			aboutView.pack();
 			aboutView.setVisible(true);
-		} catch (Throwable t) {
-			handleThrowable(t);
-		} finally {
-			// mainView.setDefaultCursor();
+		} catch (Exception e) {
+			handleException(e);
 		}
 	}
 
@@ -332,8 +327,8 @@ public class PswGenCtl extends BaseCtl {
 		try {
 			mainView.setWaitCursor();
 			copyPassword(mainView);
-		} catch (Throwable t) {
-			handleThrowable(t);
+		} catch (Exception e) {
+			handleException(e);
 		} finally {
 			mainView.setDefaultCursor();
 		}
@@ -354,8 +349,8 @@ public class PswGenCtl extends BaseCtl {
 			addWindow(passwordDialog);
 			passwordDialog.pack();
 			passwordDialog.setVisible(true);
-		} catch (Throwable t) {
-			handleThrowable(t);
+		} catch (Exception e) {
+			handleException(e);
 		} finally {
 			mainView.setDefaultCursor();
 		}
@@ -368,8 +363,8 @@ public class PswGenCtl extends BaseCtl {
 		try {
 			mainView.setWaitCursor();
 			storeService(mainView);
-		} catch (Throwable t) {
-			handleThrowable(t);
+		} catch (Exception e) {
+			handleException(e);
 		} finally {
 			mainView.setDefaultCursor();
 		}
@@ -387,8 +382,8 @@ public class PswGenCtl extends BaseCtl {
 			si.setUseOldPassphrase(false);
 			putServiceToView(mainView, si);
 			mainView.setDirty(true);
-		} catch (Throwable t) {
-			handleThrowable(t);
+		} catch (Exception e) {
+			handleException(e);
 		} finally {
 			mainView.setDefaultCursor();
 		}
@@ -535,13 +530,13 @@ public class PswGenCtl extends BaseCtl {
 	 * Exception.
 	 */
 	private String validateOldPassphrase(final StartupDialog startupDialog) {
-		final String oldPassphrase = startupDialog.getOldPassphrase();
+		final String passphrase = startupDialog.getOldPassphrase();
 		if (services.containsServiceWithOldPassphrase()) {
-			if (EmptyHelper.isEmpty(oldPassphrase)) {
+			if (EmptyHelper.isEmpty(passphrase)) {
 				throw new DomainException("OldPassphraseEmptyMsg");
 			}
 		}
-		return oldPassphrase;
+		return passphrase;
 	}
 
 	/**
@@ -574,7 +569,7 @@ public class PswGenCtl extends BaseCtl {
 	 * Liefert true, wenn die aktuelle Aktion abgebrochen werden soll, oder false, wenn die Änderungen
 	 * gespeichert oder verworfen werden sollen.
 	 */
-	private boolean cancelOnDirty(final MainView mainView) throws IOException {
+	private boolean cancelOnDirty(final MainView mainView) {
 		if (mainView.isDirty()) {
 			int chosenOption = JOptionPane.showConfirmDialog(mainView, getGuiText("DiscardChangesMsg"),
 					DesktopConstants.APPLICATION_NAME, JOptionPane.OK_CANCEL_OPTION);

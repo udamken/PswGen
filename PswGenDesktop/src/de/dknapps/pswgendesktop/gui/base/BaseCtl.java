@@ -21,6 +21,8 @@ package de.dknapps.pswgendesktop.gui.base;
 import java.awt.Window;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JOptionPane;
 
@@ -35,7 +37,7 @@ import de.dknapps.pswgendesktop.DesktopConstants;
 public class BaseCtl {
 
 	/** Alle von diesem Controller gesteuerten Fenster */
-	public List<Window> windows = new ArrayList<Window>();
+	private List<Window> windows = new ArrayList<>();
 
 	/**
 	 * Konstruiert den Controller.
@@ -63,14 +65,14 @@ public class BaseCtl {
 	/**
 	 * Fehler in Form eines Throwables behandeln (Logging und Fehler anzeigen).
 	 */
-	public void handleThrowable(final Throwable t) {
-		t.printStackTrace();
-		if (t instanceof DomainException) {
-			String msg = getGuiText(t.getMessage());
+	public void handleException(final Exception e) {
+		if (e instanceof DomainException) {
+			String msg = getGuiText(e.getMessage());
 			JOptionPane.showMessageDialog(null, msg, DesktopConstants.APPLICATION_NAME,
 					JOptionPane.WARNING_MESSAGE);
 		} else {
-			JOptionPane.showMessageDialog(null, t.toString(), DesktopConstants.APPLICATION_NAME,
+			Logger.getGlobal().log(Level.SEVERE, "Exception caught: ", e);
+			JOptionPane.showMessageDialog(null, e.toString(), DesktopConstants.APPLICATION_NAME,
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}

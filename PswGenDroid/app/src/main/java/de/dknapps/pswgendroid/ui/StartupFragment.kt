@@ -130,7 +130,7 @@ class StartupFragment : androidx.fragment.app.Fragment() {
             editor.apply()
             EventBus.getDefault().post(ServiceListLoadedEvent())
         } catch (e: Exception) {
-            PswGenAdapter.handleThrowable(requireActivity(), e)
+            PswGenAdapter.handleException(requireActivity(), e)
         }
     }
 

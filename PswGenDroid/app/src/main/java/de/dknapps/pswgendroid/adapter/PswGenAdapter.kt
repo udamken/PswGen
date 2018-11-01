@@ -52,14 +52,13 @@ object PswGenAdapter {
     /**
      * Bring out a toast after translating a domain exception to messages text.
      */
-    fun handleThrowable(context: Context, t: Throwable) {
-        if (t is DomainException) {
-            Log.e(TAG, "DomainException caught: ", t)
-            Toast.makeText(context, getDomainExceptionText(context, t), Toast.LENGTH_LONG)
+    fun handleException(context: Context, e: Exception) {
+        if (e is DomainException) {
+            Toast.makeText(context, getDomainExceptionText(context, e), Toast.LENGTH_LONG)
                 .show()
         } else {
-            Log.e(TAG, "Throwable caught: ", t)
-            Toast.makeText(context, t.toString(), Toast.LENGTH_LONG).show()
+            Log.e(TAG, "Exception caught: ", e)
+            Toast.makeText(context, e.toString(), Toast.LENGTH_LONG).show()
         }
     }
 

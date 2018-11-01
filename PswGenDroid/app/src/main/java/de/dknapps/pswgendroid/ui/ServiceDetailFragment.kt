@@ -146,7 +146,7 @@ class ServiceDetailFragment : androidx.fragment.app.Fragment() {
             provideLoginInfoAndPassword()
             // url will be opened in onWindowFocusChanged() after the keyboard has been chosen
         } catch (e: Exception) {
-            PswGenAdapter.handleThrowable(requireActivity(), e)
+            PswGenAdapter.handleException(requireActivity(), e)
         }
 
     }
@@ -158,7 +158,7 @@ class ServiceDetailFragment : androidx.fragment.app.Fragment() {
         try {
             provideLoginInfoAndPassword()
         } catch (e: Exception) {
-            PswGenAdapter.handleThrowable(requireActivity(), e)
+            PswGenAdapter.handleException(requireActivity(), e)
         }
 
     }
@@ -171,7 +171,7 @@ class ServiceDetailFragment : androidx.fragment.app.Fragment() {
             openUrl(viewModel.currentServiceInfo.loginUrl)
             copyToClipboard(requireActivity(), viewModel.currentServiceInfo.loginInfo)
         } catch (e: Exception) {
-            PswGenAdapter.handleThrowable(requireActivity(), e)
+            PswGenAdapter.handleException(requireActivity(), e)
         }
 
     }
@@ -183,7 +183,7 @@ class ServiceDetailFragment : androidx.fragment.app.Fragment() {
         try {
             copyToClipboard(requireActivity(), viewModel.currentServiceInfo.loginInfo)
         } catch (e: Exception) {
-            PswGenAdapter.handleThrowable(requireActivity(), e)
+            PswGenAdapter.handleException(requireActivity(), e)
         }
 
     }
@@ -195,7 +195,7 @@ class ServiceDetailFragment : androidx.fragment.app.Fragment() {
         try {
             copyToClipboard(requireActivity(), getValidatedOrGeneratedPassword())
         } catch (e: Exception) {
-            PswGenAdapter.handleThrowable(requireActivity(), e)
+            PswGenAdapter.handleException(requireActivity(), e)
         }
     }
 
@@ -208,7 +208,7 @@ class ServiceDetailFragment : androidx.fragment.app.Fragment() {
             viewModel.passwordExplanation = getPasswordExplanation(viewModel.password!!)
             EventBus.getDefault().post(DisplayPasswordClickedEvent())
         } catch (e: Exception) {
-            PswGenAdapter.handleThrowable(requireActivity(), e)
+            PswGenAdapter.handleException(requireActivity(), e)
         }
     }
 

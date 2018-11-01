@@ -57,7 +57,7 @@ public class ServiceInfoList {
 	 * Erzeugt eine neue ServiceInfoList ohne Dienste
 	 */
 	public ServiceInfoList() {
-		services = new TreeMap<String, ServiceInfo>();
+		services = new TreeMap<>();
 	}
 
 	/**
@@ -188,11 +188,9 @@ public class ServiceInfoList {
 	 */
 	public void encrypt(EncryptionHelper encryptionHelper) {
 		verifier = String.valueOf(services.hashCode()); // Zur Prüfung der Korrektheit nach dem Einlesen
-		encryptedServices = new ArrayList<ServiceInfo>();
-		if (services != null) {
-			for (ServiceInfo si : services.values()) {
-				encryptedServices.add(encrypt(encryptionHelper, si));
-			}
+		encryptedServices = new ArrayList<>();
+		for (ServiceInfo si : services.values()) {
+			encryptedServices.add(encrypt(encryptionHelper, si));
 		}
 	}
 
@@ -201,7 +199,7 @@ public class ServiceInfoList {
 	 */
 	public void addEncryptedService(ServiceInfo si) {
 		if (encryptedServices == null) {
-			encryptedServices = new ArrayList<ServiceInfo>();
+			encryptedServices = new ArrayList<>();
 		}
 		encryptedServices.add(si);
 	}
@@ -229,7 +227,7 @@ public class ServiceInfoList {
 	 * Liefert true, wenn es mindestens einen Service gibt, bei dem isUseOldPassphrase() true liefert.
 	 */
 	public boolean containsServiceWithOldPassphrase() {
-		for (ServiceInfo si : encryptedServices) {
+		for (ServiceInfo si : services.values()) {
 			if (si.isUseOldPassphrase()) {
 				return true;
 			}

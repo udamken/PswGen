@@ -25,7 +25,8 @@ import java.awt.GridBagLayout;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.Collections;
-import java.util.Hashtable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -64,14 +65,11 @@ public class WidgetFactory {
 
 	private static final String PREFS_SUBKEY_WIDTH = ".width";
 
-	/** Der Logger dieser Anwendung */
-	private static final Logger LOGGER = Logger.getLogger(DesktopConstants.LOGGER_NAME);
-
 	/** Die eine und einzige Instanz dieser Klasse */
 	private static WidgetFactory instance = null;
 
 	/** Hashtable mit Informationen zu allen Widgets, die hier erzeugt werden können */
-	private Hashtable<String, WidgetInfo> widgetInfos = new Hashtable<String, WidgetInfo>();
+	private Map<String, WidgetInfo> widgetInfos = new HashMap<>();
 
 	/** Benutzereinstellungen, die gegebenenfalls die Einstellungen aus den Properties überschreiben */
 	private Preferences prefs = null;
@@ -103,7 +101,8 @@ public class WidgetFactory {
 			String value = bundle.getString(key);
 			Matcher matcher = Pattern.compile("\\s*([^,]*)(\\s*,\\s*(\\d+),\\s*(\\d+))?\\s*").matcher(value);
 			if (!matcher.matches()) {
-				LOGGER.log(Level.WARNING, CoreConstants.MSG_INVALID_WIDGET_INFO, new Object[] { key, value });
+				Logger.getGlobal().log(Level.WARNING, CoreConstants.MSG_INVALID_WIDGET_INFO,
+						new Object[] { key, value });
 			} else {
 				String text = matcher.group(1);
 				String preferredWidth = matcher.group(3);
@@ -138,7 +137,7 @@ public class WidgetFactory {
 		WidgetInfo wi = widgetInfos.get(name);
 		if (wi == null) {
 			wi = new WidgetInfo("<" + name + ">");
-			LOGGER.log(Level.WARNING, CoreConstants.MSG_NO_WIDGET_INFO, name);
+			Logger.getGlobal().log(Level.WARNING, CoreConstants.MSG_NO_WIDGET_INFO, name);
 		}
 		return wi;
 	}

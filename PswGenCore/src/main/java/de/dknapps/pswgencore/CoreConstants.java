@@ -35,7 +35,7 @@ public class CoreConstants {
 	public static final String LOWEST_SUPPORTED_FILE_FORMAT_VERSION = "1.7.8";
 
 	/** Die Version aller Teile von PswGen */
-	public static final String APPLICATION_VERSION = "2.0.0";
+	public static final String APPLICATION_VERSION = "2.0.1";
 
 	/** Das Top-Level-Package von PswGenCore */
 	public static final String APPLICATION_PACKAGE_NAME = CoreConstants.class.getPackage().getName();

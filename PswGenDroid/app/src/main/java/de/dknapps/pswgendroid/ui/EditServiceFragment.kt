@@ -121,7 +121,7 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
                 .setNegativeButton(android.R.string.cancel, null) //
                 .show()
         } catch (e: Exception) {
-            PswGenAdapter.handleThrowable(requireActivity(), e)
+            PswGenAdapter.handleException(requireActivity(), e)
         }
     }
 
@@ -145,7 +145,7 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
                 storeServiceAnyway()
             }
         } catch (e: Exception) {
-            PswGenAdapter.handleThrowable(requireActivity(), e)
+            PswGenAdapter.handleException(requireActivity(), e)
         }
     }
 
@@ -238,7 +238,7 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
             )
             clearService()
         } catch (e: Exception) {
-            PswGenAdapter.handleThrowable(requireActivity(), e)
+            PswGenAdapter.handleException(requireActivity(), e)
         }
     }
 
@@ -259,7 +259,7 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
             putServiceToView(si) // update timestamp
             viewModel.isDirty = false
         } catch (e: Exception) {
-            PswGenAdapter.handleThrowable(requireActivity(), e)
+            PswGenAdapter.handleException(requireActivity(), e)
         }
     }
 

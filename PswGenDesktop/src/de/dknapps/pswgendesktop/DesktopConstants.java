@@ -31,9 +31,6 @@ public class DesktopConstants {
 	/** Das Top-Level-Package von PswGenDesktop */
 	public static final String APPLICATION_PACKAGE_NAME = DesktopConstants.class.getPackage().getName();
 
-	/** Der Name des Loggers von PswGenDesktop */
-	public static final String LOGGER_NAME = APPLICATION_PACKAGE_NAME + ".Logger";
-
 	/** Resource Name des Icons von PswGenDesktop */
 	public static final String APPLICATION_IMAGE_RESOURCE_NAME = APPLICATION_PACKAGE_NAME.replace('.', '/')
 			+ "/PswGen-128x128.png";
