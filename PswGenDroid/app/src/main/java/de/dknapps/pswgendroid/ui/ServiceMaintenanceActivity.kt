@@ -37,6 +37,12 @@ class ServiceMaintenanceActivity : AppCompatActivity() {
 
     private lateinit var viewModel: ServiceMaintenanceViewModel
 
+    private val screenOffReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            viewModel.resetModel()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(ServiceMaintenanceViewModel::class.java)
@@ -52,11 +58,7 @@ class ServiceMaintenanceActivity : AppCompatActivity() {
 
         // Get informed when screen got locked to "unload" the services and to return to startup fragment
         // for security reasons. ServiceListFragment and ServiceDetailFragment implement the return.
-        registerReceiver(object : BroadcastReceiver() {
-            override fun onReceive(context: Context?, intent: Intent?) {
-                viewModel.resetModel()
-            }
-        }, IntentFilter(Intent.ACTION_SCREEN_OFF))
+        registerReceiver(screenOffReceiver, IntentFilter(Intent.ACTION_SCREEN_OFF))
 
     }
 
@@ -68,6 +70,11 @@ class ServiceMaintenanceActivity : AppCompatActivity() {
     public override fun onStop() {
         EventBus.getDefault().unregister(this)
         super.onStop()
+    }
+
+    public override fun onDestroy() {
+        unregisterReceiver(screenOffReceiver)
+        super.onDestroy()
     }
 
     override fun onSupportNavigateUp(): Boolean {

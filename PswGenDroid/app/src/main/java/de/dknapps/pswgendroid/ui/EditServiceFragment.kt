@@ -22,6 +22,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
@@ -35,6 +36,7 @@ import de.dknapps.pswgendroid.adapter.PswGenAdapter
 import de.dknapps.pswgendroid.model.ServiceMaintenanceViewModel
 import de.dknapps.pswgendroid.util.TextChangedListener
 import kotlinx.android.synthetic.main.edit_service_fragment.*
+import kotlin.concurrent.thread
 
 
 class EditServiceFragment : androidx.fragment.app.Fragment() {
@@ -229,16 +231,24 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
      * Remove service from (by marking it as deleted) regardless whether it exists or not.
      */
     private fun removeServiceAnyway(abbreviation: String) {
-        try {
-            viewModel.services!!.removeServiceInfo(abbreviation)
-            PswGenAdapter.saveServiceInfoList(
-                viewModel.servicesFile!!,
-                viewModel.services!!,
-                viewModel.validatedPassphrase!!
-            )
-            clearService()
-        } catch (e: Exception) {
-            PswGenAdapter.handleException(requireActivity(), e)
+        Toast.makeText(context, getText(R.string.msg_saving), Toast.LENGTH_LONG).show()
+        // action to be done in a thread to make toast visible before, view updates and errors on main ui thread again
+        thread(start = true) {
+            try {
+                viewModel.services!!.removeServiceInfo(abbreviation)
+                PswGenAdapter.saveServiceInfoList(
+                    viewModel.servicesFile!!,
+                    viewModel.services!!,
+                    viewModel.validatedPassphrase!!
+                )
+                requireActivity().runOnUiThread() {
+                    clearService()
+                }
+            } catch (e: Exception) {
+                requireActivity().runOnUiThread() {
+                    PswGenAdapter.handleException(requireActivity(), e)
+                }
+            }
         }
     }
 
@@ -246,20 +256,28 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
      * Get service from view and store it regardless whether it already exists or not.
      */
     private fun storeServiceAnyway() {
-        try {
-            val si = getServiceFromView()
-            si.isDeleted = false
-            si.resetTimeMillis()
-            viewModel.services!!.putServiceInfo(si)
-            PswGenAdapter.saveServiceInfoList(
-                viewModel.servicesFile!!,
-                viewModel.services!!,
-                viewModel.validatedPassphrase!!
-            )
-            putServiceToView(si) // update timestamp
-            viewModel.isDirty = false
-        } catch (e: Exception) {
-            PswGenAdapter.handleException(requireActivity(), e)
+        val si = getServiceFromView()
+        Toast.makeText(context, getText(R.string.msg_saving), Toast.LENGTH_LONG).show()
+        // action to be done in a thread to make toast visible before, view updates and errors on main ui thread again
+        thread(start = true) {
+            try {
+                si.isDeleted = false
+                si.resetTimeMillis()
+                viewModel.services!!.putServiceInfo(si)
+                PswGenAdapter.saveServiceInfoList(
+                    viewModel.servicesFile!!,
+                    viewModel.services!!,
+                    viewModel.validatedPassphrase!!
+                )
+                requireActivity().runOnUiThread() {
+                    putServiceToView(si) // update timestamp
+                    viewModel.isDirty = false
+                }
+            } catch (e: Exception) {
+                requireActivity().runOnUiThread() {
+                    PswGenAdapter.handleException(requireActivity(), e)
+                }
+            }
         }
     }
 

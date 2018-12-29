@@ -44,6 +44,7 @@
     <string name="msg_file_cannot_be_found">Datei nicht gefunden (Berechtigungen?)</string>
     <string name="msg_file_cannot_be_read">Datei ist nicht lesbar (Berechtigungen?)</string>
     <string name="msg_file_last_modified">Datei zuletzt geändert: %1$s</string>
+    <string name="msg_loading">Lade &#8230;</string>
 
     <!-- ServiceListFragment -->
     <string name="title_service_list">Gespeicherte Dienste</string>
@@ -84,12 +85,13 @@
     <!--suppress CheckTagEmptyBody -->
     <string name="prefix_special_chars"></string>
     <string name="button_edit_service">Bearbeiten</string>
-    <string name="button_use_new_passphrase">Passphrase wechseln</string>
 
     <!-- EditServiceFragment -->
     <string name="button_clear_service">Leeren</string>
     <string name="button_remove_service">Entfernen</string>
     <string name="button_store_service">Speichern</string>
+    <string name="button_use_new_passphrase">Passphrase wechseln</string>
+    <string name="msg_saving">Speichere &#8230;</string>
 
     <!-- AboutFragment -->
     <string name="title_activity_about">Über PswGenDroid</string>

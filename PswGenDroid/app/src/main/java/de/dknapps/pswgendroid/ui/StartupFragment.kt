@@ -29,6 +29,7 @@ import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import de.dknapps.pswgencore.CoreConstants
@@ -42,6 +43,7 @@ import de.dknapps.pswgendroid.util.TextChangedListener
 import kotlinx.android.synthetic.main.startup_fragment.*
 import org.greenrobot.eventbus.EventBus
 import java.io.File
+import kotlin.concurrent.thread
 
 class StartupFragment : androidx.fragment.app.Fragment() {
 
@@ -62,8 +64,8 @@ class StartupFragment : androidx.fragment.app.Fragment() {
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         return inflater.inflate(R.layout.startup_fragment, container, false)
     }
@@ -114,23 +116,29 @@ class StartupFragment : androidx.fragment.app.Fragment() {
      * SLoads services from file and stores the given filepaths on success.
      */
     private fun onClickButtonOpenServices() {
-        try {
-            viewModel.servicesFile = File(filepath.text.toString())
-            val otherServicesFile = File(otherFilepath.text.toString())
-            viewModel.services = PswGenAdapter.loadServiceInfoList(
+        Toast.makeText(context, getText(R.string.msg_loading), Toast.LENGTH_SHORT).show()
+        // action to be done in a thread to make toast visible before, view updates and errors on main ui thread again
+        thread(start = true) {
+            try {
+                viewModel.servicesFile = File(filepath.text.toString())
+                val otherServicesFile = File(otherFilepath.text.toString())
+                viewModel.services = PswGenAdapter.loadServiceInfoList(
                     viewModel.servicesFile!!,
                     otherServicesFile,
                     passphrase.text.toString()
-            )
-            viewModel.validatedPassphrase = passphrase.text.toString()
-            viewModel.oldPassphrase = oldPassphrase.text.toString()
-            val editor = prefs.edit()
-            editor.putString(getString(R.string.preference_filepath), filepath.text.toString())
-            editor.putString(getString(R.string.preference_other_filepath), otherFilepath.text.toString())
-            editor.apply()
-            EventBus.getDefault().post(ServiceListLoadedEvent())
-        } catch (e: Exception) {
-            PswGenAdapter.handleException(requireActivity(), e)
+                )
+                viewModel.validatedPassphrase = passphrase.text.toString()
+                viewModel.oldPassphrase = oldPassphrase.text.toString()
+                val editor = prefs.edit()
+                editor.putString(getString(R.string.preference_filepath), filepath.text.toString())
+                editor.putString(getString(R.string.preference_other_filepath), otherFilepath.text.toString())
+                editor.apply()
+                EventBus.getDefault().post(ServiceListLoadedEvent())
+            } catch (e: Exception) {
+                requireActivity().runOnUiThread() {
+                    PswGenAdapter.handleException(requireActivity(), e)
+                }
+            }
         }
     }
 
