@@ -19,6 +19,7 @@
 package de.dknapps.pswgendesktop.gui;
 
 import java.awt.Desktop;
+import java.awt.Desktop.Action;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
@@ -269,7 +270,12 @@ public class PswGenCtl extends BaseCtl {
 		try {
 			mainView.setWaitCursor();
 			final String loginUrl = mainView.getLoginUrl();
-			Desktop.getDesktop().browse(new URI(loginUrl));
+			if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Action.BROWSE)) {
+				Desktop.getDesktop().browse(new URI(loginUrl));
+			} else {
+				// BROWSE not supported on Kubuntu ... see https://stackoverflow.com/a/18509384
+				Runtime.getRuntime().exec("xdg-open " + loginUrl);
+			}
 			copyLoginInfo(mainView);
 		} catch (Exception e) {
 			handleException(e);

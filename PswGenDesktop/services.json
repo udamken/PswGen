@@ -1,10 +1,10 @@
 {
-	"version": "2.0.0",
-	"verifier": "-637462702",
+	"version": "2.0.1",
+	"verifier": "528589701",
 	"services": [
 		{
-			"serviceAbbreviation": "C2C649CCE8644F10CD0557F7A8FF3974",
-			"additionalInfo": "458982D42F04D9BD0FCB9C965A934234ABBA3100291395637001C9FDE7A00E59",
+			"serviceAbbreviation": "EC7B3A2F75C90E269B8F72FBBDAA01FC",
+			"additionalInfo": "AF10B5BD8D0C9D88ECC3EE9FFA5156942CF99A4B30408AB6B37EF7021A5AA803",
 			"loginUrl": "",
 			"loginInfo": "",
 			"additionalLoginInfo": "",
@@ -12,7 +12,7 @@
 			"useCapitalLetters": false,
 			"useDigits": false,
 			"useSpecialCharacters": false,
-			"specialCharacters": "8B447EA246D214E1E718CB5D17CE1B95015363F7E40CA1786B0CFC1E99E239EA",
+			"specialCharacters": "BF144ACEDFFD0A5B5458E0D352EF5E1B6DE2815EDF16E06BD0B718EEA634C8D3",
 			"smallLettersCount": -2147483648,
 			"smallLettersStartIndex": -2147483648,
 			"smallLettersEndIndex": -2147483648,
@@ -33,16 +33,16 @@
 			"timeMillis": "1540142300299"
 		},
 		{
-			"serviceAbbreviation": "A37C6D5CD07225DCAAC8719D2C82BF78",
-			"additionalInfo": "48DD17634EB1D551CE31F66407D6FAB414FF95B9EC1B8F8F184E572A43D06731",
-			"loginUrl": "416ADA296080D1EEFB0E3BC19A414002",
+			"serviceAbbreviation": "3A2923D5ABD1623B903B82C965654644",
+			"additionalInfo": "649DC41EFD8A7D7745184DA97FDBC696C495E78433904A25D3297878AC44BBB8",
+			"loginUrl": "4BEDC804CF927172EC1CA98C480A2727",
 			"loginInfo": "",
 			"additionalLoginInfo": "",
 			"useSmallLetters": false,
 			"useCapitalLetters": false,
 			"useDigits": false,
 			"useSpecialCharacters": true,
-			"specialCharacters": "8B447EA246D214E1E718CB5D17CE1B95015363F7E40CA1786B0CFC1E99E239EA",
+			"specialCharacters": "BF144ACEDFFD0A5B5458E0D352EF5E1B6DE2815EDF16E06BD0B718EEA634C8D3",
 			"smallLettersCount": -2147483648,
 			"smallLettersStartIndex": -2147483648,
 			"smallLettersEndIndex": -2147483648,
@@ -63,9 +63,9 @@
 			"timeMillis": "1540142371093"
 		},
 		{
-			"serviceAbbreviation": "8C5B7BA4216C0EB25ECD078FF931A2DA",
-			"additionalInfo": "416ADA296080D1EEFB0E3BC19A414002",
-			"loginUrl": "416ADA296080D1EEFB0E3BC19A414002",
+			"serviceAbbreviation": "26AB81625660452C873196E2CAE5DEBB",
+			"additionalInfo": "4BEDC804CF927172EC1CA98C480A2727",
+			"loginUrl": "4BEDC804CF927172EC1CA98C480A2727",
 			"loginInfo": "",
 			"additionalLoginInfo": "",
 			"useSmallLetters": false,
@@ -93,16 +93,16 @@
 			"timeMillis": "1540139783090"
 		},
 		{
-			"serviceAbbreviation": "8C6084B6467E7784820D7CBC4F4EF856",
-			"additionalInfo": "2A54FB8741C642C39B7D5775408EC88C",
-			"loginUrl": "DBFBFA8F3AF1F577410AB7A5996C5922",
-			"loginInfo": "B4CFD22F772F55416432DC395295B871",
-			"additionalLoginInfo": "5429BC83E6ABDF7DBCE6EE1E9B972D41",
+			"serviceAbbreviation": "0AAC975BBB89AAE81B0A8A266FAF8CBB",
+			"additionalInfo": "9FA7910FA2C46EF6A9EE6EE5756A8379",
+			"loginUrl": "3336A0E953E6A0CBB6E9B181F44C7F177286AF65EF2B35B16D6E1EA983809DD9",
+			"loginInfo": "C4D32C91C52C885D8F9A544D73372FB4",
+			"additionalLoginInfo": "5C94E8FC9A43B38D35A6CD94263D0E36",
 			"useSmallLetters": true,
 			"useCapitalLetters": true,
 			"useDigits": true,
 			"useSpecialCharacters": true,
-			"specialCharacters": "8B447EA246D214E1E718CB5D17CE1B95015363F7E40CA1786B0CFC1E99E239EA",
+			"specialCharacters": "BF144ACEDFFD0A5B5458E0D352EF5E1B6DE2815EDF16E06BD0B718EEA634C8D3",
 			"smallLettersCount": -2147483648,
 			"smallLettersStartIndex": -2147483648,
 			"smallLettersEndIndex": -2147483648,
@@ -120,11 +120,11 @@
 			"passwordRepeated": "",
 			"useOldPassphrase": false,
 			"deleted": false,
-			"timeMillis": "1540139783091"
+			"timeMillis": "1546261143866"
 		},
 		{
-			"serviceAbbreviation": "5952BD5CC825D9D1D2866CE6CD51A46F",
-			"additionalInfo": "5E5710EB592520D736EABBF7A65B66CC",
+			"serviceAbbreviation": "15DCC9D4D6710254724A736633F2CB22",
+			"additionalInfo": "028A6FF4BF45EE726DD90600C4D8C3D7",
 			"loginUrl": "",
 			"loginInfo": "",
 			"additionalLoginInfo": "",
@@ -132,7 +132,7 @@
 			"useCapitalLetters": false,
 			"useDigits": false,
 			"useSpecialCharacters": false,
-			"specialCharacters": "8B447EA246D214E1E718CB5D17CE1B95015363F7E40CA1786B0CFC1E99E239EA",
+			"specialCharacters": "BF144ACEDFFD0A5B5458E0D352EF5E1B6DE2815EDF16E06BD0B718EEA634C8D3",
 			"smallLettersCount": -2147483648,
 			"smallLettersStartIndex": -2147483648,
 			"smallLettersEndIndex": -2147483648,
@@ -146,23 +146,23 @@
 			"specialCharactersStartIndex": -2147483648,
 			"specialCharactersEndIndex": -2147483648,
 			"totalCharacterCount": -2147483648,
-			"password": "AEEBC00C9EC9DA50728D766BBC9EAD1F",
-			"passwordRepeated": "AEEBC00C9EC9DA50728D766BBC9EAD1F",
+			"password": "1FF530B653A3716A400603AB04250CD9",
+			"passwordRepeated": "1FF530B653A3716A400603AB04250CD9",
 			"useOldPassphrase": false,
 			"deleted": false,
 			"timeMillis": "1540139783091"
 		},
 		{
-			"serviceAbbreviation": "416ADA296080D1EEFB0E3BC19A414002",
-			"additionalInfo": "7405223DD99814DB64EDC52CA5852645",
-			"loginUrl": "3DF7D867699ED1F94AE1AF359949FFE5",
-			"loginInfo": "B4CFD22F772F55416432DC395295B871",
-			"additionalLoginInfo": "D822468ECBAE1469A9A13C370707AF768D072713CD15489607DB6B6F55A3C0F1AF489AD2CD2DA45557F6B8DC57202B9FE4A092AAE9AEBFEAF32D900AAC8BE2966397A1B57796E86E03475B05636A04FC64901820DB8F1C6795B284ABD29D27337501CE8828650911BED6A7B5D054EBD9",
+			"serviceAbbreviation": "4BEDC804CF927172EC1CA98C480A2727",
+			"additionalInfo": "1A03509D9DE096744C3973074142F3A5",
+			"loginUrl": "1109E3373A1F78A0C1DC75FD05D68B53",
+			"loginInfo": "C4D32C91C52C885D8F9A544D73372FB4",
+			"additionalLoginInfo": "575644FC6266BEF197934F2325F1AF49BACC29B368E343521DB87C055019AB9452B510D55F7EC7433D0E34585CAADC9C5CC3D93714A233A8D22C90CAE862FD6EA12D2B8A1767382D29799625C78F9335A4F20C3A57CF14990048374034A052641AD36BAC5CF1AB7187088A914EE5E73A",
 			"useSmallLetters": false,
 			"useCapitalLetters": false,
 			"useDigits": false,
 			"useSpecialCharacters": false,
-			"specialCharacters": "8B447EA246D214E1E718CB5D17CE1B95015363F7E40CA1786B0CFC1E99E239EA",
+			"specialCharacters": "BF144ACEDFFD0A5B5458E0D352EF5E1B6DE2815EDF16E06BD0B718EEA634C8D3",
 			"smallLettersCount": -2147483648,
 			"smallLettersStartIndex": -2147483648,
 			"smallLettersEndIndex": -2147483648,
@@ -183,8 +183,8 @@
 			"timeMillis": "1540633344203"
 		},
 		{
-			"serviceAbbreviation": "06A6F2C9DA8927DFAA3DC3482E75012C",
-			"additionalInfo": "0E3E7B241BC63384F72C8147347335D6",
+			"serviceAbbreviation": "A3873CF8961BEC9C53D0201C57593996",
+			"additionalInfo": "D87B1666C78A379CA5F1409DD81DA817",
 			"loginUrl": "",
 			"loginInfo": "",
 			"additionalLoginInfo": "",
@@ -213,8 +213,8 @@
 			"timeMillis": "1540139783091"
 		},
 		{
-			"serviceAbbreviation": "7015E1727F724DE75774E1C038027373",
-			"additionalInfo": "8132544DC1766C344E0BC17CCB9B3E12",
+			"serviceAbbreviation": "17622A30C365C9BA48F5FFCF2B30A542",
+			"additionalInfo": "05F104AED272473FB8CE4BB131B98B2C",
 			"loginUrl": "",
 			"loginInfo": "",
 			"additionalLoginInfo": "",
@@ -243,8 +243,8 @@
 			"timeMillis": "1540139783091"
 		},
 		{
-			"serviceAbbreviation": "DF4B11EA001D87B83D88A811016FD1DD",
-			"additionalInfo": "173862FCBB739976C4965436A503FECB",
+			"serviceAbbreviation": "AF2EF1938CE3EA435CCF5E7A04DBEC2C",
+			"additionalInfo": "6F3259EA5A64570C9081CAD588EF9E4E",
 			"loginUrl": "",
 			"loginInfo": "",
 			"additionalLoginInfo": "",
@@ -273,8 +273,8 @@
 			"timeMillis": "1540139783091"
 		},
 		{
-			"serviceAbbreviation": "242BB8FC160649139A5064621AEE9183",
-			"additionalInfo": "5F3142A9EE636BF32D70A4747904CA8B",
+			"serviceAbbreviation": "5B74F3D428B9C2D95C60B4582AA3C7D3",
+			"additionalInfo": "E3D7827898EC99C675391F46B5C9C109",
 			"loginUrl": "",
 			"loginInfo": "",
 			"additionalLoginInfo": "",
@@ -303,8 +303,8 @@
 			"timeMillis": "1540139783092"
 		},
 		{
-			"serviceAbbreviation": "75FBD872CEA231098BFE81032B6732B0",
-			"additionalInfo": "5E5710EB592520D736EABBF7A65B66CC",
+			"serviceAbbreviation": "995D616DC755147E1466DCD379B9A066",
+			"additionalInfo": "028A6FF4BF45EE726DD90600C4D8C3D7",
 			"loginUrl": "",
 			"loginInfo": "",
 			"additionalLoginInfo": "",
@@ -312,7 +312,7 @@
 			"useCapitalLetters": false,
 			"useDigits": false,
 			"useSpecialCharacters": false,
-			"specialCharacters": "8B447EA246D214E1E718CB5D17CE1B95015363F7E40CA1786B0CFC1E99E239EA",
+			"specialCharacters": "BF144ACEDFFD0A5B5458E0D352EF5E1B6DE2815EDF16E06BD0B718EEA634C8D3",
 			"smallLettersCount": -2147483648,
 			"smallLettersStartIndex": -2147483648,
 			"smallLettersEndIndex": -2147483648,
@@ -333,6 +333,6 @@
 			"timeMillis": "1540139783092"
 		}
 	],
-	"salt": "EEAE6B50EB9E69820606C17E7E4EC62B",
-	"initializer": "243B21F7344FBFC917D850F4E7F22F78"
+	"salt": "9C111028A66A18BD4D07D36CCDB897CF",
+	"initializer": "A0AEFA126C479FEFEF4577DE5D1C3D33"
 }
