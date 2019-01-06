@@ -22,7 +22,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
@@ -33,9 +32,12 @@ import de.dknapps.pswgencore.util.DomainException
 import de.dknapps.pswgencore.util.EmptyHelper
 import de.dknapps.pswgendroid.R
 import de.dknapps.pswgendroid.adapter.PswGenAdapter
+import de.dknapps.pswgendroid.event.ProgressEndedEvent
+import de.dknapps.pswgendroid.event.ProgressStartingEvent
 import de.dknapps.pswgendroid.model.ServiceMaintenanceViewModel
 import de.dknapps.pswgendroid.util.TextChangedListener
 import kotlinx.android.synthetic.main.edit_service_fragment.*
+import org.greenrobot.eventbus.EventBus
 import kotlin.concurrent.thread
 
 
@@ -231,7 +233,7 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
      * Remove service from (by marking it as deleted) regardless whether it exists or not.
      */
     private fun removeServiceAnyway(abbreviation: String) {
-        Toast.makeText(context, getText(R.string.msg_saving), Toast.LENGTH_LONG).show()
+        EventBus.getDefault().post(ProgressStartingEvent())
         // action to be done in a thread to make toast visible before, view updates and errors on main ui thread again
         thread(start = true) {
             try {
@@ -244,6 +246,7 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
                 requireActivity().runOnUiThread() {
                     clearService()
                 }
+                EventBus.getDefault().post(ProgressEndedEvent())
             } catch (e: Exception) {
                 requireActivity().runOnUiThread() {
                     PswGenAdapter.handleException(requireActivity(), e)
@@ -257,7 +260,7 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
      */
     private fun storeServiceAnyway() {
         val si = getServiceFromView()
-        Toast.makeText(context, getText(R.string.msg_saving), Toast.LENGTH_LONG).show()
+        EventBus.getDefault().post(ProgressStartingEvent())
         // action to be done in a thread to make toast visible before, view updates and errors on main ui thread again
         thread(start = true) {
             try {
@@ -273,6 +276,7 @@ class EditServiceFragment : androidx.fragment.app.Fragment() {
                     putServiceToView(si) // update timestamp
                     viewModel.isDirty = false
                 }
+                EventBus.getDefault().post(ProgressEndedEvent())
             } catch (e: Exception) {
                 requireActivity().runOnUiThread() {
                     PswGenAdapter.handleException(requireActivity(), e)

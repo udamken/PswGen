@@ -23,12 +23,14 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import de.dknapps.pswgendroid.R
 import de.dknapps.pswgendroid.event.*
 import de.dknapps.pswgendroid.model.ServiceMaintenanceViewModel
+import kotlinx.android.synthetic.main.service_maintenance_activity.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -104,7 +106,17 @@ class ServiceMaintenanceActivity : AppCompatActivity() {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onServiceListLoadedEvent(event: ServiceListLoadedEvent) {
+    fun onProgressStartingEvent(@Suppress("UNUSED_PARAMETER") event: ProgressStartingEvent) {
+        showProgressBar(true)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onProgressEndedEvent(@Suppress("UNUSED_PARAMETER") event: ProgressEndedEvent) {
+        showProgressBar(false)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onServiceListLoadedEvent(@Suppress("UNUSED_PARAMETER") event: ServiceListLoadedEvent) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.container, ServiceListFragment.newInstance())
             .addToBackStack(ServiceListFragment::class.java.name)
@@ -112,7 +124,7 @@ class ServiceMaintenanceActivity : AppCompatActivity() {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onServiceSelectedEvent(event: ServiceSelectedEvent) {
+    fun onServiceSelectedEvent(@Suppress("UNUSED_PARAMETER") event: ServiceSelectedEvent) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.container, ServiceDetailFragment.newInstance())
             .addToBackStack(ServiceDetailFragment::class.java.name)
@@ -120,7 +132,7 @@ class ServiceMaintenanceActivity : AppCompatActivity() {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onDisplayPasswordClickedEvent(event: DisplayPasswordClickedEvent) {
+    fun onDisplayPasswordClickedEvent(@Suppress("UNUSED_PARAMETER") event: DisplayPasswordClickedEvent) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.container, DisplayPasswordFragment.newInstance())
             .addToBackStack(DisplayPasswordFragment::class.java.name)
@@ -128,7 +140,7 @@ class ServiceMaintenanceActivity : AppCompatActivity() {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEditServiceClickedEvent(event: EditServiceClickedEvent) {
+    fun onEditServiceClickedEvent(@Suppress("UNUSED_PARAMETER") event: EditServiceClickedEvent) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.container, EditServiceFragment.newInstance())
             .addToBackStack(EditServiceFragment::class.java.name)
@@ -141,6 +153,14 @@ class ServiceMaintenanceActivity : AppCompatActivity() {
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
         EventBus.getDefault().post(WindowFocusChangedEvent())
+    }
+
+    /**
+     * Shows progress bar if show is true, hides it otherwise.
+     */
+    private fun showProgressBar(show: Boolean) {
+        progressBar.visibility = if (show) View.VISIBLE else View.GONE
+        progressBackdrop.visibility = if (show) View.VISIBLE else View.GONE
     }
 
 }

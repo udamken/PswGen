@@ -128,7 +128,7 @@ class ServiceDetailFragment : androidx.fragment.app.Fragment() {
      * inspired by: https://stackoverflow.com/a/14069079/2532583
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onWindowFocusChanged(event: WindowFocusChangedEvent) {
+    fun onWindowFocusChanged(@Suppress("UNUSED_PARAMETER") event: WindowFocusChangedEvent) {
         if (inputMethodPickingState == INITIATING) {
             inputMethodPickingState = ONGOING
         } else if (inputMethodPickingState == ONGOING) {

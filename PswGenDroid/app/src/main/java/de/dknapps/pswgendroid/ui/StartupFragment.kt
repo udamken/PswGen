@@ -29,7 +29,6 @@ import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import de.dknapps.pswgencore.CoreConstants
@@ -37,7 +36,9 @@ import de.dknapps.pswgendroid.R
 import de.dknapps.pswgendroid.R.string.msg_file_last_modified
 import de.dknapps.pswgendroid.adapter.PswGenAdapter
 import de.dknapps.pswgendroid.event.OpenAboutClickedEvent
+import de.dknapps.pswgendroid.event.ProgressEndedEvent
 import de.dknapps.pswgendroid.event.ServiceListLoadedEvent
+import de.dknapps.pswgendroid.event.ProgressStartingEvent
 import de.dknapps.pswgendroid.model.ServiceMaintenanceViewModel
 import de.dknapps.pswgendroid.util.TextChangedListener
 import kotlinx.android.synthetic.main.startup_fragment.*
@@ -116,8 +117,8 @@ class StartupFragment : androidx.fragment.app.Fragment() {
      * SLoads services from file and stores the given filepaths on success.
      */
     private fun onClickButtonOpenServices() {
-        Toast.makeText(context, getText(R.string.msg_loading), Toast.LENGTH_SHORT).show()
-        // action to be done in a thread to make toast visible before, view updates and errors on main ui thread again
+        EventBus.getDefault().post(ProgressStartingEvent())
+        // action to be done in a thread to show progress bar before, view updates and errors on main ui thread again
         thread(start = true) {
             try {
                 viewModel.servicesFile = File(filepath.text.toString())
@@ -134,6 +135,7 @@ class StartupFragment : androidx.fragment.app.Fragment() {
                 editor.putString(getString(R.string.preference_other_filepath), otherFilepath.text.toString())
                 editor.apply()
                 EventBus.getDefault().post(ServiceListLoadedEvent())
+                EventBus.getDefault().post(ProgressEndedEvent())
             } catch (e: Exception) {
                 requireActivity().runOnUiThread() {
                     PswGenAdapter.handleException(requireActivity(), e)

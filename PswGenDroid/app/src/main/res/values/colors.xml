@@ -32,5 +32,6 @@
     <color name="backgroundColor">@color/dknapps_de_blue</color>
     <color name="backgroundColorDark">@color/dknapps_de_blue_dark</color>
     <color name="textColor">@color/dknapps_de_white</color>
+    <color name="backdropColor">#80060A22</color> <!-- with transparency -->
 
 </resources>
