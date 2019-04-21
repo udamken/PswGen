@@ -115,9 +115,10 @@ public class EncryptionHelper {
 		try {
 			salt = EncryptionHelper.toByteArray(saltAsHexString);
 			initializer = EncryptionHelper.toByteArray(initializerAsHexString);
-			KeySpec keySpec = new PBEKeySpec(passphrase, salt, KEY_ITERATION_COUNT, KEY_LENGTH);
+			PBEKeySpec keySpec = new PBEKeySpec(passphrase, salt, KEY_ITERATION_COUNT, KEY_LENGTH);
 			SecretKeyFactory secretKeyFactory = SecretKeyFactory.getInstance(SECRET_KEY_FACTORY_ALGORITHM);
 			SecretKey secretKey = secretKeyFactory.generateSecret(keySpec);
+			keySpec.clearPassword(); // see https://heise.de/-4211551
 			cipher = Cipher.getInstance(CIPHER_TRANSFORMATION);
 			SecretKeySpec secretKeySpec = new SecretKeySpec(secretKey.getEncoded(), CIPHER_ALGORITHM);
 			cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, new IvParameterSpec(initializer));
