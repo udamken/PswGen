@@ -2,7 +2,7 @@
     PswGenDesktop - Manages your websites and repeatably generates passwords for them
     PswGenDroid - Generates your passwords managed by PswGenDesktop on your mobile  
    
-        Copyright (C) 2005-2018 Uwe Damken
+        Copyright (C) 2005-2019 Uwe Damken
    
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@
     <string name="button_open_services">Öffnen</string>
     <string name="button_open_ime_settings">Tastatureinstellungen</string>
     <string name="button_open_help">Hilfe</string>
-    <string name="help_url">https://github.com/udamken/PswGenDroid/wiki</string>
+    <string name="help_url">https://dknapps.de/pswgen</string>
     <string name="button_open_about">Über PswGenDroid</string>
     <string name="msg_file_cannot_be_found">Datei nicht gefunden (Berechtigungen?)</string>
     <string name="msg_file_cannot_be_read">Datei ist nicht lesbar (Berechtigungen?)</string>
