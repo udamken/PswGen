@@ -2,7 +2,7 @@
  * PswGenDesktop - Manages your websites and repeatably generates passwords for them
  * PswGenDroid - Generates your passwords managed by PswGenDesktop on your mobile
  *
- *     Copyright (C) 2005-2018 Uwe Damken
+ *     Copyright (C) 2005-2019 Uwe Damken
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -135,11 +135,12 @@ class StartupFragment : androidx.fragment.app.Fragment() {
                 editor.putString(getString(R.string.preference_other_filepath), otherFilepath.text.toString())
                 editor.apply()
                 EventBus.getDefault().post(ServiceListLoadedEvent())
-                EventBus.getDefault().post(ProgressEndedEvent())
             } catch (e: Exception) {
                 requireActivity().runOnUiThread() {
                     PswGenAdapter.handleException(requireActivity(), e)
                 }
+            } finally {
+                EventBus.getDefault().post(ProgressEndedEvent())
             }
         }
     }
