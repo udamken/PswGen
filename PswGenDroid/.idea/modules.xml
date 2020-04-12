@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/PswGenDroid.iml" filepath="$PROJECT_DIR$/PswGenDroid.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PswGenDroid.iml" filepath="$PROJECT_DIR$/PswGenDroid.iml" group="PswGenDroid" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="PswGenDroid/app" />
     </modules>
   </component>
 </project>
